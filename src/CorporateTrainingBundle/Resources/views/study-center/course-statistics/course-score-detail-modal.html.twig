@@ -1,0 +1,51 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% block title %}{{'study_center.course_statistics.course_record_detail'|trans}}{% endblock %}
+
+{% block body %}
+  <table id="post-member-table" class="table table-hover table-striped">
+    <thead>
+    <tr>
+      <th>{{'study_center.course_statistics.exam_title'|trans}}</th>
+      <th>{{'study_center.course_statistics.score'|trans}}</th>
+      {% if app.user.id == user.id %}
+        <th>{{'study_center.course_statistics.btn.show_detail_btn'|trans}}</th>
+      {% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% if testPaperResults|default() %}
+      {% for testPaperResult in testPaperResults %}
+        <tr>
+          <td>
+            {{ testPaperResult.paperName|default() }}<span class="mlm label label-primary">{{'study_center.course_statistics.exam'|trans}}</span>
+          </td>
+          <td>
+            {{ testPaperResult.score }}/{{ testPapers[testPaperResult.testId].score }}
+          </td>
+          <td>
+            {% if app.user.id == user.id %}
+              {% if testPaperResult.lessonId in tasks|keys %}
+                {% set task = tasks[testPaperResult.lessonId] %}
+                <a href="{{ path('course_task_show', {courseId:testPaperResult.courseId, id:task.id}) }}" target="_blank">{{ 'study_center.course_statistics.course_task_show'|trans }}</a>
+              {% else %}
+                {{ 'course.task.deleted_tip'|trans }}
+              {% endif %}
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    {% else %}
+      <tr>
+        <td colspan="20">
+          <div class="empty">{{'study_center.course_statistics.message.course_record_empty'|trans}}</div>
+        </td>
+      </tr>
+    {% endif %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block footer %}
+  <button type="button" class="btn btn-primary" data-dismiss="modal">{{'study_center.course_statistics.btn.closed'|trans}}</button>
+{% endblock %}

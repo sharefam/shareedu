@@ -1,0 +1,35 @@
+.badge {
+  &.badge--primary {
+    background-color: @brand-primary;
+    color: #ffffff;
+  }
+}
+
+.list-group-item.active > .badge, 
+.nav-pills > .active > a > .badge {
+  color: @brand-primary;
+}
+
+
+.ct-badge {
+  display: inline-block;
+  min-width: 10px;
+  padding: 3px 7px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #FFFFFF;
+  line-height: 1;
+  vertical-align: baseline;
+  white-space: nowrap;
+  text-align: center;
+  background-color: #e1e1e1;
+  border-radius: 10px;
+}
+
+
+.ct-btn {
+  .ct-badge {
+    color: @brand-primary;
+    background-color: #FFFFFF;
+  }
+}

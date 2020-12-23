@@ -1,0 +1,27 @@
+<tr id="user-table-tr-1">
+    <td>
+        <a href="{{ path('course_set_manage_base', {id: courseSet.id}) }}" target="_blank">{{ courseSet.title|default('')}}</a>
+    </td>
+
+    <td>
+      {{ category.name|default('--') }}
+    </td>
+    <td>
+      {{ courseSet.createdTime|date('Y-n-d') }}
+    </td>
+    <td>
+      {{ courseSet.averageLearnTime|time_format }}
+    </td>
+    <td>
+      {{ courseSet.learnedStudentNum }}/{{ courseSet.studentNum }}
+    </td>
+    {% if is_plugin_installed('Survey') %}
+        <td>
+          {% if courseSet.surveyScore|default(0) %}
+            {{ courseSet.surveyScore }}
+          {% else  %}
+              --
+          {% endif %}
+        </td>
+    {% endif %}
+</tr>

@@ -1,0 +1,12 @@
+<tr>
+  {% set categoryInfo = data('Category', {categoryId:categoryId}) %}
+  <td id="category-name-{{ loop.index }}">
+    {{ categoryInfo.name|default('--') }}
+  </td>
+  <td id="course-count-{{ loop.index }}">
+    {{ data.courseNum|default(0) }}
+  </td>
+  <td>
+    {{ data.learnTime|timeFormatBySecond }}
+  </td>
+</tr>

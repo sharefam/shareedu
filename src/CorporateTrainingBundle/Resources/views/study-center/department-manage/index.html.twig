@@ -1,0 +1,76 @@
+{% extends 'study-center/layout.html.twig' %}
+
+{% do script(['libs/select2.js', 'corporatetrainingbundle/js/study-center/department/index.js']) %}
+
+{% set tab_type = 'department_manage' %}
+{% block inner %}
+<div class="board">
+  <div class="well well-sm">
+    <form id="post-member-search-form" class="form-inline" action="" method="get">
+      {% include 'study-center/part/search-bar.html.twig' with {posts: posts} %}
+    </form>
+  </div>
+
+  <div class="table-responsive" id="post-member-table-container">
+    <table id="post-member-table" class="table table-hover table-striped">
+      <thead>
+      <tr>
+        <th>{{'student.profile.nickname'|trans}}</th>
+        <th>{{'student.profile.truename'|trans}}</th>
+        <th>{{'student.profile.post'|trans}}</th>
+        <th>{{'study_center.department_manage.post_study'|trans}}</th>
+        <th>{{'study_center.department_manage.course_num'|trans}}</th>
+        <th>{{'study_center.department_manage.total_learn_time'|trans}}</th>
+        <th>{{'study_center.department_manage.operation'|trans}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% if users %}
+        {% for user in users %}
+          <tr id="member-table-tr-{{ user.id }}">
+            <td>
+              <p>
+                {{ user.nickname }}
+              </p>
+                {% if user.org|default()  %}
+                  <span class="text-sm text-muted">{{ user.org.name }}</span>
+                {% endif %}
+            </td>
+            <td>
+              {% if user.truename %}
+                {{ user.truename }}
+                {% else %}
+              {% endif %}
+            </td>
+            <td class="{{user.id}}">
+              {% if user.post|default() %}
+                <span class="user-post-show" name="{{user.post.name}}"> {{user.post.name}} </span>
+              {% else %}
+                {{'study_center.department_manage.post_empty'|trans}}
+              {% endif %}  
+            </td>
+            <td>
+              <p class="text-sm">{{ 'study_center.department_manage.progress'|trans }}: {{ user.finishedTaskCount|default(0) }}/{{ user.taskCount|default(0) }}</p>
+              <span class="text-sm">{{ 'study_center.department_manage.cumulative'|trans }}: {{user.learnTime|time_format_hour}}</span>
+            </td>
+            <td>{{ user.courseCount|default(0) }}</td>
+            <td>{{user.totalLearnTime|time_format_hour}}</td>
+            <td>
+              <a href="{{ path('study_center_department_manage_record', {userId:user.id}) }}"><i class="link-primary glyphicon glyphicon-file" title="{{ 'study_center.department_manage.study_record'|trans }}"></i></a>
+              <a class="mlm" href="javascript:;" data-toggle="modal" data-url="{{ path('study_center_user_information', {userId:user.id}) }}" data-target="#modal"><i class="link-primary glyphicon glyphicon-user" title="{{ 'study_center.department_manage.user_info'|trans }}"></i></a>
+            </td>
+          </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="20">
+            <div class="empty">{{'study_center.department_manage.empty'|trans}}</div>
+          </td>
+        </tr>
+      {% endif %}
+     </tbody>
+    </table>
+    {{ web_macro.paginator(paginator) }}
+  </div>
+</div>
+{% endblock %}

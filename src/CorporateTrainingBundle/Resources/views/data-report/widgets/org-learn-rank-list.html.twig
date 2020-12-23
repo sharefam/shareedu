@@ -1,0 +1,78 @@
+{% if studyRanks.orgStudyRanks %}
+  {% for studyRank in studyRanks.orgStudyRanks %}
+    {% set org = data('Org', {id:studyRank.orgId}) %}
+    {% set orgUser = studyRanks.orgUsers[studyRank.orgId]|default('') %}
+    {% if studyRanks.sourceFrom|default('') == 'admin' %}
+      <li class="ct-rank-item ct-rank-item--light">
+        <div class="ct-rank-item__l">
+          {% if loop.index == 1 %}
+            <img class="ct-rank-item__img-icon" src="{{asset('static-dist/corporatetrainingbundle/img/medal_gold@2x.png')}}">
+          {% elseif loop.index == 2 %}
+            <img class="ct-rank-item__img-icon" src="{{asset('static-dist/corporatetrainingbundle/img/medal_silver@2x.png')}}">
+          {% elseif loop.index == 3 %}
+            <img class="ct-rank-item__img-icon" src="{{asset('static-dist/corporatetrainingbundle/img/medal_copper@2x.png')}}">
+          {% else %}
+            <div class="ct-rank-item__label">{{ loop.index }}</div>
+          {% endif %}
+        </div>
+        <div class="ct-rank-item__r">
+          <div class="pull-left" style="height: 45px">
+          </div>
+          <div class="pull-left mlm">
+            <div class="ct-rank-item_name" title="{{ org.name|sub_text(16) }}">{{ org.name|sub_text(16) }}</div>
+            <div class="ct-rank-item_post">{{ orgUser.count|default(0) }}{{ 'site.data.people'|trans }}</div>
+          </div>
+          <div class="ct-rank-item__date pull-right">
+            {{ 'admin_org_rank_list.date'|trans }}
+            {% if orgUser.count >0 %}
+              {{ studyRank.totalLearnTime|time_format_hour }}
+            {% else %}
+              0{{ 'site.date.hour'|trans }}
+            {% endif %}
+          </div>
+        </div>
+      </li>
+    {% else %}
+      <div class="c-home-rank-item">
+        <div class="c-home-rank-item__l">
+          {% if loop.index == 1 %}
+            <img class="c-home-rank-item__img-icon" src="{{asset('static-dist/corporatetrainingbundle/img/medal_gold@2x.png')}}">
+          {% elseif loop.index == 2 %}
+            <img class="c-home-rank-item__img-icon" src="{{asset('static-dist/corporatetrainingbundle/img/medal_silver@2x.png')}}">
+          {% elseif loop.index == 3 %}
+            <img class="c-home-rank-item__img-icon" src="{{asset('static-dist/corporatetrainingbundle/img/medal_copper@2x.png')}}">
+          {% else %}
+            <div class="c-home-rank-item__label">{{ loop.index }}</div>
+          {% endif %}
+        </div>
+        <div class="c-home-rank-item__r">
+          <div class="pull-left">
+          </div>
+          <div class="pull-left mlm">
+            <div class="c-home-rank-item__name">
+              {{ org.name|sub_text(8) }}
+            </div>
+            <div class="c-home-rank-item__post">{{ orgUser.count|default(0) }}{{ 'site.data.people'|trans }}</div>
+          </div>
+          <div class="c-home-rank-item__date pull-right">{{ studyRank.totalLearnTime|time_format_hour }}</div>
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+  {% if (5 - studyRanks.orgStudyRanks|length) > 0 %}
+    {% for studyRank in 1..(5 - studyRanks.orgStudyRanks|length) %}
+        {% if studyRanks.sourceFrom|default('') == 'admin' %}
+          {% include 'data-report/widgets/learn-rank-list_empty.html.twig' %}
+        {% endif %}
+    {% endfor %}
+  {% endif %}
+{% else %}
+  <div class="empty">
+    <div class="c-home-rank__empty-wrap">
+      <img class="c-home-rank__empty-img" src="{{ asset('/assets/img/backstage/empty/empty_rank_list.png')}}">
+      <div class="c-home-rank__empty-txt">
+        {{ 'my.department.data_report.org_learn_ct-rank_list.empty_tip'|trans }}
+      </div>
+    </div>
+  </div>
+{% endif %}

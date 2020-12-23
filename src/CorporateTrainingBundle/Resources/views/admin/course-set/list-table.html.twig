@@ -1,0 +1,41 @@
+{% import "macro.html.twig" as web_macro %}
+
+<table class="table table-striped table-hover" id="course-table" style="word-break:break-all;">
+  <thead>
+  <tr>
+    {% if setting('magic.enable_org','0') %}
+      <th><input type="checkbox"  data-role="batch-select"></th>
+    {% endif %}
+    <th width="5%">{{ 'admin.course_manage.manage.number'|trans }}</th>
+    <th width="20%">{{ 'admin.course_manage.manage.name'|trans }}</th>
+    {% include 'org/parts/table-thead-tr.html.twig' %}
+    <th >{{ 'admin.course_manage.manage.serialize_mode'|trans }}</th>
+    <th width="10%">{{ 'admin.course_manage.use_record'|trans }}</th>
+    <th width="10%">{{ 'admin.course_manage.manage.student_number'|trans }}</th>
+    <th width="10%">{{ 'admin.course_manage.manage.status'|trans }}</th>
+    <th width="10%">{{ 'admin.course_manage.manage.creator'|trans }}</th>
+    <th width="10%" >{{'admin.course_manage.operater'|trans}}</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for courseSet in courseSets %}
+    {% set user = users[courseSet.creator]|default(null) %}
+    {% set category = categories[courseSet.categoryId]|default(null) %}
+    {% include 'admin/course-set/tr.html.twig' %}
+  {% else %}
+    <tr>
+      <td colspan="20">
+        <div class="empty">{{'admin.course_manage.manage.empty'|trans}}</div>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<div>
+  <label class="checkbox-inline"><input type="checkbox" data-role="batch-select"> {{ 'site.btn.all_select'|trans }}</label>
+  <a class="btn btn-default btn-sm mlm " id="batch-update-org" data-form-id="course-table" data-toggle="modal" data-generate="{{'true'|default(false)}}" data-target="#modal" data-url="{{path('admin_batch_update_org',{module:'courseSet'})}}">{{ 'site.org.setup'|trans }}</a>
+</div>
+
+<nav class="text-center">
+  {{ web_macro.ajax_paginator(paginator) }}
+</nav>

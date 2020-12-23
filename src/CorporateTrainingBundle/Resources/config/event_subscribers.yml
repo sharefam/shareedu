@@ -1,0 +1,90 @@
+services:
+    post_course_event_subscriber:
+        class: CorporateTrainingBundle\Biz\PostCourse\Event\PostCourseEventSubscriber
+        arguments:    ['@biz']
+        tags:
+            - { name: codeages_plugin.event.subscriber }
+
+    coruse_event_subscriber:
+        class: CorporateTrainingBundle\Biz\Course\Event\CourseEventSubscriber
+        arguments: ['@biz']
+        tags:
+           - { name: codeages_plugin.event.subscriber }
+
+    offline_activity_member_subscriber:
+        class: CorporateTrainingBundle\Biz\OfflineActivity\Event\OfflineActivityMemberEventSubscriber
+        arguments: ['@biz']
+        tags:
+          - { name: codeages_plugin.event.subscriber }
+
+    offline_activity_subscriber:
+        class: CorporateTrainingBundle\Biz\OfflineActivity\Event\OfflineActivityEventSubscriber
+        arguments: ['@biz']
+        tags:
+        - { name: codeages_plugin.event.subscriber }
+
+    user_daily_learn_record_subscriber:
+        class: CorporateTrainingBundle\Biz\UserDailyLearnRecord\Event\UserDailyLearnRecordEventSubscriber
+        arguments: ['@biz']
+        tags:
+          - { name: codeages_plugin.event.subscriber }
+
+    user_event_subscriber:
+        class: CorporateTrainingBundle\Biz\User\Event\UserEventSubscriber
+        arguments: ['@biz']
+        tags:
+          - { name: codeages_plugin.event.subscriber }
+
+    project_plan_member_subscriber:
+        class: CorporateTrainingBundle\Biz\ProjectPlan\Event\MemberEventSubscriber
+        arguments: ['@biz']
+        tags:
+          - { name: codeages_plugin.event.subscriber }
+
+    project_plan_subscriber:
+        class: CorporateTrainingBundle\Biz\ProjectPlan\Event\ProjectPlanEventSubscriber
+        arguments: ['@biz']
+        tags:
+          - { name: codeages_plugin.event.subscriber }
+
+    project_plan_item_subscriber:
+        class: CorporateTrainingBundle\Biz\ProjectPlan\Event\ProjectPlanItemEventSubscriber
+        arguments: ['@biz']
+        tags:
+          - { name: codeages_plugin.event.subscriber }
+
+    project_plan_member_statistic_data_subscrber:
+        class: CorporateTrainingBundle\Biz\ProjectPlan\Event\MemberStatisticDataEventSubscriber
+        arguments: ['@biz']
+        tags:
+           - { name: codeages_plugin.event.subscriber }
+
+    offline_course_event_subscriber:
+        class: CorporateTrainingBundle\Biz\OfflineCourse\Event\OfflineCourseEventSubscriber
+        arguments: ['@biz']
+        tags:
+        - { name: codeages_plugin.event.subscriber }
+
+    ct_course_task_event_subscriber:
+        class: CorporateTrainingBundle\Biz\Task\Event\TaskEventSubscriber
+        arguments: ['@biz']
+        tags:
+        - { name: codeages_plugin.event.subscriber }
+
+    offline_exam_event_subscriber:
+        class: CorporateTrainingBundle\Biz\OfflineExam\Event\OfflineExamEventSubscriber
+        arguments: ['@biz']
+        tags:
+        - { name: codeages_plugin.event.subscriber }
+
+    offline_activity_enrollment_record_event_subscriber:
+        class: CorporateTrainingBundle\Biz\OfflineActivity\Event\EnrollmentRecordEventSubscriber
+        arguments: ['@biz']
+        tags:
+        - { name: codeages_plugin.event.subscriber }
+        
+    ct_classroom_event_subscriber:
+        class: CorporateTrainingBundle\Biz\Classroom\Event\ClassroomEventSubscriber
+        arguments: ['@biz']
+        tags:
+            - { name: codeages_plugin.event.subscriber }

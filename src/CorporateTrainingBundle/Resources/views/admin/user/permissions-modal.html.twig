@@ -1,0 +1,55 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set modalSize = 'large' %}
+  {% do script(['corporatetrainingbundle/js/admin/user/index.js']) %}
+{% block title %}{{'admin.user.permissions_setting'|trans}}{% endblock %}
+{% block body %}
+
+<form id="user-roles-form" class="form-horizontal" method="post" action="{{ url('admin_user_permissions', {id:user.id}) }}" data-currentuser="{{ app.user.id }}" data-edituser="{{ user.id }}">
+
+  <div class="row form-group">
+    <div class="col-md-3 control-label">
+      <label for="">{{ 'admin.user.set_permission.role_setting'|trans }}：</label>
+    </div>
+    <div class="checkboxs col-md-9" id="old-checkboxs">
+      {% set admin_roles = get_admin_roles() %}
+      {% for role in admin_roles if (role.code in app.user.roles or role.createdUserId == app.user.id) or 'ROLE_SUPER_ADMIN' in app.user.roles %}
+        {% if role.code == 'ROLE_ADMIN' and 'ROLE_ADMIN' in user.roles %}
+          <label>
+            <input type="checkbox" name="roles[]" value="{{role.code}}" {% if role.code in user.roles %}checked="checked"{% endif %}>{{role.name}}
+          </label>
+        {% endif %}
+        {% if role.code != 'ROLE_ADMIN' %}
+          <label>
+            <input type="checkbox" name="roles[]" value="{{role.code}}" {% if role.code in user.roles %}checked="checked"{% endif %}>{{role.name}}
+          </label>
+        {% endif %}
+      {% endfor %}
+      <div class="alert alert-info mtl">
+        {{ 'admin.user.set_permission.role_alert'|trans }}
+      </div>
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-md-3 control-label">
+      <label for="">{{ 'admin.user.set_permission.org_setting'|trans }}：</label>
+    </div>
+    <div class="col-md-9" >
+      {% include 'admin/org-select/index.html.twig' with {placeholder: '部门', id: 'setOrgSelect',ids:orgIds|default(''), data: set_manage_permission_org_tree(user.manageOrgIds)} %}
+      <div class="alert alert-info mtl">
+        {{ 'admin.user.set_permission.org_alert'|trans }}
+      </div>
+    </div>
+  </div>
+
+
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+</form>
+{% endblock %}
+
+{% block footer %}
+  <button id="change-user-roles-btn" data-submiting-text="{{'form.btn.submit.submiting'|trans}}" class="btn btn-primary pull-right" data-toggle="form-submit" data-target="#user-roles-form"  data-user="{{default.user_name|default('role.student'|trans)}}" >{{'form.btn.save'|trans}}</button>
+  <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{'form.btn.cancel'|trans}}</button>
+  
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set modalSize = 'large' %}
+{% block title %}{{ 'project_plan.sign_attachment'|trans }}{% endblock %}
+{% block body %}
+    {% if advancedOption.requireMaterial|default() %}
+        <div class="mbl">
+          <span>{{ 'project_plan.data_requirements'|trans }}：{{ advancedOption.materialRequirement|default() }}</span>
+        </div>
+        <div class="mbm">
+          <span class="mrs">1.{{ advancedOption.material1|default('--') }}</span>
+        </div>
+        {% set attachments = data('AttachmentList',{targetType:'projectPlaning.material1', targetId:record.id}) %}
+        {% if attachments|default() %}
+          {% include 'attachment/list.html.twig' with {targetType:'project.plan.enroll'} %}
+        {% else %}
+          <div class="mbm">
+            <span class="alert-danger">{{ 'project_plan.attachment_danger_info'|trans }}</span>
+          </div>
+        {% endif %}
+        {% if advancedOption.material2|default() %}
+          <div class="mbm">
+            <span class="mrs">2.{{ advancedOption.material2|default('--') }}</span>
+          </div>
+          {% set attachments = data('AttachmentList',{targetType:'projectPlaning.material2', targetId:record.id}) %}
+          {% if attachments|default() %}
+            {% include 'attachment/list.html.twig' with {targetType:'project.plan.enroll'} %}
+          {% else %}
+            <div class="mbm">
+              <span class="alert-danger">{{ 'project_plan.attachment_danger_info'|trans }}</span>
+            </div>
+          {% endif %}
+        {% endif %}
+        {% if advancedOption.material3|default() %}
+          <div class="mbm">
+            <span class="mrs">3.{{ advancedOption.material3|default('--') }}</span>
+          </div>
+          {% set attachments = data('AttachmentList',{targetType:'projectPlaning.material3', targetId: record.id}) %}
+          {% if attachments|default() %}
+            {% include 'attachment/list.html.twig' with {targetType:'project.plan.enroll'} %}
+          {% else %}
+            <div class="mbm">
+              <span class="alert-danger">{{ 'project_plan.attachment_danger_info'|trans }}</span>
+            </div>
+          {% endif %}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+{% block footer %}
+    <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{ 'project_plan.btn.cancel_btn'|trans }}</button>
+{% endblock %}

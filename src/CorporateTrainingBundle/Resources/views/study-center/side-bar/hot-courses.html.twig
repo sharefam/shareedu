@@ -1,0 +1,37 @@
+{% import "macro.html.twig" as web_macro %}
+
+<div class="panel panel-default aside-panel">
+  <div class="panel-heading">
+    <div class="panel-title">
+      {{'study_center.side_bar.hot_courses'|trans}}
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="aside-hot-course">
+      {% set popularCourseSets = data('PopularCourseSets', {type:'hitNum', count: 5}) %}
+      {% if popularCourseSets %}
+        {% for popularCourseSet in popularCourseSets %}
+          <div class="aside-hot-course-item">
+            <div class="text-ovf"><a class="link-dark aside-hot-course-item-title" href="{{ path('course_show', {id:popularCourseSet.defaultCourseId}) }}">{{ popularCourseSet.title }}</a></div>
+            <div class="mts color-gray">
+              <span class="aside-hot-course-item-detail"><i class="es-icon es-icon-people"></i>
+                <span class="dis-i-b">{{ web_macro.label_num_format(popularCourseSet.studentNum) }}</span>
+              </span>
+              <span class="aside-hot-course-item-detail mlxl"><i class="es-icon es-icon-textsms"></i>
+                <span class="dis-i-b">{{ web_macro.label_num_format(popularCourseSet.ratingNum) }}</span>
+              </span>
+              {% if popularCourseSet.teachers[0]|default() %}
+                {% set teacher = data('UserProfile', {userId: popularCourseSet.teachers[0].id}) %}
+                <span class="pull-right ft-xsm">{{ teacher.truename|default() }}</span>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty">
+          {{ 'study_center.side_bar.hot_courses.empty'|trans }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

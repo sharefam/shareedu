@@ -1,0 +1,28 @@
+{% extends 'project-plan/layout.html.twig' %}
+{% block title %}{{ 'project_plan.implementation.exam_manage'|trans }} - {{ parent() }}{% endblock %}
+{% set side_nav = 'exam-manage' %}
+{% set tab_nav = 'implementation' %}
+
+{% block main %}
+  <div class="cd-main__heading">
+    {% block main_head_hover %}
+    {% endblock %}
+    <div class="cd-main__title">
+      {{ 'project_plan.implementation.exam_manage'|trans }}
+    </div>
+  </div>
+  <div class="cd-main__body" id="project-plan-member-container">
+    <ul class="cd-tabs mtm">
+      {% if is_plugin_installed('Exam') %}
+        <li class="{% if type == 'exam' %} active {% endif %}">
+          <a href="{{path('project_plan_exam_manage_list', {id: projectPlan.id, type: 'exam'}) }}">{{ 'project_plan.online_exam'|trans }}</a>
+        </li>
+      {% endif %}
+      <li class="{% if type == 'offlineExam' %} active {% endif %}">
+        <a href="{{path('project_plan_offline_exam_manage_list', {id: projectPlan.id}) }}">{{ 'project_plan.offline_exam'|trans }}</a>
+      </li>
+    </ul>
+    {% block main_content %}
+    {% endblock %}
+  </div>
+{% endblock %}

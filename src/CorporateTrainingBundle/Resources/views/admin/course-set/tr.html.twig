@@ -1,0 +1,10 @@
+{% import "admin/macro.html.twig" as admin_macro %}
+
+{% import "common/data-dict-macro.html.twig" as dict_macro %}
+{% set target = ''~filter~'_index' %}
+{% if filter == 'lease' %}
+    {% include 'CorporateTrainingBundle::admin/course-set/lease-course-tr.html.twig' %}
+  {% else %}
+    {% include 'CorporateTrainingBundle::admin/course-set/nomal-course-tr.html.twig' %}
+{% endif %}
+

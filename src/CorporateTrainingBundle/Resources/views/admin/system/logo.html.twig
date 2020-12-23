@@ -1,0 +1,77 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_setting_logo_and_favicon' %}
+
+{% set script_controller = 'corporatetrainingbundle/controller/setting/log-setting' %}
+
+{% block main %}
+
+{{ web_macro.flash_messages() }}
+
+<form class="form-horizontal" id="log-form" method="post" data-save-url="{{ path('admin_setting_logo_and_favicon_save') }}">
+  
+  <fieldset>
+
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label for="logo">{{'admin.setting.site.logo'|trans}}</label>
+      </div>
+      <div class="col-md-8 controls">
+        <div id="site-logo-container">{% if site.logo %}<img src="{{ asset(site.logo) }}">{% endif %}</div>
+        <a class="btn btn-default" id="site-logo-upload"
+        data-upload-token="{{ upload_token('system', 'image') }}"
+        data-goto-url="{{ path('admin_setting_logo_upload') }}">{{'form.btn.upload'|trans}}</a>
+        <button class="btn btn-default" id="site-logo-remove" type="button" data-url="{{ path('admin_setting_logo_remove') }}" {% if not site.logo %}style="display:none;"{% endif %}>{{'form.btn.delete'|trans}}</button>
+        <p class="help-block">{{'admin.setting.site.logo_setting.help_block'|trans|raw}}</p>
+        <input type="hidden" name="logo" value="{{ site.logo }}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label for="logo">{{'admin.setting.site.login_logo'|trans}}</label>
+      </div>
+      <div class="col-md-8 controls">
+        <div id="login-logo-container">{% if site.loginLogo %}<img src="{{ asset(site.loginLogo) }}">{% endif %}</div>
+        <a class="btn btn-default" id="login-logo-upload"
+           data-upload-token="{{ upload_token('system', 'image') }}"
+           data-goto-url="{{ path('admin_setting_login_logo_upload') }}">{{'form.btn.upload'|trans}}</a>
+        <button class="btn btn-default" id="login-logo-remove" type="button" data-url="{{ path('admin_setting_login_logo_remove') }}" {% if not site.logo %}style="display:none;"{% endif %}>{{'form.btn.delete'|trans}}</button>
+        <p class="help-block">{{'admin.setting.site.login_logo_setting.help_block'|trans|raw}}</p>
+        <input type="hidden" name="loginLogo" value="{{ site.loginLogo }}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label for="favicon">{{'admin.setting.site.favicon'|trans}}</label>
+      </div>
+      <div class="col-md-8 controls">
+        <div id="site-favicon-container">{% if site.favicon %}<img src="{{ asset(site.favicon) }}">{% endif %}</div>
+        <a class="btn btn-default"
+        id="site-favicon-upload"
+        data-upload-token="{{ upload_token('system', 'image') }}"
+        data-goto-url="{{ path('admin_setting_favicon_upload') }}">{{'form.btn.upload'|trans}}</a>
+        <button class="btn btn-default"
+        id="site-favicon-remove"
+        type="button" data-url="{{ path('admin_setting_favicon_remove') }}" {% if not site.favicon %}style="display:none;"{% endif %}>{{'form.btn.delete'|trans}}</button>
+        <p class="help-block">{{'admin.setting.site.favicon.help_block'|trans|raw}}</p>
+        <input type="hidden" name="favicon" value="{{ site.favicon }}">
+      </div>
+    </div>
+
+  </fieldset>
+
+<br>
+
+  <div class="row form-group">
+    <div class="controls col-md-offset-2 col-md-8">
+      <button type="button" class="btn btn-primary" id="save-log">{{'form.btn.submit'|trans}}</button>
+    </div>
+  </div>
+
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+  
+</form>
+
+{% endblock %}

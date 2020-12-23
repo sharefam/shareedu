@@ -1,0 +1,54 @@
+{% import "macro.html.twig" as web_macro %}
+
+<table class="table table-hover table-striped">
+  <thead>
+  <tr>
+    <th>{{ 'project_plan.member.nick_name'|trans }}</th>
+    <th>{{ 'project_plan.member.department_post'|trans }}</th>
+    <th>{{ 'project_plan.manage_list.status'|trans }}</th>
+    <th>{{ 'project_plan.operation'|trans }}</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% if taskResults|default(null) %}
+    {% for taskResult in taskResults %}
+      {% set userProfile = data('UserProfile', {userId: taskResult.userId}) %}
+      {% set user = data('User', {userId: taskResult.userId}) %}
+      {% set post = data('Post', {postId: user.postId}) %}
+      {% set userOrgs = data('Orgs',{orgIds: user.orgIds}) %}
+      <tr>
+        <td width="40%">
+          {{ userProfile.truename|default('') }}
+          <br><span class="text-muted text-sm">{{ user.nickname|default('--'|trans) }}</span>
+        </td>
+        <td>
+          {{ userOrgs.0.name|default('--') }}
+          {% if userOrgs.1|default(false) %}
+            <i class="es-icon es-icon-more ft-xsm" data-toggle="popover" data-container="body" data-trigger="hover"
+               data-placement="top" data-content="{{ userOrgs.orgNames|default() }}"></i>
+          {% endif %}
+          <br><span class="text-muted text-sm">{{ post.name|default('--'|trans) }}</span>
+        </td>
+        <td>{% if taskResult.homeworkStatus == 'submitted' %}{{ 'project_plan.implementation.course_no_review'|trans }}
+          {% elseif taskResult.homeworkStatus == 'passed' %}{{ 'project_plan.pass'|trans }}
+          {% elseif taskResult.homeworkStatus == 'unpassed' %}{{ 'project_plan.status.unpass'|trans }}
+          {% else %}{{ 'project_plan.status.not_submitted'|trans }}{% endif %}
+        </td>
+        <td>
+          {% if taskResult.homeworkStatus != 'none' %}
+            <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal" data-url="{{ path('project_plan_offline_course_homework_check', {id: taskResult.id}) }}">{{ 'project_plan.btn.review_btn'|trans }}</a>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  {% else %}
+    <tr>
+      <td colspan="20">
+        <div class="empty">{{ 'offline_course.empty'|trans }}</div>
+      </td>
+    </tr>
+  {% endif %}
+  </tbody>
+</table>
+
+{{ web_macro.ajax_paginator(paginator) }}

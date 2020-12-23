@@ -1,0 +1,32 @@
+<li id="category-table-body" data-sort-url="{{ path('admin_category_sort') }}">
+    {% if categories is not empty %}
+        {{ _self.showCategoryTree(categories, group, false) }}
+    {% else %}
+        <div class="row empty">{{'project_plan.category.recode_empty'|trans}}</div>
+    {% endif %}
+</li>
+
+{% do load_script('corporatetrainingbundle/controller/project-plan/category/tbody') %}
+
+
+
+{% macro showCategoryTree(categories, group, isCollapseChildren) %}
+  <ul class="list-table sortable-list" data-group-id="{{ categories[0]['parentId'] }}">
+    {% for category in categories %}
+        {% set isParent = category.children|default(null) is not empty %}
+      <li id="{{ category.id }}" class="tr sort-handle" data-name="{{ category.name }}" data-id="{{ category.id }}" data-parent-id="{{ category.parentId }}">
+          <div class="row{{ (isParent and isCollapseChildren) ? ' row-collapse' : ' row-expand' }}">
+         <div class="td col-md-8">{{ category['name']|trans }}</div>
+         <div class="td col-md-2">{{ category['code']|trans }}</div>
+         <div class="td col-md-2">
+           <div class="btn-group">
+             <a href="javascript:;" class="btn btn-default btn-sm " data-url="{{ path('admin_project_plan_category_edit', {id:category.id}) }}" data-toggle="modal" data-target="#modal">
+                <i class="glyphicon glyphicon-edit"></i> {{'project_plan.btn.edit_btn'|trans}}
+              </a>
+            </div>
+         </div>
+          </div>
+       </li>
+     {% endfor %}
+   </ul>
+{% endmacro %}

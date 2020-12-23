@@ -1,0 +1,1403 @@
+# 一个完整的permission配置如下：
+# admin_user_manage:
+#   name: 用户管理
+#   children:               //可选
+#   mode:                   //可选 none, modal, capsules（只有在tabs可用）
+#   group:                  //可选 内置: topBtn, capsule, 也可以自定义
+#   router_name: admin_user //可选
+#   router_params:          //可选
+#   blank:                  //可选
+#   visible:                //可选
+#   icon:                   //可选
+#   data:                   //可选
+#   before:                 //可选 菜单出现位置在同级的某个菜单之前
+#   after:                  //可选 菜单出现位置在同级的某个菜单之后
+#   disable:                //角色管理分配权限默认开启不用选中
+#   quick_entrance:         //首页快捷入口
+
+admin:
+    name: admin.basic_menu
+    parent: null
+    children:
+#         admin_homepage:
+#             name: 后台首页
+#             router_name: admin_homepage
+        admin_train:
+            name: admin.nav.train
+            children:
+                admin_train_teach_manage_my_teaching_courses_manage:
+                    name: admin.train.basic.basic_drop.teaching_course
+                    group: 0
+                    groupName: admin.teaching.basic_menu
+                    children:
+                        admin_train_teach_manage_my_teaching_courses:
+                            name: admin.train.basic.basic_drop.teaching_course
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-course'
+                admin_train_teach_manage_my_teaching_classrooms_manage:
+                    name: admin.train.basic.basic_drop.teaching_classroom
+                    group: 0
+                    groupName: admin.teaching.basic_menu
+                    children:
+                        admin_train_teach_manage_my_teaching_classrooms:
+                            name: admin.train.basic.basic_drop.teaching_classroom
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-teaching_project'
+                admin_train_teach_manage_project_plan_teaching_manage:
+                    name: admin.train.basic.basic_drop.teaching_project_plan
+                    group: 0
+                    groupName: admin.teaching.basic_menu
+                    children:
+                        admin_train_teach_manage_project_plan_teaching:
+                            name: admin.train.basic.basic_drop.teaching_project_plan
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-project_teach'
+                admin_course_show:
+                    name: admin.course.basic.basic_drop.course_back
+                    group: 1
+                    groupName: admin.online_course.basic_menu
+                    children:
+                        admin_course_manage:
+                            name: admin.course.basic_menu
+                            router_name: admin_course_set
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-online_course'
+                            children:
+                                admin_course_content_manage:
+                                    name: admin.course.basic.basic_tab.manage_btn
+                                admin_course_add:
+                                    name: admin.course.basic.basic_tab.create_btn
+                                    router_name: course_set_manage_create
+                                    group: topBtn
+                                    blank: 1
+                                admin_course_set_recommend:
+                                    name: admin.course.basic.basic_tab.recommend_btn
+                                    router_params:
+                                        id: (courseSet.id)
+                                        filter: (filter)
+                                        ref: 'courseList'
+                                    group: groupButton
+                                    visible: ( filter in ['lease', 'normal'] and not courseSet.recommended )
+                                    icon: 'glyphicon glyphicon-hand-up'
+                                    mode: modal
+                                admin_course_set_cancel_recommend:
+                                    name: admin.btn.recommend_cancel_btn
+                                    router_params:
+                                        id: (courseSet.id)
+                                        filter: (filter)
+                                        target: (target)
+                                    group: groupButton
+                                    class: cancel-recommend-course
+                                    visible: ( filter in ['lease', 'normal'] and courseSet.recommended )
+                                    icon: 'glyphicon glyphicon-hand-right'
+                                    mode: none
+                                admin_course_guest_member_preview:
+                                    name: admin.course.basic.basic_tab.preview_btn
+                                    router_name: course_set_show
+                                    router_params:
+                                        id: (courseSet.id)
+                                        previewAs: 'guest'
+                                    group: groupButton
+                                    icon: 'glyphicon glyphicon-eye-open'
+                                    blank: 1
+                                admin_course_set_close:
+                                    name: admin.course.basic.basic_tab.close_btn
+                                    router_params:
+                                        id: (courseSet.id)
+                                        filter: (filter)
+                                    group: groupButton
+                                    icon: 'glyphicon glyphicon-ban-circle'
+                                    mode: none
+                                    class: close-course
+                                    visible: (courseSet.status == 'published')
+                                admin_course_sms_prepare:
+                                    name: admin.btn.sms_send_btn
+                                    router_name: sms_prepare
+                                    router_params:
+                                        id: (courseSet.id)
+                                        targetType: 'course'
+                                    group: groupButton
+                                    icon: 'glyphicon glyphicon-envelope'
+                                    mode: modal
+                                    visible: (courseSet.status == 'published')
+                                admin_course_set_clone:
+                                    name: admin.course.basic.basic_tab.clone_btn
+                                    router_params:
+                                        courseSetId: (courseSet.id)
+                                    group: groupButton
+                                    class: 'js-course-set-clone'
+                                    icon: 'glyphicon glyphicon-repeat'
+                                    mode: none
+                                    visible: (courseSet.parentId == 0 and courseSet.type != 'live' and courseSet.belong == 'self')
+                                admin_course_set_publish:
+                                    name: admin.course.basic.basic_tab.publish_submit_btn
+                                    router_params:
+                                        id: (courseSet.id)
+                                        filter: (filter)
+                                    group: groupButton
+                                    class: publish-course
+                                    icon: 'glyphicon glyphicon-ok-circle'
+                                    mode: none
+                                    visible: (courseSet.status != 'published')
+                                admin_course_set_delete:
+                                    name: admin.course.basic.basic_tab.delete_submit_btn
+                                    class: delete-course
+                                    router_params:
+                                        id: (courseSet.id)
+                                        filter: (filter)
+                                        type: ''
+                                    group: groupButton
+                                    icon: 'glyphicon glyphicon-trash'
+                                    mode: none
+                                    visible: ( courseSet.status in ['closed', 'draft', 'published'] and courseSet.belong == 'self')
+                                admin_course_post_correlation:
+                                    name: admin.course.basic_tab.post_correlation_btn
+                                    visible: (courseSet.status == 'published')
+                                    router_params:
+                                        id: (courseSet.id)
+                                    group: groupButton
+                                    icon: 'es-icon es-icon-link1'
+                                    mode: modal
+                        admin_course_set_recommend_list:
+                            name: admin.course.basic.recommend_list_tab
+                        admin_course_category_manage:
+                            name: admin.course.category.course_category_tab
+                            router_name: admin_course_category
+                            children:
+                                admin_category_create:
+                                    name: admin.btn.create_category_btn
+                                    router_params:
+                                        groupId: (group.id)
+                                    router_params_context: 1
+                                    group: topBtn
+                                    mode: modal
+                        admin_course_set_data:
+                            name: admin.course.basic.analysis_tab
+                        admin_setting_course_setting:
+                            name: admin.system.course_menu
+                            children:
+                                admin_setting_course:
+                                    name: admin.system.course.basic_tab
+                                    disable: true
+                                    router_name: admin_setting_course_setting
+                                admin_setting_live_course:
+                                    name: 直播
+                                    visible: false
+                                    disable: true
+                                    router_name: admin_setting_live_course_setting
+                                admin_setting_questions_setting:
+                                    name: admin.system.course.questions_tab
+                                    disable: true
+                                admin_setting_course_avatar:
+                                    name: admin.system.course.avatar_tab
+                                    disable: true
+                                admin_classroom_setting:
+                                    name: admin.system.course.classroom_tab
+                                    visible: false
+                                    disable: true
+                admin_classroom:
+                    name: admin.course.basic.basic_drop.classroom
+                    group: 1
+                    groupName: admin.online_course.basic_menu
+                    children:
+                        admin_classroom_manage:
+                            name: admin.course.classroom.basic_tab
+                            router_name: admin_classroom
+                            children:
+                                admin_classroom_content_manage:
+                                    name: admin.course.classroom.basic_tab.manage_btn
+                                    router_name: classroom_manage
+                                    group: btn
+                                    router_params:
+                                        id: (classroom.id)
+                                    blank: true
+                                admin_classroom_create:
+                                    name: admin.course.classroom.basic_tab.create_btn
+                                    group: topBtn
+                                    blank: true
+                                admin_classroom_cancel_recommend:
+                                    name: admin.btn.recommend_cancel_btn
+                                    mode: none
+                                    class: cancel-recommend-classroom
+                                    icon: 'glyphicon glyphicon-hand-right'
+                                    group: groupButton
+                                    router_params:
+                                        id: (classroom.id)
+                                        ref: classroomList
+                                    visible: ( classroom.recommended )
+                                admin_classroom_set_recommend:
+                                    name: admin.course.classroom.basic_tab.recommend_btn
+                                    mode: modal
+                                    icon: 'glyphicon glyphicon-hand-up'
+                                    group: groupButton
+                                    router_params:
+                                        id: (classroom.id)
+                                        ref: classroomList
+                                    visible: ( not classroom.recommended )
+                                admin_classroom_close:
+                                    name: admin.course.classroom.basic_tab.close_btn
+                                    mode: none
+                                    class: close-classroom
+                                    icon: 'glyphicon glyphicon-off'
+                                    group: groupButton
+                                    router_params:
+                                        id: (classroom.id)
+                                    visible: ( classroom.status == 'published' )
+                                admin_sms_prepare:
+                                    name: admin.btn.sms_send_btn
+                                    router_name: sms_prepare
+                                    mode: modal
+                                    icon: 'glyphicon glyphicon-envelope'
+                                    group: groupButton
+                                    router_params:
+                                        id: (classroom.id)
+                                        targetType: classroom
+                                    visible: ( classroom.status == 'published' )
+                                admin_classroom_open:
+                                    name: admin.course.classroom.basic_tab.publish_submit_btn
+                                    mode: none
+                                    icon: 'glyphicon glyphicon-ok'
+                                    group: groupButton
+                                    class: open-classroom
+                                    router_params:
+                                        id: (classroom.id)
+                                    visible: ( classroom.status != 'published' )
+                                admin_classroom_delete:
+                                    name: admin.course.classroom.basic_tab.delete_submit_btn
+                                    mode: none
+                                    icon: 'glyphicon glyphicon-remove'
+                                    class: delete-classroom
+                                    group: groupButton
+                                    router_params:
+                                        id: (classroom.id)
+                                    visible: ( classroom.status=='draft' )
+                        admin_classroom_recommend:
+                            name: admin.course.classroom.recommend_tab
+                            router_name: admin_classroom_recommend_list
+                        admin_classroom_category_manage:
+                            name: admin.course.category.classroom_category_tab
+                            router_name: admin_classroom_category
+                            children:
+                                admin_classroom_category_create:
+                                    name: admin.btn.create_category_btn
+                                    parent: admin_classroom_category_manage
+                                    router_name: admin_category_create
+                                    router_params:
+                                        groupId: (group.id)
+                                    router_params_context: 1
+                                    group: topBtn
+                                    mode: modal
+                admin_course_tag:
+                    name: admin.course.tag_menu
+                    group: 1
+                    groupName: admin.online_course.basic_menu
+                    children:
+                        admin_course_tag_manage:
+                            name: admin.course.tag.basic_tab
+                            router_name: admin_tag
+                            disable: true
+                            children:
+                                admin_course_tag_add:
+                                    name: admin.course.tag.basic_tab.create_btn
+                                    router_name: admin_tag_create
+                                    mode: modal
+                                    group: topBtn
+                        admin_course_tag_group_manage:
+                            name: admin.course.tag.tag_group_tab
+                            router_name: admin_tag_group
+                            disable: true
+                            children:
+                                admin_course_tag_group_add:
+                                    name: admin.course.tag.tag_group_tab.create_tag_group_btn
+                                    router_name: admin_tag_group_create
+                                    mode: modal
+                                    group: topBtn
+                admin_project_plan:
+                    name: admin.project_plan.manage
+                    after: admin_course_tag
+                    parent: admin_course
+                    children:
+                        admin_project_plan_manage:
+                            name: admin.project_plan.manage
+                            router_name: admin_project_plan_manage
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-project'
+                            children:
+                                admin_project_plan_create:
+                                    name: admin.project_plan.create
+                                    router_name: project_plan_create
+                                    group: topBtn
+                                admin_project_plan_close:
+                                    name: admin.project_plan.manage_list.close
+                                    group: groupButton
+                                    router_name: project_plan_close
+                                    router_params:
+                                        id: (projectPlan.id)
+                                    mode: none
+                                    class: close-project-plan
+                                    visible: (projectPlan.status == 'published')
+                                admin_project_plan_remove:
+                                    name: admin.project_plan.manage_list.delete
+                                    group: groupButton
+                                    router_name: project_plan_remove
+                                    router_params:
+                                        id: (projectPlan.id)
+                                    mode: none
+                                    class: delete-project-plan
+                                    visible: (projectPlan.status == 'closed' or projectPlan.status == 'unpublished')
+                                admin_project_plan_publish:
+                                    name: admin.project_plan.manage_list.publish
+                                    router_name: project_plan_publish
+                                    router_params:
+                                        id: (projectPlan.id)
+                                    group: groupButton
+                                    class: publish-project-plan
+                                    mode: none
+                                    visible: (projectPlan.status != 'published')
+                                admin_project_plan_archive:
+                                    name: admin.project_plan.manage_list.archive
+                                    router_name: project_plan_archive
+                                    router_params:
+                                        id: (projectPlan.id)
+                                    group: groupButton
+                                    class: archive-project-plan
+                                    mode: none
+                                    visible: (projectPlan.status == 'published')
+                                admin_project_plan_cancel_archive:
+                                    name: admin.project_plan.manage_list.cancel_archive
+                                    router_name: project_plan_publish
+                                    router_params:
+                                        id: (projectPlan.id)
+                                    group: groupButton
+                                    class: cancel-archive-project-plan
+                                    mode: none
+                                    visible: (projectPlan.status == 'archived')
+                                admin_project_plan_category_manage:
+                                    name: admin.project_plan.category.manage
+                                    router_name: admin_project_plan_category_manage
+                                    children:
+                                        admin_project_plan_category_create:
+                                            name: admin.project_plan.category.create
+                                            mode: modal
+                                            router_name: admin_project_plan_category_create
+                                            group: topBtn
+                                            router_params:
+                                                groupId: (group.id)
+                                            router_params_context: 1
+                        admin_project_plan_category_manage:
+                            name: admin.project_plan.category.manage
+                            router_name: admin_project_plan_category_manage
+                            children:
+                                admin_project_plan_category_create:
+                                    name: admin.project_plan.category.create
+                                    mode: modal
+                                    router_name: admin_project_plan_category_create
+                                    group: topBtn
+                                    router_params:
+                                        groupId: (group.id)
+                                    router_params_context: 1
+                admin_offline_activity:
+                    name: admin.offline_activity.management
+                    parent: admin_course
+                    children:
+                        admin_offline_activity_manage:
+                            name: admin.offline_activity.management
+                            router_name: admin_offline_activity
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-offline_activity_data'
+                            children:
+                                admin_offline_activity_create:
+                                    name: admin.offline_activity.create
+                                    router_name: offline_activity_manage_create
+                                    group: topBtn
+                                admin_offline_activity_sign_qrcode:
+                                    name: admin.offline_activity.QR_code
+                                    router_name: offline_activity_sign_qrcode
+                                    router_params:
+                                        activityId: (offlineActivity.id)
+                                    visible: (offlineActivity.status == 'published')
+                                    group: groupButton
+                                    blank: 1
+                                admin_offline_activity_close:
+                                    name: admin.offline_activity.close
+                                    group: groupButton
+                                    router_name: offline_activity_manage_close
+                                    router_params:
+                                        id: (offlineActivity.id)
+                                    mode: none
+                                    class: close-offline-activity
+                                    visible: (offlineActivity.status == 'published')
+                                admin_offline_activity_publish:
+                                    name: admin.offline_activity.open
+                                    router_name: offline_activity_manage_publish
+                                    router_params:
+                                        id: (offlineActivity.id)
+                                    group: groupButton
+                                    class: publish-offline-activity
+                                    mode: none
+                                    visible: (offlineActivity.status != 'published')
+                        admin_offline_activity_category_manage:
+                            name: admin.offline_activity.category.management
+                            router_name: admin_offline_activity_category
+                            children:
+                                admin_offline_activity_category_create:
+                                      name: admin.offline_activity.category.create
+                                      mode: modal
+                                      router_name: admin_offline_activity_category_create
+                                      group: topBtn
+                                      router_params:
+                                          groupId: (group.id)
+                                      router_params_context: 1
+                admin_train_teacher_manage:
+                    name: admin.teacher_manage.basic_menu
+                    children:
+                        admin_train_teacher_manage_list:
+                            name: admin.teacher_manage.basic_menu
+                            router_name: admin_teacher
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-teacher'
+                            disable: true
+                            children:
+                                admin_teacher_promote:
+                                    name: admin.user.teacher.basic_tab.promote_btn
+                                    class: promote-teacher
+                                    mode: none
+                                    icon: 'glyphicon glyphicon-hand-up'
+                                    group: groupButton
+                                    visible: (user.promoted == 0)
+                                    router_params:
+                                        id: (user.id)
+                                        type: teacherList
+                                admin_teacher_promote_cancel:
+                                    name: admin.btn.recommend_cancel_btn
+                                    class: cancel-promote-teacher
+                                    mode: none
+                                    group: groupButton
+                                    icon: 'glyphicon glyphicon-hand-right'
+                                    visable: (user.promoted == 1)
+                                    visible: (user.promoted == 1)
+                                    router_params:
+                                        id: (user.id)
+                        admin_teacher_profession_field:
+                            name: admin.teacher.profession_field
+                            disable: true
+                            children:
+                                admin_teacher_profession_field_create:
+                                    name: admin.teacher.profession_field_create
+                                    mode: modal
+                                    group: topBtn
+                        admin_teacher_level:
+                            name: admin.teacher.basic.level
+                            disable: true
+                            children:
+                                admin_teacher_level_create:
+                                    name: admin.teacher.basic.level.create_btn
+                                    mode: modal
+                                    group: topBtn
+                        admin_teacher_promote_list:
+                            name: admin.user.teacher.promote_list_tab
+                            disable: true
+        admin_data:
+            name: admin.nav.data
+            after: admin_train
+            children:
+                admin_user_learn_data:
+                    name: admin_data.basic.menu
+                    children:
+                        admin_user_learn_data_overview:
+                            name: admin_data.user_learn_data_overview.menu
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-project_records'
+                            disable: true
+                        admin_user_learn_data_detail:
+                            name: admin_data.user_learn_data_detail.menu
+                            disable: true
+                admin_data_center_teacher:
+                    name: admin.train.basic.basic_drop.teacher_data
+                    children:
+                        admin_data_center_teacher_overview:
+                            name: admin.train.basic.basic_drop.teacher_data.overview
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-teacher_data'
+                            disable: true
+                        admin_data_center_teacher_detail:
+                            name: admin.train.basic.basic_drop.teacher_data.detail
+                            disable: true
+                admin_data_online_course_data:
+                    name: admin.train.basic.basic_drop.course_data
+                    children:
+                        admin_data_online_course_data_overview:
+                            name: admin.train.basic.basic_drop.course_data.overview
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-online_course_data'
+                            disable: true
+                        admin_data_online_course_data_detail:
+                            name: admin.train.basic.basic_drop.course_data.detail
+                            disable: true
+                        admin_data_report_course_learn_data_statistic_department:
+                            name: admin.department.course_learn_data.department_summary
+                            disable: true
+                        admin_data_report_course_learn_data_statistic_post:
+                            name: admin.department.course_learn_data.post_summary
+                            disable: true
+                        admin_data_report_course_learn_data_statistic_category:
+                            name: admin.department.course_learn_data.category_summary
+                            disable: true
+                admin_data_center_project_plan:
+                    name: admin_data.project_plan_data_overview.menu
+                    children:
+                        admin_data_center_project_plan_overview:
+                            name: admin.train.basic.basic_drop.project_pan.overview
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-project_data'
+                            disable: true
+                        admin_data_center_project_plan_detail:
+                            name: admin.train.basic.basic_drop.project_pan.detail
+                            disable: true
+        admin_user:
+            name: admin.nav.user
+            after: admin_data
+            children:
+                admin_user_show:
+                    name: admin.user.basic_menu
+                    children:
+                        admin_user_manage:
+                            name: admin.user.basic.basic_tab
+                            router_name: admin_user
+                            router_params:
+                                 locked: 'unlock'
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-user'
+                            children:
+                                admin_user_create:
+                                    name: admin.user.basic.basic_tab.create_btn
+                                    mode: modal
+                                    group: topBtn
+                                    visible: (user.type != 'system')
+                                admin_user_org_update:
+                                    name: admin.user.basic.basic_tab.org_update_btn
+                                    parent: admin_user_manage
+                                    mode: modal
+                                    before: admin_user_edit
+                                    group: groupButton
+                                    visible: ( app.user.id != user.id and setting('magic.enable_org', 0) == 1 and setting('sync_department_setting.enable', 0) == 0 )
+                                    router_params:
+                                        id: (user.id)
+                                    disable: false
+                                admin_user_change_post:
+                                    name: admin.user.basic.basic_tab.change_post_btn
+                                    group: groupButton
+                                    mode: modal
+                                    after: admin_user_org_update
+                                    router_params:
+                                        id: (user.id)
+#                                admin_user_roles:
+#                                    name: admin.user.basic.basic_tab.roles_btn
+#                                    mode: modal
+#                                    group: groupButton
+#                                    visible: (user.type != 'system')
+#                                    router_params:
+#                                        id: (user.id)
+                                admin_user_permissions:
+                                    name: admin.user.basic.basic_tab.permission_btn
+                                    mode: modal
+                                    group: groupButton
+                                    visible: (user.type != 'system')
+                                    router_params:
+                                        id: (user.id)
+                                admin_user_edit:
+                                    name: admin.user.basic.basic_tab.edit_btn
+                                    mode: modal
+                                    group: groupButton
+                                    visible: (user.type != 'system')
+                                    router_params:
+                                        id: (user.id)
+                                admin_user_avatar:
+                                    name: admin.user.basic.basic_tab.update_avatar_btn
+                                    mode: modal
+                                    group: groupButton
+                                    visible: (user.type != 'system')
+                                    router_params:
+                                        id: (user.id)
+                                admin_user_change_nickname:
+                                    name: admin.user.basic.basic_tab.change_nickname_btn
+                                    group: groupButton
+                                    mode: modal
+                                    before: admin_user_change_password
+                                    router_params:
+                                        id: (user.id)
+                                admin_user_change_password:
+                                    name: admin.user.basic.basic_tab.change_password_btn
+                                    mode: modal
+                                    group: groupButton
+                                    visible: (user.type != 'system')
+                                    before: admin_user_send_emailverify_email
+                                    router_params:
+                                        userId: (user.id)
+                                admin_user_send_passwordreset_email:
+                                    name: admin.user.basic.basic_tab.send_passwordreset_email_btn
+                                    group: groupButton
+                                    class: send-passwordreset-email
+                                    mode: none
+                                    visible: (user.type != 'system')
+                                    before: admin_user_lock
+                                    router_params:
+                                        id: (user.id)
+                                admin_user_send_emailverify_email:
+                                    name: admin.user.basic.basic_tab.send_emailverify_email_btn
+                                    class: send-emailverify-email
+                                    group: groupButton
+                                    mode: none
+                                    before: admin_user_send_passwordreset_email
+                                    router_params:
+                                        id: (user.id)
+                                admin_user_lock:
+                                    name: admin.user.basic.basic_tab.lock_btn
+                                    group: groupButton
+                                    class: lock-user
+                                    mode: none
+                                    after: admin_user_send_passwordreset_email
+                                    visible: (user.type != 'system' and user.locked == 0)
+                                    router_params:
+                                        id: (user.id)
+                                admin_user_unlock:
+                                    name:  admin.user.basic.basic_tab.unlock_btn
+                                    class: unlock-user
+                                    group: groupButton
+                                    mode: none
+                                    after: admin_user_lock
+                                    visible: (user.type != 'system' and user.locked == 1)
+                                    router_params:
+                                        id: (user.id)
+                        admin_online:
+                           name: admin.user.basic.online
+                        admin_login_record:
+                           name: admin.user.basic.login_record_tab
+                admin_user_learn_statistics_manage:
+                    visible: false
+                    disable: true
+                    name: admin.user.statistics_manage
+                    children:
+                      admin_user_learn_statistics:
+                        name: admin.user.statistics_manage
+                admin_approval_manage:
+                    visible: false
+                    disable: true
+                    name: admin.user.approval_menu
+                    children:
+                        admin_approval_approvals:
+                            name: admin.user.approval.basic_tab
+                            router_params:
+                                approvalStatus: approving
+                            disable: true
+                            children:
+                                admin_approval_cancel:
+                                    name: admin.user.approval.basic_tab.cancel_btn
+                                    router_params:
+                                        id: (user.id)
+                                    class: 'btn cancel-approval'
+                                    mode: none
+                                    group: groupButton'
+                admin_org_manage:
+                    name: admin.org.basic_menu
+                    parent: admin_user
+                    after: admin_user_manage
+                    children:
+                        admin_org:
+                            name: admin.org.basic_tab
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-organization'
+        admin_operation:
+            name: admin.nav.operation
+            after: admin_user
+            children:
+                admin_operation_article:
+                    name: admin.operation.article_menu
+                    children:
+                        admin_operation_article_manage:
+                            name: admin.operation.article.basic_tab
+                            disable: true
+                            router_name: admin_article
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-news'
+                            children:
+                                admin_operation_article_create:
+                                    name: admin.operation.article.basic_tab.create_btn
+                                    router_name: admin_article_create
+                                    group: topBtn
+                        admin_operation_article_category:
+                            name: admin.operation.article.category_tab
+                            disable: true
+                            router_name: admin_article_category
+                            children:
+                                admin_operation_category_create:
+                                    name: admin.operation.article.category_tab.category_create_btn
+                                    router_name: admin_article_category_create
+                                    mode: modal
+                                    group: topBtn
+                        admin_article_setting:
+                            name: admin.system.operation.article_tab
+                            disable: true
+                admin_operation_group:
+                    name: admin.operation.group_menu
+                    children:
+                        admin_operation_group_manage:
+                            name: admin.operation.group.group_tab
+                            disable: true
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-topic'
+                            router_name: admin_group
+                            children:
+                                admin_operation_group_create:
+                                    name: admin.operation.group.group_tab.create_group_btn
+                                    router_name: group_add
+                                    group: topBtn
+                                    blank: 1
+                        admin_operation_group_thread:
+                            name: admin.operation.group.group_thread_tab
+                            disable: true
+                            router_name: admin_groupThread
+                        admin_group_set:
+                            name: admin.system.operation.group_tab
+                            disable: true
+                admin_announcement:
+                    name: admin.operation.announcement_menu
+                    group: 5
+                    groupName: admin.operation.message.center.basic_menu
+                    children:
+                        admin_announcement_manage:
+                            name: admin.operation.announcement.basic_tab
+                            disable: true
+                            router_name: admin_announcement
+                            children:
+                                admin_announcement_create:
+                                    name: admin.operation.announcement.basic_tab.create_btn
+                                    mode: modal
+                                    group: topBtn
+                admin_operation_notification:
+                    name: admin.operation.notification_menu
+                    group: 5
+                    groupName: admin.operation.message.center.basic_menu
+                    children:
+                        admin_batch_notification:
+                            name: admin.operation.notification.basic_tab
+                            disable: true
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-notice'
+                            children:
+                                admin_batch_notification_create:
+                                    name: admin.operation.notification.basic_tab.create_btn
+                                    group: topBtn
+                admin_message_manage:
+                    name: admin.user.message_menu
+                    group: 5
+                    groupName: admin.operation.message.center.basic_menu
+                    children:
+                        admin_message:
+                            name: admin.user.message.basic_tab
+                            disable: true
+                admin_operation_keyword:
+                    name: admin.operation.sensitive_words_menu
+                    group: 20
+                    groupName: admin.operation.content.supervise.basic_menu
+                    children:
+                        admin_keyword:
+                            name: admin.operation.sensitive_words.sensitive_words_list_tab
+                            disable: true
+                            children:
+                                admin_keyword_create:
+                                    name: admin.operation.sensitive_words.sensitive_words_list_tab.create_btn
+                                    mode: modal
+                                    group: topBtn
+                        admin_keyword_banlogs:
+                            name: admin.operation.sensitive_words.banlogs_tab
+                            disable: true
+                admin_course_thread:
+                    name: admin.operation.course.discuss.basic_menu
+                    group: 20
+                    groupName: admin.operation.content.supervise.basic_menu
+                    children:
+                        admin_course_thread_manage:
+                            name: admin.course.thread.course_thread_tab
+                            router_name: admin_thread
+                            disable: true
+                        admin_classroom_thread_manage:
+                            name: admin.course.thread.classroom_thread_tab
+                            parent: admin_course_thread
+                            router_name: admin_classroom_thread
+                            disable: true
+                admin_course_question:
+                    name: admin.course.question_menu
+                    group: 20
+                    groupName: admin.operation.content.supervise.basic_menu
+                    children:
+                        admin_course_question_manage:
+                            name: admin.course.question.basic_tab
+                            router_name: admin_question
+                            router_params:
+                                postStatus: unPosted
+                            disable: true
+                admin_course_note:
+                    name: admin.course.note_menu
+                    group: 20
+                    groupName: admin.operation.content.supervise.basic_menu
+                    children:
+                        admin_course_note_manage:
+                            name: admin.course.note.basic_tab
+                            router_name: admin_course_note
+                            disable: true
+                admin_course_review:
+                    name: admin.course.review_menu
+                    group: 20
+                    groupName: admin.operation.content.supervise.basic_menu
+                    children:
+                        admin_course_review_tab:
+                            name: admin.course.review.course_review_tab
+                            router_name: admin_review
+                            group: 1
+                            disable: true
+                        admin_classroom_review_tab:
+                            name: admin.course.review.classroom_review_tab
+                            router_name: admin_classroom_review
+                            parent: admin_course_review
+                            disable: true
+                admin_block_manage:
+                    name: admin.operation.block_menu
+                    children:
+                        admin_block:
+                            name: admin.operation.block.basic_tab
+                            disable: true
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-banner'
+                            router_params:
+                                category: all
+                            children:
+                                admin_block_visual_edit:
+                                    name: admin.operation.block.basic_tab.edit_btn
+                                    router_params:
+                                        blockId: (blockTemplateId:block.blockTemplateId)
+                admin_operation_content:
+                    name: admin.operation.content_menu
+                    children:
+                        admin_content:
+                            name: admin.operation.content.basic_tab
+                            disable: true
+                            router_params:
+                                type: page
+#                admin_operation_mobile:
+#                    name: admin.operation.mobile_menu
+#                    children:
+#                        admin_operation_mobile_banner_manage:
+#                            name: admin.operation.mobile.banner_setting_tab
+#                            disable: true
+#                            quick_entrance: true
+#                            icon: 'ct-icon ct-icon-phone'
+#                            router_name: admin_operation_mobile
+#                        admin_operation_mobile_select_manage:
+#                            name: admin.operation.mobile.selection_setting_tab
+#                            disable: true
+#                            router_name: admin_operation_mobile_select
+#                            visible: false
+#                        admin_discovery_column_index:
+#                            name: admin.operation.mobile.discovery_column_tab
+#                            disable: true
+#                            children:
+#                                admin_discovery_column_create:
+#                                    name: admin.operation.mobile.discovery_column_tab.create_btn
+#                                    group: topBtn
+#                                    mode: modal
+#                        admin_setting_mobile_settings:
+#                            name: admin.system.mobile.basic_tab
+#                            disable: true
+#                            quick_entrance: true
+#                            icon: 'ct-icon ct-icon-mobile_setting'
+#                            router_name: admin_setting_mobile
+                admin_operation_analysis_register:
+                    name: admin.operation.analysis_menu
+                    visible: false
+                    disable: true
+                    children:
+                        admin_operation_analysis:
+                            disable: true
+                            name: admin.operation.analysis.basic_tab
+                            router_params:
+                                tab: trend
+                                analysisDateType: register
+                            router_name: admin_operation_analysis_register
+        admin_app:
+            name: admin.nav.cloud
+            visible: (not (setting('copyright.thirdCopyright', false) == 1) and not is_without_network()) #第三方授权和无网情况下不显示教育云
+            after: admin_operation
+            children:
+                admin_my_cloud:
+                    name: admin.cloud.overview_menu
+                    children:
+                        admin_my_cloud_overview:
+                            name: admin.cloud.overview.basic_tab
+                            disable: true
+                admin_cloud_video_setting:
+                    name: admin.cloud.video_menu
+                    router_name: admin_cloud_video_overview
+                    visible: (cloudStatus() and not is_trial())
+                    children:
+                        admin_cloud_video_overview:
+                            name: admin.tab.overview_tab
+                            disable: true
+                        admin_cloud_setting_video:
+                            name: admin.tab.setting_tab
+                            disable: true
+                admin_cloud_edulive_setting:
+                    name: admin.cloud.edulive_menu
+                    visible: (cloudStatus() and not is_trial())
+                    router_name: admin_cloud_edulive_overview
+                    children:
+                        admin_cloud_edulive_overview:
+                            name: admin.tab.overview_tab
+                            disable: true
+                        admin_setting_cloud_edulive:
+                            name: admin.tab.setting_tab
+                            disable: true
+                admin_edu_cloud_sms:
+                    name: admin.cloud.sms_menu
+                    visible: (cloudStatus() and not is_trial())
+                    children:
+                        admin_edu_cloud_sms_overview:
+                            name: admin.tab.overview_tab
+                            router_name: admin_edu_cloud_sms
+                            disable: true
+                        admin_edu_cloud_setting_sms:
+                            name: admin.tab.setting_tab
+                            disable: true
+                admin_edu_cloud_email:
+                    name: admin.cloud.email_menu
+                    visible: (cloudStatus() and not is_trial())
+                    children:
+                        admin_edu_cloud_email_overview:
+                            name:  admin.tab.overview_tab
+                            router_name: admin_edu_cloud_email
+                            disable: true
+                        admin_edu_cloud_email_setting:
+                            name: admin.tab.setting_tab
+                            disable: true
+                admin_edu_cloud_search_setting:
+                    name: admin.cloud.search_menu
+                    disable: true
+                    router_name: admin_edu_cloud_search
+                    visible: false
+                    children:
+                        admin_edu_cloud_search_overview:
+                            name: admin.tab.overview_tab
+                            router_name: admin_edu_cloud_search
+                            disable: true
+                        admin_edu_cloud_setting_search:
+                            name: admin.tab.setting_tab
+                            disable: true
+                admin_app_im:
+                    name: admin.cloud.im_setting_menu
+                    visible: (cloudStatus() and not is_trial())
+                    children:
+                        admin_app_im_setting:
+                            name: admin.cloud.im_setting.basic_tab
+                            router_name: admin_app_im
+                            disable: true
+                admin_cloud_file_manage:
+                    name: admin.cloud.file_menu
+                    visible: (cloudStatus() and not is_trial())
+                    parent: admin_app
+                    after: admin_app_center_show
+                    children:
+                        admin_cloud_file:
+                            name: admin.cloud.file.basic_tab
+                            disable: true
+                admin_setting_cloud_attachment:
+                    name: admin.cloud.attachment_setting_menu
+                    visible: (cloudStatus() and not is_trial())
+                    children:
+                        admin_edu_cloud_attachment:
+                            name: admin.cloud.attachment_setting.basic_tab
+                            disable: true
+                admin_app_center_show:
+                    name: admin.cloud.app_center_menu
+                    visible: (not is_trial())
+                    router_name: admin_app_center
+                    router_params:
+                        postStatus: all
+                    children:
+                        admin_app_center:
+                            name: admin.cloud.app_center.basic_tab
+                            router_name: admin_app_center
+                            disable: true
+                            router_params:
+                                postStatus: all
+                        admin_app_installed:
+                            name: admin.cloud.app_center.installed_tab
+                            disable: true
+                            router_params:
+                                postStatus: all
+                        admin_app_upgrades:
+                            name: admin.cloud.app_center.upgrades_tab
+                            class: app-upgrade
+                            disable: true
+                        admin_app_logs:
+                            name: admin.cloud.app_center.logs_tab
+                            disable: true
+                admin_cloud_attachment_manage:
+                    name: admin.cloud.attachment_menu
+                    visible: (cloudStatus() and not is_trial())
+                    children:
+                        admin_cloud_attachment:
+                            name: admin.cloud.attachment.basic_tab
+                            disable: true
+                admin_cloud_consult:
+                    name: admin.cloud.consult_menu
+                    disable: true
+                    router_name: admin_cloud_consult_setting
+                    visible: false
+                    children:
+                        admin_cloud_consult_setting:
+                            name: admin.tab.setting_tab
+                            disable: true
+                admin_setting_cloud:
+                    name: admin.cloud.cloud_setting_menu
+                    visible: (not is_trial())
+                    children:
+                        admin_setting_my_cloud:
+                            name: admin.cloud.cloud_setting.basic_tab
+                            router_name: admin_setting_cloud
+                            disable: true
+        admin_system:
+            name: admin.nav.system
+            router_name: admin_setting_site
+            after: admin_app
+            children:
+                admin_setting:
+                    name: admin.system.site_menu
+                    quick_entrance: true
+                    icon: 'ct-icon ct-icon-setting'
+                    router_name: admin_setting_site
+                    group: 0
+                    groupName: admin.system.setting.basic_menu
+                    children:
+                        admin_setting_message:
+                            name: admin.system.site.basic_tab
+                            router_name: admin_setting_site
+                            disable: true
+                        admin_setting_theme:
+                            name: admin.system.site.theme_tab
+                            disable: true
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-theme'
+#                        admin_setting_mailer:
+#                            name: admin.system.site.mailer_setting_tab
+#                            disable: true
+                        admin_top_navigation:
+                            name: admin.system.site.top_navigation_tab
+                            router_name: admin_navigation
+                            disable: true
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-nav'
+                            router_params:
+                                type: top
+                        admin_foot_navigation:
+                            name: admin.system.site.foot_navigation_tab
+                            router_name: admin_navigation
+                            disable: true
+                            router_params:
+                                type: foot
+                            visible: false
+                        admin_setting_consult_setting:
+                            name: admin.system.site.consult_setting_tab
+                            visible: false
+                            disable: true
+                        admin_friendlyLink_navigation:
+                            name: admin.system.site.friendlyLink_navigation_tab
+                            visible: false
+                            disable: true
+                            router_name: admin_navigation
+                            router_params:
+                                type: friendlyLink
+                        admin_setting_es_bar:
+                            name: admin.system.site.es_bar_tab
+                            visible: false
+                            disable: true
+                        admin_setting_share:
+                            name: admin.system.site.share_tab
+                            visible: false
+                            disable: true
+                        admin_setting_security:
+                            name: admin.system.site.security_tab
+                            disable: true
+                admin_setting_user:
+                    name: admin.system.user_menu
+                    group: 0
+                    groupName: admin.system.setting.basic_menu
+                    router_name: admin_setting_login_bind
+                    children:
+                        admin_user_auth:
+                            name: admin.system.user.auth_tab
+                            visible: false
+                            disable: true
+                            router_name: admin_setting_login_bind
+                        admin_setting_login_bind:
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-wechat'
+                            router_name: admin_setting_login_bind
+                            name: admin.system.user.login_bind_tab
+                            disable: true
+                        admin_sync_account_docking:
+                             name: admin.setting_user.sync_account_docking
+                             disable: true
+                             after: admin_setting_login_bind
+                        admin_setting_user_center:
+                            name: admin.system.user.user_center_tab
+                            visible: false
+                            disable: true
+                        admin_setting_user_fields:
+                            name: admin.system.user.user_fields_tab
+                            visible: false
+                            disable: true
+                        admin_setting_avatar:
+                            name: admin.system.user.avatar_tab
+                            disable: true
+                        admin_setting_user_message:
+                            name: admin.system.user.message
+                            disable: true
+                admin_setting_operation:
+                    name: admin.system.operation_menu
+                    group: 0
+                    visible: false
+                    groupName: admin.system.setting.basic_menu
+                    children:
+#                        admin_article_setting:
+#                            name: admin.system.operation.article_tab
+#                            disable: true
+#                        admin_group_set:
+#                            name: admin.system.operation.group_tab
+#                            disable: true
+                        admin_invite_set:
+                            name: admin.system.operation.invite_tab
+                            visible: false
+                            disable: true
+                        admin_wap_set:
+                            name: admin.system.operation.wap_tab
+                            disable: true
+                            visible: false
+                admin_setting_finance:
+                    name: admin.system.finance_menu
+                    visible: false
+                    disable: true
+                    children:
+                        admin_payment:
+                            name: admin.system.finance.payment_tab
+                            disable: true
+                            router_name: admin_setting_payment
+                        admin_coin_settings:
+                            name: admin.system.finance.coin_tab
+                            disable: true
+                            router_name: admin_coin_settings
+                        admin_setting_refund:
+                            name: admin.system.finance.refund_tab
+                            disable: true
+                admin_setting_mobile:
+                    name: admin.system.mobile_menu
+                    group: 0
+                    visible: false
+                    groupName: admin.system.setting.basic_menu
+#                    children:
+#                        admin_setting_mobile_settings:
+#                            name: admin.system.mobile.basic_tab
+#                            disable: true
+#                            quick_entrance: true
+#                            icon: ct-icon-mobile_setting
+#                            router_name: admin_setting_mobile
+                admin_mail_setting:
+                    name: admin.mail_setting_basic_menu
+                    group: 0
+                    after: admin_setting_mobile
+                    groupName: admin.system.setting.basic_menu
+                    children:
+                        admin_mail_notification_setting:
+                            name: admin.mail_setting.notification_setting
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-email'
+                        admin_setting_mailer:
+                            name: admin.system.site.mailer_setting_tab
+                            disable: true
+                admin_dingtalk_manage:
+                    name: admin.user.dingtalk_menu
+                    group: 0
+                    groupName: admin.operation.message.center.basic_menu
+                    children:
+                        admin_dingtalk_template_list:
+                            name: admin.user.dingtalk_notification.basic_tab
+                            disable: true
+                admin_setting_mobile_iap_product:
+                    name: admin.system.mobile_iap_product_menu
+                    disable: true
+                    visible: (setting('magic.enable_mobile_iap', '0'))
+                    children:
+                        admin_setting_mobile_iap_product_list:
+                            name: admin.system.mobile_iap_product.basic_tab
+                            router_name: admin_setting_mobile_iap_product
+                admin_optimize:
+                    name: admin.system.optimize_menu
+                    group: 1
+                    groupName: admin.system.tool.basic_menu
+                    children:
+                        admin_optimize_settings:
+                            name: admin.system.optimize.basic_tab
+                            disable: true
+                            router_name: admin_optimize
+                admin_setting_ip_blacklist:
+                    name: admin.setting_ip_blacklist_basic_menu
+                    group: 1
+                    groupName: admin.system.tool.basic_menu
+                    children:
+                        admin_setting_ip_blacklist_manage:
+                            name: admin.setting_ip_blacklist_basic_tab
+                            disable: true
+                            router_name: admin_setting_ip_blacklist
+                admin_setting_post_num_rules:
+                    name: admin.system.post_num_rules_menu
+                    group: 1
+                    groupName: admin.system.tool.basic_menu
+                    children:
+                        admin_setting_post_num_rules_settings:
+                            name: admin.system.post_num_rules.basic_tab
+                            disable: true
+                            router_name: admin_setting_post_num_rules
+                admin_report_status:
+                    name: admin.system.report_status_menu
+                    group: 1
+                    groupName: admin.system.tool.basic_menu
+                    children:
+                        admin_report_status_list:
+                            name: admin.system.report_status.basic_tab
+                            disable: true
+                            router_name: admin_report_status
+                admin_logs:
+                    name: admin.system.logs_menu
+                    group: 1
+                    groupName: admin.system.tool.basic_menu
+                    children:
+                        admin_logs_query:
+                            name: admin.system.logs.logs_query_tab
+                            disable: true
+                            quick_entrance: true
+                            icon: 'ct-icon ct-icon-log'
+                            router_name: admin_logs
+                        admin_logs_prod:
+                            name: admin.system.logs.logs_prod_tab
+                            disable: true
+                admin_jobs_manage:
+                    name: 任务调度
+                    visible: false
+                    disable: true
+                    children:
+                        admin_jobs:
+                            name: 任务调度
+                        admin_job_logs:
+                            name: 任务日志
+                        admin_crontab:
+                            name: crontab管理
+                admin_xapi_manage:
+                    name: xAPI
+                    visible: false
+                    disable: true
+                    children:
+                        admin_xapi_setting:
+                            name: xAPI
+                        admin_xapi_statement_list:
+                            name: Statements
+                admin_queue_menege:
+                    name: 队列
+                    visible: false
+                    disable: true
+                    children:
+                        admin_queue_failed_logs:
+                            name: 队列错误日志
+
+admin_post:
+    name: admin.post.basic_menu
+    parent: admin_user
+    after: admin_org_manage
+    children:
+        admin_post_manage:
+            name: admin.post.basic_menu
+            quick_entrance: true
+            icon: 'ct-icon ct-icon-position_management'
+            children:
+                admin_post_group_create:
+                    name: admin.post.basic_tab.group_create_btn
+                    mode: modal
+                    group: topBtn
+
+admin_roles:
+    name: admin.role.basic_menu
+    parent: admin_user
+    children:
+        admin_role_manage:
+            name: admin.role.basic_tab
+            quick_entrance: true
+            icon: 'ct-icon ct-icon-role_management'
+            router_name: admin_roles
+            children:
+                admin_role_create:
+                    name: admin.system.roles.basic.create_btn
+                    mode: modal
+                    group: topBtn
+                admin_role_edit:
+                    name: admin.system.roles.basic.edit_btn
+                    mode: modal
+                    group: groupBtn
+                    router_params:
+                        id: (role.id)
+                admin_role_delete:
+                    name: admin.system.roles.basic.delete_submit_btn
+                    class: role-delete js-delete-role
+                    group: groupBtn
+                    mode: none
+                    visible: (role.code != 'ROLE_SUPER_ADMIN' and role.code != 'ROLE_ADMIN' and role.code != 'ROLE_TEACHER' and role.code != 'ROLE_USER' and role.code != 'ROLE_DEPARTMENT_ADMIN' and role.code != 'ROLE_TRAINING_ADMIN')
+                    router_params:
+                        id: (role.id)
+admin_user_group:
+    name: admin.user_group.basic_menu
+    parent: admin_user
+    after: admin_post
+    children:
+        admin_user_group_manage:
+            name: admin.user_group.basic_tab
+            quick_entrance: true
+            icon: 'ct-icon ct-icon-group'
+            children:
+                admin_user_group_create:
+                    name: admin.user_group.basic_tab.user_group_create_btn
+                    mode: modal
+                    group: topBtn
+
+admin_course_post_correlation:
+    name: admin.course.basic_tab.post_correlation_btn
+    parent: admin_course_manage
+    visible: (courseSet.status == 'published')
+    router_params:
+        id: (courseSet.id)
+    group: groupButton
+    icon: 'es-icon es-icon-link1'
+    mode: modal
+
+admin_teacher_setting:
+    parent: admin_train_teacher_manage_list
+    name: admin.teacher.basic.setting_btn
+    mode: modal
+    class: setting-teacher
+    icon: 'es-icon es-icon-setting'
+    group: groupButton
+    router_params:
+        userId: (user.id)
+
+admin_setting_logo_and_favicon:
+    parent: admin_setting
+    after: admin_setting_security
+    name: admin.setting.logo_and_favicon
+    visible: true
+    disable: true

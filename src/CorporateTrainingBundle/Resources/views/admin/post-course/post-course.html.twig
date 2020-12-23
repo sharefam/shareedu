@@ -1,0 +1,40 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_post_manage' %}
+
+{% block page_title %}
+  <span>{{post.name|default()|trans}}</span>
+  <a href="{{ path('admin_post_manage') }}" style="font-size: 14px;">{{'form.btn.return'|trans}}</a>
+{% endblock %}
+ {% block tabs %}
+
+ {% endblock %}
+{% block page_buttons %}
+  <a class="btn btn-success btn-sm" data-url="{{ path('admin_post_choose_courses', {postId:post.id}) }}" data-toggle="modal" data-target="#modal">{{'admin.post_course.add_course'|trans}}</a>
+{% endblock %}
+
+{% set script_controller = 'corporatetrainingbundle/controller/post-course/list' %}
+
+{% block main %}
+  <ul class="list-table sortable-item-list sortable-list post-courses-list" data-sort-url="{{ path('admin_post_courses_sort', {postId:post.id}) }}" id="course-table" style="margin-bottom: 0px;">
+    <li class="th">
+      <div class="row">
+        <div class="td col-md-4">{{'admin.post_course.course_name'|trans}}</div>
+        <div class="td col-md-2">{{'admin.post_course.course_category'|trans}}</div>
+        <div class="td col-md-1">{{'admin.post_course.course_seq'|trans}}</div>
+        <div class="td col-md-3">{{'admin.post_course.org'|trans}}</div>
+        <div class="td col-md-2">{{'admin.post_course.operation'|trans}}</div>
+      </div>
+    </li>
+    {% if postCourses|default() %}
+      {% for postCourse in postCourses %}
+        {% include 'admin/post-course/post-course-li.html.twig' %}
+      {% endfor %}
+    {% else %}
+      <div class="row empty">
+        {{'admin.post_course.record_empty'|trans}}
+      </div>
+    {% endif %}
+  </ul>
+  {{ admin_macro.paginator(paginator) }}
+{% endblock %}

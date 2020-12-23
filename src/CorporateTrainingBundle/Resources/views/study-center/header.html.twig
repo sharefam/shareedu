@@ -1,0 +1,70 @@
+<div class="study-center-header-detail" style="background-color: rgba(0,0,0,.3);">
+  <div class="study-center-user-bg" data-href="{{filepath(user.largeAvatar, 'avatar.png')}}" data-sharpness="30">
+    <div class="container set_mask">
+      <div class="study-center-user-wrap">
+
+        <div class="media mar-no">
+          <div class="media-left va-mid">
+            <div class="study-center-img-wrapper">
+              <div class="study-center-img-contain">
+                <img class="study-center-user-img" src="{{ filepath(user.largeAvatar, 'avatar.png') }}">
+                <a class="study-center-hover-mask" href="{{ path('settings') }}">{{'user.settings.profile.change_avatar'|trans}}</a>
+              </div>
+            </div>
+          </div>
+          <div class="media-body va-mid">
+            <div class="row">
+              <div class="col-sm-4 col-lg-6">
+                <div class="mll hidden-xs">
+                  <p class="colr-lightest study-center-user-name">{{ user.profile.truename|default() }}</p>
+                  <p class="colr-lightest study-center-user-post">{{'student.profile.post'|trans}}: {{ post.name|default('study_center.header.message.not_setting'|trans) }}
+                    {% if is_plugin_installed('PostMap') %}
+                      {% if post.rankId|default() %}
+                        {% set rank = data('Rank',{rankId:post.rankId}) %}
+                        _{{ rank.name|default() }}
+                      {% endif %}
+                    {% endif %}
+                  </p>
+                  <span class="colr-lightest">{{'student.profile.department'|trans}}:
+                    {% if orgNames %}
+                      {{ orgNames }}
+                    {% else %}
+                      {{'study_center.header.message.not_setting'|trans}}
+                    {% endif %}
+                  </span>
+                </div>
+              </div>
+              {% set rewardPointEnable = is_plugin_installed('RewardPoint') and setting('reward_point.enable') %}
+              <div class="study-board col-sm-8 col-lg-6 ta-ctr">
+                <div class="row study-board-row">
+                  <div class="col-sm-4 col-xs-4 {% if rewardPointEnable %} col-sm-offset-1{% else %} col-xs-offset-2 col-sm-offset-5 {% endif %}">
+                    <div class="study-board-item study-board-item--item">
+                      <p class="ft-sm">{{'study_center.header.user_learnTime'|trans}}</p>
+                      <p class="text-ovf ft-lg">{{ user.learnTime|time_format|trans}} <span class="ft-sm">{{'site.date.hour'|trans}}</span></p>
+                    </div>
+                  </div>
+                  <div class="col-sm-3 col-xs-4">
+                    <div class="study-board-item study-board-item--course">
+                      <p class="ft-sm">{{'study_center.header.course_count'|trans}}</p>
+                      <p class="text-ovf ft-lg">{{ user.courseCount|default(0) }}</p>
+                    </div>
+                  </div>
+                  {% if rewardPointEnable %}
+                    {% set rewardPoint = data('RewardPoint',{userId:user.id}) %}
+                    <div class="col-sm-4 col-xs-4">
+                      <div class="study-board-item study-board-item--reward">
+                        <p class="ft-sm">{{'my.learning.classroom'|trans({'%name%':setting('reward_point').name|default('admin.reward_point'|trans)})}}</p>
+                        <a class="text-ovf my-reward-point" href="{{ path('my_reward_point') }}">{{ rewardPoint.balance|default(0)|trans }}</a>
+                      </div>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='mask'></div>
+  </div>
+</div>

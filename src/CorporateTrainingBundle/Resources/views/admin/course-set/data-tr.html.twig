@@ -1,0 +1,48 @@
+{% import "macro.html.twig" as web_macro %}
+
+<table class="table table-bordered" style="word-break:break-all;text-align:center;">
+    <tr class="active">
+    <td width="30%">{{'admin.course_manage.statistics.name'|trans}}</td>
+        {% if filter == 'classroom' %}
+    <td>
+      {% set locale = app.request.locale %}
+      {% set classroomName = (locale and 'en' == locale) ? 'Topic' : get_classroom_name() %}
+      {{ 'admin.course_manage.statistics.classroom'|trans({'%classroom%': classroomName}) }}
+    </td>
+        {% endif %}
+    <td>{{ 'admin.course_manage.statistics.task_count'|trans }}</td>
+    <td>{{'admin.course_manage.statistics.student_number'|trans }}</td>
+    <td>{{'admin.course_manage.statistics.finished_number'|trans}}</td>
+    <td>{{'admin.course_manage.statistics.study_time_minute'|trans}}</td>
+    <td width="10%">{{'admin.course_manage.operater'|trans}}</td>
+    </tr>
+
+    {% if courseSets %}
+        {% for courseSet in courseSets %}
+            <tr>
+                <td><a data-toggle="modal" data-target="#modal" data-url="{{path('course_set_detail_data',{id:courseSet.id})}}" href="javascript:;">{{courseSet.title}}</a></td>
+                {% if filter == 'classroom' %}
+                    <td>
+                        {% set classroom = classrooms[courseSet.id]|default(null) %}
+                        {% if classroom %}
+                            <a href="{{path('classroom_show',{id:classroom.classroomId})}}" target="_blank">{{classroom.classroomTitle}}</a>
+                        {% elseif not classroom %}
+          <span class="label label-danger live-label mls">{{'admin.course_manage.statistics.no_introduce'|trans}}</span>
+                        {% endif %}
+                    </td>
+                {% endif %}
+                <td>{{courseSet.taskCount|default()}}</td>
+                <td>{{courseSet.studentNum|default()}}</td>
+                <td>{{courseSet.isLearnedNum|default()}}</td>
+                <td>{{courseSet.learnedTime}}</td>
+      <td>
+        <a data-toggle="modal" data-target="#modal" data-url="{{path('admin_courses_data',{courseSetId:courseSet.id})}}" href="javascript:;">{{'admin.course_manage.statistics.watch_task'|trans}}</a>
+      </td>
+            </tr>
+        {% endfor %}
+    {% endif %}
+</table>
+<nav class="text-center">
+  {{ web_macro.ajax_paginator(paginator) }}
+</nav>
+

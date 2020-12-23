@@ -1,0 +1,117 @@
+{% extends 'course/header/header-layout.html.twig' %}
+{% if previewAs == 'guest' %}
+  {% set member = null %}
+  {% set courses = data('CoursesByCourseSetId', {courseSetId: courseSet.id}) %}
+{% endif %}
+
+{% set page_type = 'guest' %}
+
+{% block course_header_subtitle %}
+{% endblock %}
+
+{% block course_header_people_num %}{% endblock %}
+
+{% block course_member_count %}
+  {{ 'course.course_member_count'|trans({'%studentsNum%':courseSet.studentNum}) }}
+{% endblock %}
+
+{% block course_heard_content %}
+  <div class="course-header-top clearfix">
+    <div class="course-img">
+      <img class="img-responsive" src="{{ filepath(course_set_cover(courseSet, 'large'), 'courseSet.png') }}" alt="{{ course.title }} ">
+    </div>
+
+    {% if previewTask | default(null) %}
+      <a href="#modal" data-toggle="modal" data-url="{{ path('course_task_preview',{courseId:course.id, id:previewTask.id}) }}" class="course-img-cover">
+        <i class="es-icon es-icon-playcircleoutline"></i>
+      </a>
+    {% endif %}
+
+    <div class="course-info">
+      <h2 class="title text-22">
+        {{ courseSet.title|default()|plain_text(24) }}
+        <span class="es-qrcode top pt5 hidden-xs" data-url="{{ path('course_qrcode', { id: course.id }) }}">
+          <i class="es-icon es-icon-qrcode"></i>
+          <span class="qrcode-popover">
+            <img src="" alt="">
+            {{ 'site.tips.scan_qrcode_tips'|trans }}
+          </span>
+        </span>
+      </h2>
+      {% if courseSet.subtitle %}
+        <div class="text-overflow subtitle">
+          <a class="color-gray">
+          {{ courseSet.subtitle }}
+          </a>
+        </div>
+      {% endif %}
+
+      <div class="metas">
+        <div class="score cd-mt8">
+          {{'course.header_for_guest.student_num'|trans({'%studentNum%': course.studentNum|default(0)})|raw}}
+        </div>
+        <div class="score cd-mt8">
+          {{'course.header_for_guest.rating'|trans}}{{ web_macro.star(courseSet.rating|default(0)) }}{{ courseSet.rating|num_format|default(0) }}
+        </div>
+      </div>
+    </div>
+    <div class="course-detail-info">
+
+      <div class="course-detail-section-responsive visible-xs visible-sm clearfix">
+        <ul class="clearfix">
+          <!--营销页显示-->
+          {% if marketingPage %}
+          <li class="js-unfavorite-btn" id="unfavorite-btn" data-url="{{ path('course_set_unfavorite', {id: course.courseSetId }) }}"
+            {% if not isUserFavorite %}style="display: none;" {% endif %}>
+            <a class="color-primary" href="javascript:;" data-toggle="tooltip" data-placement="top" title="{{ 'course.status.followed'|trans }}"
+              data-trigger="hover">
+              <i class="es-icon es-icon-bookmark color-primary"></i>
+              <br/>
+              {{ 'course.status.followed'|trans }}
+            </a>
+          </li>
+          <li class="js-favorite-btn" id="favorite-btn" data-url="{{ path('course_set_favorite', {id: course.courseSetId }) }}"
+          {% if isUserFavorite %}style="display: none;"{% endif %}>
+          <a class="" href="javascript:;" data-toggle="tooltip" data-placement="top" title="{{ 'course.status.follow'|trans }}"
+              data-trigger="hover">
+              <i class="es-icon es-icon-bookmarkoutline"></i>
+              <br/>
+              {{ 'course.status.follow'|trans }}
+          </a>
+          </li>
+          {% endif %}
+          <li class="es-share top">
+            <a class=" dropdown-toggle" href="" data-toggle="dropdown" title="{{ 'course.share'|trans }}">
+              <i class="es-icon es-icon-share"></i>
+              <br/>
+              {{ 'course.share'|trans }}
+            </a>
+            {% include 'common/share-dropdown.html.twig' with {type:'courseSet'} %}
+          </li>
+        </ul>
+      </div>
+      <div class="text-right buy-btn-group pm10">
+        {% if member | default(false) %}
+          {% if course.expiryMode == 'date' and course.expiryStartDate >= timestamp() %}
+            <span class="buy-btn-group__bottom">{{ 'course.expiry_date.expiryStartDate'|trans({'%expiryStartDate%':course.expiryStartDate|date('date.format')})|raw }}</span>
+          {% else %}
+            <a class="btn btn-primary btn-lg buy-btn-group__bottom study-button" href="{{ path('my_course_show', {id: course.id}) }}">
+              {{ 'course.btn.learn'|trans }}
+            </a>
+          {% endif %}
+        {% else %}
+          {% if classroom | default(null) %}
+            {% include 'course/header/header-for-classroom-info.html.twig' %}
+            <a class="btn btn-default btn-lg gray study-button disabled" href="javascript:;" data-toggle="tooltip" data-placement="top" title="{{'请先加入班级'}}">
+              {{ 'course.btn.learn'|trans }}
+            </a>
+          {% else %}
+            {% include 'course/header/header-for-guest-buy-btn.html.twig' with {canAccess: canAccess} %}
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+
+
+  </div>
+{% endblock %}

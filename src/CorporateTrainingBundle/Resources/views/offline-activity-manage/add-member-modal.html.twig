@@ -1,0 +1,39 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% do script(['libs/jquery-validation.js', 'corporatetrainingbundle/js/offline-activity-manage/add-member-modal/index.js']) %}
+
+{% set modalSize = 'large' %}
+
+{% block title %}{{'offline_activity.add_member'|trans}}{% endblock %}
+
+{% block body %}
+  <form class="form-horizontal" id="member-create-form" method="post" action="{{ path('offline_activity_manage_add_member', {id:offlineActivity.id}) }}">
+    {% if offlineActivity.status == 'published' %}
+      <div class="form-group">
+        <div class="col-md-2 control-label">
+          <label for="queryfield">{{'offline_activity.student'|trans}}</label>
+        </div>
+        <div class="col-md-7 controls">
+          <input class="form-control js-add-member" type="text" id="queryfield" name="queryfield"
+          data-url="{{ path('offline_activity_manage_check_member',{id:offlineActivity.id})}}" placeholder="{{'offline_activity.check_member_placeholder'|trans}}" >
+          <div class="help-block">{{'offline_activity.check_member.tips'|trans}}</div>
+        </div>
+      </div>
+    {% else %}
+      <div class="form-group">
+        <div class="empty">
+          {{'offline_activity.can_not_add_member.tips'|trans}}
+        </div>
+      </div>
+    {% endif %}
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+  </form>
+{% endblock %}
+
+{% block footer %}
+  {% if offlineActivity.status == 'published' %}
+    <button id="member-create-btn" type="button" class="btn btn-primary pull-right">{{'form.btn.save'|trans}}</button>
+  {% endif %}
+  
+  <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{'form.btn.cancel'|trans}}</button>
+{% endblock %}

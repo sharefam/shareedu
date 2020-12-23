@@ -1,0 +1,30 @@
+<tr>
+  <td>
+    <p>
+      {{ member.title }}
+    </p>
+  </td>
+  <td>
+    {{ member.categoryName }}
+  </td>
+  <td>
+    <p>{{ member.startDate|date('Y-m-d H:i') }}</p>
+    {{ member.endDate|date('Y-m-d H:i') }}
+  </td>
+  <td>
+    {% if member.passedStatus == 'passed' %}
+      <span class="color-primary">{{ 'offline_activity.examination.passed'|trans }}</span>
+      &nbsp;&nbsp;
+      <span class="glyphicon glyphicon-list-alt tooltip-show" data-toggle="tooltip"
+            title="{{ 'offline_activity.examination.score'|trans }}:{{ member.score }}<br>{{ member.evaluate }}"></span>
+    {% elseif member.passedStatus == 'unpassed' %}
+      <span class="color-danger">{{ 'offline_activity.examination.unpassed'|trans }}</span>
+      <span class="glyphicon glyphicon-list-alt tooltip-show" data-toggle="tooltip"
+            title="{{ 'offline_activity.examination.score'|trans }}:{{ member.score }}<br>{{ member.evaluate }}"></span>
+    {% else %}
+      --
+    {% endif %}
+
+  </td>
+</tr>
+

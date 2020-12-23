@@ -1,0 +1,38 @@
+{% set tab_type = 'myTask' %}
+{% block inner %}
+  <div class="js-discuss-wrap">
+    <div class="js-ajax-tab-block-wrap pvl phm">
+      {% include 'study-center/thread/thread-list-header.html.twig' %}
+      <div class="js-editor hidden">
+        <form class="discuss-form js-discuss-form" action="{{ path('study_center_thread_create', {courseId:course.id}) }}" method="post">
+          <div class="form-group">
+            <label class="control-label hidden">{{'study_center.my_task_thread.title'|trans}}</label>
+            <div class="controls">
+              <input class="form-control" type="" name="title" placeholder="{{ 'study_center.thread.title.placeholder'|trans }}">
+              <div class="help-block"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label hidden">{{'study_center.my_task_thread.content'|trans}}</label>
+            <div class="controls">
+              <textarea id="content-{{course.id}}" class="js-ckeditor form-control" row="2" name ="content" data-image-upload-url="{{ path('editor_upload', {token:upload_token('course')}) }}" data-image-download-url="{{ path('editor_download', {token:upload_token('course')}) }}"></textarea>
+              <div class="help-block"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="type" checked>{{ 'study_center.my_task_thread.ask'|trans }}
+              </label>
+              <a class="btn btn-primary btn-sm js-discuss-submit pull-right">{{'study_center.my_task_thread.publish'|trans}}</a>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="tab-block js-tab-sec is-active">
+        {% include 'study-center/thread/list.html.twig' %}
+      </div>
+    </div>
+  </div>
+  
+{% endblock %}

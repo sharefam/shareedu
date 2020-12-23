@@ -1,0 +1,19 @@
+{% extends 'old-bootstrap-modal-layout.html.twig' %}
+
+{% set modalSize = 'large' %}
+
+{% block title %}{{'admin.user.org.edit'|trans}}{% endblock %}
+{% block body %}
+
+  <form id="user-edit-form" class="form-horizontal" method="post" action="{{ url('admin_user_org_update', {id:user.id}) }}">
+    {% include 'org/org-treeview-mutiple.html.twig' with {id: 'user-orgCodes', placeholder: "--组织机构--", width: 240, parameter: 'orgCodes', orgCodes: user.orgCodes, arrTree: build_org_tree(app.user.manageOrgCodes), modal: 'modal', isFront: 0} %}
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+  </form>
+{% endblock %}
+
+{% block footer %}
+  <button id="edit-user-btn" data-submiting-text="{{'form.btn.submit.submiting'|trans}}" type="submit" class="btn btn-primary pull-right" data-toggle="form-submit" data-target="#user-edit-form">{{'form.btn.save'|trans}}</button>
+  <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{'form.btn.cancel'|trans}}</button>
+
+  <script>app.load('user/update-org-modal');</script>
+{% endblock %}

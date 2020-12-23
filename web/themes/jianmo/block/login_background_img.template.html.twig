@@ -1,0 +1,8 @@
+{% for poster in posters|default(null) if poster.src|default('') %}
+  <style>
+    body {
+      background-image: url({{poster.src}});
+      background-size: cover;
+    }
+  </style>
+{% endfor %}

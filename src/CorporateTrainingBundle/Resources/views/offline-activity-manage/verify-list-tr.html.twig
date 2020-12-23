@@ -1,0 +1,37 @@
+{% set user = users[record.userId] %}
+{% set profile = profiles[record.userId] %}
+<tr>
+  <td>
+    {% if record.status == 'submitted' %}
+      <input class="select-item" id="batch-item-{{ record.id|default() }}" value="{{ record.id|default() }}"
+             type="checkbox">
+    {% endif %}
+  </td>
+  <td>{{ profile.truename|default('--') }}</td>
+  <td>{{ user.nickname|default('--') }}</td>
+  <td>
+    {% set post = data('Post', {postId: user.postId}) %}
+    {{ post.name|default('--'|trans) }}
+  </td>
+  <td>
+    {% if user.verifiedMobile %}
+      {{ user.verifiedMobile }}
+    {% else %}
+      {{ profile.mobile|default('--') }}
+    {% endif %}
+  </td>
+  <td>{{ record.submittedTime|date('Y-m-d H:i') }}</td>
+  <td>
+    {% if record.status == 'submitted' %}
+      <div class="btn-group">
+        <a class="btn btn-default btn-sm mrs" href="{{ path('study_record_project_plan', {'userId': record.userId}) }}" target="_blank">{{ 'offline_activity.study_record'|trans }}</a>
+        <a class="btn btn-default btn-sm" href="javascript:;" target="_blank" data-toggle="modal" data-target="#modal"
+           data-url="{{ path('offline_activity_enrollment_verify', {'id': record.id}) }}">{{ 'offline_activity.enrollment.verify'|trans }}</a>
+      </div>
+    {% elseif record.status == 'approved' %}
+      <span class="text-md color-primary">{{ 'offline_activity.enrollment.approved'|trans }}</span>
+    {% elseif record.status == 'rejected' %}
+      <span class="text-md color-danger">{{ 'offline_activity.enrollment.rejected'|trans }}</span>
+    {% endif %}
+  </td>
+</tr>

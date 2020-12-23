@@ -1,0 +1,128 @@
+{% extends 'admin/layout.html.twig' %}
+{% set menu = 'admin_user_learn_data_detail' %}
+{% do script(['libs/select2.js', 'corporatetrainingbundle/js/admin/data/user/detail/index.js']) %}
+{% block main %}
+  <div class="aside-panel ct-mtl">
+    <form id="aside-department-learn-data" class="form-inline ct-well ct-mbl" method="get" novalidate="novalidate">
+      <div class="form-group prl js-learn-data">
+        <div class="ct-label ft-sm prl">{{ 'admin.data_center.user_data.dataSearchTime.filter'|trans }}</div>
+        <div id="date-range-picker" class="dis-i-b">
+          <span class="user-data-select">
+            <input class="form-control js-date-range-input" style="width:200px;" type="text" name="dataSearchTime" value="{{ conditions.startDateTime|date('Y/m/d') }}-{{ conditions.endDateTime|date('Y/m/d') }}">
+            <i class="es-icon es-icon-arrowdropdown"></i>
+          </span>
+        </div>
+      </div>
+      <div class="form-group prl">
+        <div class="ct-label ft-sm prl">{{ 'admin.data_center.user_data.org.filter'|trans }}</div>
+        <div class="dis-i-b">
+          {% include 'org-select/index.html.twig' with {
+              id: 'user-orgCode',
+              placeholder: 'admin.org.select_placeholder'|trans,
+              data: build_org_tree(app.user.manageOrgCodes),
+              treeName: 'orgCode',
+            }
+          %}
+        </div>
+      </div>
+      <div class="dis-i-b prl">
+        <div class="ct-label ft-sm prl ptl">{{ 'admin.data_center.user_data.post.filter'|trans }}</div>
+        <div class="dis-i-b">
+          {% include 'post/post-tree-select.html.twig' with {modal: 'list', selectedWith: 120} %}
+        </div>
+      </div>
+      <div class="form-group  prl js-learn-data">
+        <div class="ct-label ft-sm prl">{{ 'admin.data_center.user_data.hireDate.filter'|trans }}</div>
+        <div id="date-range-picker" class="js-range-picker dis-i-b">
+          <span class="user-data-select user-data-select-can_remove">
+            <span class="glyphicon glyphicon-remove js-date-remove hidden"></span>
+            <input class="form-control js-date-range-input {% if (conditions.hireDate_GTE|default() or conditions.hireDate_LTE|default()) is empty %} js-date-range-empty {% endif %}" style="width:200px;" type="text" name="hireDateSearchTime" value="{% if (conditions.hireDate_GTE|default() or conditions.hireDate_LTE|default()) is empty %}{% else %}{{ conditions.hireDate_GTE|default()|date('Y/m/d') }}-{{ conditions.hireDate_LTE|default()|date('Y/m/d') }}{% endif %}">
+            <i class="es-icon es-icon-arrowdropdown js-date-down"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group prl js-learn-data">
+        <div class="ct-label ft-sm prl">{{ 'admin.data_center.user_data.accurate.filter'|trans }}</div>
+        <div style="position: relative;padding-right: 5px;" class="dis-i-b">
+          <select id="keywordType" name="keywordType" class="form-control">
+            {{ select_options(dict('userKeyWordType'), app.request.query.get('keywordType') ? app.request.query.get('keywordType') : 'truename') }}
+          </select>
+        </div>
+        <div style="position: relative" class="dis-i-b">
+          <input type="text" id="keyword" name="keyword" class="form-control"
+                 value="{{ app.request.query.get('keyword') }}"
+                 placeholder="{{ 'form.placeholder.keyword'|trans }}">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button class="btn btn-primary search-btn">{{ 'form.btn.search'|trans }}</button>
+        {% include 'export/export-btn.html.twig' with
+          { 'exportFileName': 'ct:data_center_user_detail',
+            'targetFormId': 'aside-department-learn-data',
+            'exportClass': 'btn-success',
+            'text': 'form.btn.export_result'|trans }
+        %}
+      </div>
+    </form>
+    <div id="tableData" class="tableData" v-cloak="v-cloak">
+      <div class="custom-cell-feature">
+        <div class="custom-cell-feature_title ct-mbm" @click="cellShow">
+          <i class="es-icon" :class='[isShow ? "es-icon-tree_switcher_close": "es-icon-tree_switcher_open"]'></i>
+          <span class="dis-i-b" >{{ 'admin.data_center.user_data.custom_column'|trans }}</span>
+        </div>
+        <transition name="slide">
+          <div class="custom-cell-feature_content clearfix" ref="content" v-show="isShow">
+            <div class="custom-cell-feature_content-l fl">
+              <ul class="custom-cell-feature_list active">
+                <li>
+                  <el-checkbox v-model="alternative" @change="handleCheckAllChange">{{ 'admin.data_center.user_data.alternative_column'|trans }}</el-checkbox>
+                </li>
+              </ul>
+              <ul class="custom-cell-feature_list custom-cell-feature_scroll">
+                <li v-for="(item, index) in checkList" :key="item.id">
+                  <el-checkbox v-model="item.checked">${item.name}</el-checkbox>
+                </li>
+              </ul>
+            </div>
+            <div class="custom-cell-feature_content-l fl cell-width" ref="chevron">
+              <ul class="custom-cell-feature_chevronright">
+                <li @click="chevron('right')">
+                  <i class="es-icon es-icon-chevronright"></i>
+                </li>
+                <li @click="chevron('left')">
+                  <i class="es-icon es-icon-chevronleft"></i>
+                </li>
+              </ul>
+            </div>
+            <div class="custom-cell-feature_content-l custom-cell-group fl">
+              <ul class="custom-cell-feature_list active">
+                <li>
+                  <el-checkbox v-model="selected" @change="handleselectAllChange">{{ 'admin.data_center.user_data.selected_column'|trans }}</el-checkbox>
+                </li>
+              </ul>
+              <ul class="custom-cell-feature_list custom-cell-feature_scroll">
+                <li v-for="(item, index) in selectList" :key="item.id">
+                  <el-checkbox v-model="item.checked">${item.name}</el-checkbox>
+                </li>
+              </ul>
+              <div class="cell-btn-group">
+                <div>
+                  <a href="javascript:;" class="cancel" @click="cancel">{{ 'form.btn.cancel'|trans }}</a>
+                  <a href="javascript:;" class="save" @click="save">{{ 'form.btn.confirm'|trans }}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </transition>
+        <input id="selectedColumns" class="hidden" value="{{ selectedCustomColumns|default([])}}">
+        <input id="alternativeColumns" class="hidden" value="{{ alternativeCustomColumns|default([])}}">
+      </div>
+
+      <div class="detail-table ct-mtl">
+        {% include 'admin/data/user-learn/detail-table.html.twig' %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

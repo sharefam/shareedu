@@ -1,0 +1,17 @@
+needed_created_root_dirs:
+  - api
+  - app
+  - bootstrap
+  - plugins
+  - src
+  - vendor
+  - vendor_user
+  - web
+needed_build_dirs:
+    api: { needed_mirrors: [/api] }
+    app: { needed_created_dirs: [cache, data, data/udisk, data/private_files, data/upgrade, data/backup, logs], needed_mirrors: [/app/Resources, /app/config], needed_remove: [/app/config/routing_plugins.yml, /app/config/plugin.php], needed_touch: [/app/config/routing_plugins.yml], needed_copy: [/app/console, /app/AppCache.php, /app/AppKernel.php, /app/autoload.php, /app/bootstrap.php.cache], needed_chmod: [/app/cache, /app/data, /app/data/udisk, /app/data/private_files, /app/data/upgrade, /app/data/backup, /app/logs, /app/config/parameters.yml.dist, /app/config/parameters.yml]}
+    bootstarp: { needed_copy: [/bootstrap/bootstrap_install.php]}
+    src: { needed_mirrors: [/src], needed_remove: [/src/Custom/AdminBundle/Resources/public, /src/Custom/WebBundle/Resources/public, /src/CorporateTrainingBundle/Tests, /src/CorporateTrainingBundle/Migrations]}
+    vebndor: { needed_mirrors: [/vendor]}
+    vendor_user: { needed_mirrors: [/vendor_user]}
+    web: { needed_created_dirs: [files, bundles, themes, install], needed_mirrors: [/web/assets, /web/customize, /web/themes/jianmo, /web/static-dist/app, /web/static-dist/jianmotheme, /web/static-dist/libs, /web/static-dist/corporatetrainingbundle, /web/install], needed_copy: [/web/themes/block.json, /web/.htaccess, /web/app.php, /web/app_dev.php, /web/favicon.ico, /web/robots.txt, /web/crossdomain.xml], needed_chmod: [/web/files], needed_remove: [/web/install/edusoho.sql]}

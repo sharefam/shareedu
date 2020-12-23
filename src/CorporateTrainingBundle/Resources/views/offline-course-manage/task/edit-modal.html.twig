@@ -1,0 +1,78 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% do script(['libs/jquery-validation.js', 'libs/bootstrap-datetimepicker.js', 'corporatetrainingbundle/js/offline-course-item/edit/index.js']) %}
+
+{% block title %}
+  {{ 'offline_course.edit_task'|trans }}
+{% endblock %}
+
+{% block body %}
+  <form id="offline-course-task-create-form" class="form-horizontal" action="{{ path('training_offline_course_manage_task_edit', {courseId: task.offlineCourseId, taskId: task.id}) }}" method="post">
+    <div class="form-group">
+      <label class="col-md-2 control-label" for="title">
+        {{ 'offline_course.tasks.task_title'|trans }}
+      </label>
+      <div class="col-md-8 controls">
+        <input name="title" type="text" class="form-control" placeholder="{{ 'offline_course.course_title.placeholder'|trans }}" value="{{ task.title|default() }}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-md-2 control-label">
+        {{ 'offline_course.tasks.start_time'|trans }}
+      </label>
+      <div class="col-md-4 controls">
+        <input name="startTime" id="startTime" type="text" class="form-control" placeholder="{{ 'project_plan.start_time'|trans }}" value="{{ task.startTime|default()|date('Y-m-d H:i') }}">
+      </div>
+      <div class="col-md-4 controls">
+        <input name="endTime" id="endTime" type="text" class="form-control" placeholder="{{ 'project_plan.end_time'|trans }}" value="{{ task.endTime|default()|date('Y-m-d H:i') }}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-md-2 control-label" for="place">
+        上课地点
+      </label>
+      <div class="col-md-8 controls">
+        <input name="place" type="text" class="form-control" placeholder="上课地点" value="{{task.place|default() }}">
+      </div>
+    </div>
+    {% set cloud_attachment_enable = setting('cloud_attachment.enable') and setting('storage.upload_mode') == 'cloud'%}
+    <div class="form-group">
+      <label class="col-md-2 control-label" for="hasHomework"></label>
+      <div class="col-md-8 controls checkbox">
+        <label {% if not cloud_attachment_enable %}data-toggle="popover" data-container="body" data-trigger="hover" data-placement="top" data-content="请先开启云附件！"{% endif %}>
+          <input name="hasHomework" disabled id="hasHomework" type="checkbox" {% if task.hasHomework|default() %}checked="true"{% endif %}>
+          {{ 'offline_course.tasks.homework'|trans }}
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group homework-require {% if not task.hasHomework|default() %}hidden{% endif %}">
+      <label class="col-md-2 control-label" for="homeworkDeadline">
+        {{ 'offline_course.tasks.homework_submitted'|trans }}</br>{{ 'offline_course.deadline'|trans }}
+      </label>
+      <div class="col-md-4 controls">
+        <input name="homeworkDeadline" id="homeworkDeadline" type="text" class="form-control" placeholder="选择日期" value="{{ task.homeworkDeadline|default()|date('Y-m-d') }}">
+      </div>
+    </div>
+
+    <div class="form-group homework-require {% if not task.hasHomework|default() %}hidden{% endif %}">
+      <label class="col-md-2 control-label" for="homeworkDemand">
+        {{ 'offline_course.tasks.homework_requirement'|trans }}
+      </label>
+      <div class="col-md-8 controls">
+        <textarea class="form-control" name="homeworkDemand" cols="30" rows="10">{{ task.homeworkDemand|default() }}</textarea>
+      </div>
+    </div>
+
+    <input type="hidden" name="mode" value="lesson">
+    <input type="hidden" name="mediaType" value="offlineCourse">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+  </form>
+{% endblock %}
+
+{% block footer %}
+  <button id="create-form-submit" type="button" class="btn btn-primary pull-right" data-loading-text="{{ 'project_plan.btn.save_loading_btn'|trans }}">{{'form.btn.save'|trans}}</button>
+  <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{'form.btn.cancel'|trans}}</button>
+{% endblock %}

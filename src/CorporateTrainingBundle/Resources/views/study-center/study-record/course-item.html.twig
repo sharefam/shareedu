@@ -1,0 +1,16 @@
+<div class="course-item course-item-record js-course-item js-page-wrapper">
+  <div class="course-item-intro js-page-load-btn" data-url="{{ path('study_center_course_tasks_list', {courseId:course.id, tab_type:tab_type, userId:user.id|default(0)}) }}">
+    <div class="pull-right">
+      <i class="es-icon es-icon-star mll"></i>
+      {{ course.finishedTaskNum|default(0) }}/{{ course.taskNum|default(0) }}
+      <span class="hidden-xs">
+        <i class="es-icon es-icon-accesstime mll"></i>
+        {{course.learnTime|default(0)|time_format_hour}}
+      </span>
+      <i class="js-toggle-icon es-icon es-icon-anonymous-iconfont mlxl"></i>
+    </div>
+    <i class="es-icon es-icon-certificate pull-left mts" title="{{'study_center.tab_nav.post_course'|trans}}"  data-toggle="tooltip" data-placement="top" title="{{'study_center.tab_nav.post_course'|trans}}"></i>
+    <span class="course-item-title">{{ course.title|default() }}</span>
+  </div>
+  <div class="course-item-content js-page-content"></div>
+</div>

@@ -1,0 +1,199 @@
+.data-report-user-manual {
+  .user-info {
+    padding: 20px 40px 20px 50px;
+    border: none;
+    .border-radius(4px);
+
+    @media screen and (max-width: @screen-xs-max) {
+      padding: 10px 15px;
+    }
+  }
+
+  .user-info-content {
+    margin-left: 160px;
+    line-height: 60px;
+
+    @media screen and (max-width: @screen-xs-max) {
+      margin-left: 0;
+      line-height: 1.5;
+    }
+
+    .task-learn-rank {
+      width: 15%;
+      float: left;
+      @media (max-width: @screen-xs-max) {
+        width: 60%;
+      }
+    }
+
+    .task-learn-time {
+      width: 30%;
+      float: left;
+      @media (max-width: @screen-xs-max) {
+        width: 60%;
+      }
+    }
+
+    .task-learn-last-time {
+      width: 55%;
+      float: left;
+      @media (max-width: @screen-xs-max) {
+        width: 69%;
+      }
+    }
+
+  }
+
+  .user-info-item {
+    margin: 0px;
+    line-height: 32px;
+  }
+
+  .user-info-stress {
+    line-height: 1;
+    font-size: 26px;
+  }
+}
+
+.o-user-manual {
+  margin-top: 20px;
+}
+
+.o-user-manual__hd {
+
+}
+
+.o-user-manual__bd {
+
+}
+
+.o-user-manual__breadcrumb {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 30px;
+  background-color: transparent;
+}
+
+.o-user-manual-user-detail {
+  position: relative;
+  background-color: #f5f5f5;
+  padding: 20px 30px;
+
+  @media screen and (max-width: @screen-xs-max) {
+    padding: 15px 20px;    
+  }
+}
+
+.o-user-manual-user-detail__l {
+  float: left;
+  text-align: center;
+
+  @media screen and (max-width: @screen-xs-max) {
+
+  }
+}
+
+.o-user-manual-user-detail__ft {
+  @media screen and (max-width: @screen-xs-max) {
+    margin-top: 20px;  
+  }
+}
+
+.o-user-manual-user-detail__img {
+  width: 120px;
+  height: 120px;
+  border-radius: 1000000px;
+
+  @media screen and (max-width: @screen-xs-max) {
+      width: 100px;
+      height: 100px;
+  }
+
+}
+
+.o-user-manual-user-detail__bd {
+  padding-top: 15px;
+  margin-left: 130px;
+  min-height: 100px;
+
+  @media screen and (max-width: @screen-xs-max) {
+    margin-left: 130px;
+  }
+}
+
+.o-user-manual-user-detail__name {
+  font-size: 16px;
+  color: @gray-darker;
+  line-height: 24px;
+  margin-bottom: 15px;
+  margin-right: 250px;
+  .text-ovf;
+
+  @media screen and (max-width: @screen-xs-max) {
+    margin-right: 0;
+  }
+}
+
+.o-user-manual-user-detail__info {
+  font-size: 14px;
+  color: @gray-dark;
+  line-height: 20px;
+  margin-bottom: 10px;
+  margin-right: 250px;
+  .text-ovf;
+
+  @media screen and (max-width: @screen-xs-max) {
+    margin-right: 0;
+  }
+}
+
+.o-user-manual-user-detail__wrap {
+  position: absolute;
+  right: 20px;
+  top: 50px;
+  width: 240px;
+
+  @media screen and (max-width: @screen-xs-max) {
+    position: relative;
+    right: auto;
+    top: auto;
+    width: auto;
+    margin-top: 20px;
+  }
+}
+
+.o-user-manual-user-detail__col {
+  & + .o-user-manual-user-detail__col {
+    &:before {
+      content: "";
+      position: absolute;
+      top: 45%;
+      left: 0px;
+      bottom: 0;
+      content: "";
+      display: block;
+      background-color: #c1c1c1;
+      width: 2px;
+      height: 10px; 
+    }
+  }
+}
+ 
+.o-user-manual-user-detail-info__hd {
+  font-size: 14px;
+  color: @gray;
+  line-height: 20px;
+  text-align: center;
+}
+
+.o-user-manual-user-detail-info__bd {
+  font-size: 14px;
+  color: @gray-dark;
+  line-height: 20px;
+  margin-top: 15px;
+  text-align: center;
+
+  span {
+    color: @brand-primary;
+  }
+}

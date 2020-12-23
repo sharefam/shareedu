@@ -1,0 +1,20 @@
+{% extends 'layout.html.twig' %}
+
+{% set bodyClass = "sign-in-body" %}
+{% block body %}
+    {% block header %}
+    {% endblock %}
+
+    {% block full_content %}
+        {% block top_content %}{% endblock %}
+        <section class="sign-in-status">
+          <div class="sign-in-icon-wrap sign-in-error"><i class="es-icon es-icon-close01"></i></div>
+          <p class="error-tip sign-in-status-tip">{{ message }}</p>
+          <a class="link-back" href="{{ path('homepage') }}">{{ 'project_plan.to_home_page'|trans }}</a>
+        </section>
+        {% block bottom_content %}{% endblock %}
+    {% endblock %}
+
+    {% block footer %}
+    {% endblock %}
+{% endblock %}

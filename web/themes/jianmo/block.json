@@ -1,0 +1,214 @@
+{
+    "jianmo:home_top_banner":
+    {
+        "title": "企培主题：首页顶部.轮播图 ",
+        "category": "jianmo",
+        "templateName": "@theme/jianmo/block/carousel.template.html.twig",
+        "items": {
+            "posters":{
+                "title":"海报",
+                "desc":"首页海报",
+                "count":1,
+                "type":"poster",
+                "default":[
+                    {
+                        "src" : "\/themes\/jianmo\/img\/banner_1.png",
+                        "alt" : "海报1",
+                        "layout" : "tile",
+                        "background" : "#3ec768",
+                        "href" : "",
+                        "html" : "",
+                        "status" : "1",
+                        "mode" : "img"
+                    },
+                    {
+                        "src" : "\/themes\/jianmo\/img\/banner_2.png",
+                        "alt" : "海报2",
+                        "layout" : "tile",
+                        "background" : "#0984f7",
+                        "href" : "",
+                        "html" : "",
+                        "status" : "1",
+                        "mode" : "img"
+                    },
+                    {
+                        "src" : "\/themes\/jianmo\/img\/banner_1.png",
+                        "alt" : "海报3",
+                        "layout" : "tile",
+                        "background" : "#3b4250",
+                        "href" : "",
+                        "html" : "",
+                        "status" : "0",
+                        "mode" : "img"
+                    },
+                    {
+                        "src" : "\/themes\/jianmo\/img\/banner_1.png",
+                        "alt" : "海报4",
+                        "layout" : "tile",
+                        "background" : "#3ec768",
+                        "href" : "",
+                        "html" : "",
+                        "status" : "0",
+                        "mode" : "img"
+                    },
+                    {
+                        "src" : "\/themes\/jianmo\/img\/banner_1.png",
+                        "alt" : "海报5",
+                        "layout" : "tile",
+                        "background" : "#3ec768",
+                        "href" : "",
+                        "html" : "",
+                        "status" : "0",
+                        "mode" : "img"
+                    },
+                    {
+                        "src" : "\/themes\/jianmo\/img\/banner_1.png",
+                        "alt" : "海报6",
+                        "layout" : "tile",
+                        "background" : "#3ec768",
+                        "href" : "",
+                        "html" : "",
+                        "status" : "0",
+                        "mode" : "img"
+                    },
+                    {
+                        "src" : "\/themes\/jianmo\/img\/banner_1.png",
+                        "alt" : "海报7",
+                        "layout" : "tile",
+                        "background" : "#3ec768",
+                        "href" : "",
+                        "html" : "",
+                        "status" : "0",
+                        "mode" : "img"
+                    },
+                    {
+                        "src" : "\/themes\/jianmo\/img\/banner_1.png",
+                        "alt" : "海报8",
+                        "layout" : "tile",
+                        "background" : "#3ec768",
+                        "href" : "",
+                        "html" : "",
+                        "status" : "0",
+                        "mode" : "img"
+                    }
+                ]
+            }
+        }
+    },
+    "jianmo:login_bg":
+    {
+        "title": "登录页背景图",
+        "category": "jianmo",
+        "templateName": "@theme/jianmo/block/login_background_img.template.html.twig",
+        "items": {
+            "posters": {
+                "title": "背景图",
+                "desc": "建议图片大小为1920*1080,建议文件大小不要超过300k",
+                "count": 1,
+                "type": "img",
+                "default": [
+                    {
+                        "src": "\/themes\/jianmo\/img\/bg_2017.jpg",
+                        "alt": "背景图片"
+                    }
+                ]
+            }
+        }
+    },
+    "jianmo:login_position":
+    {
+        "title": "登录框面板位置",
+        "category": "jianmo",
+        "templateName": "@theme/jianmo/block/login_position.template.html.twig",
+        "items": {
+            "texts": {
+                "title": "position",
+                "desc": "登录框左中右位置",
+                "count": 3,
+                "type": "texts",
+                "select":1,
+                "default": [
+                  {
+                    "value":"左",
+                    "code":0
+                  },
+                  {
+                    "value":"中",
+                    "code":1
+                  },
+                  {
+                    "value":"右",
+                    "code":2
+                  }
+                ]
+            }
+        }
+    },
+    "live_top_banner":
+    {
+        "title": "直播频道 - 首页 - 头部轮播图",
+        "category": "system",
+        "templateName": "block/live-top-banner.template.html.twig",
+        "items": {
+            "posters":
+            {
+                "title": "轮播图",
+                "desc": "建议使用1920x300大小的图片，最多可设置５张图片。",
+                "count": 5,
+                "type": "poster",
+                "default": [
+                    {
+                        "src": "\/assets\/img\/placeholder\/live-slide-1.jpg",
+                        "alt" : "海报1",
+                        "layout" : "limitWide",
+                        "background" : "#1d75ed",
+                        "href" : "",
+                        "html" : "",
+                        "status" : "1",
+                        "mode" : "img"
+                    },
+                    {
+                        "src": "\/assets\/img\/placeholder\/live-slide-1.jpg",
+                        "alt" : "海报2",
+                        "layout" : "limitWide",
+                        "background" : "#1d75ed",
+                        "href" : "",
+                        "html" : "",
+                        "status" : "1",
+                        "mode" : "img"
+                    },
+                    {
+                        "src": "\/assets\/img\/placeholder\/live-slide-1.jpg",
+                        "alt" : "海报3",
+                        "layout" : "limitWide",
+                        "background" : "#1d75ed",
+                        "href" : "",
+                        "html" : "",
+                        "status" : "1",
+                        "mode" : "img"
+                    },
+                    {
+                        "src": "\/assets\/img\/placeholder\/live-slide-1.jpg",
+                        "alt" : "海报4",
+                        "layout" : "limitWide",
+                        "background" : "#1d75ed",
+                        "href" : "",
+                        "html" : "",
+                        "status" : "1",
+                        "mode" : "img"
+                    },
+                    {
+                        "src": "\/assets\/img\/placeholder\/live-slide-1.jpg",
+                        "alt" : "海报5",
+                        "layout" : "limitWide",
+                        "background" : "#1d75ed",
+                        "href" : "",
+                        "html" : "",
+                        "status" : "1",
+                        "mode" : "img"
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,102 @@
+{% extends 'project-plan/study-data/study-data-layout.html.twig' %}
+
+{% do script(['libs/echarts.js','corporatetrainingbundle/js/project-plan/user-detail/statistic-chart/index.js']) %}
+{% set side_nav = 'studyData' %}
+{% set type = 'overview' %}
+{% set totalLearnTime = completionRate.usersTotalLearnTime|default(0)%}
+{% set finishedAttendCompletionRate = completionRate.finishedAttendCompletionRate|default(0)%}
+{% set passedHomeworkCompletionRate = completionRate.passedHomeworkCompletionRate|default(0)%}
+{% set passExamCompletionRate = completionRate.passExamCompletionRate|default(0)%}
+{% set passOfflineExamCompletionRate = completionRate.passOfflineExamCompletionRate|default(0)%}
+
+{% block main_content %}
+  <div class="project-plan-statistic-chart">
+    <div class="project-plan-statistic-chart-item {% if isEmpty.onlineCourse %}hidden{% endif %}">
+      <div class="project-plan-statistic-chart-item__head">
+        {{ 'project_plan.online_course'|trans }}
+        <a class="glyphicon glyphicon-question-sign text-normal color-gray text-sm"  data-container="body"
+           data-toggle="popover" data-trigger="hover"
+           data-placement="top"
+           data-content="{{ 'project_plan.summary.study_data.online_course.chart-info'|trans }}"></a>
+      </div>
+      <div class="project-plan-statistic-chart-item__body">
+        <div class="project-plan-statistic-chart-item__overview">
+          <div class="ct-devider">
+            <div class="ct-devider__item">
+              {{ 'project_plan.summary.study_data.total_learn_time'|trans }}：<span class="color-primary">{{ totalLearnTime|default(0) }}</span>
+              <span class="ft-xsm">{{ 'site.date.hour'|trans }}</span>
+            </div>
+            <div class="ct-devider__item">
+              {{ 'project_plan.summary.study_data.average_learn_time'|trans }}：<span class="color-primary">{{ averageLearnTime|default(0) }}</span>
+              <span class="ft-xsm">{{ 'site.date.hour'|trans }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div id="course-rate" style="height: 300px;" data-online-course-completion-rate="{{ completionRate.onlineCourseCompletionRate|default(0) }}"></div>
+          </div>
+          <div class="col-md-6">
+            <div id="per-course-rate" style="height: 300px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="project-plan-statistic-chart-item {% if isEmpty.offlineCourse %}hidden{% endif %}">
+      <div class="project-plan-statistic-chart-item__head">
+        {{ 'project_plan.offline_course'|trans }}
+          <a class="glyphicon glyphicon-question-sign color-gray text-sm" data-container="body"
+             data-toggle="popover" data-trigger="hover"
+             data-placement="top"
+             data-content="{{ 'project_plan.summary.study_data.offline_course.chart_info'|trans }}"></a>
+      </div>
+      <div class="project-plan-statistic-chart-item__body">
+        <div class="row">
+          <div class="col-md-6">
+            <div id="attendance-rate" style="height: 300px;" data-finished-attend-completion-rate="{{ finishedAttendCompletionRate }}"></div>
+          </div>
+          <div class="col-md-6 {% if completionRate.hasHomeworkNum|default(0) == 0 %}hidden{% endif %}">
+            <div id="passing-rate" style="height: 300px;" data-passed-homework-completion-rate="{{ passedHomeworkCompletionRate }}"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="project-plan-statistic-chart-item {% if isEmpty.exam or not is_plugin_installed('Exam') %}hidden{% endif %}">
+      <div class="project-plan-statistic-chart-item__head">
+        {{ 'project_plan.online_exam'|trans }}
+        <a class="glyphicon glyphicon-question-sign text-normal color-gray text-sm"  data-container="body"
+           data-toggle="popover" data-trigger="hover"
+           data-placement="top"
+           data-content="{{ 'project_plan.summary.study_data.exam.chart_info'|trans }}"></a>
+      </div>
+      <div class="project-plan-statistic-chart-item__body">
+        <div class="row">
+          <div class="col-md-6">
+            <div id="exam-rate" style="height: 300px;" data-pass-exam-completion-rate="{{ passExamCompletionRate }}"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="project-plan-statistic-chart-item {% if isEmpty.offlineExam %}hidden{% endif %}">
+      <div class="project-plan-statistic-chart-item__head">
+        {{ 'project_plan.offline_exam'|trans }}
+        <a class="glyphicon glyphicon-question-sign text-normal color-gray text-sm"  data-container="body"
+           data-toggle="popover" data-trigger="hover"
+           data-placement="top"
+           data-content="{{ 'project_plan.summary.study_data.offline_exam.chart_info'|trans }}"></a>
+      </div>
+      <div class="project-plan-statistic-chart-item__body">
+        <div class="row">
+          <div class="col-md-6">
+            <div id="offline-exam-rate" style="height: 300px;" data-pass-offline-exam-completion-rate="{{ passOfflineExamCompletionRate }}"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% if isEmpty.offlineExam and (isEmpty.exam or not is_plugin_installed('Exam')) and  isEmpty.offlineCourse and isEmpty.onlineCourse%}
+      <div class="empty">
+       {{ 'project_plan.summary.study_data.empty'|trans }}
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

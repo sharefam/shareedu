@@ -1,0 +1,73 @@
+{% block side %}
+  {% set side_nav = side_nav|default(null) %}
+  {% set tab_nav = tab_nav|default(null) %}
+  <div class="cd-sidebar">
+    {% if tab_nav == 'preparation' %}
+      <ul class="cd-sidebar__list">
+        <li class="cd-sidebar__item {% if side_nav == 'base' %}active{% endif %}">
+          <a href="{{ path('project_plan_manage_base', {id: projectPlan.id}) }}">
+          {{ 'project_plan.preparation.setting'|trans }}
+          </a>
+        </li>
+        <li class="cd-sidebar__item {% if side_nav == 'cover' %}active{% endif %}">
+          <a href="{{ path('project_plan_manage_cover', {id: projectPlan.id}) }}">
+          {{ 'project_plan.preparation.cover'|trans }}
+          </a>
+        </li>
+        <li class="cd-sidebar__item {% if side_nav == 'item-manage' %}active{% endif %}">
+          <a href="{{ path('project_plan_manage_items', {id: projectPlan.id}) }}">
+          {{ 'project_plan.preparation.items'|trans }}
+          </a>
+        </li>
+      </ul>
+    {% endif %}
+    {% if tab_nav == 'implementation' %}
+    <ul class="cd-sidebar__list">
+      <li class="cd-sidebar__item {% if side_nav == 'member-manage' %}active{% endif %}">
+        <a href="{{ path('project_plan_member_manage_list', {id: projectPlan.id}) }}">
+          {{ 'project_plan.implementation.member_manage'|trans }}
+        </a>
+      </li>
+      <li class="cd-sidebar__item {% if side_nav == 'course-item-list' %}active{% endif %}">
+        <a href="{{ path('project_plan_item_manage_list', {id: projectPlan.id, type: 'course'}) }}">{{ 'project_plan.implementation.course_item_list'|trans }}</a>
+      </li>
+      <li class="cd-sidebar__item {% if side_nav == 'offline-course-item-list' %}active{% endif %}">
+        <a href="{{ path('project_plan_item_manage_list', {id: projectPlan.id, type: 'offlineCourse'}) }}">{{ 'project_plan.implementation.offline_course_item_list'|trans }}</a>
+      </li>
+      {% if is_plugin_installed('Exam') %}
+        <li class="cd-sidebar__item {% if side_nav == 'exam-manage' %}active{% endif %}">
+          <a href="{{ path('project_plan_exam_manage_list', {id: projectPlan.id, type: 'exam'}) }}">
+            {{ 'project_plan.implementation.exam_manage'|trans }}
+          </a>
+        </li>
+      {% else %}
+        <li class="cd-sidebar__item {% if side_nav == 'exam-manage' %}active{% endif %}">
+          <a href="{{path('project_plan_offline_exam_manage_list', {id: projectPlan.id}) }}">
+            {{ 'project_plan.implementation.exam_manage'|trans }}
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+    {% endif %}
+    {% if tab_nav == 'summary' %}
+    <ul class="cd-sidebar__list">
+      <li class="cd-sidebar__item {% if side_nav == 'studyData' %}active{% endif %}">
+        <a href="{{ path('project_plan_study_data_overview', {id: projectPlan.id}) }}">{{ 'project_plan.summary.study_data'|trans }}</a>
+      </li>
+      {#<li class="cd-sidebar__item {% if side_nav == '' %}active{% endif %}">#}
+        {#<a href="javascript:;">{{ '项目报告'|trans }}</a>#}
+      {#</li>#}
+      {#<li class="cd-sidebar__item {% if side_nav == '' %}active{% endif %}">#}
+        {#<a href="javascript:;">{{ '证书发放'|trans }}</a>#}
+      {#</li>#}
+      {% if is_plugin_installed('Survey') %}
+        <li class="cd-sidebar__item {% if side_nav == 'feedback' %}active{% endif %}">
+          <a href="{{ path('project_plan_teacher_evaluate_list', {id: projectPlan.id}) }}">
+              {{ 'course.teacher_evaluate'|trans }}
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+    {% endif %}
+  </div>
+{% endblock %}

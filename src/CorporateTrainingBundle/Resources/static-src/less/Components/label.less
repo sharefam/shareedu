@@ -1,0 +1,50 @@
+.ct-label {
+  display: inline-block;
+  padding: 3px 5px;
+  font-size: 12px;
+  line-height: 16px;
+  color: @gray-dark;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle; 
+  border: none;
+  background: rgba(193,193,193,.2);
+  border-radius: 2px;
+  white-space: nowrap;
+  .mirror-text-ibox;
+}
+
+.ct-label--theme {
+  color: @brand-primary;
+  background-color: fadeout(@brand-primary, 90%);
+}
+
+.ct-label--default {
+  color: @gray;
+  background-color: fadeout(#919191, 90%);
+}
+
+.ct-label--success {
+  color: #FFFFFF;
+  background-color: @brand-success;
+}
+
+.ct-label--danger {
+  color: #FFFFFF;
+  background-color: @brand-danger;
+}
+
+.ct-label--theme-danger {
+  color: @brand-danger;
+  background-color: fadeout(@brand-danger, 90%);
+}
+
+.ct-label--info {
+  color: #FFFFFF;
+  background-color: @brand-info;
+}
+
+.ct-label--warning {
+  color: #FFFFFF;
+  background-color: @brand-warning;
+}

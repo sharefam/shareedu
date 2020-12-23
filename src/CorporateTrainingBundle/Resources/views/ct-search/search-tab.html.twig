@@ -1,0 +1,54 @@
+{% set col = is_mobile ? 'col-xs-2' : '' %}
+
+<ul class="nav nav-tabs" id="search-nav-tabs" role="tablist">
+  <li class="{% if 'course' == type %}active {% endif %} {{col}}" >
+    <a href="{{path('search',{q : keywords,type : 'course'}) }}" data-type="{{ 'course' }}">{{ 'site.default.course'|trans }}
+      {% if not is_mobile %}
+        {% if resultNum.course|default(0) > 99 %}(99+){% elseif resultNum.course and resultNum.course <= 99 %}({{ resultNum.course|default(0) }}){% else %}(0)
+        {% endif %}
+      {% endif %}
+
+    </a>
+  </li>
+  <li class="{% if 'projectPlan' == type %}active {% endif %} {{col}}">
+    <a href="{{path('search',{q : keywords,type : 'projectPlan'}) }}" data-type="{{ 'projectPlan' }}">
+      {{ is_mobile ? 'project_mobile'|trans : 'search.projectplan.projectplan'|trans}}
+      {% if not is_mobile %}
+        {% if resultNum.projectPlan|default(0) > 99 %}(99+){% elseif resultNum.projectPlan and resultNum.projectPlan <= 99 %}({{ resultNum.projectPlan|default(0) }}){% else %}(0)
+        {% endif %}
+      {% endif %}
+    </a>
+  </li>
+  <li class="{% if 'classroom' == type %}active {% endif %} {{col}}" >
+    <a href="{{path('search',{q : keywords,type : 'classroom'}) }}" data-type="{{ 'classroom' }}">{{ 'search.classroom.classroom'|trans }}
+      {% if not is_mobile %}
+        {% if resultNum.classroom|default(0) > 99 %}(99+){% elseif resultNum.classroom and resultNum.classroom <= 99 %}({{ resultNum.classroom|default(0) }}){% else %}(0)
+        {% endif %}
+      {% endif %}
+    </a>
+  </li>
+  <li class="{% if 'offlineActivity' == type %}active {% endif %} {{col}}">
+    <a href="{{path('search',{q : keywords,type : 'offlineActivity'}) }}" data-type="{{ 'offlineActivity' }}">{{ 'search.offlineactivity.activity'|trans }}
+      {% if not is_mobile %}
+        {% if resultNum.offlineActivity|default(0) > 99 %}(99+){% elseif resultNum.offlineActivity and resultNum.offlineActivity <= 99 %}({{ resultNum.offlineActivity|default(0) }}){% else %}(0)
+        {% endif %}
+      {% endif %}
+    </a>
+  </li>
+  <li class="{% if 'article' == type %} active {% endif %} {{col}}">
+    <a href="{{path('search',{q : keywords,type : 'article'}) }}" data-type="{{ 'article' }}">{{ 'search.article.article'|trans }}
+      {% if not is_mobile %}
+        {% if resultNum.article|default(0) > 99 %}(99+){% elseif resultNum.article and resultNum.article <= 99 %}({{ resultNum.article|default(0) }}){% else %}(0)
+        {% endif %}
+      {% endif %}
+    </a>
+  </li>
+  <li class="{% if 'thread' == type %} active{% endif %} {{col}}">
+    <a href="{{path('search',{q : keywords,type : 'thread'}) }}" data-type="{{ 'thread' }}">{{ is_mobile ? 'cloud_search.thread.mobile'|trans : 'search.thresd.thread'|trans}}
+      {% if not is_mobile %}
+        {% if resultNum.groupThread|default(0) > 99 %}(99+){% elseif resultNum.groupThread and resultNum.groupThread <= 99 %}({{ resultNum.groupThread|default(0) }}){% else %}(0)
+        {% endif %}
+      {% endif %}
+    </a>
+  </li>
+</ul>

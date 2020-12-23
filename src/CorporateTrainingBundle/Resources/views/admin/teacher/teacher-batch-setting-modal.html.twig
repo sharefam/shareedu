@@ -1,0 +1,32 @@
+{% extends 'old-bootstrap-modal-layout.html.twig' %}
+
+{% set modalSize = 'large' %}
+
+{% block title %}{{'admin.teacher.batch_setting'|trans}}{% endblock %}
+{% block body %}
+
+<form id="teacher-batch-setting-form" class="form-horizontal" method="post" action="{{ path('admin_teacher_batch_setting') }}">
+  <div class="form-group">
+    <label class="col-md-2 control-label">{{ 'admin.teacher.list.field'|trans }}</label>
+    <div class="col-md-7 controls">
+      <input type="text" id="teacherProfessionFieldIds" name="teacherProfessionFieldIds" class="width-full select2-offscreen" tabindex="-1" data-url="{{ path('admin_teacher_profession_match') }}" {% if profile.teacherProfessionFieldIds|default() %}data-profession="{{ professions|json_encode }}" value="{{ profile.teacherProfessionFieldIds|json_encode }}" {% endif %}>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label">{{'admin.teacher.list.level'|trans }}</label>
+    <div class="col-md-7 controls">
+      <input type="text" id="levelId" name="levelId" class="width-full select2-offscreen" tabindex="-1" data-url="{{ path('admin_teacher_level_match') }}" {% if profile.levelId|default() %}data-level="{{ level|json_encode }}" value="{{ profile.levelId|default()}}" {% endif %}>
+    </div>
+  </div>
+  <input type="hidden" name="ids" id="batch-ids">
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+</form>
+{% endblock %}
+
+
+{% block footer %}
+  <button id = "teacher-batch-setting-btn" data-submiting-text="{{'form.btn.submit.submiting'|trans}}" class="btn btn-primary pull-right" data-toggle="form-submit" data-target="#teacher-batch-setting-form">{{'form.btn.save'|trans}}</button>
+  <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{'form.btn.cancel'|trans}}</button>
+  
+  <script>app.load('corporatetrainingbundle/controller/teacher/teacher-batch-setting-modal');</script>
+{% endblock %}

@@ -1,0 +1,652 @@
+project_plan.assignment.search_placeholder: 'Enter course title keywords to search for more courses'
+project_plan.offline_course.teacher.set: 'A teacher must be set for offline courses'
+select.format_no_matches: 'No matches found'
+my.department.data_report.all_post: 'All positions'
+my.department.data_report.endDate_check: 'Greater than or equal to start time'
+my.department.data_report.top_5_taxonomy: 'Top five subtotals'
+my.department.data_report.taxonomy: Subtotals
+project_plan.create.name.required_message: 'Please enter project name'
+project_plan.base.name.required_message: 'Please enter project name'
+project_plan.base.start_time.required_message: 'Please enter start time'
+project_plan.base.end_time.required_message: 'Please enter finish time'
+project_plan.base.max_student_num.unsigned_integer: 'Please enter integer between 0 and 10000'
+project_plan.base.max_student_num.required_message: 'Please enter the maximum number of people'
+project_plan.base.end_date_check: 'The end time is greater than or equal to the start time'
+project_plan.base.enrollment_end_date_check: 'The end time is greater than or equal to the start time'
+project_plan.base.enrollment_start_date_required_message: 'Please enter the enrollment start time'
+project_plan.base.enrollment_end_date_required_message: 'Please enter the enrollment end time'
+project_plan.base.publish: 'Project information not filled out'
+project_plan.advanced_options.save: 'Advanced settings saved successfully!'
+project_plan.advanced_options.material_placeholder: 'Name of material, 30 characters (1 Chinese character is equal to 2 characters)'
+project_plan.advanced_options.material_danger_info: 'Maximum of 3 materials can be uploaded'
+project_plan.advanced_options.select_placeholder: 'Please enter user group, department or job title'
+project_plan.advanced_options.material: Material
+project_plan.cover.up_success: Uploaded
+project_plan.online_course.select_placeholder: 'Enter course title keywords to search for more courses'
+project_plan.online_course_id: Number
+project_plan.online_course.add_course_warning: 'Repeat courses'
+project_plan.online_course.start_time_required_message: 'Please select a start time'
+project_plan.online_course.end_time_required_message: 'Please select a finish time'
+project_plan.online_course.add_empty: 'Please choose a course!'
+project_plan.save_success: 'Save successful!'
+project_plan.save_error: 'Save failed!'
+project_plan.operate_success: 'Operation successful!'
+project_plan.operate_error: 'Operation failed!'
+project_plan.exam-manage.offline_exam: 'Please enter the pass score'
+project_plan.exam-manage.review_success: 'Review successful!'
+project_plan.success: ' Success'
+project_plan.error: ' Fail'
+project_plan.secondary_confirmation: 'Confirm '
+project_plan.title_empty: 'Please enter a title'
+project_plan.exam-manage.start_time.required_message: 'Please select a start time'
+project_plan.exam-manage.end_time.required_message: 'Please select a finish time'
+project_plan.exam-manage.place.required_message: 'Please select the exam location'
+project_plan.exam-manage.score.required_message: 'Please input the maximum score'
+project_plan.exam-manage.pass_score.required_message: 'Please enter the pass score'
+project_plan.exam-manage.input_less_than_message: 'The passing score should be less than or equal to the exam score.'
+project_plan.exam-manage.endtime_input_check_message: 'The end time should be after the start time'
+project_plan.exam-manage.title_required_message: 'Please enter the exam name'
+project_plan.exam-manage.length_required_message: 'Please enter the length of the exam'
+project_plan.exam-manage.resit_times_required_message: 'Please enter the number of exams'
+project_plan.exam-manage.exam_paper_required_message: 'Please select the exam paper'
+project_plan.exam-manage.exam_paper_title_empty: 'Please enter the name of the exam paper'
+project_plan.item.remove_confirm_message: 'Are you sure you want to remove this?'
+project_plan.item.remove_success_message: 'Successfully removed!'
+project_plan.item.remove_error_message: 'Remove failed!'
+project_plan.item.end_date_check_message: 'Greater than or equal to start time'
+project_plan.item.all_post: 'All positions'
+project_plan.item.member.search_loading: Searching…
+project_plan.item.member.input_short_info: 'Please enter %num% more characters '
+project_plan.item.member.select_result_empty: 'No matches found'
+project_plan.item.member.select_input_info: 'Please enter keywords for users, departments, positions, user groups'
+project_plan.item.member.training_members: 'Please enter content'
+project_plan.item.member.member_submit_success_message: 'Successfully assigned'
+project_plan.item.member.member_submit_error_message: 'Failed to assign'
+project_plan.item.member.selsect_empty: 'Nothing selected'
+project_plan.item.member.batch_delete_confirm_message: 'Are you sure to delete the selected %ids% bar %name%?'
+project_plan.item.member.batch_delete_wait: 'Deleting %name%, please wait.'
+project_plan.user_detail.course_rate: 'Course completion rate'
+project_plan.user_detail.finished: Completed
+project_plan.user_detail.unfinished: Incomplete
+project_plan.user_detail.attendance_rate: 'Attendance rate'
+project_plan.user_detail.attendance: Attendance
+project_plan.user_detail.no_attendance: 'No attendance'
+project_plan.user_detail.passing_rate: 'Homework pass rate'
+project_plan.user_detail.pass: Passed
+project_plan.user_detail.unpass: 'Not passed'
+project_plan.user_detail.exam_passing_rate: 'Pass rate'
+project_plan.verify_list_user_empty_message: 'Please select user first!'
+project_plan.close_confirm_message: 'Are you sure you want to close this project?'
+project_plan.close_success_message: 'Project closed successfully!'
+project_plan.delete_confirm_message: 'Are you sure you want to delete this item?'
+project_plan.delete_success_message: 'Project successfully deleted!'
+project_plan.publish_confirm_message: 'Are you sure you want to post this item?'
+project_plan.publish_success_message: 'Project successfully released!'
+project_plan.archive_confirm_message: 'Are you sure you want to archive this project?'
+project_plan.archive_success_message: 'Project archive successfully!'
+project_plan.cancel_archive_confirm_message: 'Are you sure you want to cancel archive this project?'
+project_plan.cancel_archive_success_message: 'Project cancel archive successfully!'
+offline_course.choose_survey: 'Please select a questionnaire'
+offline_course.input_range_placeholder: 'Please enter the range'
+offline_course.sign_in.placeholder: 'Please enter your username, mobile number or email'
+auth.login_bind_exist.success: 'Login successful, redirecting to homepage!'
+auth.login_bind_exist.error: 'Login failed. Account or password incorrect.'
+auth.login_bind_exist.email_or_mobile_or_nickname: 'Please enter the correct format Email/Mobile/Username'
+course_manage.student.expiry_days: 'The period of validity can be increased manually only if the learning period is set by days.'
+my.teaching_record.chart.survey: 'Evaluation: '
+my.teaching_record.chart.series_title: 'Course:'
+widget.main.placeholder: 'Please enter content'
+admin.user_group_member.delete_confirm_message: 'Are you sure you want to delete this member?'
+admin.user_group_member.delete_error_message: 'Delete failed, please try again!'
+admin.user_group_member.select_searching: Searching…
+admin.user_group_member.select_too_short_message: 'Enter name, department or job title'
+admin.user_group.submit_success: 'User group successfully saved!'
+admin.user_group.submit_error: 'Failed to add user group. Please try again!'
+admin.user_group.delete_confirm_message: 'Are you sure you want to delete this user group? Deleting a user group will delete the user groups and the related members'
+admin.user_group.delete_error: 'Failed to delete user group. Please try again!'
+admin.user_group.alpha_numerica_message: 'Must consist of English letters, numbers or English letters and numbers'
+admin.user.batch_update.select_empty: 'Please select data first'
+admin.user.batch_update_post_success: 'Post successfully updated'
+admin.user.batch_update_post_error: 'Operation failed'
+admin.user.chang_nickname_success: 'Username successfully modify'
+admin.user.chang_nickname_error: 'Failed to modify username'
+admin.user.change_post_success: 'Modified post added successfully'
+admin.user.change_post_error: 'Modified post failed to be added'
+admin.user.create_user_error: 'New user failed to be added!'
+admin.user.create_user_success: 'New user added successfully'
+admin.user.update_user_success: 'User information successfully saved'
+admin.user.update_user_error: 'Operation failed'
+admin.user.weibo.message: 'The website address is incorrect and must begin with http://weibo.com.'
+admin.user.site.message: 'The website address is incorrect and must start with http:// or https://.'
+admin.user.list.confirm_message: 'Are you sure you want %title%?'
+admin.user.list.operation_error: '%title% failed!'
+admin.user.list.operation_success: '%title% succeeded!'
+admin.user.list.send_passwordreset_email.info: 'A password reset verification email is being sent. Please wait.'
+admin.user.list.send_passwordreset_email.success: 'Password reset verification email successfully sent!'
+admin.user.list.send_passwordreset_email.error: 'Password reset verification email failed to send'
+admin.user.list.send_emailverify_email.info: 'Email verification email is being sent. Please wait.'
+admin.user.list.send_emailverify_email.success: 'Email verification email successfully sent!'
+admin.user.list.send_emailverify_email.error: 'Email verification email failed to send'
+admin.user.list.all_post: 'positions'
+admin.teacher.field.save_success: 'Professional field successfully saved!'
+admin.teacher.field.save_error: 'Failed to add professional field, please try again!'
+admin.teacher.field.delete_confirm_message: 'Are you sure you want to delete the professional field?'
+admin.teacher.setting_success: 'Teacher successfully set up!'
+admin.teacher.setting_error: 'Teacher failed to be set up!'
+admin.teacher.setting.field_select_placeholder: 'Please enter teacher field keywords'
+admin.teacher.setting.level_select_placeholder: 'Please enter teacher level name keyword'
+admin.teacher.list.cancel_promote_confirm_message: 'Are you sure to cancel the teacher''s recommendation?'
+admin.teacher.list.cancel_promote_success: 'Teacher''s recommendation has been cancelled!'
+admin.teacher.list.promote_confirm_message: 'Are you sure to recommend this teacher?'
+admin.teacher.list.promote_success: 'Teacher successfully recommended!'
+admin.teacher.list.set_profile_empty: 'Please select data first'
+admin.teacher.batch_setting.success: 'Settings successfully updated'
+admin.teacher.batch_setting.error: 'Operation failed'
+admin.teacher.delete_level_confirm_message: 'Are you sure you want to delete this level?'
+admin.teacher.delete_level_success: 'Level successfully deleted!'
+admin.teacher.delete_level_error: 'Level delete error!'
+admin.teacher.submit_level_success: 'Level successfully saved!'
+admin.teacher.submit_level_error: 'Failed to save level. Please try again!'
+admin.post_member.selected_empty: 'No member selected'
+admin.post_course.add_course_success: 'Course for department added'
+admin.post_course.add_course_error: 'Failed to add courses for department'
+admin.post_course.delete_confirm_message: 'Are you sure to delete this course?'
+admin.post_course.delete_success: 'Successfully deleted'
+admin.post_course.delete_error: 'Deletion error'
+admin.post_course.sort_error: 'Failed to update the learning order'
+admin.post_course.add_empty: Please choose course first!
+admin.post.submit_success: 'Job successfully saved!'
+admin.post.submit_error: 'Failed to add post. Please try again!'
+admin.post.name_max_message: 'Name of job title must be 200 characters (1 Chinese character is equal to 2 characters)'
+admin.post_group.submit_success: 'Job group successfully saved'
+admin.post_group.submit_error: 'Failed to add job grouping, please try again!'
+admin.post_group.delete_confirm_message: 'Are you sure you want to delete this group?'
+admin.post_group.delete_error: 'Job group deletion failed!'
+admin.post.delete_confirm_message: 'Are you sure to delete this job title? It will disassocitae posts with assigned course?'
+admin.post.delete_error: 'Job deletion failed, please try again'
+admin.org.sync_error: 'Sync failure'
+admin.org.delete_confirm_message: 'Are you sure to delete this organization and its sub-organizations?'
+admin.org.delete_error_one: 'The organization contains data. '
+admin.org.delete_error_two: 'Please transfer to other organizations then delete!'
+admin.org.delete_count: ' '
+admin.org.delete_success: 'Organization deleted'
+admin.org.submit_success: 'Organization saved'
+admin.org.submit_error: 'Organization save failed, please try again'
+admin.org.name_max_message: 'The length of organization must be less than or equal to 200 bytes'
+admin.org.name_chinese_alphanumeric_message: 'Names can be Chinese characters, English letters, Numbers and'
+org.module.display_name.user: User
+org.module.display_name.courseset: Course
+org.module.display_name.classroom: Topic
+org.module.display_name.article: Article
+org.module.display_name.announcement: Announcement
+org.module.display_name.openCourse: OpenCourse
+org.module.display_name.project: Project
+admin.discovery_column.create_success: 'Topics upated'
+admin.discovery_column.create_error: 'Failed to update topic, please try again!'
+admin.default.login_user_count: 'Number of Login'
+admin.default.chart_search_message: 'The time span should not exceed one year'
+admin.course.post_set_success: 'Associated Job setted!'
+admin.course.post_set_error: 'Failed to set associated job!'
+admin.course.select_placeholder: 'Please enter job title keywords'
+admin.course.delete_post_confirm_message: 'Are you sure to delete associated job?'
+admin.course.delete_post_success: 'Associated job deleted'
+admin.auth_username: Account
+admin.auth_password: Password
+admin.auth_email: 'Email Address'
+admin.sms_code: "SMS authentication code\_"
+offline_activity.student_create.field_required_error_hint: 'Enter you account, mobile or email'
+offline_activity.student_create_add_success_hint: Added
+offline_activity.student_create_add_failed_hint: 'Failed to add'
+offline_activity.attend_success_hint: Attended
+offline_activity.attend_fail_hint: 'Failed to attend'
+offline_activity.base.title_required_error_hint: 'Enter title'
+offline_activity.base.category_required_error_hint: Category
+offline_activity.base.place_required_error_hint: 'Enter activity venue'
+offline_activity.base.max_student_num.unsigned_integer: 'Please enter integer between 0 and 10000'
+offline_activity.base.max_student_num.required_message: 'Please enter headcount upper limit'
+offline_activity.base.startTime.required_error_hint: 'Please enter start time'
+offline_activity.base.endTime.required_error_hint: 'Please enter end time'
+offline_activity.base.enrollment_startTime.required_error_hint: 'Please enter enrollment time'
+offline_activity.base.enrollment_endTime.required_error_hint: 'Please enter enrollment deadline'
+offline_activity.base.startTime_error_hint: 'Start time is greater than or equal to current time'
+offline_activity.base.endTime_error_hint: 'Must be greater than or equal to current time'
+offline_activity.base.enrollment_startTime_error_hint: 'Must be greater than or equal to current time'
+offline_activity.base.enrollment_deadline_error_hint: 'The deadline is less than or equal to end time'
+offline_activity.base.enrollment_endTime_error_hint: 'End time is greater than or equal to start time'
+offline_activity.batch_audit.success_hint: Success
+offline_activity.batch_audit.fail_hint: Failure
+offline_activity.cover.upload.success_hint: Uploaded
+offline_activity.exam.success_hint: Examed
+offline_activity.exam.fail_hint: 'Failed to audit'
+offline_activity.publish.make_sure: 'Are you sure to publish activity?'
+offline_activity.publish.success_hint: 'Activity published'
+offline_activity.publish.fail_hint: 'Failed to publish activity'
+offline_activity.delete.make_sure: 'Are you sure to remove?'
+offline_activity.delete.success_hint: Removed
+offline_activity.delete.fail_hint: 'Failed to remove'
+offline_activity.manage.make_sure: 'Make sure to %notifyTitle%'
+offline_activity.manage.success_hint: '%notifyTitle% success!'
+offline_activity.manage.fail_hint: '%notifyTitle% failure!'
+offline_activity.statistics.score_distribution: 'Score distribution'
+offline_activity.verify.choose_user: 'Please select user first!'
+offline_activity.list.empty: '<div class="empty">no activity </div>'
+offline_activity.list.loading: Loading…
+offline_activity.list.loading_fail: 'Failed to load'
+offline_activity.list.loading_more: 'Load more'
+study_center.department.all_post: 'All job title'
+study_center.my_task.title_required_messages: 'Please enter title'
+study_center.my_task.content_required_messages: 'Please enter content'
+study_center.record.options_title: 'Top five subtotals'
+study_center.record.taxonomy: Subtotals
+study_center.record.submit_homework: 'Failed to submit homework!'
+study_center.newbie_guide.title: Welcome!
+study_center.newbie_guide.message: 'Learn, share, and develop with other here'
+study_center.newbie_guide.my_task: 'My task'
+study_center.newbie_guide.my_task_message: 'Here are the learning tasks your line manager recommend to you'
+study_center.newbie_guide.my_offline_activity: 'My activities'
+study_center.newbie_guide.my_courses: 'My course center'
+study_center.newbie_guide.my_courses_message: 'Here you can get all courses you attended'
+study_center.newbie_guide.department: 'Courses for deparment'
+study_center.newbie_guide.department_message: 'Herre you can get the courses related to your department'
+study_center.newbie_guide.course_square: 'Course Center'
+study_center.newbie_guide.course_square_message: 'You can find all the public courses here and visit free'
+study_center.newbie_guide.btn_next_step: Next
+study_center.newbie_guide.btn_start_study: 'Start learning'
+study_center.newbie_guide.load_error: 'Failed to load'
+study_center.newbie_guide.load_more: 'Load more'
+study_center.newbie_guide.loading: Loading…
+admin.announcement.create_error: Failure
+admin.announcement.create.time_check_message: 'Enter right date and time, format: XXXX-MM-DD hh:mm'
+admin.announcement.delete_confirm_message: 'Are you sure to delete this announcement?'
+admin.app.installed.uninstall_confirm_message: 'Are you sure to uninstall this application?'
+admin.app.package.update_success: 'Application installed/upgraded'
+admin.app.package.update_confirm_message: 'Are you sure to upgarde now? the website will be in maintenance status during the upgrade'
+admin.app.package.check_last_error_confirm_message: 'the application system installed and upgraded last time needs to be rolled back. There may be unexpected errors if continue the installation. Are you sure to continue?'
+admin.app.package.update_running: 'running %title%'
+admin.app.package.update_running_error: '%title% failed:'
+admin.app.package.update_running_success: '%title% completed'
+admin.app.package.update_error: 'when %title%,  an unknown error occurred'
+admin.app.package.update.check_environment: 'Check system environment'
+admin.app.package.update.check_depends: 'Check denpendency'
+admin.app.package.update.backup_file: 'Backup system files'
+admin.app.package.update.backup_db: 'Backup database'
+admin.app.package.update.check_download_extract: 'Check download authority'
+admin.app.package.update.download_extract: 'Download installation upgrade program'
+admin.app.package.update.begin_upgrade: 'Perform installation upgrade program'
+admin.app.package.update.check_newest: 'Check system version'
+admin.article.category.select_placeholder: 'Please input tag'
+admin.article.category.submit_success: 'Topic saved'
+admin.article.category.submit_error: 'Failed to add topics'
+admin.article.category.delete_confirm_message: 'Are you sure to delete this topic?'
+admin.article.category.delete_error: 'Failed to delete topic, please try again! %error%'
+admin.article.list.delete_confirm_message: 'Are you sure to permanently delete this content?'
+admin.article.list.article_upload_success: Uploaded
+admin.attachment.delete_confirm_message: 'Are sure to delete attachment?'
+admin.attachment.delete_success: 'Attachment deleted'
+admin.attachment.delete_error: 'Failed to delete attachment, please try again later'
+admin.batchnotification.publish_confirm_message: 'Can not be modified after sending, are you sure to send?'
+admin.batchnotification.delete_confirm_message: 'Are you sure to delete this content?'
+admin.batchnotification.publish_success: Published
+admin.batchnotification.save_success: Saved
+admin.block.histiry.recover_content: 'The content has been restored, please save it!'
+admin.block.edit_success: Updated
+admin.block.delete_confirm_message: 'Are sure to delete the template of edit zone?'
+admin.block.delete_success: 'Edit zone template deleted'
+admin.block.delete_error: 'Service error'
+admin.block.submit_success: 'Edit zone template created'
+admin.block.update_success: 'Edit zone template updated'
+admin.block.upload_img_error: 'Failed to upload image, please try again later'
+admin.block.upload_img_success: 'Image uploaded'
+admin.block.delete_img_success: 'Image deleted'
+admin.block.upload_img.update_success: Updated
+admin.block.upload_img.submit_success: Submitted
+admin.block.upload_img.empty: 'Select the image to be uploaded'
+admin.block.block_image_upload_success: 'Image inserted'
+admin.block.visual_edit.beforeunload_confirm_message: 'The data is not saved, are you sure to leave the page?'
+admin.block.visual_edit.add_max_message: 'Max %panelGroup% can be added'
+admin.block.visual_edit.delete_confirm_message: 'Are you sure to delete?'
+admin.block.visual_edit.empty_message: 'Need at least 1'
+admin.block.visual_edit.upload_message: Loading…
+admin.block.visual_edit.upload_success: Uploaded
+admin.block.visual_edit.upload_error: 'Failed to uploade, please try again!'
+admin.block.visual_edit.poster: Poster(%index%)
+admin.category.icon.delete_confirm_message: 'Are you sure to delete this icon?'
+admin.category.icon.delete_success: 'Category icon deleted'
+admin.category.icon.delete_error: 'Failed to delete category icon'
+admin.category.create_success: 'Category saved'
+admin.category.create_error: 'Failed to add category, please try again!'
+admin.category.delete_confirm_message: 'Are you sure to delete this category and its subcategory?'
+admin.classroom.choose_classroom_success: 'Class assigned'
+admin.classroom.delete_confirm_message: 'Are you sure to deleted?'
+admin.classroom.delete_success: Deleted
+admin.classroom.list.cancel_recommend_success: '%title% successfully'
+admin.classroom.list.cancel_recommend_error: 'Failed to %title%'
+admin.classroom.list.cancel_recommend_confirm_message: '%title% ?'
+admin.classroom.list.recommend_success: 'Class recommendation setted'
+admin.classroom.list.recommend_error: 'Failed to set class recommendation'
+admin.coin.submit_success: Submitted
+admin.coin.submit_error: 'Failed to submit'
+admin.comment.delete_confirm_message: 'Are you sure to delete comments?'
+admin.comment.delete_success: Deleted
+admin.comment.delete_error: 'Failed to delete :%response%'
+admin.content.no_number_first_url_message: 'The path can only contain letters and Numbers, please start with letters! Length greater than 2 bits'
+admin.content.uploading_message: 'Uploading attached image. You can save it when it is uploaded'
+admin.content.delete_confirm_message: 'Are you sure to permanently delete this content?'
+admin.course.add_student_success: 'Added students'
+admin.course.add_student_error: 'Failed to add student'
+admin.course.choose_course_success: 'Course assigned'
+admin.course.copy_success: 'Course copied'
+admin.course.copy_error: 'Failed to copy course'
+admin.course.title_required_message: 'Please enter title, which can not be empty'
+admin.course.delete_success: 'Course deleted'
+admin.course.delete_error: 'Failed to deleted course'
+admin.course.help_block: 'Password error'
+admin.course.user_password: 'Password error'
+admin.course.cancel_recommend_success: 'Cancel recommended course'
+admin.course.close_confirm_message: 'Are you sure to close this course?'
+admin.course.close_success: 'course closed'
+admin.course.publish_confirm_message: 'Are you sure to publish this course?'
+admin.course.publish_success: 'Course published'
+admin.course.delete_confirm_message: 'Course chapters, lessons, students and other information will also be deleted when delete course. Are you sure to delete this course?'
+admin.course.tags_placeholder: 'Please input tag'
+admin.course.remind_teachers_success: 'Reminder to teacher is sent'
+admin.course.cancel_recommend_confirm_message: 'Are you sure to cancel this course recommendation?'
+admin.course.recommend_success: 'Course recommendation setted'
+admin.course.recommend_error: 'Fail to srecomend course'
+admin.course.boutique_section_max_message: 'Only 3 courses can be added in boutique every week'
+admin.course.boutique_section_exist_message: 'The course has already in boutique'
+admin.course.copy_course_loading: 'Copying course'
+admin.course.copy_course_progress: 'progress:'
+admin.dictionary.delete_confirm_message: 'Are you sure to delete this category?'
+admin.dictionary.delete_success: Deleted
+admin.dictionary.delete_error: 'Service error'
+admin.dictionary.update_success: 'Topic updated'
+admin.dictionary.update_error: 'Failed to updated topics, please try again'
+admin.dictionary.add_success: 'Added new topic'
+admin.dictionary.add_error: 'Failed to add new topic, please try again'
+admin.educloud.name_max_message: 'the name of onlin plateform can not exceed 8 Chinese characters'
+admin.educloud.file_size_message: 'The current server attachment size is capped at 2048MB'
+admin.educloud.sms_setting: 'You have enabled the mobile registration mode, do not  turn off the SMS!'
+admin.educloud.sms_overview.time: Time
+admin.educloud.sms_overview.chart_series_name: 'Message volume'
+admin.file.delete_confirm_message: 'Are you sure to delete this file?'
+admin.group.click_confirm_message: '%trigger%?'
+admin.group.operate_success: '%trigger% success'
+admin.group.operate_error: 'Failed to %trigger%'
+admin.group.thread.delete_alert_message: 'Selete topics you want to cancel'
+admin.group.thread.delete_confirm_message: 'Are you sure to delete topics?'
+admin.importer.template.error.title: 'Step 2'
+admin.importer.template.error.reimport_btn: Reimport
+admin.importer.template.progress.batch_import: 'batch import'
+admin.importer.template.progress.loading: Importing…
+admin.importer.template.progress.complete_import: Imported
+admin.importer.template.progress.import_loading: 'Importing, please don’t close current window'
+admin.importer.template.step1.title: 'Step 1'
+admin.importer.template.step1.choose_file: 'Select file to be imported'
+admin.importer.template.step1.browse_btn: preview
+admin.importer.template.step1.download_example_btn: 'click to download sample document'
+admin.importer.template.step1.info: 'Import from excel'
+admin.importer.template.step1.check_btn: 'Start checking data'
+admin.importer.template.success.title: 'Step 2'
+admin.importer.template.success.check_success: 'Checked! Total '
+admin.importer.template.success.check_success_data: Data
+admin.importer.template.success..import_verify_tips_start: 'Confirm to imput'
+admin.importer.template.success..back_btn: Back
+admin.importer.template.confirm.import_new_only: 'Import new only'
+admin.importer.template.confirm.import_all: 'Overwrite update'
+admin.importer.template.confirm.re_import: Reimport
+admin.importer.template.confirm.prefix_text: 'Importing user data'
+admin.importer.template.confirm.postfix_text: 'users already exist in the system, Do you want to overwrite user information?'
+admin.importer.view.progress.onprogress_text: Imported
+admin.importer.view.progress.oncomplete_text: 'Imported, total imported'
+admin.importer.view.progress.oncomplete_update_text: 'Total imported %importNum%, updated %updateNum%'
+admin.importer.view.progress.fail_text: 'Fail：%failNum%, Reason: The current system non-disabled account has reached the upper limit'
+admin.importer.view.progress.onerror_text: "\_An unknown error occurred"
+admin.keyword.delete_confirm_message: 'Are you sure to delete this keyword? '
+admin.material_lib.stats.space_pie_chart: 'Storage space usage distribution'
+admin.material_lib.stats.flow_pie_chart: 'Network traffic distribution'
+admin.material_lib.stats.total_pie_chart: 'Space/network traffic details'
+admin.material_lib.stats.video_pie_chart: 'Video details'
+admin.material_lib.stats.audio_pie_chart: 'Audio details'
+admin.material_lib.stats.document_pie_chart: 'Folder details'
+admin.mock.message: 'Getting information'
+admin.navigation.create_success: 'Invagation saved '
+admin.operation.banner_setting_success: 'Uploaded %num% Banner and saved'
+admin.operation.banner.delete_confirm_message: 'Are you sure to delete?'
+admin.operation.banner.delete_success: 'Banner saved'
+admin.operation.banner.delete_error: 'Failed to delete banner'
+admin.optimize.remove_cache_success: 'Cache refreshed'
+admin.optimize.remove_cache_error: 'Failed to refresh cache'
+admin.optimize.remove_tmp_success: 'Disk space optimized'
+admin.optimize.remove_tmp_error: 'Failed to optimize Disk space'
+admin.optimize.remove_backup_confirm_message: 'Are you sure to clear system backup data?'
+admin.optimize.remove_backup_success: 'System backup data cleaned!'
+admin.optimize.remove_backup_error: 'Failed to clear system backup data!'
+admin.optimize.remove_database_confirm_message: 'Database backed up, please download the database, and optimize disk space in time'
+admin.optimize.remove_database_error: 'Fail to backup database!'
+admin.optimize.check_files: 'Check and optimize file'
+admin.optimize.check_files_success: 'File optimized'
+admin.optimize.loading: 'optimizing %title%'
+admin.optimize.success: '%title% optimized'
+admin.optimize.error: 'Failed to optimize %title%:'
+admin.optimize.error_with_message: 'when %title%,  an unknown error occurred'
+admin.org.selected_empty: 'Please select data'
+admin.org.update_success: 'Organization updated'
+admin.org.update_error: Failed
+admin.role.create_success: 'Role added'
+admin.role.update_success: 'Role modified'
+admin.role.delete_confirm_message: 'Are you sure to delete the role?'
+admin.role.delete_success: 'Role deleted'
+admin.role.delete_error: 'Failed to delete role'
+admin.setting.success: Setted
+admin.setting.error: 'Failed to set'
+admin.setting.auth.open_message: 'Please verify your email before opening it'
+admin.setting.auth.error_message: ' please go to 【Admin Console】-【Education Cloud】-【Cloud Message Settings】to set cloud message'
+admin.setting.cloud.video_watermark_upload_error: 'Failed to upload cloud video player watermark, please try again!'
+admin.setting.cloud.video_watermark_upload_success: 'Cloud video player watermark uploaded!'
+admin.setting.cloud.video_watermark.delete_confirm_message: 'Are you sure to delete cloud video player watermark?'
+admin.setting.cloud.video_watermark.delete_error: 'Failed to delete cloud video player watermark!'
+admin.setting.cloud.video_watermark.delete_success: 'Cloud video player watermark deleted!'
+admin.setting.cloud.video_embed_watermark_error: 'Failed to uploaded cloud video with watermark, please try again!'
+admin.setting.cloud.video_embed_watermark_success: 'Cloud video with watermarke uploaded!'
+admin.setting.cloud.video_embed_watermark.delete_confirm_message: 'Are you sure to delete watermarker in cloud video?'
+admin.setting.cloud.video_embed_watermark.delete_error: 'Failed to delete watermarker in cloud video!'
+admin.setting.cloud.video_embed_watermark.delete_success: 'watermarker in cloud video delete!'
+admin.setting.cloud.video_fingerprint_time: 'Display time of Cloud video fingerprint'
+admin.setting.cloud.video_fingerprint: 'Display time of Cloud video fingerprint'
+admin.setting.cloud_key.key_bind_confirm_message: 'The authorized domain name cannot be changed once it is bound, it cannot be changed.Are you sure to bind?'
+admin.setting.cloud_video_overview.time: Time
+admin.setting.cloud_video_overview.chart_series_name: G
+admin.setting.consult_setting.webchat_url: 'QR code uploaded'
+admin.setting.consult_setting.max_message: 'max set 10...'
+admin.setting.consult_setting.delete_confirm_message: 'Are you sure to delete?'
+admin.setting.course.live_course_logo_upload_success: 'Live course logo uploaded'
+admin.setting.course.live_course_logo_upload.delete_confirm_message: 'Are you sure to delete?'
+admin.setting.course.live_course_logo_upload.delete_success: 'Live course logo deleted'
+admin.setting.course.live_course_logo_upload.delete_error: 'Failed to delete live course logo'
+admin.setting.course_avatar.picture_field: 'Please select default image to upload'
+admin.setting.default_course_picture.upload_success: Uploaded
+admin.setting.live_logo.upload_success: 'Logo uploaded'
+admin.setting.live_logo.upload_error: 'Failed to upload'
+admin.setting.mobile.splash_setting_success: 'Cover image %num% uploaded'
+admin.setting.mobile.splash.delete_success: 'Cover image %num% deleted'
+admin.setting.mobile.splash.delete_error: 'Failed to delete cover image %num%'
+admin.setting.mobile.splash.delete_confirm_message: 'Are you sure to delete?'
+admin.setting.mobile.applogo_setting_success: 'App icon uploaded'
+admin.setting.mobile.applogo.delete_success: 'App icon deleted'
+admin.setting.mobile.applogo.delete_error: 'Failed to delete app icon'
+admin.setting.mobile.appcover.delete_success: 'App cover delete'
+admin.setting.mobile.appcover.delete_error: 'Failed to delete App cover'
+admin.setting.mobile_iap_product.confirm_message: 'Are you sure to delete?'
+admin.setting.mobile_iap_product.delete_success: Deleted
+admin.setting.mobile_iap_product.delete_error: 'Failed to delete'
+admin.setting.search.option.time: Time
+admin.setting.site.logo_setting_success: 'Website logo uploaded'
+admin.setting.site.delete_confirm_message: 'Are you sure to delete?'
+admin.setting.site.logo_delete_success: 'Website logo deleted'
+admin.setting.site.logo_delete_error: 'Failed to delete website logo'
+admin.setting.site.favicon_setting_success: 'Web favicon uploaded'
+admin.setting.site.favicon_delete_success: 'Web favicon deleted'
+admin.setting.site.favicon_delete_error: 'Failed to delete Web favicon'
+admin.setting.theme.error_message: 'This topic is not suitable for the current ES version, please upgrade first'
+admin.setting.theme.confirm_message: 'Are you sure to use this theme?'
+admin.sms_send.send_success: Sent
+admin.sms_send.send_loading: Sending
+admin.sms_send.send_error: ' an unknown error occurred in sending'
+admin.sms_send.send_finish: Sent
+admin.sms_send.error: 'Failure:'
+admin.sms_send.finish: Complete
+admin.system.login_bind.html_tag: 'Should be HIML meta tag'
+admin.system.mailer.check_loading: verifying
+admin.system.mailer.check: Verify
+admin.system.mailer.send_success: 'The mail has been sent. Please check it'
+admin.system.mailer.send_error: 'Mail delivery failed, please check mailbox server configuration'
+admin.system.mailer.email_setting.name: 'Enter mailer name'
+admin.system.mailer.host: 'Enter SMTP Service address'
+admin.system.mailer.port: 'Enter SMTP Service port'
+admin.system.mailer.username: 'Enter SMTP Service username'
+admin.system.mailer.password: 'Enter SMTP Service password'
+admin.system.mailer.from: 'Enter mailer address'
+admin.system.mailer.name: 'Enter mailer name'
+admin.system.mailer.register_email: "You have opened the email authentication login in user registration mode, please close\_<a href=\"%emailSetUrl%\"> email authentication login</a> first!\""
+admin.system.user_fields.turename: turename
+admin.system.user_fields.phone: 'mobile phone'
+admin.system.user_fields.company: Company
+admin.system.user_fields.idcard: 'ID No.#'
+admin.system.user_fields.gender: Gender
+admin.system.user_fields.job: Job
+admin.system.user_fields.weibo: Weibo
+admin.system.user_fields.wechat: Wechat
+admin.system.user_fields.add_error: 'Do not add the custom fields which is the same with default fields!'
+admin.system.user_fields.field_type: 'Select field types'
+admin.tag.delete_confirm_message: 'Are you sure to delte tag?'
+admin.tag.delete_success: Deleted
+admin.tag.delete_error: 'Service error'
+admin.tag.update_succcess: 'Tag updated'
+admin.tag.add_succcess: 'Tag added'
+admin.tag_group.empty: 'The tag in the tag group cannot be empty'
+admin.tag_group.update_success: 'Tag group updated'
+admin.tag_group.add_success: 'Tag group added'
+admin.teacher.pomote_list.cancel_promote_confirm_message: 'Are you sure to cancel teacher recommendation?'
+admin.teacher.pomote_list.cancel_promote_success: 'Teacher recommendation cancelled'
+admin.teacher.pomote_list.promote_success: 'Teacher recommendation setted'
+admin.teacher.pomote_list.promote_error: 'Failed to set teacher recommendation'
+admin.user.approve.approve_confirm_message: 'Are you sure to confirm the approve?'
+admin.user.approve.approve_success: 'Are you sure to reject the approve?'
+admin.user.approve.approve_error: 'Please enter refusal cause'
+admin.user.approve.approve_note_max: 'Sorry, the note is too long, please limit it to 100 words!'
+admin.user.approve.submit_btn_loading: submitting...
+admin.user.approve.cancel_approval_confirm_message: 'Are you sure to cancel this real-name authentication which is verified?'
+admin.user.avatar_crop.success: "\_Avatar updated!"
+admin.user.avatar_crop.upload_success: Uploaded
+admin.user.change_password.change_success: 'Password modified'
+admin.user.change_password.change_error: Failed
+admin.user.create.success: 'New user added'
+admin.user.create.error: 'Failed to add new user'
+admin.user.update.success: 'User information saved'
+admin.user.update.error: Failed
+admin.user.edit.weibo.message: 'The website address is incorrect and must start at  http://weibo.com'
+admin.user.edit.site.message: 'The website address is incorrect and must start at http:// or https://'
+admin.user.importer.progress_num: 'Imported: %progressNum%'
+admin.user.importer.success: Imported
+admin.user.importer.error: '%title% failed:'
+admin.user.importer.progress_bar.error: 'when %title%,  an unknown error occurred'
+admin.user.list.lock_success: '%title% success'
+admin.user.list.lock_error: 'Failed to %title%'
+admin.user.list.send_passwordreset_email.loading: 'Sending verification email for password resetting, please wait.'
+admin.user.list.send-emailverify-email.loading: 'sending an verification email. Please wait.'
+admin.user.list.send-emailverify-email.success: ' verification email sent'
+admin.user.list.send-emailverify-email.error: 'Failed to send verification email'
+admin.user.roles.empty: 'User must have %user% role'
+admin.user.roles.confirm_message: 'Cancel user''s teacher role will also cancel teching rights for all courses taught by him/her. Are you sure to cancel?'
+admin.user.roles.create_success: 'User group saved'
+admin.user.roles.create_error: Failure
+admin.user.org_update_success: 'User organization modified'
+admin.user.org_update_error: 'User organization modified'
+admin.util.empty: 'Unseleted %name%'
+admin.util.batch_delete_confirm_message: 'Are you sure to delete selected %ids% %name%'
+admin.util.batch_delete_loading_message: 'Deleting %name%, please wait'
+admin.util.delete_confirm_message: 'Are you sure to deleted %name%?'
+admin.util.delete_success: '%name% deleted'
+admin.admin_app.shortcut_add_success: 'The current page has been added as a common link!'
+admin.admin_app.glyphicon_remove_circle_success: 'Common link deleted'
+advanced_user_select.not_found_hint: 'No match was found'
+advanced_user_select.department_input: 'Enter department'
+advanced_user_select.user_group_input: 'Enter user group'
+advanced_user_select.all_post: 'All job title'
+advanced_user_select.add_member_success_hint: 'Member added'
+advanced_user_select.add_member_fail_hint: 'Failed to add member'
+advanced_user_select.not_found_user_in_selected_hint: 'There is no member in the selected object'
+advanced_user_select.bone_match_hint: 'No match was found'
+advanced_user_select.post_input: 'Please enter job title'
+message.show.danger_message: Sorry, message content is not allowed to be empty!
+admin.data_center.detail.at.least.one: 'At least one col'
+
+course.notes_tips: Please enter your notes!
+private_message.sent_success: Private message sent successfully
+student.profile.nickname: Nickname
+
+admin.offline_activity.close_sure_hint: Are you sure to close this activity?
+admin.offline_activity.close_success_hint: 'Close successful!'
+admin.offline_activity.publish_sure_hint: Are you sure to publish this activity?
+admin.offline_activity.publish_success_hint: 'Publish successful!'
+admin.offline_activity.error.undefined_error_hint: 'undefined error'
+admin.offline_activity.category.icon.delete_sure_hint: Are you sure to delete icon?
+admin.offline_activity.category.icon.delete_success_hint: 'Delete successful!'
+admin.offline_activity.category.icon.delete_fail_hint: 'Delete fail!'
+admin.offline_activity.category.save_success_hint: 'Save successful!'
+admin.offline_activity.category.save_fail_hint: 'Save fail!'
+admin.offline_activity.category.delete_sure_hint: Are you sure to delete category?
+admin.offline_activity.category.delete_success_hint: 'Delete successful!'
+admin.data_center.survey_chart.name: Teacher Num
+admin.data_center.chart.profession_field: Profession Field
+admin.data_center.chart.level: Teacher Level
+admin.data_center.chart.profession_field.empty_tips: Empty
+admin.data_center.chart.level.empty_tips: Empty
+admin.data_center.chart.survey.empty_tips: Empty
+
+admin.data_center.chart.projectPlansNum: Project Num
+admin.data_center.chart.projectPlansMembersCount: Project Member Num
+admin.data_center.chart.project_plan.learn_hours: Learn Time
+admin.data_center.chart.project_plan.num.tip: (count)
+admin.data_center.chart.project_plan.memberNum.tip: (people)
+admin.data_center.chart.project_plan.total: Total number
+admin.data_center.chart.course_num_overview.empty_tips: Empty
+
+month.format.jan: Jan.
+month.format.feb: Feb.
+month.format.mar: Mar.
+month.format.apr: Apr.
+month.format.may: May.
+month.format.jun: Jun.
+month.format.jul: Jul.
+month.format.aug: Aug.
+month.format.sep: Sep.
+month.format.oct: Oct.
+month.format.nov: Nov.
+month.format.dec: Dec.
+
+week.format.monday: Monday
+week.format.tuesday: Tuesday
+week.format.wednesday: Wednesday
+week.format.thursday: Thursday
+week.format.friday: Friday
+week.format.saturday: Saturday
+week.format.sunday: Sunday
+
+
+admin.data_center.chart.login_num: 'Login Num'
+admin.data_center.chart.study_num: 'Study Num'
+admin.data_center.chart.study_time: 'Learn Time'
+admin.data_center.chart.memberNum.tip: Member(people)
+admin.data_center.chart.hour.tip: Time(hour)
+admin.setting.site.login.logo_setting_success: Upload landing page LOGO success！
+admin.setting.site.login.logo_delete_success: Delete landing page LOGO success！
+admin.setting.site.login.logo_delete_error: Delete landing page LOGO error！
+admin.data_center.chart.teacher_distribute: Teacher Distribute
+
+use_authorization.select_placeholder: Please enter name
+use_authorization.user_ids.required_message: Please select user
+use_authorization.setting.save: Authorization success
+resource.canceled_shared.message: Authorization cancelled successfully
+user.register.password_error.tips: 5-20 bits English, Numbers, symbols (excluding Spaces), case sensitive

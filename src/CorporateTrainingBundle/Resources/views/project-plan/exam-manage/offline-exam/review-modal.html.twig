@@ -1,0 +1,64 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set user = data('UserandProfiles',{userId:userId })%}
+{% set post = data('Post', {postId: user.postId}) %}
+{% set userOrgs = data('Orgs',{orgIds: user.orgIds}) %}
+
+{% set modalSize = 'small' %}
+
+{% do script(['libs/jquery-validation.js', 'corporatetrainingbundle/js/project-plan/exam-manage/offline-exam/review/index.js']) %}
+
+{% block title %}
+  {{ 'project_plan.item.offline_exam_review'|trans }}
+{% endblock %}
+
+{% block body %}
+<div class="mtl">
+  <form class="form-horizontal mtl" id="offline-exam-review-form" action="{{ path('project_plan_offline_exam_mark',{offlineExamId: offlineExam.id, userId:userId}) }}" method="post">
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'project_plan.member.nick_name'|trans }}:</label>
+      </div>
+      <div class="col-md-8 mts">
+        {% if user.profiles.truename|default() %}
+
+          {{ user.profiles.truename|trans }}
+        {% else %}
+          {{ user.nickname|default()|trans }}
+        {% endif %}
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'project_plan.member.post'|trans }}:</label>
+      </div>
+      <div class="col-md-8 mts">
+        {{ userOrgs.0.name|default('--') }}
+        {% if userOrgs.1|default(false) %}
+          <i class="es-icon es-icon-more ft-xsm" data-toggle="popover" data-container="body" data-trigger="hover"
+             data-placement="top" data-content="{{ userOrgs.orgNames|default() }}"></i>
+        {% endif %}
+        {% if post.name|default()%}
+          --{{ post.name|default() }}
+        {% endif %}
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label for="verify-status">{{ 'project_plan.member.score'|trans }}:</label>
+      </div>
+      <div class="col-md-8">
+        <input class="form-control" type="text" id="score" name="score" value="{{offlineExamResult.score|default(0)}}">
+      </div>
+      <p class="help-block col-md-offset-2 col-md-9">{{ 'project_plan.item.exam_score_info1'|trans }}<span id="testPaper-score">{{ offlineExam.score|default(0) }}</span>{{ 'site.data.score'|trans }}，{{ offlineExam.passScore|default(0) }}{{ 'project_plan.item.exam_score_info3'|trans }}</p>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
+{% block footer %}
+  <button id="server-create-btn" data-submiting-text="{{ 'form.btn.submit.submiting'|trans }}" type="submit"
+          class="btn btn-primary pull-right js-save-btn" data-toggle="form-submit"
+          data-loading-text="{{ 'project_plan.btn.save_loading_btn'|trans }}">{{ 'project_plan.btn.ok_btn'|trans }}</button>
+  <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{ 'form.btn.cancel'|trans }}</button>
+{% endblock %}

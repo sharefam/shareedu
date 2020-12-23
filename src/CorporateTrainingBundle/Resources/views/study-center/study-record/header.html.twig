@@ -1,0 +1,24 @@
+<div class="user-info bg-gray">
+  <div class="pull-left mrm">
+    <div class='course-pie-chart js-chart' data-percent="{% if postCourseCount > 0 %}{{ (learnedCoursesNum / postCourseCount) * 100 }}{% else %}0{% endif %}">
+      <div class="course-pie-chart-hover js-pie-chart-hover hidden">
+        {% if postCourseCount > 0 %}{{ ((learnedCoursesNum / postCourseCount) * 100)|round(0, 'floor')|default(0)}}{% else %}0{% endif %}%
+      </div>
+    </div>
+  </div>
+  <div class="user-info-content">
+    <div class="row">
+      <div class="task-learn-rank">
+        <i class="es-icon es-icon-trophy"></i>
+        {{ learnedCoursesNum|default(0) }}/{{ postCourseCount|default(0) }}
+      </div>
+      <div class="task-learn-time">
+        <i class="es-icon es-icon-accesstime"></i>
+        {{totalLearnTime|time_format_hour}}
+      </div>
+      <div class="task-learn-last-time">
+        {{'study_center.study_record.header.last_study_time'|trans}}：{% if recentStartTask|default() %}{{ recentStartTask.updatedTime|date('Y-m-d') }}{% else %}--{% endif %}
+      </div>
+    </div>
+  </div>
+</div>

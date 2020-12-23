@@ -1,0 +1,64 @@
+{% extends 'old-bootstrap-modal-layout.html.twig' %}
+
+{% set modal_class = 'sync-department-modal' %}
+{% block title %}{{ 'admin.org_manage.btn.sync_department_btn'|trans }}{% endblock %}
+
+{% block body %}
+  <div class="row item-wrap">
+    <div class="col-xs-6">
+      <div class="item js-item active"> 
+        <div class="item__hd"> 
+          <img src="{{asset('bundles/corporatetraining/img/admin/dingding.png')}}"> 
+          <i class="es-icon es-icon-arrowforward"></i>   
+          <img src="{{asset('bundles/corporatetraining/img/admin/es.png')}}">    
+        </div>
+        <div class="item__bd text-center">
+          {{ 'admin.org_manage.sync_department.message.one'|trans }}
+        </div>
+        <div class="item__ft text-danger text-center">
+          {{ 'admin.org_manage.sync_department.message.two'|trans }}
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-6">
+      <div class="item js-item"> 
+        <div class="item__hd">
+          <img src="{{asset('bundles/corporatetraining/img/admin/es.png')}}">
+          <i class="es-icon es-icon-arrowforward"></i>
+          <img src="{{asset('bundles/corporatetraining/img/admin/dingding.png')}}">
+        </div>
+        <div class="item__bd text-center">
+          {{ 'admin.org_manage.sync_department.message.three'|trans }}
+        </div>
+        <div class="item__ft text-danger text-center">
+          {{ 'admin.org_manage.sync_department.message.four'|trans }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <form class="form-horizontal" id="sync-department-form" method="post" action="" style="display: none;">
+    <div class="form-group">
+      <div class="col-md-1 control-label">
+        <label></label>
+      </div>
+      <div class="controls col-md-11 radios">
+        <input class="js-radio" type="radio" name="sync-type" data-url="{{ path('admin_org_sync_department_from') }}" checked="">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-1 control-label">
+        <label></label>
+      </div>
+      <div class="controls col-md-11 radios">
+        <input class="js-radio" type="radio" name="sync-type" data-url="{{ path('admin_org_sync_department_to') }}">
+      </div>
+    </div>
+  </form>
+{% endblock %}
+
+{% block footer %}
+  <button id="sync-department-btn" data-submiting-text="{{'form.btn.submit.submiting'|trans}}" type="submit" class="btn btn-primary pull-right" data-toggle="form-submit" data-target="#sync-department-form">{{'form.btn.confirm'|trans}}</button>
+  <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{'form.btn.cancel'|trans}}</button>
+  <script>app.load('corporatetrainingbundle/controller/org-manage/sync-department.js') </script>
+{% endblock %}

@@ -1,0 +1,395 @@
+body {
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif ;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  &:hover , &:focus {
+    text-decoration: none;
+  }
+}
+
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+  background: none;
+}
+
+//边框
+.bor-no {
+  border: none;
+}
+
+.bor-base {
+  border: 1px solid @border-color;
+}
+
+.borb {
+  border-bottom: 1px solid @border-color;
+}
+
+.borw-md{
+  border-width: 2px;
+}
+
+.borw-lg {
+  border-width: 4px;
+}
+.br-sm {
+  border-radius: 2px;
+}
+
+.br-md {
+  border-radius: 4px;
+}
+.br-max {
+  border-radius: 100000px;
+}
+// 背景
+
+
+.bg-lit {
+  background-color: #ffffff;
+}
+
+.bg-gray {
+  background-color: @bg-gray;
+}
+
+// 字体大小
+
+.ft-xsm {
+  font-size: 12px;
+}
+
+.ft-sm {
+  font-size: 14px;
+}
+
+.ft-md {
+  font-size: 16px;
+}
+
+.ft-lg {
+  font-size: 18px;
+}
+
+.ft-xlg {
+  font-size: 20px;
+}
+
+//字体粗细
+
+.ft-wide{
+  font-weight: bold;
+}
+
+//
+//
+.colr-lightest {
+  color: #ffffff;
+}
+// 元素间距类
+
+.mar-no {
+  margin: 0;
+}
+
+.mts {margin-top: 5px;}
+.mtm {margin-top: 10px;}
+.mtl {margin-top: 20px;}
+.mtxl {margin-top: 30px;}
+
+.mrs {margin-right: 5px;}
+.mrm {margin-right: 10px;}
+.mrl {margin-right: 20px;}
+.mrxl {margin-right: 30px;}
+
+.mbs {margin-bottom: 5px;}
+.mbm {margin-bottom: 10px;}
+.mbl {margin-bottom: 20px;}
+.mbxl {margin-bottom: 30px;}
+
+.mls {margin-left: 5px;}
+.mlm {margin-left: 10px;}
+.mll {margin-left: 20px;}
+.mlxl {margin-left: 30px; }
+
+.mhs {margin-left: 5px; margin-right: 5px;}
+.mhm {margin-left: 10px; margin-right: 10px;}
+.mhl {margin-left: 20px; margin-right: 20px;}
+
+.mvs {margin-top: 5px; margin-bottom: 5px;}
+.mvm {margin-top: 10px; margin-bottom: 10px;}
+.mvl {margin-top: 20px; margin-bottom: 20px;}
+
+//内边距
+
+.pad-no {
+  padding: 0;  
+}
+
+.pts {padding-top: 5px;}
+.ptm {padding-top: 10px;}
+.ptl {padding-top: 20px;}
+.ptxl {padding-top: 30px;}
+
+.prs {padding-right: 5px;}
+.prm {padding-right: 10px;}
+.prl {padding-right: 20px;}
+
+.pbs {padding-bottom: 5px;}
+.pbm {padding-bottom: 10px;}
+.pbl {padding-bottom: 20px;}
+
+.pls {padding-left: 5px;}
+.plm {padding-left: 10px;}
+.pll {padding-left: 20px;}
+
+.phs {padding-left: 5px; padding-right: 5px;}
+.phm {padding-left: 10px; padding-right: 10px;}
+.phl {padding-left: 20px; padding-right: 20px;}
+.phxl {padding-left: 30px; padding-right: 30px;}
+
+.pvs {padding-top: 5px; padding-bottom: 5px;}
+.pvm {padding-top: 10px; padding-bottom: 10px;}
+.pvl {padding-top: 20px; padding-bottom: 20px;}
+.pvxl {padding-top: 30px; padding-bottom: 30px;}
+
+
+//color
+.color-primary {
+  color: @brand-primary !important;
+}
+
+.color-light {
+  color: #ffffff;
+}
+
+.gray-darker {
+  color: @gray-darker !important;
+}
+
+.gray-dark {
+  color: @gray-dark !important;
+}
+
+.gray {
+  color: @gray;
+}
+
+.gray-medium {
+  color: @gray-medium;
+}
+//布局类
+
+.wid-20 {
+  width: 20px;
+} 
+
+.wid-30 {
+  width: 30px;
+}
+
+.wid-50 {
+  width: 50px;
+}
+
+.wid-full {
+  width: 100%;
+}
+
+.wid-1of2 {
+  width: 50%;
+}
+
+.wid-1of3 {
+  width: 33.33%;
+}
+
+.wid-1of4 {
+  width: 25%;
+}
+
+.wid-1of5 {
+  width: 20%;
+}
+
+.wid-1of6 {
+  width: 16.66%;
+}
+
+.wid-1of7 {
+  width: 14.28%;
+}
+
+.va-mid {
+  vertical-align: middle;
+}
+
+.va-t {
+  vertical-align: top;
+}
+
+.va-b {
+  vertical-align: bottom;
+}
+
+.ta-ctr {
+  text-align: center;
+}
+
+.ta-r {
+  text-align: right;
+}
+
+.ta-l {
+  text-align: left;
+}
+
+.dis-blk {
+  display: block;
+}
+
+.dis-i-b {
+  display: inline-block;
+}
+
+.pos-rel {
+  position: relative;
+}
+
+.z-ori {
+  z-index: 0;
+}
+.z-sm {
+  z-index: 1;
+}
+
+.z-md {
+  z-index: 10;
+}
+
+.z-lg {
+  z-index: 100;
+}
+
+.opa-sm {
+  opacity: 0.2;
+}
+
+.opa-md {
+  opacity: 0.5;
+}
+
+.opa-lg {
+  opacity: 0.8;
+}
+
+.cut-off {
+  width: 100%;
+  border-bottom: 1px solid @border-color;
+}
+
+//待处理的
+.nor-search {
+
+  .form-group {
+    position: relative;
+  }
+}
+
+.nor-search-input  {
+  height: 30px;
+  width: 100px !important;
+  border-radius: 20px;
+  line-height: 28px;
+  padding: 0 24px 0 12px;
+  border-color: #ffffff;
+  border: 1px solid @border-color;
+  .es-transition;
+
+  &:focus {
+    width: 150px !important;
+  }
+}
+
+.nor-search-icon {
+  position: absolute;
+  right: 2px;
+  top: 6px;
+  border: none;
+  background: none;
+}
+
+.nav-pills.nav-sm {
+  > li > a {
+    padding: 5px 10px;
+  }
+} 
+
+.es-icon {
+  line-height: 1;
+}
+
+.box-shadow-com {
+  .box-shadow(0px 0px 10px rgba(0, 0, 0, 0.15));
+}
+
+.box-shadow-com-hover {
+  .box-shadow(0 0 28px -4px rgba(0,0,0,.3));
+}
+
+.clearfix {
+  &:after{
+    content: '';
+    display: table;
+    clear:both;
+  }
+}
+
+.link-gray {
+  color: @gray !important;
+  .es-transition;
+
+  &:hover {
+    color: @brand-primary !important;
+  }
+}
+
+.new-color-info {
+  color: @new-color-info;
+}
+
+.new-color-warning {
+  color: @new-color-warning;
+}
+
+.course-empty {
+  margin-top: 50px;
+  margin-bottom: 60px;
+  
+  .course-empty-hd {
+  }
+
+  .course-empty-bd {
+    margin-top: 30px;
+  }
+
+  .course-empty-text {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+}
+
+.vis-v {
+  visibility: visible;
+}
+
+.vis-h {
+  visibility: hidden;
+}

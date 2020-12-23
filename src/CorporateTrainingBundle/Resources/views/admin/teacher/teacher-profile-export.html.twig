@@ -1,0 +1,81 @@
+{% extends 'old-bootstrap-modal-layout.html.twig' %}
+
+
+{% set modalSize = 'large' %}
+
+{% block title %}{{ 'admin.teacher.list.exporter'|trans }}{% endblock %}
+{% block body %}
+<style type="text/css">
+	.mtm div{
+		margin-bottom: 10px
+	}
+</style>
+<form id="user-export-form" class="form-horizontal" method="get" action="{{ path('exporter_export', {type: 'teacher_profile' })}}">
+	<div class="row mtm">
+		<div class="col-md-offset-5">
+			<lable>{{ 'admin.teacher.teacher_archives.exporter.default_field'|trans }}</lable>
+		</div>
+ 		<div class="col-md-11 col-md-offset-1" >
+	 		<div class="row ">
+	 			<div class="col-md-6">
+	 				<input class="pull-left" id="nickname" name="choices[]" type="checkbox" value="用户名" checked="checked" />
+					<span class="pull-left">{{ 'admin.teacher.list.exporter.nickname'|trans }}</span>
+	 			</div>
+	 			<div class="col-md-6">
+		 			<input class="pull-left" id="promote" name="choices[]" type="checkbox" value="是否推荐" checked="checked" />
+					<span class="pull-left">{{ 'admin.teacher.list.exporter.promote'|trans }}</span>
+				</div>
+				{% if setting('magic.enable_org','0') %}
+					<div class="col-md-6">
+		 				<input class="pull-left" id="orgName" name="choices[]" type="checkbox" value="组织机构" checked="checked" />
+						<span class="pull-left">{{ 'admin.teacher.list.exporter.org_name'|trans }}</span>
+		 			</div>
+				{% endif %}
+				<div class="col-md-6">
+					<input class="pull-left" id="teacherProfessionField" name="choices[]" type="checkbox" value="专业领域" checked="checked" />
+					<span class="pull-left">{{ 'admin.teacher.list.exporter.field'|trans }}</span>
+				</div>
+				<div class="col-md-6">
+					<input class="pull-left" id="level" name="choices[]" type="checkbox" value="等级" checked="checked" />
+					<span class="pull-left">{{ 'admin.teacher.list.exporter.level'|trans }}</span>
+				</div>
+				<div class="col-md-6">
+		 			<input class="pull-left" id="courseNum" name="choices[]" type="checkbox" value="在教线上课程" checked="checked" />
+					<span class="pull-left">{{ 'admin.teacher.list.exporter.course_num'|trans }}</span>
+				</div>
+	 			<div class="col-md-6">
+		 			<input class="pull-left" id="courseStudentNum" name="choices[]" type="checkbox" value="线上教学人次" checked="checked" />
+					<span class="pull-left">{{ 'admin.teacher.list.exporter.course_student_num'|trans }}</span>
+				</div>
+				<div class="col-md-6">
+		 			<input class="pull-left" id="offlineCourseNum" name="choices[]" type="checkbox" value="在教线下课程" checked="checked" />
+					<span class="pull-left">{{ 'admin.teacher.list.exporter.offline_course_num'|trans }}</span>
+				</div>
+	 			<div class="col-md-6">
+		 			<input class="pull-left" id="offlineCourseStudentNum" name="choices[]" type="checkbox" value="线下教学人次" checked="checked" />
+					<span class="pull-left">{{ 'admin.teacher.list.exporter.offline_course_student_num'|trans }}</span>
+				</div>
+				{% if is_plugin_installed('Survey') %}
+					<div class="col-md-6">
+						<input class="pull-left" id="courseSurveyScore" name="choices[]" type="checkbox" value="线上课程综合教评" checked="checked"  />
+						<span class="pull-left">{{ 'admin.teacher.list.exporter.course_survey_score'|trans }}</span>
+					</div>
+					<div class="col-md-6">
+						<input class="pull-left" id="offlineCourseSurveyScore" name="choices[]" type="checkbox" value="线下课程综合教评" checked="checked" />
+						<span class="pull-left">{{ 'admin.teacher.list.exporter.offline_course_survey_score'|trans }}</span>
+					</div>
+				{% endif %}
+	 		</div>
+        </div>
+    </div>
+	<input type="hidden" name="surveyPlugin" value="{{ is_plugin_installed('Survey')|default(1) }}">
+	<input type="hidden" name="conditions" value="{{ conditions|default('') }}">
+ 	<input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+ 
+</form>
+{% endblock %}
+
+{% block footer %}
+  	<button id="user-export-btn" data-submiting-text="{{ 'form.btn.export.submiting'|trans }}" type="submit" class="btn btn-primary btn-sm pull-right mhs" data-toggle="form-submit" data-target="#user-export-form"><i class="glyphicon glyphicon-export"></i> {{ 'admin.teacher.teacher_archives.course.exporter'|trans }}</button>
+  	<a type="button" class="btn btn-link pull-right" data-dismiss="modal">{{ 'form.btn.cancel'|trans }}</a>
+{% endblock %}

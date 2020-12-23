@@ -1,0 +1,41 @@
+{% import "macro.html.twig" as web_macro %}
+{% if classroomInfo%}
+  <table class="table table-striped table-hover 111" id="classroom-table">
+    {% set locale = app.request.locale %}
+    {% set classroomName = (locale and 'en' == locale) ? 'Topic' : get_classroom_name() %}
+    <thead>
+    <tr>
+      {% if setting('magic.enable_org','0') %}
+        <th><input type="checkbox"  data-role="batch-select"></th>
+      {% endif %}
+      <th>{{'admin.classroom_manage.manage.number_th'|trans({'%title%':classroomName}) }}</th>
+      <th width="22%">{{'admin.classroom_manage.manage.name_th'|trans({'%name%':classroomName})}}</th>
+      {% include 'org/parts/table-thead-tr.html.twig' %}
+      <th>{{'admin.classroom_manage.manage.course_number_th'|trans}}</th>
+      <th>{{'admin.classroom_manage.manage.student_number_th'|trans}}</th>
+      <th>{{'admin.classroom_manage.manage.status_th'|trans}}</th>
+      <th>{{'admin.classroom_manage.manage.operate_th'|trans}}</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for classroom in classroomInfo %}
+      {% set category = categories[classroom.categoryId]|default(null) %}
+      {% include 'admin/classroom/table-tr.html.twig' with {classroom:classroom,category:category} %}
+
+    {% endfor %}
+
+    </tbody>
+
+  </table>
+{% else %}
+  <div class="empty">{{'admin.classroom_manage.manage.empty'|trans({'%name%':classroomName})}}</div>
+{% endif %}
+<div>
+  <label class="checkbox-inline"><input type="checkbox" data-role="batch-select"> {{ 'site.btn.all_select'|trans }}</label>
+  <a class="btn btn-default btn-sm mlm " id="batch-update-org" data-form-id="classroom-table" data-toggle="modal" data-generate="{{'true'|default(false)}}" data-target="#modal" data-url="{{path('admin_batch_update_org',{module:'classroom'})}}">{{ 'site.org.setup'|trans }}</a>
+</div>
+
+<nav class="text-center">
+  {{ web_macro.ajax_paginator(paginator) }}
+</nav>

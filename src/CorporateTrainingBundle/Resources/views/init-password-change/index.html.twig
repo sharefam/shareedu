@@ -1,0 +1,55 @@
+{% extends 'layout.html.twig' %}
+{% do script(['libs/jquery-validation.js','corporatetrainingbundle/js/init-password-change/index.js'])%}
+
+{% block header %}
+  {% include 'site-hint.html.twig' %}
+  {{ block_show('jianmo:login_bg') }}
+{% endblock %}
+
+{% set bodyClass = "pwd_reset index_bg_item" %}
+{% block title %}{{'init_password_change.title'|trans}} - {{ parent() }}{% endblock %}
+
+{% block content %}
+<div class="pwd-reset-container">
+  <div class="pwd-reset-section ">
+    <div class="panel panel-default panel-page pwd-reset-main"　style="width:500px;">
+      <h2 class="ft-xlg text-center mtm">{{'init_password_change.content.tips_one'|trans}}</h2>
+      <div class="ft-sm text-center mbl gray">{{'init_password_change.content.tips_two'|trans}}</div>
+      <form id="password-reset-form" class="form-vertical" action="{{ path('password_change') }}" method="post">
+        <div class="form-group input-icon-wrap">
+          <label class="control-label hidden" for="newPassword">{{'init_password_change.content.new_password'|trans}}</label>
+          <div class="controls">
+            <i class="es-icon es-icon-lock"></i>
+            <input class="form-control input-md input-md-style" id="newPassword" type="password" name="newPassword"　required placeholder='{{'init_password_change.content.new_password.placeholder'|trans}}' />
+            <div class="help-block"></div>
+          </div>
+        </div>
+
+        <div class="form-group input-icon-wrap cd-mt40">
+          <label class="control-label hidden" for="confirmPassword">{{'init_password_change.content.confirm_password'|trans}}</label>
+          <div class="controls">
+            <i class="es-icon es-icon-lock"></i>
+            <input class="form-control input-md input-md-style" id="confirmPassword" type="password" name="confirmPassword"　required placeholder='{{'init_password_change.content.confirm_password.placeholder'|trans}}' />
+            <div class="help-block"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="controls password-btn-block-wrap">
+            <button type="submit" data-loading-text="{{ 'init_password_change.content.submit'|trans }}" class="btn btn-primary btn-block bor-no">{{'course.plan_task.activity_manage.exercise.confirm_submit'|trans}}</button>
+          </div>
+        </div>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+      </form>
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block footer %}
+  {% include 'CorporateTrainingBundle:ct-default:footer-index.html.twig' %}
+{% endblock %}

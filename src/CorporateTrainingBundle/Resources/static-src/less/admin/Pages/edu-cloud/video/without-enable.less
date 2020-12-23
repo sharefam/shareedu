@@ -1,0 +1,79 @@
+@brand-primary: #0093FF;
+.list-item .list-item-container{
+  padding: 50px;
+  display: block;
+  background: #FFFFFF;
+  border: 1px solid #C0C4CC;
+  margin-bottom: 24px;
+  color: #606266;
+  .list-item-pic{
+    display: inline-block;
+    img{
+      display: block;
+      width:80px;
+      height: 72px;
+    }
+  }
+  .list-item-txt{
+    display: inline-block;
+    width: 72%;
+    vertical-align: top;
+    line-height: 24px;
+    padding-left: 51px;
+    padding-top: 6px;
+    height: 100px;
+    .list-item-txt_title{
+      font-size: 18px;
+      color: #303133;
+    }
+    .list-item-txt_desc{
+      font-size: 14px;
+      color: #606266;
+    }
+  }
+}
+.start-msg{
+  font-size: 14px;
+  color: #303133;
+  line-height: 20px;
+  margin-bottom: 24px !important;
+  margin-top: 16px !important;
+}
+.panel-body-bg{
+  background: rgba(red(@brand-primary), green(@brand-primary), blue(@brand-primary), 0.08);
+}
+.btn-primary,.btn-primary:hover{
+  background: @brand-primary
+}
+.notice-desc-mb{
+  margin-bottom: 23px;
+}
+.text-primary{
+  display: inline-block;
+  color: @brand-primary;
+  padding-top: 10px;
+}
+.edu-cloud-intro{
+  margin-top: 4px;
+}
+.email-img{
+  width: 80px !important;
+  height: 85px !important;
+}
+@media (min-width: 1500px){
+  .edu-cloud-intro {
+    .col-md-6{
+      width: 33.33333333%;
+    }   
+  }
+}
+@media (min-width: 1500px) and (max-width: 1594px){
+  .list-item .list-item-container{
+    .list-item-pic{
+      img{
+        width: 70px;
+        height: 64px;
+      }
+    }  
+  }
+ }

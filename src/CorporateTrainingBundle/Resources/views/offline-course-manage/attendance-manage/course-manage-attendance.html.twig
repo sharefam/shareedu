@@ -1,0 +1,77 @@
+{% extends 'offline-course-manage/layout.html.twig' %}
+{% import 'macro.html.twig' as web_macro %}
+
+{% do script(['corporatetrainingbundle/js/offline-course-manage/attendance-manage/index.js']) %}
+
+{% block title %}{{ 'offline_course.attendance_manage'|trans }} - {{ parent() }}{% endblock %}
+{% set side_nav = 'attendance-manage' %}
+
+{% block main %}
+<div class="panel panel-default" role="offline-course-manage-base">
+  <div class="panel-heading">{{ 'offline_course.attendance_manage'|trans }}</div>
+    <div class="panel-body">
+        {% if tasks|default(null) %}
+          {% for task in tasks %}
+          <div class="clearfix attendance-item">
+            <div class=" attendance-info col-md-8">
+              <div class="attendance-header">
+                <a class="link-darker" href="{{ path('training_offline_course_manage_tasks', {id: offlineCourse.id}) }}">{{ task.title|default('') }}</a>
+                <a class="link-gray attendance-qrcode mls" target="_blank" href="{{ path('project_plan_offline_course_manage_sign_qrcode', {taskId: task.id })  }}"><i class="es-icon es-icon-qrcode"></i>{{ 'offline_course.tasks.sign_qrcode'|trans }}</a>
+              </div>
+              <div class="attendance-meta-time">
+                <span class="mrl">{{'project_plan.overview_board.offline_course.time'|trans}}：
+                  {% if task.startTime == 0 %}
+                    {{ '--'|trans }}
+                  {% else %}
+                    {{ task.startTime|date('Y-m-d H:i')  }}
+                  {% endif %}
+                  -
+                  {% if task.endTime == 0 %}
+                    {{ '--'|trans }}
+                  {% else %}
+                    {{ task.endTime|date('Y-m-d H:i')  }}
+                  {% endif %}
+                </span>
+              </div>
+              <div class="attendance-meta">
+                <span class="mrl">{{'offline_course.tasks.place'|trans}}：{{ task.place|default('') }}</span>
+              </div>
+            </div>
+
+            <div class="result-info col-md-4 text-center">
+              <div class="row">
+                {% if date(task.endTime) >= date() %}
+                  <div class="count-info pull-left color-warning col-md-6">
+                    <a href="javascript:;" data-url="{{ path('project_plan_offline_course_attendance_task_manage', {id:offlineCourse.id, taskId: task.id}) }}">
+                      <span class="attendance-span">{{'project_plan.status.unattend'|trans}}</span><br>
+                      <p class="mtm pts">{{ task.unfinishedMemberCount|default(0) }}</p>
+                    </a>
+                  </div>
+                {% else %}
+                  <div class="count-info pull-left color-danger col-md-6">
+                    <a href="javascript:;" data-url="{{ path('project_plan_offline_course_attendance_task_manage', {id:offlineCourse.id, taskId: task.id}) }}">
+                      <span class="attendance-span">{{'project_plan.status.absenteeism'|trans}}</span><br>
+                      <p class="mtm pts">{{ task.unfinishedMemberCount|default(0) }}</p>
+                    </a>
+                  </div>
+                {% endif %}
+                <div class="count-info pull-left color-success col-md-6">
+                  <a href="javascript:;" data-url="{{ path('project_plan_offline_course_attendance_task_manage', {id:offlineCourse.id, taskId: task.id}) }}">
+                    <span class="attendance-span">{{'project_plan.status.registered'|trans}}</span><br>
+                    <p class="mtm pts">{{ task.finishedCount|default(0) }}</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <div class="empty">{{'offline_course.empty'|trans}}</div>
+        {% endif %}
+
+      <nav class="text-center">
+        {{ web_macro.paginator(paginator) }}
+      </nav>
+    </div>
+  </div>
+{% endblock %}

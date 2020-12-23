@@ -1,0 +1,48 @@
+<div id="login-heatmap-chart" v-cloak="v-cloak">
+  <div class="aside-panel">
+    <div class="aside-panel-heading ct-mtxl clearfix">
+      <span class="aside-panel-heading_title fl">{{ 'admin.data_center.user_data.statistic'|trans }}</span>
+    </div>
+    <div class="form-inline ct-well ct-mbl">
+      <div class="form-group ft-sm">{{ 'admin.data_center.user_data.dataSearchTime.filter'|trans }}</div>
+      <div class="form-group prl">
+        <div id="date-range-picker">
+          <input id="loginSearchTime" type="hidden" value="{{ loginSearchTime.startDate }}">
+          <el-date-picker v-model="value" name="dataSearchTime" type="week" format="yyyy-MM-dd" placeholder="选择周" :picker-options="pickerOptions" @change="change"></el-date-picker>
+        </div>
+      </div>
+      <div class="form-group ft-sm prl">{{ 'admin.data_center.user_data.org.filter'|trans }}</div>
+      <div class="form-group prl">
+          <div class="dis-i-b">
+            {% include 'org-select/index.html.twig' with {
+              id: 'user-orgCode-login',
+              placeholder: 'admin.org.select_placeholder'|trans,
+              data: build_org_tree(app.user.orgCodes),
+              treeName: 'orgCode'
+            }
+            %}
+        </div>
+      </div>
+      <div class="form-group ft-sm prl">{{ 'admin.data_center.user_data.post.filter'|trans }}</div>
+      <div class="dis-i-b prl">
+        {% include 'post/post-tree-select.html.twig' with {modal: 'list', selectedWith: 120} %}
+      </div>
+      <div class="form-group">
+        <button class="btn btn-primary js-login-search" data-url="{{ path('admin_data_center_user_login_heatmap') }}">{{ 'form.btn.search'|trans }}</button>
+      </div>
+    </div>
+  </div>
+  <div class="login-heatmap-wrapper js-heatmap">
+    <div class="o-ct-tab_time fl">
+      <ul class="heatmap-nav js-nav clearfix">
+        <li class="active">
+          <a href="javascript:;" data-url="{{ path('admin_data_center_user_login_heatmap')}}" data-value="all">{{ 'admin.data_center.user_data.login_time'|trans }}</a>
+        </li>
+        <li class="">
+          <a href="javascript:;" data-url="{{ path('admin_data_center_user_login_heatmap')}}" data-value="app">{{ 'admin.data_center.user_data.app.login_time'|trans }}</a>
+        </li>
+      </ul>
+    </div>
+    <div id="login-heatmap-data" style="height: 500px;"></div>
+  </div>
+</div>

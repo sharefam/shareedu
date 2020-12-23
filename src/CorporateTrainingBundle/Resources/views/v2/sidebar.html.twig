@@ -1,0 +1,55 @@
+<div class="cd-sidebar">
+  <ul class="cd-sidebar__list">
+    {% if app.user.isTeacher() and (not userId|default() or userId==app.user.id) %}
+      <li class="cd-sidebar__heading">
+        {{'my.teaching.teaching_record'|trans}}
+      </li>
+      <li class="cd-sidebar__item {% if side_nav == 'my-teaching-record' %} active {% endif %}">
+        <a href="{{ path('my_teaching_record') }}">{{ 'my.teaching.teaching_record'|trans }}
+        </a>
+      </li>
+      <li class="cd-sidebar__item {% if side_nav == 'material-lib' %} active {% endif %}">
+        <a href="{{ path('material_lib_browsing') }}">{{ 'my.teaching.material_lib_menu'|trans }}</a>
+      </li>
+    {% endif %}
+    <li class="cd-sidebar__heading">
+      {{'homepage.header.study_record'|trans}}
+    </li>
+    <li class="cd-sidebar__item {% if side_nav == 'study-record' %}active{% endif %}" >
+      <a href="{{ path('study_record_project_plan', {userId:userId|default(app.user.id)}) }}">{{'study_record.project_plan'|trans}}</a>
+    </li>
+    <li class="cd-sidebar__item {% if side_nav == 'offline-activity' %}active{% endif %}" >
+      <a href="{{ path('study_record_offline_activity',{userId: userId|default(app.user.id)}) }}">
+        {{ 'study_record.offline_activity'|trans }}
+      </a>
+    </li>
+    <li class="cd-sidebar__item {% if side_nav == 'statistics' %}active{% endif %}" >
+      <a href="{{ path('study_record_statistics_overview', {userId:userId|default(app.user.id)}) }}">{{'study_record.online_course_record'|trans}}</a>
+    </li>
+    {% if not userId|default() or userId==app.user.id %}
+      {% if is_plugin_installed('RewardPoint') and setting('reward_point.enable') == 1|default()%}
+      <li class="cd-sidebar__heading">
+        {{'my.learning.classroom'|trans({'%name%':setting('reward_point').name|default('admin.reward_point'|trans)})}}
+      </li>
+      <li class="cd-sidebar__item {% if side_nav == 'my-reward-point' %}active{% endif %}">
+        <a href="{{ path('my_reward_point', {userId:app.user.id|default(0)}) }}">{{'my.learning.classroom'|trans({'%name%':setting('reward_point').name|default('admin.reward_point'|trans)})}}</a>
+      </li>
+      <li class="cd-sidebar__item {% if side_nav == 'my-reward-point-mall' %}active{% endif %}">
+        <a  href="{{  path('my_reward_point_mall') }}">{{'my.reward_point.mall'|trans({'%name%':setting('reward_point').name|default('admin.reward_point'|trans)})}}</a>
+      </li>
+      {% endif %}
+      <li class="cd-sidebar__heading">
+        {{'user.settings.menu_heading'|trans}}
+      </li>
+      <li class="cd-sidebar__item {% if side_nav == 'profile' %}active{% endif %}">
+        <a href="{{ path('settings') }}">{{'user.settings.personal_info_menu'|trans}}</a>
+      </li>
+      <li class="cd-sidebar__item {% if side_nav == 'security' %}active{% endif %}">
+        <a href="{{ path('settings_security') }}">{{'user.settings.security_menu'|trans}}</a>
+      </li>
+      <li class="cd-sidebar__item {% if side_nav == 'binds' %}active{% endif %}" >
+        <a href="{{ path('settings_binds') }}">{{'user.settings.oauth_menu'|trans}}</a>
+      </li>
+    {% endif %}
+  </ul>
+</div>

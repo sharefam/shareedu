@@ -1,0 +1,59 @@
+{% extends 'layout.html.twig' %}
+
+{% set bodyClass = 'offline-activity-detail' %}
+
+{% block full_content %}
+<div class="container">
+  <section class="c-offline-activity-detail">
+    <div class="c-offline-activity-detail__hd">
+      <ol class="breadcrumb breadcrumb--tra c-offline-activity-detail__breadcrumb pull-left">
+        <li><a href="{{ path('offline_activity_list') }}">{{ 'offline_activity.channel'|trans }}</a></li>
+        <li class="active">{{ offlineActivity.title|plain_text(8) }}</li>
+      </ol>
+      <a class="link-dark pull-right" href="{{ path('study_record_offline_activity',{userId: app.user.id}) }}">{{ 'offline_activity.detail.my_activities.check'|trans }}<i class="es-icon es-icon-chevronright"></i></a>
+    </div>
+    <div class="c-offline-activity-detail__bd">
+      {% include 'offline-activity/widgets/offline-activity.html.twig' with {canAccess: canAccess}%}
+    </div>
+    <div class="c-offline-activity-detail__ft">
+      <div class="c-offline-activity-detail-info">
+        <div class="c-offline-activity-detail-info__hd">
+          <div class="c-offline-activity-detail-info__title">
+            {{ 'offline_activity.detail.activity'|trans }}
+          </div>
+        </div>
+        <div class="c-offline-activity-detail-info__bd">
+          {% if offlineActivity.summary %}
+            {{ offlineActivity.summary|raw }}
+          {% else %}
+            <div class="empty text-left pad-no">{{ 'offline_activity.detail.activity_empty.tips'|trans }}</div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="c-offline-activity-detail-info">
+        <div class="c-offline-activity-detail-info__hd">
+          <div class="c-offline-activity-detail-info__title">
+            {{ 'offline_activity.detail.member'|trans }}
+          </div>
+        </div>
+        <div class="c-offline-activity-detail-info__bd">
+            {% if  users %}
+              <div class="c-offline-activity-detail__member-wrap">
+                {% for user in users %}
+                <a class="c-offline-activity-detail__member-img-wrap js-user-card" href="{{ path('user_show', {'id': user.uuid}) }}"
+                  data-card-url="{{ path('user_card_show', {'userId': user.id}) }}"
+                  data-user-id="{{ user.id }}"
+                  data-original-title="" title="">
+                  <img title="{{ user.nickname }}" class="c-offline-activity-detail__member-img" src="{{ filepath(user.mediumAvatar|default(), 'avatar.png') }}">
+                </a>
+                {% endfor %}
+              </div>
+            {% else %}
+               <div class="empty text-left pad-no">{{ 'offline_activity.detail.member_empty.tips'|trans }}</div>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

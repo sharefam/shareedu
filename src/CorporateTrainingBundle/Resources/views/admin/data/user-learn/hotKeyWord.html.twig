@@ -1,0 +1,7 @@
+<ul class="clearfix">
+  {% if hotKeyWords|default() %}
+    {% for hotKeyWord in hotKeyWords %}
+      <li class="js-type-tag tag" data-type="tag-{{hotKeyWord.type}}" data-toggle="tooltip" data-placement="top" data-html="true" title="<p align='left'>累计有{{ hotKeyWord.num|default(0) }}人参加该类型的</br>{{ hotKeyWord.name|default() }}</p>">{{ hotKeyWord.categoryName|default() }}</li>
+    {% endfor %}
+  {% endif %}
+</ul>

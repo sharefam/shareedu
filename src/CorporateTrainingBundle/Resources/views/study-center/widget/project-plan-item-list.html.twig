@@ -1,0 +1,45 @@
+<div class="js-tab-block-wrap">
+  <div class='c-ctr-task-item__nav-wrap'>
+    <ul class="nav nav-line js-tab-link-wrap">
+      <li class="js-tab-link active" >
+        <a href="javascript:;" >{{'project_plan.preparation.items'|trans}}</a>
+      </li>
+      <li class="js-tab-link" >
+        <a href="javascript:;" >{{'project_plan.preparation.base.description'|trans}}</a>
+      </li>
+    </ul>
+  </div>
+  <div class="tab-block js-tab-sec is-active">
+    {% if projectPlanItems %}
+      <div class="period-list">
+        {% for index, projectPlanItem in projectPlanItems %}
+          {% if (projectPlanItem.detail is defined) %}
+            <div class="o-project-list">
+              {{ render(controller('CorporateTrainingBundle:StudyCenter/MyTask:courseTaskList', {projectPlanItem: projectPlanItem, userId: app.user.id|default(0), projectPlanId: projectPlan.id, tab_type: 'myTask'|default(null)})) }}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% else %}
+    <div class="empty">{{ 'project_plan.empty'|trans }}</div>
+    {% endif %}
+  </div>
+  <div class="tab-block js-tab-sec">
+    <div class="period-list">
+      <div class="es-piece">
+        <div class="piece-body">
+          <div class="typo">
+            {% if projectPlan.summary|default('') %}
+              {{ projectPlan.summary|raw }}
+            {% else %}
+              <div class="empty">
+              {{ 'project_plan.study_center.summary_empty'|trans }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

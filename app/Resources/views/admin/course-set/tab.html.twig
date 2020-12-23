@@ -1,0 +1,7 @@
+{% if leaseCourseCount > 0 %}
+  <div class="btn-group">
+    <a href=" {{ url('admin_course_set', {filter: 'normal'}) }}" type="button" class="btn btn-default btn-sm {% if filter == 'normal'%}btn-primary{% endif %}">{{ 'admin.course_manage.manage.normal_course'|trans }}</a>
+    <a href=" {{ url('admin_lease_course') }}" type="button" class="btn btn-default btn-sm {% if filter == 'lease' %}btn-primary{% endif %}">{{ 'admin.course_manage.manage.lease_course'|trans }}</a>
+  </div>
+  <br>
+{% endif %}

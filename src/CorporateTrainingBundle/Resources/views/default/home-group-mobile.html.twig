@@ -1,0 +1,50 @@
+{# 小组 #}
+<section class="o-home-sec">
+  <div class="container">
+    <div class="o-home-sec__hd">
+      <div class="m-home-sec__title">{{config.title|default(config.defaultTitle|trans)}}
+       <a href="{{ path('group_search_group') }}" class="m-article-more">{{ 'site.default.more'|trans }}</a>
+      </div>
+    </div>
+    <div class="o-home-sec__bd">
+      <div class="row">
+        {% if activeGroup|default() %}
+          {% for group in activeGroup %}
+            <div class="col-md-3">
+              <a class="m-home-group media" href="{{path('group_show',{id:group.id})}}" title="{{group.title}}">
+                <div class="m-home-group__l media-left">
+                  <img class="m-home-group__img" src="{{filepath(group.logo, 'group.png')}}">
+                </div>
+                <div class="m-home-group__r media-body">
+                  <div class="m-home-group__title">{{group.title}}</div>
+                  <div class="m-home-group__info-wrap clearfix">
+                    <div class="m-home-group__icon-item">
+                      成员：{{ group.memberNum }}
+                    </div>
+                    <div class="m-home-group__icon-item">
+                      话题：{{ group.threadNum }}
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        {% endif %}
+          {% if count < 4 %}
+              {% for i in 1..(4 - count) %}
+                <div class="col-xs-3 visible-lg">
+                  <img class="img-responsive mbl" src="{{ asset('static-dist/corporatetrainingbundle/img/group_def_pos@2x.png')}}">
+                </div>
+              {% endfor %}
+          {% elseif 4 < count and count < 8 %}
+              {% for i in 1..(8 - count) %}
+                <div class="col-xs-3 visible-lg">
+                  <img class="img-responsive mbl" src="{{ asset('static-dist/corporatetrainingbundle/img/group_def_pos@2x.png')}}">
+                </div>
+              {% endfor %}
+          {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+

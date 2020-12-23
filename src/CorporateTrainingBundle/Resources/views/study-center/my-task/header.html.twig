@@ -1,0 +1,26 @@
+<div class="post-cet">
+  <div class="post-cet-item-l">
+    <ul class="nav nav-pills nav-sm">
+      <li role="presentation" class="{% if tab_nav == 'project-plan' %}active{% endif %}">
+        <a href={{ path('study_center_my_task_training_list') }}>{{'project_plan'|trans}} <span class="badge badge--primary">{{ trainingNum|default('') }}</span></a>
+      </li>
+      <li role="presentation" class="{% if tab_nav == 'post' %}active{% endif %}" >
+        <a href="{{ path('study_center_my_task_learning') }}">{{'study_center.tab_nav.post_course'|trans}} <span class="badge badge--primary">{{ postNum|default('') }}</span></a>
+      </li>
+      {% if is_plugin_installed('Survey') %}
+        <li role="presentation" class="{% if tab_nav == 'survey' %}active{% endif %}">
+          {% set unfinishedSurveyNum = data('UnfinishedSurveyNumByType', {userId:app.user.id, type:'questionnaire'}) %}
+          <a href={{ path('study_center_my_task_survey') }}>{{'survey.studycenter.survey'|trans}} <span class="badge badge--primary">{{ unfinishedSurveyNum ? unfinishedSurveyNum : '' }}</span></a>
+        </li>
+      {% endif %}
+      {% if is_plugin_installed('Exam') %}
+        <li role="presentation" class="{% if tab_nav == 'exam' %}active{% endif %}">
+          {% set unfinishedExamNum = data('UnfinishedExamNum', {userId:app.user.id, projectPlanId:0}) %}
+          <a href={{ path('study_center_my_task_exam') }}>{{'subject.test'|trans}} <span class="badge badge--primary">{{ unfinishedExamNum ? unfinishedExamNum : '' }}</span></a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+  <div class="post-cet-item-r">
+  </div>
+</div>

@@ -1,0 +1,19 @@
+.footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.footer .copyright {
+  background-color: transparent;
+  border-top: none;
+}
+.footer .copyright li {
+  display: inline-block;
+  padding-left: 5px;
+  margin-right: 5px;
+  line-height: 1;
+}
+.footer .copyright li:not(:first-child) {
+  border-left: 2px solid #c1c1c1;
+}

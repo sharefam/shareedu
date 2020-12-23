@@ -1,0 +1,22 @@
+.ct-category {
+  .ct-category__head {
+    font-size: 18px;
+    color: @gray-darker;
+    line-height: 24px;
+  }
+
+  .ct-category__body {
+    margin-top: 16px;
+
+    @media screen and(max-width: @screen-xs-min) {
+      margin-top: 0;
+      & + .ct-category__body {
+        margin-top: 12px;
+      }
+    }
+  }
+
+  & + .ct-category {
+    margin-top: 32px;
+  }
+}

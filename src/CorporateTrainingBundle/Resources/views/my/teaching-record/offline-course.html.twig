@@ -1,0 +1,54 @@
+{% extends 'my/teaching-record/teaching-record-layout.html.twig' %}
+
+{% set side_nav = 'my-teaching-record' %}
+{% do script(['corporatetrainingbundle/js/my/course/index.js'])%}
+
+{% block main_content %}
+  <form id="message-search-form" class="form-inline well well-sm" action="" method="get" novalidate>
+    {{ 'teaching_record.course.create_time'|trans }}：
+    <div class="form-group js-learn-data" style="margin-right: -20px">
+      <div id="date-range-picker">
+        <span class="user-data-select">
+          <input class="form-control js-date-range-input" style="width:200px;" type="text" name="courseCreateTime" value="{{ courseTime.startTime|date('Y/m/d') }}-{{ courseTime.endTime|date('Y/m/d') }}">
+          <i class="es-icon es-icon-arrowdropdown"></i>
+        </span>
+      </div>
+    </div>
+    <div class="form-group">
+      <input class="form-control" type="text" placeholder="{{ 'admin.course_manage.title_placeholder'|trans }}" name="likeTitle" value="{{ app.request.get('likeTitle') }}">
+    </div>
+    <button class="btn btn-primary">{{ 'form.btn.search'|trans }}</button>
+  </form>
+  <table class="table table-striped table-hover">
+    <thead>
+    <tr>
+      <th width="30%">{{'teaching_record.course.title'|trans}}</th>
+      <th width="13%">{{'teaching_record.course.student_num'|trans}}</th>
+      <th width="13%">{{'teaching_record.course.attendance_rate'|trans}}</th>
+      <th width="13%">{{'teaching_record.course.passing_rate'|trans}}</th>
+      <th width="20%">{{'teaching_record.course.time'|trans}}</th>
+      {% if is_plugin_installed('Survey') %}
+        <th width="10%">{{'teaching_record.course.survey'|trans}}</th>
+      {% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    <p class="">
+      <span class="mrl">{{'teaching_record.course.course_count'|trans}}: <strong class="color-warning">{{ courseCount|default(0) }}</strong></span>
+      {% if is_plugin_installed('Survey') %}
+        <span class="mrl">{{'teaching_record.course.evaluation'|trans}}: <strong class="color-warning">{{ courseTotalScore|default(0) }}</strong></span>
+      {% endif %}
+    </p>
+    {% if offlineCourses %}
+      {% for offlineCourse in offlineCourses %}
+        {% include 'my/teaching-record/offline-course-tr.html.twig' %}
+      {% endfor %}
+    {% else %}
+      <tr><td colspan="20"><div class="empty">{{'teaching_record.course.empty'|trans}}</div></td></tr>
+    {% endif %}
+    </tbody>
+  </table>
+  <nav class="text-center">
+    {{ web_macro.paginator(paginator) }}
+  </nav>
+{% endblock %}

@@ -1,0 +1,15 @@
+<li class="media">
+  <div class="pull-left">
+    <span class="glyphicon glyphicon-volume-down media-object"></span>
+  </div>
+  <div class="media-body">
+    <div class="notification-body">
+      {% set data = notification.content %}
+      {% set exam = data.exam %}
+      你的《{{ exam.title }}》结果已公布，成绩：{{ data.score }}。{% if data.status == 'passed' %}已通过测试。{% else %}未通过测试。{% endif %}
+    </div>
+    <div class="notification-footer">
+      {{ notification.createdTime|date_format }}
+    </div>
+  </div>
+</li>

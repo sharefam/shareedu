@@ -1,0 +1,51 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_user_group_manage' %}
+
+{% block page_title %}
+    <span>{{'admin.user_group.member_manage'|trans}}</span>
+    <a href="{{ path('admin_user_group_manage') }}" style="font-size: 14px;">{{'form.btn.return'|trans}}</a>
+{% endblock %}
+
+{% block page_buttons %}
+{% endblock %}
+
+
+{% block main %}
+    {% do load_script('topxiaadminbundle/controller/widget/category-select') %}
+    {% include 'seajs_loader_compatible.html.twig' with {'topxiawebbundle': true} %}
+    {% do load_script('corporatetrainingbundle/controller/user-group-member/list') %}
+
+    <form class="form-inline well well-sm pos-rel ct-mbl" action="{{ path('admin_user_group_member_add', {id:userGroupId}) }}" method="post" novalidate>
+        <div class="form-group prl">
+                <input type="text" id="user_group_member" name="aaa" class="width-full select2-offscreen" tabindex="-1"
+                       data-url="{{ path('admin_user_group_member_match') }}">
+                <input id="test" type="text" hidden name="userGroups">
+                <input type="text" hidden name="id">
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    <div class="form-group prl">
+      <button id="user-group-submit" type="submit" class="btn btn-primary pull-right group-user-select-btn">{{'form.btn.add'|trans}}</button>
+    </div>    
+     <div class="form-group">
+        <a class="btn btn-success" data-toggle="modal" data-target="#modal" data-url="{{ path('importer_index', {type: 'user-group-member', userGroupId:userGroupId}) }}">
+        <span class="es-icon es-icon-anonymous-iconfont"></span>{{'admin.user_group.member.batch_add'|trans}}
+        </a>
+    </div>    
+  </form>
+
+  <ul class="list-table" id="post-table" style="margin-bottom: 0">
+    <li class="th">
+      <div class="row">
+        <div class="td col-md-3">{{'admin.user_group.member.name'|trans}}</div>
+        <div class="td col-md-3">{{'admin.user_group.member.member_type'|trans}}</div>
+        <div class="td col-md-3">{{'admin.user_group.member.member_num'|trans}}</div>
+        <div class="td col-md-3">{{'admin.user_group.operation'|trans}}</div>
+      </div>
+    </li>
+    {% include 'admin/user-group-member/tbody.html.twig' %}
+  </ul>
+    {{ admin_macro.paginator(paginator) }}
+{% endblock %}
+
+

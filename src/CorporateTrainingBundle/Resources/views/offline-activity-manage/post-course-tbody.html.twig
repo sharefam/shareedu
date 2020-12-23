@@ -1,0 +1,11 @@
+<div class="study-center">
+  <div class="user-info bg-gray">
+    <div class="row">
+      <div class="col-xs-6 col-sm-4"><i class="es-icon es-icon-trophy"></i>
+          {{ learnedCoursesNum|default(0) }}/{{ postCourseCount|default(0) }}</div>
+      <div class="col-xs-6 col-sm-4"><i class="es-icon es-icon-accesstime"></i>
+          {{totalLearnTime|default(0)|time_format_hour}}</div>
+      <div class="col-xs-6 col-sm-4">{{'offline_activity.post_course.last_learn_time'}}：{% if recentStartTask|default() %}{{ recentStartTask.updatedTime|date('Y-m-d') }}{% else %}--{% endif %}</div>
+    </div>
+  </div>
+</div>

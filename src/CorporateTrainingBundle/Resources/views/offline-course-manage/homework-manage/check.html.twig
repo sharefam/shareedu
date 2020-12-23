@@ -1,0 +1,81 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set attachments = data('AttachmentList',{targetType: 'projectPlaning.offline.homework', targetId: taskResult.id}) %}
+{% set user = data('UserandProfiles',{userId:homeworkRecord.userId })%}
+{% set post = data('Post', {postId: user.postId}) %}
+{% set userOrgs = data('Orgs',{orgIds: user.orgIds}) %}
+
+{% set modal_class = 'modal-lg' %}
+{% do script(['corporatetrainingbundle/js/project-plan/offline-course-homework-check/index.js']) %}
+
+{% block title %}
+  {{ 'offline_course.homework_reviewing'|trans }}
+{% endblock %}
+
+{% block body %}
+  {% if attachments|default()%}
+      {% for attachment in attachments %}
+        {% set can_preview_type = attachment.file.type in ['video', 'audio', 'ppt', 'document']  and  attachment.file.ext not in ['xlsx', 'xls'] %}
+        {% set can_preview = attachment.file.type in ['video', 'ppt', 'document'] and attachment.file.processStatus|default(null) == "ok" %}
+        {% if can_preview_type and (not can_preview) %}
+          {% set can_preview = attachment.file.type in ['audio'] %}
+        {% endif %}
+        {% if not (can_preview_type and can_preview )%}
+          <div class="ta-ctr mtl">
+            {{ 'offline_course.homework_reviewing_info'|trans }}
+          </div>
+        {% else %}
+          <div style="height: 500px; overflow: hidden">
+          <iframe src="{{ path('attachment_player', {id: attachment.id, targetType: 'projectPlaning.offline.homework'}) }}" allowfullscreen webkitallowfullscreen height="100%" width="100%" style="border: 0"></iframe>
+          </div>
+        {% endif %}
+        <a class="attachment-download mts pull-right" {% if app.user.id|default(null) %} href="{{ path('attachment_download', {'id': attachment.id, targetType: 'projectPlaning.offline.homework'}) }}" {% else %}  href="#attachment-modal"  data-toggle="modal" data-url="{{ path('login_ajax') }}" {% endif %}>{{ 'offline_course.attachment_download'|trans }}</a>
+      {% endfor %}
+  {% else %}
+    <div class="ta-ctr mtl">
+      {{ 'offline_course.homework.not_submitted'|trans }}
+    </div>
+  {% endif %}
+<div class="mtl">
+  <form class="form-horizontal mtl" id="offline-course-homework-check-form" action="{{ path('project_plan_offline_course_homework_check',{id: homeworkRecord.id|default(0)}) }}" method="post">
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'project_plan.member.nick_name'|trans }}:</label>
+      </div>
+      <div class="col-md-8 mts">
+        {{ user.profiles.truename|default(user.nickname)|trans }}
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'project_plan.member.post'|trans }}:</label>
+      </div>
+      <div class="col-md-8 mts">
+        {{ userOrgs.0.name|default('--') }}
+        {% if userOrgs.1|default(false) %}
+          <i class="es-icon es-icon-more ft-xsm" data-toggle="popover" data-container="body" data-trigger="hover"
+             data-placement="top" data-content="{{ userOrgs.orgNames|default() }}"></i>
+        {% endif %}
+        {% if post.name|default() %}
+          --{{ post.name|default() }}
+        {% endif %}
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label for="verify-status">{{ 'project_plan.review_result'|trans }}:</label>
+      </div>
+      <div class="col-md-8 radios">
+        {{ radios('homeworkStatus', {'passed':'project_plan.pass'|trans, 'unpassed':'project_plan.status.unpass'|trans}, homeworkRecord.homeworkStatus|default('submitted')) }}
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
+{% block footer %}
+  <button id="server-create-btn" data-submiting-text="{{ 'form.btn.submit.submiting'|trans }}" type="submit"
+          class="btn btn-primary pull-right js-save-btn" data-toggle="form-submit"
+          data-loading-text="{{ 'project_plan.btn.save_loading_btn'|trans }}">{{ 'project_plan.btn.ok_btn'|trans }}</button>
+  <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{ 'form.btn.cancel'|trans }}</button>
+{% endblock %}

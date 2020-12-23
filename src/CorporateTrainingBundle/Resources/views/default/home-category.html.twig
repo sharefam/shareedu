@@ -1,0 +1,25 @@
+{# <section class="o-home-sec">
+  <div class="container">
+    <div class="o-home-sec__hd">
+      <div class="o-home-sec__title">课程分类</div>
+      <a class="o-home-sec__more" href="#">查看全部 <i class="es-icon es-icon-chevronright"></i></a>
+    </div>
+    <div class="o-home-sec__bd">
+      <div class="contaier">
+        <div class="row">
+          <div class="col-xs-3">
+            <a href="#">
+              <img class="o-home-sec__img" src="{{asset('assets/v2/img/user_bg.jpg')}}">
+            </a>
+          </div>
+          <div class="col-xs-9">
+            <div class="col-xs-4">
+              {% include 'course/widgets/ct-course-grid.html.twig' with {courseSet: courseSet} %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ #}

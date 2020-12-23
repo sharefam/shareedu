@@ -1,0 +1,14 @@
+<li class="media">
+  <div class="pull-left">
+    <span class="glyphicon glyphicon-volume-down media-object"></span>
+  </div>
+  <div class="media-body">
+    <div class="notification-body">
+      {% set data = notification.content %}
+      你在培训项目 <a href="{{ path('project_plan_detail', {'id': data.id}) }}">《{{ data.name }}》</a>的报名申请被拒绝!原因：{{ data.rejectedReason|default('无') }}。
+    </div>
+    <div class="notification-footer">
+      {{ notification.createdTime|date_format }}
+    </div>
+  </div>
+</li>

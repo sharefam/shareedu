@@ -1,0 +1,45 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_data_online_course_data_detail' %}
+{% set side_nav = 'overview' %}
+{% do script(['libs/echarts.js','app/js/course-manage/overview/index.js']) %}
+
+{% block body %}
+{% block course_header %}
+  <div class="course-manage-title">
+    {{ render(controller('AppBundle:Course/CourseManage:header', {courseSet:courseSet, course: course, manage: true})) }}
+  </div>
+{% endblock %}
+  <div class="course-manage-header">
+    {% include 'course-manage/panel-header/course-publish-header.html.twig' with {code: side_nav} %}
+  </div>
+  <div class="course-statictics course-statictics_container">
+    {% include 'course-manage/overview/dashboard.html.twig' %}
+
+    {#{% include 'course-manage/overview/student-trendency.html.twig' %}#}
+
+     {% include 'course-manage/overview/finished-rate-trend.html.twig' %}
+
+    {% include 'course-manage/overview/task-detail.htm.twig' %} 
+  </div>
+
+  {% block footer %}
+    {{ setting('site.analytics')|raw }} 
+  {% endblock %}
+
+    {% block scriptBoot %}
+       {% include 'old-script_boot.html.twig' with {script_main: asset('bundles/topxiaadmin/js/admin-app.js')} %}
+       {% include 'admin/default/script-webpack.html.twig' %}
+       {% include 'admin/script_boot.html.twig'  with {state :0} %} 
+    {% endblock %}
+  <div id="modal" class="modal" ></div>
+  <div id="attachment-modal" class="modal" ></div>
+  {% if setting('copyright.thirdCopyright') != 1 %}
+    <div class="fixed-bar">
+      <a href="{{path('admin_feedback')}}"  target='_blank' class="icon-question-text feedback">
+          <span class="feed-span">{{ 'admin.fixed_bar.product_feedback'|trans|raw }}</span>
+          <i class="es-icon es-icon-help"></i>
+      </a>
+    </div>
+  {% endif %}
+{% endblock %}

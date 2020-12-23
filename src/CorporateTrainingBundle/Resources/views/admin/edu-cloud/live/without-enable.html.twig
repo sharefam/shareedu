@@ -1,0 +1,66 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_cloud_edulive_overview' %}
+{% block tabs %}{% endblock %}
+{% block main %}
+<div class="panel panel-default notice-panel">
+  <div class="panel-body panel-body-bg">
+    {{ web_macro.flash_messages() }}
+    <i class="es-icon es-icon-infooutline text-primary"></i>
+    <div class="text-md start-msg mbl">{{'admin.edu_cloud.edu_live.no_enable'|trans}}</div>
+    {% if overview.isBuy == false %}
+      <div class="color-gray">{{'admin.edu_cloud.edu_live.buy_live_tips'|trans({'%buyUrl%': path('admin_cloud_buy', {type:'live'}), '%showUrl%': path('admin_cloud_show', {type:'live'})})|raw}}</div>
+    {% endif %}
+    <form class="form-horizontal notice-desc-mb" role="form" method="post" action="{{ path('admin_setting_cloud_edulive') }}">
+      <button type="submit" class="btn btn-primary btn-lg" {% if overview.isBuy == false %}disabled="disabled"{% endif %} name="live_course_enabled" value="1">{{'admin.edu_cloud.edu_live.now_start'|trans}}</button>
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    </form>
+  </div>
+</div>
+ <ul class="edu-cloud-intro row clearfix">
+    <li class="list-item col-md-6">
+     <div class="list-item-container">
+       <a class="list-item-pic" href="javascript:;">
+         <img src="/assets/img/backstage/cloud-live/methods.png">
+       </a>
+       <div class="list-item-txt">
+         <div class="list-item-txt_title">教学手段，应有尽有</div>
+         <div class="list-item-txt_desc">支持视频直播、文档讲解、桌面共享、多媒体插播等多种教学手段。</div>
+       </div>
+     </div>
+    </li>
+    <li class="list-item col-md-6">
+     <div class="list-item-container">
+       <a class="list-item-pic" href="javascript:;">
+         <img src="/assets/img/backstage/cloud-live/any.png">
+       </a>
+       <div class="list-item-txt">
+         <div class="list-item-txt_title">随时随地，身处课堂</div>
+         <div class="list-item-txt_desc">支持PC、手机及平板等终端设备。兼容Windows、Mac OS X、iOS、</div>
+       </div>
+     </div>
+    </li>  
+    <li class="list-item col-md-6">
+     <div class="list-item-container">
+       <a class="list-item-pic" href="javascript:;">
+         <img src="/assets/img/backstage/cloud-live/interact.png">
+       </a>
+       <div class="list-item-txt">
+         <div class="list-item-txt_title">师生之间，互动无间</div>
+         <div class="list-item-txt_desc">支持多路音视频互动、即时聊天、现场问答、举手发言等多种互动形式</div>
+       </div>
+     </div>
+    </li>  
+    <li class="list-item col-md-6">
+     <div class="list-item-container">
+       <a class="list-item-pic" href="javascript:;">
+         <img src="/assets/img/backstage/cloud-live/easy.png">
+       </a>
+       <div class="list-item-txt">
+         <div class="list-item-txt_title">万人直播，轻松应对</div>
+         <div class="list-item-txt_desc">让你轻松开设大型直播公开课。</div>
+       </div>
+     </div>
+    </li>
+  </ul>
+{% endblock %}

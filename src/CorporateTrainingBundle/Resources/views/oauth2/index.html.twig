@@ -1,0 +1,30 @@
+{% extends 'oauth2/layout.html.twig' %}
+{% do script(['libs/jquery-validation.js','corporatetrainingbundle/js/oauth2/login/index.js']) %}
+
+{% block page_title %}
+  {{ 'oauth2.bind_exist_user'|trans }}
+{% endblock %}
+
+{% block panel_body %}
+  <div class="text-center cd-mb32">
+    <img class="third-party-avatar" src="{% if oauthUser.avatar is empty %}{{ filepath('', 'avatar.png') }}{% else %}{{ asset(oauthUser.avatar) }}{% endif %}">
+  </div>
+
+  <form class="third-party-form" id="third-party-login-form" method="post" action="{{ path('oauth2_login_bind_account') }}">
+    <div class="form-group cd-form-group">
+      <label class="third-party-form__label" for="mobileOrEmailOrNickname">{{ 'oauth2.mobile_email_nickname'|trans }}</label>
+      <input class="form-control" type="text" id="mobileOrEmailOrNickname" name="account" required>
+    </div>
+
+    <button class="btn cd-btn cd-btn-primary cd-btn-lg btn-block cd-mb16 js-submit-btn" data-loading-text="{{ 'form.btn.submit.submiting'|trans }}" type="button">{{ 'form.btn.next'|trans }}</button>
+
+    <input class="form-control" id="accountType" type="hidden" name="accountType">
+
+    {% if oauthUser.type == 'dingtalkweb' or oauthUser.type == 'dingtalkmob' and setting('sync_department_setting.enable', 0) and setting('sync_department_setting.type', '') == 'dingtalk' %}
+      <a class="pull-right third-party-link" href="{{ path('oauth2_login_create') }}">{{ 'oauth2.btn.user_create_btn'|trans }}</a>
+    {% endif %}
+
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+  </form>
+  <input class="js-third-party-type" type="hidden" name="mode" data-type="{{ oauthUser.mode }}">
+{% endblock %}

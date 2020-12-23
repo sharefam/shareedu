@@ -1,0 +1,93 @@
+<div class="course-detail-content">
+  <ul class="task-list task-list-md task-list-hover">
+    {% if courseItems|default() %}
+      {% for key, item in courseItems %}
+        {% if item.type|default(null) == 'chapter' %}
+          <li class="task-item task-item-chapter bg-gray-lighter js-task-chapter"><i class="es-icon es-icon-menu left-menu"></i>
+            <a href="javascript:void(0);" class="title gray-dark">{{ 'project_plan.item.online_course.chapter_number'|trans({'%number%': item.number}) }}: {{ item.title }}</a>
+            <i class="right-menu es-icon es-icon-remove js-remove-icon"></i>
+          </li>
+        {% elseif item.type|default(null)  == 'unit' %}
+          <li class="task-item task-item-part color-gray bg-gray-lighter">
+            <span class="title">{{ 'project_plan.item.online_course.task_number'|trans({'%number%': item.number}) }}: {{ item.title }}</span>
+          </li>
+        {% elseif  item.type|default(null)  == 'lesson' %}
+          {% set tasks = array_index(item.tasks, 'mode') %}
+          {% set index = tasks.lesson.number|default(null) %}
+
+          {% for task in item.tasks %}
+            {% if  item.tasks|length > 1 %}
+              {% set taskIndex = index ~'-' ~ loop.index %}
+            {% else %}
+              {% set taskIndex =  index %}
+            {% endif %}
+
+            {% set task_lock =  false %}
+            {% set file = files[task.activity.id]|default(null) %}
+            {% set taskResult = data('TaskResultByTaskIdAndUserId', {taskId: task.id, userId: userId}) %}
+            {% if not (not is_plugin_installed('Survey')and task.type == 'questionnaire') %}
+              <li class="task-item task-content mouse-control" data-toggle="tooltip" data-placement="top" title="{% if task.result.status|default(null) == 'finish' and taskResult|default() %}{{'project_plan.finish_time'|trans}}:{{ taskResult.finishedTime|date('Y-m-d H:i') }}{% endif %}">
+              <i class="es-icon
+                {% if task_lock %}
+                es-icon-lock
+                {% elseif  not task.result|default(null) or(member is empty) %}
+                es-icon-undone-check color-gray
+                {% elseif task.result.status == 'start' %}
+                es-icon-doing color-primary
+                {% elseif task.result.status == 'finish' %}
+                es-icon-iccheckcircleblack24px color-primary
+                {% endif %}
+                left-menu"></i>
+
+              {% if course.status=='published' and task.status == 'published' %}
+
+                {% if member %}
+                  <a class="title" {% if app.user.id == userId %} href="{{ path('course_task_show',{courseId:task.courseId, id: task.id}) }}" target="_blank" {% endif %}>
+                    {% include 'course/task-list/parts/list-li-title.html.twig' %}
+                  </a>
+                {% else %}
+                  <a class="title" href="#modal" data-toggle="modal"
+                    data-url="{{ path('course_task_preview',{courseId:task.courseId, id: task.id}) }}"
+                    style="margin-top:-8px">{% include 'course/task-list/parts/list-li-title.html.twig' %}</a>
+                {% endif %}
+
+                {% if tab_type == 'myTask' %}
+                  <span class="right-menu color-gray {% if not member %} mouse-leave {% endif %}">
+                    {{ task.activity.length|default(0)|activity_length_format }}
+                    {% set meta = activity_meta(task.activity.mediaType) %}
+                    <i class="{{ meta.icon }} color-gray ml10" data-toggle="tooltip" data-placement="top" title=""
+                      data-original-title="{{ 'project_plan.study_center.course_task'|trans({'%meta%': meta.name}) }}" data-container="body"></i>
+                  </span>
+                {% else %}
+                  <span class="right-menu color-gray hidden-xs">
+                    <span>{{ 'project_plan.implementation.course_learn_time'|trans }}：</span>
+                    {% set learnTime = data('TaskSumLearnTime', {taskId: task.id, userId: userId}) %}
+                    <span class="gray-darker">{{ learnTime|default(0)|time_format }}</span> {{ 'site.date.hour'|trans }}
+                  </span>
+                {% endif %}
+              {% else %}
+                {% if tab_type == 'myTask' %}
+                  <span class="title">
+                    {% include 'course/task-list/parts/list-li-title.html.twig' %}
+                  </span>
+                  <span class="right-menu color-gray">
+                    {{ 'project_plan.stay_tuned'|trans }}
+                  </span>
+                {% else %}
+                  <span class="title">
+                    {% include 'course/task-list/parts/list-li-title.html.twig' %}
+                  </span>
+                  <span class="right-menu color-gray">
+                  </span>
+                {% endif %}
+              {% endif %}
+            </li>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      <div class="empty">{{'project_plan.empty'|trans}}</div>
+    {% endif %}
+  </ul>
+</div>

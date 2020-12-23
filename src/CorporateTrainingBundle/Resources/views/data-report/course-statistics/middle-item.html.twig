@@ -1,0 +1,13 @@
+<div class="my-record-sec-header">
+  <ul class="nav nav-tabs" role="tablist">
+    <li  role="presentation" class="{% if tab_types == 'assignmentRecord' %}active{% endif %}">
+      <a href="{{ path('data_report_user_learn_study_record', {userId:userId|default(0), tab_types:'assignmentRecord'}) }}">{{'my.department.data_report.assignment_record'|trans}}</a>
+    </li>
+    <li  role="presentation" class="{% if tab_types == 'learningStatistics' %}active{% endif %}">
+      <a href="{{ path('data_report_user_learn_study_record', {userId:userId|default(0), tab_types:'learningStatistics'}) }}">{{'my.department.data_report.learning_statistics'|trans}}</a>
+    </li>
+    <li  role="presentation" class="{% if tab_types == 'offlineActivityRecord' %}active{% endif %}">
+      <a href="{{ path('data_report_user_learn_study_record', {userId:userId|default(0), tab_types:'offlineActivityRecord'}) }}">{{'my.department.data_report.offline_activity_record'|trans}}</a>
+    </li>
+  </ul>
+</div>

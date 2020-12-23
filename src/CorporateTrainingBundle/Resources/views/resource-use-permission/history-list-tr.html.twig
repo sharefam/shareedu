@@ -1,0 +1,45 @@
+{% import "macro.html.twig" as web_macro %}
+
+<table id="record-list-table" class="table table-striped table-hover">
+  <thead>
+  <tr>
+    <th width="30%">{{ 'resource_use_permission.tr.time'|trans }}</th>
+    <th width="25%">{{ 'resource_use_permission.tr.operator'|trans }}</th>
+    <th width="15%">{{ 'resource_use_permission.tr.description'|trans }}</th>
+    <th width="30%">{{ 'resource_use_permission.tr.authorized_object'|trans }}</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for history in histories %}
+    <tr>
+      {% set toUser = recordUsers[history.toUserId]|default([]) %}
+      {% set actionUser = recordUsers[history.actionUser]|default([]) %}
+      <td>{{history.createdTime|date('Y-m-d H:i:s')}}</td>
+      <td>
+        <p><strong>{{ actionUser.truename|default() }}</strong></p>
+        {{ actionUser.nickname|default('--') }}
+      </td>
+      <td>
+        {% if history.action == 'shared' %}
+            {{ 'resource_use_permission.record_list.shared'|trans }}
+          {% else %}
+            {{ 'resource_use_permission.record_list.canceled'|trans }}
+        {% endif %}
+      </td>
+      <td>
+        <p><strong>{{ toUser.truename|default() }}</strong></p>
+        {{ toUser.nickname|default('--') }}
+      </td>
+    </tr>
+  {% else %}
+    <tr>
+      <td class="text-center" colspan="20">
+        <div class="empty">{{ 'project_plan.empty'|trans }}</div>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<nav class="text-center">
+  {{ web_macro.ajax_paginator(paginator) }}
+</nav>

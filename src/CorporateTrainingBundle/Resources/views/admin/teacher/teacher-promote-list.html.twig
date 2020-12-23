@@ -1,0 +1,48 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set script_controller = 'teacher/promote-list' %}
+
+{% set menu = 'admin_teacher_promote_list' %}
+
+{% block main %}
+
+  <form id="user-search-form" class="form-inline ct-well ct-mbl" action="" method="get" novalidate>
+    <div class="form-group prl">
+      {# {% include 'org/org-treeview.html.twig' with {id: 'orgCode', placeholder: 'admin.teacher.org_search'|trans, width:240, parameter: 'orgCode', orgCode: '', arrTree: build_org_tree(app.user.orgCodes), modal: 'list', isFront: 0} %} #}
+      {% include 'org-select/index.html.twig' with {
+          id: 'orgCode',
+          placeholder: 'admin.teacher.org_search'|trans,
+          data: build_org_tree(app.user.orgCodes),
+          treeName: 'orgCode',
+        }
+      %}
+
+    </div>
+    <div class="form-group prl">
+      <select id="keywordType" name="keywordType" class="form-control">
+        {{ select_options(dict('nameKeyWordType'), app.request.query.get('keywordType') ? app.request.query.get('keywordType') : 'truename') }}
+      </select>
+    </div>
+
+    <div class="form-group prl">
+      <input type="text" id="keyword" name="keyword" class="form-control" value="{{ app.request.query.get('keyword') }}"
+             placeholder="{{ 'form.placeholder.keyword'|trans }}">
+    </div>
+    <div class="form-group">
+      <button class="btn btn-primary">{{'admin.user.form.btn.search_submit_btn'|trans}}</button>
+   </div>
+  </form>
+  <ul class="list-table" id="category-table" style="margin-bottom: 0">
+    <li class="th" style="border-top: none">
+      <div class="row">
+        <div class="td col-md-2">{{'admin.user.teacher.promote_tab.fields.serial_num_label'|trans}}</div>
+        <div class="td col-md-2">{{'user.fields.username_label'|trans}}</div>
+        <div class="td col-md-3">{{ 'site.org.belongs_to_org_th'|trans }}</div>
+        <div class="td col-md-2">{{'admin.user.teacher.promote_tab.fields.promote_time_label'|trans}}</div>
+        <div class="td col-md-3">{{'admin.user.fields.operation_label'|trans}}</div>
+      </div>
+    </li>
+    {% include 'admin/teacher/teacher-promote-tr.html.twig' %}
+  </ul>
+
+{% endblock %}

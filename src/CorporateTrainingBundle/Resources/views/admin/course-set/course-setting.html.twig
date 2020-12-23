@@ -1,0 +1,136 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_setting_course_setting' %}
+{% set script_controller = 'corporatetrainingbundle/controller/admin/setting/course' %}
+
+{% block main %}
+
+{{ web_macro.flash_messages() }}
+<form class="form-horizontal">
+  <fieldset>
+    <legend>{{ 'admin.setting_course.pic'|trans }}</legend>
+    <div class="form-group">
+      <div class="col-md-3 control-label">
+        <label >
+          {{ 'admin.setting_course.default_pic'|trans }}
+        </label>
+      </div>
+      <div class="controls col-md-8 radios" id="defaultCoursePicture">
+        {{ radios('course_avatar[coursePicture]', {1:'admin.setting_course.course_avatar.customer_default_avatar'|trans, 0:'admin.setting_course.course_avatar.system_default_avatar'|trans}, defaultSetting.defaultCoursePicture|default(0)) }}
+        {% include 'admin/system/default-course-picture.html.twig' %}
+        <p>{{'admin.setting_course.course_avatar.tips'|trans|raw}}</p>
+        <input type="hidden" name="course_avatar[defaultCoursePicture]" value="{{ defaultSetting.defaultCoursePicture|default(0) }}">
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+<form class="form-horizontal" method="post" id="course-form" action="{{ path('admin_setting_course_setting') }}" novalidate>
+  <fieldset>
+    <legend>{{ 'admin.setting_course.course_rule'|trans }}</legend>
+    <div class="form-group">
+      <div class="col-md-3 control-label">
+        <label >
+          {{ 'admin.setting_course.send_welcome_messages'|trans }}
+        </label>
+      </div>
+      <div class="controls col-md-8 radios">
+        {{ radios('course_setting[welcome_message_enabled]', {1:'admin.setting_course.open'|trans, 0:'admin.setting_course.closed'|trans}, courseSetting.welcome_message_enabled|default()) }}
+      <p class="help-block">
+        {{ 'admin.setting_course.course_rule.help_block'|trans }}
+      </p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-3 control-label">
+        <label for="welcome_message_body">{{'admin.setting_course.welcome_messages_content'|trans}}</label>
+      </div>
+      <div class="controls col-md-8">
+        <textarea id="welcome_message_body" name="course_setting[welcome_message_body]" class="form-control" rows="5">{{ courseSetting.welcome_message_body }}</textarea>
+        <div class="help-block">
+
+          <div>{{'admin.setting_course.welcome_messages_content.Variables'|trans}}</div>
+          <ul>
+            <li>{% verbatim %}{{nickname}}{% endverbatim %} {{'admin.setting_course.welcome_messages_content.as_recipient_user_name'|trans}}</li>
+            <li>{% verbatim %}{{course}}{% endverbatim %} {{'admin.setting_course.welcome_messages_content.as_course_name'|trans}}</li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group hidden">
+      <div class="col-md-3 control-label">
+        <label>{{'admin.setting_course.course_detail_show_relevant_course'|trans}}</label>
+      </div>
+      <div class="controls col-md-8 radios">
+        {{ radios('course_setting[relatedCourses]', {1:'admin.setting_course.open'|trans, 0:'admin.setting_course.closed'|trans}, courseSetting.relatedCourses) }}
+        <div class="help-block">{{'admin.setting_course.course_detail_show_relevant_course.help_block'|trans}}</div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+      <legend>{{ 'admin.setting_course.customer_chapter_section_name'|trans }}</legend>
+
+      <div id="show_course_chapter_radio">
+        <div class="form-group">
+          <div class="col-md-3 control-label">
+            <label>{{'admin.course_setting.chapter_name'|trans}}</label>
+          </div>
+          <div class="controls col-md-8 radios">
+              {{ radios('course_setting[custom_chapter_enabled]', {1:'admin.setting_course.open'|trans, 0:'admin.setting_course.closed'|trans}, courseSetting.custom_chapter_enabled|default(true)) }}
+            <div class="help-block">
+                {{'admin.course_setting.chapter_name.tips'|trans}}
+            </div>
+          </div>
+        </div>
+
+        <div class="{% if not courseSetting.custom_chapter_enabled|default(true) %}hide{% endif %}" id="show_course_chapter_name">
+          <div class="form-group">
+            <div class="col-md-3 control-label">
+                <label for="chapter_name">{{'admin.setting_course.task_chapter_name'|trans}}</label>
+            </div>
+            <div class="controls col-md-4">
+              <input type="text" id="chapter_name" name="course_setting[chapter_name]" class="form-control" value="{{ courseDefaultSetting.chapter_name|default('admin.setting_course.chapter'|trans) }}">
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <div class="col-md-3 control-label">
+                <label for="part_name">{{'admin.setting_course.task_section_name'|trans}}</label>
+            </div>
+            <div class="controls col-md-4">
+              <input  type="text" id="part_name" name="course_setting[part_name]" class="form-control" value="{{ courseDefaultSetting.part_name|default('admin.setting_course.section'|trans) }}">
+            </div>
+          </div>
+        </div>
+      </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>{{ 'admin.setting_course.exam_task'|trans }}</legend>
+    <div class="form-group">
+      <div class="col-md-3 control-label">
+        <label>{{'admin.setting_course.questions_setting'|trans}}</label>
+      </div>
+      <div class="controls col-md-8 radios">
+        {{ radios('question_setting[testpaper_answers_show_mode]', {'hide':'admin.setting_course.questions_setting.hide'|trans, 'reviewed':'admin.setting_course.questions_setting.reviewed'|trans , 'submitted':'admin.setting_course.questions_setting.submitted'|trans}, setting('questions.testpaper_answers_show_mode','submitted')) }}
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="form-group">
+    <div class="controls col-md-offset-3 col-md-8">
+      <button type="submit" class="btn btn-primary">{{'form.btn.submit'|trans}}</button>
+    </div>
+  </div>
+  <input type="hidden" name="course_setting[defaultCoursePicture]" value="{{ defaultSetting.defaultCoursePicture|default(0) }}">
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+</form>
+
+{% endblock %}
+
+
+

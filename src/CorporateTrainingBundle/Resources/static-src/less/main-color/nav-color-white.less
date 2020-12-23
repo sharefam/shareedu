@@ -1,0 +1,98 @@
+@import '../variables.less';
+
+.es-header {
+  background-color: #fff;
+  .navbar-header .navbar-brand {
+    color: @gray-darker;
+  }
+  .navbar-mobile .navbar-more {
+    color: @gray-darker;
+  }
+  .nav-mobile .nav.navbar-nav > li {
+    > a {
+      color: #c1c1c1;
+    }
+    &.open.active >a,
+    &.open>a:hover,
+    &.open>a:focus,
+    &.open>a,
+    &.active >a,
+    >a:hover,
+    >a:focus {
+      color: #fff;
+    }
+  }
+
+  .nav.navbar-nav > li {
+    >a {
+      color: @gray-dark;
+    }
+    &.open.active >a,
+    &.open>a:hover,
+    &.open>a:focus,
+    &.open>a,
+    &.active >a,
+    >a:hover,
+    >a:focus {
+      color: @gray-medium;
+    }
+  }
+  .nav.user-nav  {
+    > .text-link , .user-nav-mes {
+      &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 25px;
+        width: 1px;
+        height: 20px;
+        background-color: #e1e1e1;
+      }
+    }
+
+    > li > a {
+      color: @gray-dark;
+      
+      &:hover,
+      &:focus {
+        color: @gray-medium;
+      }    
+    }
+
+  }
+
+  .navbar-form {
+    .search-icon {
+      color: @gray-dark;
+    }
+    .input-search {
+      color: @gray-dark;
+      background-color: #fff;
+    }
+
+    input::-webkit-input-placeholder {
+      color: @gray-medium;
+    }
+    input:-moz-placeholder {
+      color: @gray-medium;
+    }
+    input::-moz-placeholder {
+      color: @gray-medium;
+    }
+    input:-ms-input-placeholder {
+      color: @gray-medium;
+    }
+
+    .form-control.active {
+      border-bottom: 1px solid @gray-dark;
+    }
+  }
+
+}
+
+.navbar-form .form-control {
+  border-color: @gray-light;
+}
+.navbar-form .form-control.active {
+  border-bottom: 1px solid @gray-dark;
+}

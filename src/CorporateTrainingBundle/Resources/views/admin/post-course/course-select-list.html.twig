@@ -1,0 +1,119 @@
+{% import "macro.html.twig" as web_macro %}
+<style>
+  .course-wide-list .enabled:hover{
+    background: #eee;
+    border-color: #ddd;
+  }
+
+  .course-wide-list .enabled{
+    cursor: default;
+    background: #eee;
+  }
+  .ct-well .form-group {
+    padding-top: 0px;
+  }
+</style>
+
+  <div class="ct-well">
+    <form class="form-search form-inline clearfix mtl" id="list-search" role="search-form" action="">
+      <div class="form-group">
+        <label>{{ 'teaching_record.course.category'|trans }}：</label>
+        <select id="categoryId" name="categoryId" class="form-control width-input width-input-large">
+          {{ select_options(category_choices('course'), app.request.get('categoryId'), 'course.base.category'|trans) }}
+        </select>
+        <div class="help-block" style="display:none;"></div>
+      </div>
+
+    {% if dataType == 'manage' %}
+    <div class="form-group mll">
+      <label>{{ 'teaching_record.course.title'|trans }}：</label>
+      <input type="text" class="form-control" name="key"  value="{{ app.request.get('key') }}"
+             placeholder="{{ 'classroom.course_name_placeholder'|trans }}">
+    </div>
+
+    <button type="button" class="btn btn-primary" id="search"
+            data-url="{{ path('admin_post_ajax_choose_manage_courses',{postId:post.id}) }}">{{ 'form.btn.search'|trans }}</button>
+
+    <a class="btn btn-primary" id="all-courses" data-url="{{ path('admin_post_ajax_choose_manage_courses',{postId:post.id}) }}" >{{ 'classroom.all_courses'|trans }}
+    </a>
+    {% else %}
+        <div class="form-group mll">
+          <label>{{ 'teaching_record.course.title'|trans }}：</label>
+          <input type="text" class="form-control" name="key"  value="{{ app.request.get('key') }}"
+                 placeholder="{{ 'classroom.course_name_placeholder'|trans }}">
+        </div>
+        <button type="button" class="btn btn-primary" id="search"
+                data-url="{{ path('admin_post_ajax_choose_use_permission_courses',{postId:post.id}) }}">{{ 'form.btn.search'|trans }}</button>
+
+        <a class="btn btn-primary" id="all-courses"
+           data-url="{{ path('admin_post_ajax_choose_use_permission_courses',{postId:post.id}) }}">{{ 'classroom.all_courses'|trans }}
+        </a>
+    {% endif %}
+  </form>
+</div>
+
+
+<div class="pull-left js-courses-count">
+  {{ 'classroom.crouse-pick-modal.tips'|trans|raw }}
+  <a id="clear-cookie" href="javascript:;">{{'classroom.crouse-pick.btn.clear_btn'|trans}}</a>
+</div>
+
+<div class="table-list">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th width="5%"><input type="checkbox" data-role="batch-select"></th>
+      <th width="30%">{{ 'classroom.classroom_manage.course_select.courseTitle'|trans }}</th>
+      <th width="30%">{{ 'classroom.classroom_manage.course_select.category_name'|trans }}</th>
+      <th>{{ 'classroom.classroom_manage.course_select.creator_name'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if courseSets|default(null) %}
+      {% for courseSet in courseSets %}
+        <tr>
+          <td class='text-center' data-id="{{courseSet.id}}">
+            <input class="course-item-cbx" data-role="batch-item" data-item-id="{{ courseSet.id }}" type="checkbox" name="course-{{courseSet.id}}" value="{{ courseSet.defaultCourseId }}">
+          </td>
+          <td>
+            <a class="pull-left mr5 link-primary" href="{{ path('course_show',{id: courseSet.defaultCourseId}) }}" target="_blank">
+              <img class="course-picture" src="{{ filepath(course_set_cover(courseSet, 'middle'), 'courseSet.png') }}" alt="{{ courseSet.title }}" width="100">
+            </a>
+            <div class="mlm">
+              <a class="link-primary" href="{{ path('course_show',{id: courseSet.defaultCourseId}) }}">{{ courseSet.title }}</a>
+              {% if courseSet.serializeMode == 'serialized' %}
+                <span class="label label-success ">{{'course.status.serialized'|trans}}</span>
+              {% elseif courseSet.serializeMode == 'finished' %}
+                <span class="label label-warning ">{{'course.status.finished'|trans}}</span>
+              {% endif %}
+            </div>
+          </td>
+          <td>
+            {% if courseSet.categoryId != 0 %}
+              {% set category = data('Category', {categoryId:courseSet.categoryId}) %}
+              {{ category.name|default() }}
+            {% else %}
+              {{ 'course.select_list.category_empty'|trans }}
+            {% endif %}
+          </td>
+          <td>
+            {% set teacher = users[courseSet.creator]|default(null) %}
+            {% if teacher %}
+              {% set teacherProfile = data('UserProfile', {userId: teacher.id}) %}
+              <div class="teacher">
+                <a class="teacher-nickname ellipsis link-primary" target="_blank"  href="{{ path('user_show', {id:teacher.uuid}) }}">{{ teacherProfile.truename|default(teacher.nickname) }}</a>
+              </div>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    {% endif %}
+    </tbody>
+  </table>
+
+  {% if type|default('') == 'ajax_pagination' %}
+    {{ web_macro.ajax_paginator(paginator) }}
+  {% else %}
+    {{ web_macro.paginator(paginator) }}
+  {% endif %}
+</div>

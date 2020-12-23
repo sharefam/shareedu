@@ -1,0 +1,5 @@
+{% import "macro.html.twig" as web_macro %}
+{% set tips = {'offlineCoursesHours': 'admin.data_center.project_plan.detail.offline_course.hours.tip'|trans} %}
+<input id="data" class="hidden" value="{{ projectsDetails|default([])}}">
+<input id="tips" class="hidden" value="{{ tips|json_encode|default([])}}">
+{{web_macro.ajax_paginator(paginator) }}

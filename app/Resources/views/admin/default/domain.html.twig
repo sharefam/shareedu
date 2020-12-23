@@ -1,0 +1,8 @@
+{% if inspectList %}
+  <div class="alert alert-warning ct-domain" role="alert">
+    {% for inspectItem in inspectList %}
+      <span><i class="ct-icon ct-icon-warning text-warn"></i>{{inspectItem.value.errorMessage}}</span>
+      <a href='{{inspectItem.value.settingUrl}}' class="domain-link">{{'admin.homepage.setting_domain_btn'|trans}}</a>
+    {% endfor %}
+  </div>
+{% endif %}

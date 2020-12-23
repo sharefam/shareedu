@@ -1,0 +1,72 @@
+.project-plan-sortable-list {
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.project-plan-sortable-item {
+  position: relative;
+  padding: 16px 32px 16px 16px;
+  border: 1px solid #e1e1e1;
+  margin-bottom: -1px;
+  .text-ovf;
+  .es-transition;
+
+  &:first-child {
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+
+  &:hover {
+    background-color: #f5f5f5;
+
+    .project-plan-sortable-item__icon {
+      color: @brand-primary;
+    }
+
+    .project-plan-sortable-item__info {
+      color: @brand-primary;
+    }
+
+    .project-plan-sortable-item__close-icon {
+      color: @gray;
+    }
+
+    .project-plan-sortable-item__close-btn {
+      .opacity(1);
+      z-index: 1;
+    }
+  }
+}
+
+.project-plan-sortable-item__title {
+  display: inline-block;
+  font-size: 14px;
+  color: @gray-dark; 
+}
+
+.project-plan-sortable-item__icon {
+  color: #c1c1c1;
+}
+
+.project-plan-sortable-item__info {
+    
+}
+
+.project-plan-sortable-item__close-btn {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  z-index: -1;
+  color: @gray;
+  .opacity(0);
+
+  &:hover {
+    color: @brand-primary;
+  }
+}

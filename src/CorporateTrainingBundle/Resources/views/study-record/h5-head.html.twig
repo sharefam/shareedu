@@ -1,0 +1,53 @@
+<div class="ct-header-h5 ptm pbm">
+  <a href="javascript:;" class="ct-header-h5__back js-back-icon">
+    <i class="es-icon es-icon-return"></i>
+  </a>
+  <span>{% if headTitle|default('') %}{{ headTitle }}{% endif %}</span>
+</div>
+{% if type_nav|default('') %}
+  <ul class="h5-header-tabs ct-mbl row">
+    {% if headType == 'training' %}
+      <li class="col-xs-4 {% if type_nav == 'project-plan' %} active{% endif %}">
+        <a href="{{ path('study_record_project_plan', {userId: userId|default(app.user.id)}) }}">
+          {{ 'project_plan.study_record_h5'|trans }}
+        </a>
+      </li>
+      <li class="col-xs-4 {% if type_nav == 'post-course' %} active{% endif %}">
+        <a href="{{ path('study_record_post_course',{userId: userId|default(app.user.id)}) }}">
+          {{ 'study_center.record.post_course_h5'|trans }}
+        </a>
+      </li>
+      {% if is_plugin_installed('Exam') %}
+        <li class="col-xs-4 {% if type_nav == 'exam' %} active{% endif %}">
+          <a href="{{ path('exam_record',{userId: userId|default(app.user.id)}) }}">
+            {{ 'exam.record.exam_record_h5'|trans }}
+          </a>
+        </li>
+      {% endif %}
+
+    {% elseif headType == 'activity' %}  
+      <li class="col-xs-6 {% if type_nav == 'offline_activity' %} active{% endif %}">
+        <a href="{{ path('study_record_offline_activity', {userId: userId|default(app.user.id)}) }}">
+          {{ 'study_record.offline_activity'|trans }}
+        </a>
+      </li>
+      <li class="col-xs-6 {% if type_nav == 'enrollment_record' %} active{% endif %}">
+        <a href="{{ path('study_record_activity_enrollment_record',{userId: userId|default(app.user.id)}) }}">
+          {{ 'study_record.offline_activity.enrollment_record'|trans }}
+        </a>
+      </li>
+
+    {% elseif headType == 'statistics_overview' %}  
+      <li class="col-xs-6 {% if type_nav == 'statistics-overview' %} active{% endif %}">
+        <a href="{{ path('study_record_statistics_overview', {userId: userId|default(app.user.id)}) }}">
+          {{ 'study_record.online_course_record.statistics_overview'|trans }}
+        </a>
+      </li>
+      <li class="col-xs-6 {% if type_nav == 'detail' %} active{% endif %}">
+        <a href="{{ path('study_center_my_study_record_detail',{userId: userId|default(app.user.id)}) }}">
+          {{ 'study_record.online_course_record.detail'|trans }}
+        </a>
+      </li>
+    {% endif %}  
+  </ul>
+{% endif %}

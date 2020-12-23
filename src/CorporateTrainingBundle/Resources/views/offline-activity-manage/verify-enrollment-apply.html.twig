@@ -1,0 +1,44 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% do script(['libs/jquery-validation.js', 'corporatetrainingbundle/js/offline-activity-manage/verify-enrollment-apply/index.js']) %}
+{% set modalSize = 'large' %}
+{% block title %}{{ 'offline_activity.enrollment.verify'|trans }}{% endblock %}
+{% block body %}
+	<form class="form-horizontal" id="enrollment-verify-form"
+	      action="{{ path('offline_activity_enrollment_verify', {'id':record.id }) }}">
+		<div class="form-group">
+			<div class="col-md-2 control-label">
+				<label for="verify-status">{{ 'offline_activity.enrollment.review_result'|trans }}:</label>
+			</div>
+			<div class="col-md-8 radios">
+				{{ radios('verifyStatus', {'approved':'offline_activity.enrollment.approved'|trans, 'rejected':'offline_activity.enrollment.rejected'|trans}, record.verifyStatus|default('approved')) }}
+			</div>
+		</div>
+		{% if offlineActivity.studentNum >= offlineActivity.maxStudentNum and offlineActivity.maxStudentNum != 0 %}
+			<div class="form-group row js-approved">
+				<div class="col-md-2 control-label">
+				</div>
+				<div class="col-md-8 controls">
+					<span class="color-warning">{{ 'offline_activity.enrollment.out_of_limit_member_num.tips'|trans }}</span>
+				</div>
+			</div>
+		{% endif %}
+		<div class="form-group js-reason hidden row">
+			<div class="col-md-2 control-label">
+				<label for="reject-reason">{{ 'offline_activity.enrollment.rejected_reason'|trans }}:</label>
+			</div>
+			<div class="col-md-8 controls">
+				<textarea id="reject-reason" name="rejectedReason" class="form-control" rows="5"></textarea>
+			</div>
+		</div>
+
+	</form>
+
+{% endblock %}
+{% block footer %}
+	<div id="pass-apply" data-url="{{ path('offline_activity_enrollment_verify', {'id':record.id}) }}"></div>
+	<button id="server-create-btn" data-submiting-text="{{ 'form.btn.create.submiting'|trans }}" type="submit"
+	        class="btn btn-primary pull-right js-save-btn" data-toggle="form-submit"
+	        data-loading-text="保存中">{{ 'offline_activity.enrollment.apply_confirm'|trans }}</button>
+	<button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{ 'form.btn.cancel'|trans }}</button>
+{% endblock %}

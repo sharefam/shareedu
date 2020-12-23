@@ -1,0 +1,181 @@
+{% extends 'project-plan/layout.html.twig' %}
+
+{% set tab_nav = 'overview-board' %}
+{% do script(['libs/fullcalendar.js', 'corporatetrainingbundle/js/project-plan/overview-board/index.js']) %}
+
+{% block cd_body_content %}
+  <div class="ct-wrap">
+    <div class="ct-info-section">
+      <div class="ct-info-section__head">
+        <div class="ct-info-section__title">{{ 'project_plan.overview_board.overview'|trans }}</div>
+      </div>
+      <div class="ct-info-section__body">
+        <div class="ct-project-overview">
+          <div class="ct-project-overview__content">
+            <div>
+
+              <div class="ft-xsm gray-darker ct-project-overview__num-title">{{ 'project_plan.overview_board.members_number'|trans }}</div>
+              <div class="ct-mts">
+                <span class="ct-project-overview__num">{{ projectPlanMemberNum|default(0) }}</span>
+                {% if projectPlan.maxStudentNum|default(0) %}
+                  / {{ 'project_plan.overview_board.members_number_info_by_maxstudentnum'|trans({'%maxStudentNum%': projectPlan.maxStudentNum|default(0), '%recordCounts%': recordCounts|default(0)}) }}
+                {% else %}
+                  {{ 'site.data.people'|trans }}
+                {% endif %}
+              </div>
+              <i class="ct-project-overview__icon es-icon es-icon-my"></i>
+            </div>
+            <div class="ct-project-overview__hover">
+              <div class="ct-devider ct-project-overview__devider">
+                <div class="ct-devider__item">
+                  <i class="color-primary va-mid es-icon es-icon-friend_add_fill"></i>
+                  <a class="ct-mls ft-xsm link-dark" href="{{ path('project_plan_member_manage_list', {id: projectPlan.id}) }}" target="_blank">{{ 'project_plan.add_members'|trans }}</a>
+                </div>
+                <div class="ct-devider__item {% if not projectPlan.requireEnrollment|default(0) %} ct-project-overview__hover-item--disabled {% endif %}" {% if not projectPlan.requireEnrollment|default(0) %} data-toggle="popover" data-container="body" data-trigger="hover" data-placement="top" data-content="{{ 'project_plan.overview_board.not_open_registration'|trans }}" {% endif %}>
+                  <i class="color-primary va-mid es-icon es-icon-qr-code"></i>
+                  <a class="ct-mls ft-xsm link-dark" href="
+                  {% if projectPlan.requireEnrollment|default(0) %}{{ path('project_plan_qrcode_view', {id: projectPlan.id}) }}{% else %}javascript:;{% endif %}"
+                  >{{ 'project_plan.overview_board.enrollment_qrcode'|trans }}</a>
+                </div>
+                <div class="ct-devider__item {% if not projectPlan.requireAudit|default(0) %} ct-project-overview__hover-item--disabled {% endif %}" {% if not projectPlan.requireAudit|default(0) %} data-toggle="popover" data-container="body" data-trigger="hover" data-placement="top" data-content="{{ 'project_plan.overview_board.not_open_audit'|trans }}" {% endif %}>
+                  <i class="color-primary va-mid es-icon es-icon-review"></i>
+                  <a class="ct-mls ft-xsm link-dark" href="{% if projectPlan.requireAudit|default(0) %}{{ path('project_plan_verify_list', {id: projectPlan.id}) }}{% else %}javascript:;{% endif %}">{{ 'project_plan.enrollment_verify'|trans }}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ct-project-overview__sidebar">
+            <div class="ft-xsm gray-darker">{{ 'project_plan.completion_degree'|trans }}</div>
+            <div class="ct-project-overview-complete-num">
+              {{ projectPlan.progress }}%
+            </div>
+            <i class="ct-project-overview__icon es-icon es-icon-time"></i>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ct-overview-board">
+      <div class="ct-overview-board__left">
+        <div class="ct-info-section">
+          <div class="ct-info-section__head">
+            <div class="pull-right gray-darker">{{ "now"|date('Y-m-d') }} <span class="ct-mlm">{{ time|weekday(time)|trans }}</span></div>
+            <span class="ct-info-section__title">{{ 'project_plan.overview_board.today_focus'|trans }}</span>
+          </div>
+          <div class="ct-info-section__body">
+
+            {% if detail|default('') %}
+              {% for task in detail %}
+                {% if task.itemType == 'course' %}
+                  {% set course = data('Course', {courseId:task.itemId}) %}
+                  <div class="ct-overview-board-focus">
+                    <i class="ct-overview-board-focus__icon color-primary es-icon es-icon-book">
+                    </i>
+                    <div class="ct-overview-board-focus__title">{{ task.title|default('') }}</div>
+                    <div class="ct-overview-board-focus__info">{{ 'project_plan.overview_board.from_course'|trans({'%courseTitle%': course.title|default('')}) }}</div>
+                    <div class="ct-overview-board-focus__info">{{ 'project_plan.overview_board.live_course.start_time'|trans }}：{{ task.startTime|date('H:i') }}-{{ task.endTime|date('H:i') }}
+                    </div>
+                    <a class="ct-btn ct-btn-primary ct-mtm" href="{{ path('course_task_show', {courseId: task.itemId, id: task.id}) }}" target="_blank">{{ 'project_plan.overview_board.enter_course'|trans }}</a>
+                  </div>
+                {% elseif task.itemType == 'offline_course' %}
+                  {% set offlineCourse = data('OfflineCourse',{ id:task.itemId }) %}
+                  {% set teacher = data('UserProfile',{ userId: offlineCourse.info.teacherIds[0] }) %}
+                  {% if task.type == 'offlineCourse' %}
+                    <div class="ct-overview-board-focus">
+                      <i class="ct-overview-board-focus__icon color-primary es-icon es-icon-teacher">
+                      </i>
+                      <div class="ct-overview-board-focus__title">{{ offlineCourse.info.title|default('') }}-{{ task.title|default('') }}</div>
+                      <div class="ct-overview-board-focus__info">{{ 'project_plan.overview_board.offline_course.place'|trans }}：{{ task.place|default('') }}</div>
+                      <div class="ct-overview-board-focus__info">{{ 'project_plan.overview_board.offline_course.time'|trans }}：{{ task.startTime|date('H:i') }}-{{ task.endTime|date('H:i') }}
+                      </div>
+                      <a class="ct-btn ct-btn-primary ct-mtm" href="{{ path('project_plan_offline_course_manage_sign_qrcode', {taskId: task.id }) }}" target="_blank">签到二维码</a>
+                    </div>
+                    {% if task.hasHomework == 1 %}
+                      <div class="ct-overview-board-focus">
+                        <i class="ct-overview-board-focus__icon color-primary es-icon es-icon-zuoye">
+                        </i>
+                        <div class="ct-overview-board-focus__title">{{ 'project_plan.overview_board.offline_course.homework'|trans }}</div>
+                        <div class="ct-overview-board-focus__info">{{ 'project_plan.overview_board.offline_course.from_task'|trans({'%taskTitle%': task.title|default('')}) }}</div>
+                        <div class="ct-overview-board-focus__info">{{ 'project_plan.overview_board.offline_course.homework_deadline'|trans }}：{{ task.homeworkDeadline|date('m-d') }}
+                        </div>
+                        <a class="ct-btn ct-btn-primary ct-mtm" href="{{ path('project_plan_offline_course_homework_task_list', {id: task.itemId}) }}" target="_blank">{{ 'project_plan.overview_board.offline_course.homework_review'|trans }}{% if task.reviewNum|default(0) %}<span class="ct-badge ct-mls">{{ task.reviewNum|default(0) }}</span>{% endif %}</a>
+                      </div>
+                    {% endif %}
+                  {% else %}
+                    <div class="ct-overview-board-focus">
+                      <i class="ct-overview-board-focus__icon color-primary es-icon es-icon-questionnaire_1">
+                      </i>
+                      <div class="ct-overview-board-focus__title">{{ 'project_plan.overview_board.offline_course.survey'|trans }}</div>
+                      <div class="ct-overview-board-focus__info">{{ 'project_plan.overview_board.offline_course.from_survey'|trans({'%surveyTitle%': offlineCourse.info.title|default('')}) }}</div>
+                      <div class="ct-overview-board-focus__info">{{ 'project_plan.teacher'|trans }}：{{ teacher.truename|default('') }}
+                      </div>
+                      <a class="ct-btn ct-btn-primary ct-mtm" href="{{ path('project_plan_offline_course_task_view_survey_qrcode', {taskId:task.id}) }}" target="_blank">{{ 'project_plan.overview_board.offline_course.survey_qrcode'|trans }}</a>
+                    </div>
+                  {% endif %}
+                {% elseif task.itemType == 'exam' %}
+                  {% if is_plugin_installed('Exam') %}
+                    <div class="ct-overview-board-focus">
+                      <i class="ct-overview-board-focus__icon color-primary es-icon es-icon-Online_Exam">
+                      </i>
+                      <div class="ct-overview-board-focus__title">{{ task.title|default('') }}</div>
+                      <div class="ct-overview-board-focus__info">{{ 'project_plan.overview_board.exam.qrcode'|trans }}：
+                        <a class="link-gray" href="{{ path('project_plan_exam_view_qrcode', {id: projectPlan.id, examId: task.id}) }}" target="_blank">{{ 'form.btn.view'|trans }}</a>
+                      </div>
+                      <div class="ct-overview-board-focus__info">{{ 'project_plan.overview_board.exam.start_time'|trans }}：{{ task.startTime|date('H:i') }} {{ 'project_plan.time_to'|trans }} {{ task.endTime|date('H:i') }}
+                      </div>
+                      <a class="ct-btn ct-btn-primary ct-mtm" href="{{ path('project_plan_exam_manage_list', {id: projectPlan.id, type:'exam'}) }}" target="_blank">{{ 'project_plan.overview_board.exam.review'|trans }}{% if task.reviewNum|default(0) %}<span class="ct-badge ct-mls">{{ task.reviewNum|default(0) }}</span>{% endif %}</a>
+                    </div>
+                  {% endif %}
+                {% else %}
+                  <div class="ct-overview-board-focus">
+                    <i class="ct-overview-board-focus__icon color-primary es-icon es-icon-Offline_Exam">
+                    </i>
+                    <div class="ct-overview-board-focus__title">{{ task.title|default('') }}</div>
+                    <div class="ct-overview-board-focus__info">{{ 'project_plan.item.exam_place'|trans }}：{{ task.place|default('') }}
+                    </div>
+                    <div class="ct-overview-board-focus__info">{{ 'project_plan.item.exam_time'|trans }}：{{ task.startTime|date('H:i') }}-{{ task.endTime|date('H:i') }}
+                    </div>
+                    <a class="ct-btn ct-btn-primary ct-mtm" href="{{ path('project_plan_offline_exam_manage_member_list', {id: projectPlan.id, taskId:task.id}) }}" target="_blank">{{ 'project_plan.overview_board.exam.import_results'|trans }}</a>
+                  </div>
+                {% endif %}
+              {% endfor %}
+
+            {% elseif not detail and projectPlan.endTime > time or projectPlan.endTime == 0 %}
+              <div class="ct-overview-board-focus-empty">{{ 'project_plan.overview_board.empty'|trans }}</div>
+            {% endif %}
+
+            {% if projectPlan.endTime|default(0) and projectPlan.endTime < time %}
+              <div class="ct-overview-board-focus-empty">
+                  <span class="dis-i-b">
+                    {{ 'project_plan.overview_board.project_plan_end'|trans }}<br>
+                    {% if projectPlan.status == 'archived' %}
+                      <span>{{ 'project_plan.overview_board.project_plan_archived'|trans }}</span>
+                    {% else %}
+                      <a class="projectplan-operate" id="close-projectplan"
+                         data-url="{{ path('project_plan_archive', {'id': projectPlan.id}) }}"
+                         data-notify-title="{{ 'project_plan.overview_board.archive'|trans }}"
+                         href="javascript:;">{{ 'project_plan.overview_board.archive'|trans }}</a>
+                    {% endif %}
+
+                  </span>
+              </div>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+      <div class="ct-overview-board__right">
+        <div class="ct-info-section">
+          <div class="ct-info-section__head">
+            <span class="ct-info-section__title">{{ 'project_plan.overview_board.calendar'|trans }}</span>
+          </div>
+          <div class="ct-info-section__body">
+            <div id="calendar"></div>
+            <div id="todayDateStr" class="hidden">{{"now"|date('Y-m-d')}}</div>
+            <div id="projectPlanItems" class="hidden" data-url="{{ path('project_plan_items_detail', {projectPlanId: projectPlan.id}) }}"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

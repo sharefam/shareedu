@@ -1,0 +1,31 @@
+{% if resultNum.group|default() %}
+  {% include 'ct-search/search-group-topic.html.twig' %}
+{% endif %}
+<div class="alert alert-blank alert-sm">
+	{{ 'cloud_search.thread.result'|trans({'%counts%':resultNum.thread|default(0)})|raw }}
+</div>
+
+<div class="media-list">
+  {% for thread in resultSets %}
+	<div class="media media-search">
+	<div class="media-left">
+	  <div class="reply">
+		{{thread.postNum}}<br>
+		<span class="text-sm">{{'cloud_search.thread.reply'|trans}}</span>
+	  </div>
+	</div>
+	<div class="media-body">
+	  <div class="title">
+	  <a class="link-dark" href="{{path('group_thread_show',{id:thread.groupId,threadId:thread.id})}}" target="_blank">
+	    {{thread.title|highlight_keyword(app.request.get('q')|default(''))}}
+	  </a>
+	  </div>
+		<div class="text-sm color-gray">{{'cloud_search.thread.from'|trans}}
+		  {% set group = data('Group',{'groupId':thread.groupId|default(0)}) %}
+		  <a class="mls" href="{{path('group_show',{id:thread.groupId})}}" target="_blank">{{group.title|highlight_keyword(app.request.get('q')|default(''))}}</a>
+		  <span class="mlm">{{thread.createdTime|smart_time}}</span>
+		</div>
+	</div>
+	</div>
+  {% endfor %}
+</div>

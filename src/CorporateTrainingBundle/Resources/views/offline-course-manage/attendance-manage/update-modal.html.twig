@@ -1,0 +1,58 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set modalSize = 'small' %}
+
+{% block title %}{{ 'offline_course.attendance'|trans }}{% endblock %}
+
+{% do script(['corporatetrainingbundle/js/project-plan/item/offline-course/offline-course-manage/attendance-manage/update-modal/index.js']) %}
+
+{% block body %}
+  <form id="attendance-update-form" class="form-horizontal" data-url="{{ path('project_plan_offline_course_task_attendance_manage_attend', {id: taskId, userId: user.id}) }}" method="post" >
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'project_plan.member.nick_name'|trans }}:</label>
+      </div>
+      <div class="col-md-7">
+        <p class="form-control-static">{{ userProfiles.truename|default('--') }}</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'project_plan.member.post'|trans }}:</label>
+      </div>
+      <div class="col-md-7">
+        <p class="form-control-static">
+          {% if setting('magic.enable_org','0') %}
+            {% set orgs = data('Orgs',{orgIds: user.orgIds}) %}
+            {{ orgs.0.name|default('--')}}
+            {% if orgs.1|default(false) %}
+              <i class="es-icon es-icon-more ft-xsm" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="top" data-content="{{ orgs.orgNames|default() }}"></i>
+            {% endif %}
+          {% endif %}
+          - {{ post.name|default('--') }}</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'offline_course.attendance_result'|trans }}:</label>
+      </div>
+      <div class="col-md-7 radios">
+        <label>
+          <input type="radio" name="attendStatus" value="unattended" {% if status == 'unattended' %}checked="checked"{% endif %}>{% if isTaskExpire %}{{ 'project_plan.status.absenteeism'|trans }}{% else %}{{ 'project_plan.status.unattend'|trans }}{% endif %}
+        </label>
+        <label>
+          <input type="radio" name="attendStatus" value="attended" {% if status == 'attended' %}checked="checked"{% endif %}>{{ 'project_plan.status.registered'|trans }}
+        </label>
+      </div>
+    </div>
+
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+  </form>
+{% endblock %}
+
+{% block footer %}
+  <a class="ct-btn ct-btn-primary pull-right js-update-attendance-btn" data-loading-text="{{ 'project_plan.btn.save_loading_btn'|trans }}">{{ 'project_plan.btn.save_btn'|trans }}</a>
+  <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{ 'form.btn.cancel'|trans }}</button>
+{% endblock %}

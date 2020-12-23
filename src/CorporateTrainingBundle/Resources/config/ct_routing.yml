@@ -1,0 +1,734 @@
+homepage:
+    path: /
+    defaults: { _controller: CorporateTrainingBundle:HomeDefault:index }
+
+change_password:
+    path: /change/password
+    defaults: { _controller: CorporateTrainingBundle:AdminLogin:changePassword }
+
+site_info_set:
+    path: set/site/info
+    defaults: { _controller: CorporateTrainingBundle:AdminLogin:setSiteInfo }
+
+area_search:
+    path:  /area
+    defaults: { _controller: CorporateTrainingBundle:Area:searchAreas }
+
+study_center_my_task_learning:
+    path: /study/center/my/task/learning
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/MyTask:postCourseList }
+
+study_center_my_task_training_list:
+    path: /study/center/my/task/training/list
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/MyTask:projectPlanList }
+
+user_read_guide:
+    path: /guide/complete
+    defaults: { _controller: CorporateTrainingBundle:Guide:homePageGuide }
+    methods: [POST]
+
+courses_square:
+    path: /courses/square
+    defaults: { _controller: CorporateTrainingBundle:HomeDefault:index }
+
+study_center_course_tasks_list:
+    path: /study/center/{courseId}/task/list/{tab_type}/{userId}
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/MyTask:taskList , userId: 0 }
+
+study_center_project_plan_detail_list:
+    path: /study/center/{id}/project_plan/detail/list
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/MyTask:itemList}
+
+study_center_project_plan_more:
+    path: /study/center/project_plan/more
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/MyTask:ajaxGetProjectPlanRowHtml}
+
+study_center_threads:
+    path: /study/center/{courseId}/threads
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/Thread:threads }
+
+study_center_thread_create:
+    path: /study/center/{courseId}/create/thread
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/Thread:create }
+
+study_center_learn_record:
+    path: /study/center/study/record
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/StudyRecord:record }
+
+study_center_learn_record_detail:
+    path: /study/center/study/record/detail
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/StudyRecord:detail }
+
+study_center_learn_record_detail_show:
+    path: /study/center/study/record/{courseId}/detail/{userId}/show
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/CourseStatistics:detailShow }
+
+study_center_learn_record_score:
+    path: /study/center/study/record/{courseId}/score
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/StudyRecord:score }
+
+study_center_my_department_courses:
+    path: /study/center/my/department/courses/{category}
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/Department:courses, category:'' }
+
+study_center_my_department_classrooms:
+    path: /study/center/my/department/classrooms/{category}
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/Department:classrooms, category:'' }
+
+study_center_department_manage:
+    path: /study/center/department/manage
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/DepartmentManage:index }
+
+study_center_department_manage_record:
+    path: /study/center/department/manage/{userId}/learn/record
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/DepartmentManage:learnRecord }
+
+study_center_user_information:
+    path: /study/center/department/manage/{userId}/information
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/DepartmentManage:userShow }
+
+study_center_my_study_record_detail:
+    path: /study/center/user/{userId}/study/record/detail
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/CourseStatistics:detail }
+
+study_center_my_courses_learning:
+    path: /study/center/my/courses/learning/{category}
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/MyCourses:learning, category:'' }
+
+study_center_my_courses_learned:
+    path: /study/center/my/courses/learned/{category}
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/MyCourses:learned, category:'' }
+
+pwd_init:
+    path: /password/init
+    defaults: { _controller: CorporateTrainingBundle:InitPasswordChange:init }
+
+password_change:
+    path: /password/change
+    defaults: { _controller: CorporateTrainingBundle:InitPasswordChange:changePassword }
+
+password_reset:
+    path: /password/reset
+    defaults: { _controller: CorporateTrainingBundle:PasswordReset:index }
+
+index:
+    path: /index
+    defaults: { _controller: AppBundle:Default:index }
+
+exporter_export:
+    path: /exporter/{type}/{formSubmission}/export
+    defaults: { _controller: CorporateTrainingBundle:Exporter:exporter, formSubmission:'get' }
+
+offline_activity_manage_base:
+     path: /offline_activity/{id}/manage/base
+     defaults: {_controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:base}
+
+offline_activity_manage_cover:
+     path: /offline_activity/{id}/manage/cover
+     defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:cover}
+
+offline_activity_manage_cover_crop:
+     path: /offline_activity/{id}/manage/cover_crop
+     defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:coverCrop}
+
+offline_activity_manage_list:
+     path: /offline_activity/{id}/manage/list
+     defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:list}
+
+offline_activity_manage_attend_member:
+    path: /offline_activity/{id}/manage/attend/member
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:attendMember }
+
+offline_activity_manage_grade_member:
+    path: /offline_activity/{id}/manage/grade/member
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:gradeMember }
+
+offline_activity_manage_delete_member:
+    path: /offline_activity/{id}/manage/delete/member
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:deleteMember }
+
+offline_activity_manage_statistics:
+     path: /offline_activity/{id}/manage/statistics
+     defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:statistics}
+
+offline_activity_manage_publish:
+     path: /offline_activity/{id}/manage/publish
+     defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:publish}
+
+offline_activity_manage_close:
+    path: /offline_activity/{id}/manage/close
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:close}
+
+offline_activity_manage_create:
+    path: /offline_activity/create
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:create }
+    permissions: [admin_offline_activity_manage]
+
+offline_activity_sign_qrcode:
+    path: /offline_activity/{activityId}/sign_qrcode
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:viewSignQrcode}
+
+offline_activity_sign_in:
+    path: /offline_activity/sign_in/{activityId}
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivity:signIn}
+
+offline_activity_list:
+    path:  /offline_activity/list/{type}
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivity:list, type:'ongoing'}
+
+offline_activity_more:
+    path:  /offline_activity/ajax_get
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivity:ajaxGetRowHtml}
+
+offline_activity_detail:
+    path:  /offline_activity/{id}/detail
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivity:detail}
+
+my_offline_activities:
+    path: /my/offline_activities
+    defaults: { _controller: CorporateTrainingBundle:My/OfflineActivity:learn}
+
+my_offline_activities_enrollment_record:
+    path: /my/offline_activities/enrollment_record
+    defaults: { _controller: CorporateTrainingBundle:My/OfflineActivity:enrollmentRecord}
+
+offline_activity_manage_add_member:
+    path: /offline_activity/{id}/manage/add/member
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:addMember }
+
+offline_activity_manage_check_member:
+    path: /offline_activity/{id}/manage/check/member
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:checkMember }
+
+offline_activity_attend:
+    path: /offline_activity/{activityId}/attend
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivity:attend }
+
+offline_activity_apply:
+    path: /offline_activity/{activityId}/apply
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivity:apply }
+
+offline_activity_enroll:
+    path: /offline_activity/{activityId}/enroll
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivity:enroll }
+
+offline_activity_verify_list:
+    path: /offline_activity/{id}/verify/list
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:verifyList }
+
+offline_activity_verify_batch_audit:
+    path: /offline_activity/verify/batch/audit
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:batchAudit }
+
+offline_activity_verify_batch_pass:
+    path: /offline_activity/verify/batch/pass
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:batchPass }
+
+offline_activity_verify_batch_reject:
+    path: /offline_activity/verify/batch/reject
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:batchReject }
+
+study_center_offline_activity_record:
+    path: /study/center/offline_activity/{userId}/record
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/StudyRecord:offlineActivityRecord }
+
+offline_activity_evaluate_show:
+    path: /offline_activity/member/{memberId}/evaluate
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:evaluateShow }
+
+offline_activity_enrollment_verify:
+    path: /offline_activity/enrollment_apply/{id}/verify
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:verifyApply }
+
+offline_activity_enrollment_learn_record:
+    path: /offline_activity/enrollment_apply/{id}/record
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:learnRecord}
+
+offline_activity_attend_statistic:
+    path: /offline_activity/{id}/attend/statistic
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:attendStatistic }
+
+offline_activity_pass_statistic:
+    path: /offline_activity/{id}/pass/statistic
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:passStatistic }
+
+offline_activity_score_statistic:
+    path: /offline_activity/{id}/score/statistic
+    defaults: { _controller: CorporateTrainingBundle:OfflineActivity/OfflineActivityManage:scoreStatistic }
+
+data_report_user_learn_rank_list:
+    path: /learn_rank/user
+    defaults: { _controller: CorporateTrainingBundle:LearnRank:userLearnRankList }
+
+data_report_org_learn_rank_list:
+    path: /learn_rank/org
+    defaults: { _controller: CorporateTrainingBundle:LearnRank:orgLearnRankList }
+
+project_plan_create:
+    path: /project_plan/create
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:create }
+
+project_plan_manage_overview_board:
+    path: /project_plan/{id}/manage/overview/board
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:overviewBoard }
+
+project_plan_manage_base:
+    path: /project_plan/{id}/manage/base
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:base }
+
+project_plan_manage_cover:
+     path: /project_plan/{id}/manage/cover
+     defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:cover}
+
+project_plan_manage_cover_crop:
+     path: /project_plan/{id}/manage/cover_crop
+     defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:coverCrop}
+
+project_plan_publish:
+    path: /project_plan/{id}/ajax_publish
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:ajaxPublish }
+
+project_plan_close:
+    path: /project_plan/{id}/ajax_close
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:ajaxClose }
+
+project_plan_archive:
+    path: /project_plan/{id}/ajax_archive
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:ajaxArchive }
+
+project_plan_remove:
+    path: /project_plan/{id}/ajax_remove
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:ajaxRemove }
+
+project_plan_item_remove:
+    path: /project_plan/item/{id}/remove
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:itemRemove }
+
+project_plan_item_type_choose:
+    path: /project_plan/item/{id}/type/choose
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:itemTypeChoose }
+
+project_plan_item_add:
+    path: /project_plan/item/{id}/{type}/add
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:itemAdd }
+
+project_plan_manage_items:
+    path: /project_plan/{id}/items
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:items }
+
+project_plan_course_match:
+    path: /project_plan/course/match
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/Item/OnlineCourseItem:matchCourse }
+
+project_plan_course_pick:
+  path: /project_plan/{projectPlanId}/course/pick
+  defaults: { _controller: CorporateTrainingBundle:ProjectPlan/Item/OnlineCourseItem:pick }
+
+project_plan_ajax_match_manage_course:
+    path: /project_plan/{projectPlanId}/manage_course/match
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/Item/OnlineCourseItem:ajaxMatchManageCourse }
+
+project_plan_ajax_match_use_permission_course:
+    path: /project_plan/{projectPlanId}/use_permission_course/match
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/Item/OnlineCourseItem:ajaxMatchUsePermissionCourse }
+
+project_plan_member_manage_list:
+    path: /project_plan/{id}/member/manage/list
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/MemberManage:memberManageList }
+
+project_plan_member_match:
+    path: /project_plan/member/match
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/MemberManage:memberMatch }
+
+project_plan_member_create:
+    path: /project_plan/{id}/member/create
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/MemberManage:createMember}
+
+project_plan_member_remove:
+    path: /project_plan/member/{id}/remove
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/MemberManage:ajaxRemoveProjectPlanMember }
+
+project_plan_members_remove:
+    path: /project_plan/{projectPlanId}/members/remove
+    defaults: {_controller: CorporateTrainingBundle:ProjectPlan/MemberManage:membersRemove }
+
+project_plan_member_score_modal_show:
+    path: /project_plan/{projectPlanId}/user/{userId}/score/modal/show
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/MemberManage:memberScoreModalShow }
+
+project_plan_item_manage_list:
+    path: /project_plan/{id}/item/{type}/manage/list
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:itemList }
+
+project_plan_record:
+    path: /project_plan/record
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/MemberManage:record }
+
+advanced_member_select:
+    path: /advanced_member_select/{targetType}/{targetId}/show
+    defaults: { _controller:  CorporateTrainingBundle:AdvancedMemberSelect:show }
+
+advanced_member_select_user_search:
+    path: /advanced_member_select/user/search
+    defaults: { _controller:  CorporateTrainingBundle:AdvancedMemberSelect:userSearch }
+
+advanced_member_select_attribute_convert:
+    path: /advanced_member_select/attribute_convert
+    defaults: { _controller: CorporateTrainingBundle:AdvancedMemberSelect:convertUserAttribute }
+    methods: [POST]
+
+advanced_member_select_add_members:
+    path: /advanced_member_select/{targetType}/{targetId}/batch_add
+    defaults: { _controller: CorporateTrainingBundle:AdvancedMemberSelect:batchAddMember }
+    methods: [POST]
+
+advanced_member_select_choose_all_user:
+    path: /advanced_member_select/choose/users
+    defaults: { _controller: CorporateTrainingBundle:AdvancedMemberSelect:chooseAllUser }
+
+post_match:
+    path: /post/match
+    defaults: { _controller: CorporateTrainingBundle:Post:match }
+
+project_plan_verify_list:
+    path: /project_plan/{id}/verify/list
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/MemberManage:verifyList }
+
+project_plan_verify_batch_audit:
+    path: /project_plan/verify/batch/audit
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/MemberManage:batchAudit }
+
+project_plan_verify_batch_pass:
+    path: /project_plan/verify/batch/pass
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/MemberManage:batchPass }
+
+project_plan_verify_batch_reject:
+    path: /project_plan/verify/batch/reject
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/MemberManage:batchReject }
+
+project_plan_enrollment_verify:
+    path: /project_plan/enrollment_apply/{id}/verify
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/MemberManage:verifyApply }
+
+project_plan_qrcode_view:
+    path: /project_plan/{id}/view/qrcode
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:viewQrcode }
+
+project_plan_exam_view_qrcode:
+    path: /project_plan/{id}/exam/{examId}/view/qrcode
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:viewExamQrcode }
+
+can_do_exam:
+    path: /project_plan/{id}/exam/{examId}/do/exam
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:canDoExam }
+
+training_offline_course_manage_base:
+    path: /project_plan/offline_course/{id}/manage/base
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/OfflineCourseManage:base }
+
+training_offline_course_manage_tasks:
+    path: /project_plan/offline_course/{id}/manage/tasks
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/OfflineCourseManage:tasks }
+
+training_offline_course_manage_task_create:
+    path: /training/offline_course/{id}/manage/{type}/task/create
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/OfflineCourseManage:createTask }
+
+training_offline_course_manage_task_edit:
+    path: /training/offline_course/{courseId}/manage/task/{taskId}/edit
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/OfflineCourseManage:editTask }
+
+project_plan_offline_course_manage_task_delete:
+    path: /project_plan/offline_course/{courseId}/manage/task/{taskId}/delete
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/OfflineCourseManage:deleteTask }
+    methods: [POST]
+
+training_survey_match:
+    path: /training/survey/match
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/OfflineCourseManage:matchSurvey }
+
+project_plan_offline_course_manage_teachers_match:
+    path: /project_plan/offline_course/teachers/match
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/OfflineCourseManage:teachersMatch }
+
+project_plan_offline_course_homework_list:
+    path: /project_plan/offline_course/{id}/homework/list
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/HomeworkManage:homeworkList }
+
+project_plan_offline_course_homework_ajax_list:
+    path: /project_plan/offline_course/{id}/homework/ajax/list
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/HomeworkManage:homeworkAjaxList }
+
+project_plan_offline_course_homework_task_list:
+    path: /project_plan/offline_course/{id}/homework/task/list
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/HomeworkManage:homeworkTaskList }
+
+project_plan_offline_course_homework_check:
+    path: /project_plan/offline_course/homework/{id}/check
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/HomeworkManage:homeworkCheck }
+
+project_plan_enroll:
+    path: /project_plan/{id}/enroll
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:enroll }
+
+project_plan_attend:
+    path: /project_plan/{id}/attend
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:attend }
+
+project_plan_apply:
+    path: /project_plan/{id}/apply
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:apply }
+
+project_plan_offline_course_homework_submit:
+    path: /offline_course/{offlineCourseTaskId}/homework/submit
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/ProjectPlan:homeworkSubmit }
+
+homework_attachment_delete:
+    path: /offline_course/homework/attachment/{id}/delete
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/ProjectPlan:homeworkAttachmentDelete }
+
+project_plan_detail:
+    path: /project_plan/{id}/detail
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:detail }
+
+project_plan_offline_attendance_course_manage:
+    path: /project_plan/offline_course/{id}/manage/attendence
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/AttendanceManage:courseManage }
+
+project_plan_offline_course_attendance_task_manage:
+    path: /project_plan/offline_course/{id}/task/{taskId}/manage/attendence
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/AttendanceManage:courseTaskManage }
+
+project_plan_offline_course_attendance_task_list_manage:
+    path: /project_plan/offline_course/{id}/task/{taskId}/manage/list/attendence
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/AttendanceManage:courseTaskListManage }
+
+project_plan_offline_course_task_attendance_manage_attend:
+    path: /project_plan/offline_course/task/{id}/{userId}/attend
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/AttendanceManage:attend }
+
+project_plan_offline_course_task_attendance_manage_batch_update:
+    path: /project_plan/offline_course/task/{id}/attendance/batch/update
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/AttendanceManage:BatchUpdate }
+
+project_plan_advanced_option:
+    path: /project_plan/{id}/advanced_option
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:advancedOption }
+
+project_plan_crowd_match:
+    path: /project_plan/crowd_match
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:crowdMatch }
+
+project_plan_offline_course_manage_sign_qrcode:
+    path: /project_plan/offline_course/task/{taskId}/sign_qrcode
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/OfflineCourseManage:viewSignQrcode }
+
+project_plan_offline_course_sign_in:
+    path: /project_plan/offline_course/task/{taskId}/sign_in
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/OfflineCourse:signIn }
+
+project_plan_offline_course_task_view_survey_qrcode:
+    path: /project_plan/offline_course/task/{taskId}/view/survey/qrcode
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/OfflineCourse:viewSurveyQrcode }
+
+project_plan_offline_course_task_do_survey_qrcode:
+    path: /project_plan/offline_course/task/do/survey/qrcode
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/OfflineCourse:doSurveyQrcode }
+
+can_do_survey:
+    path: /project_plan/{projectPlanId}/offline_course/{taskId}/do/{surveyId}/survey
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/OfflineCourse:canDoSurvey }
+
+project_plan_item_update:
+    path: /project_plan/{projectPlanId}/item/{id}/update
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:itemUpdate }
+
+project_plan_list:
+    path: /project_plan/list
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:projectPlanList }
+
+project_plan_item_delete:
+    path: /project_plan/item/{id}/delete
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:itemDelete }
+
+project_plan_offline_exam_manage_list:
+    path: /project_plan/{id}/offline_exam/list
+    defaults: { _controller: CorporateTrainingBundle:OfflineExam/OfflineExamManage:offlineExamManageList }
+
+project_plan_member_attachment_show:
+    path: /project_plan/{id}/attachment/show
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/MemberManage:attachmentShow }
+
+project_plan_offline_exam_manage_member_list:
+    path: /project_plan/{id}/offline_exam/{taskId}/manage/member/list
+    defaults: { _controller: CorporateTrainingBundle:OfflineExam/OfflineExamManage:offlineExamManageMemberList }
+
+project_plan_offline_exam_ajax_manage_member_list:
+    path: /project_plan/{id}/offline_exam/{taskId}/ajax/manage/member/list
+    defaults: { _controller: CorporateTrainingBundle:OfflineExam/OfflineExamManage:offlineExamAjaxManageMemberList }
+
+project_plan_offline_exam_mark:
+    path: /project_plan/offline_exam/{offlineExamId}/result/{userId}/mark
+    defaults: { _controller: CorporateTrainingBundle:OfflineExam/OfflineExamManage:offlineExamMark }
+
+project_plan_offline_exam_delete:
+    path: /project_plan/{id}/offline_exam/{offlineExamId}/delete
+    defaults: { _controller: CorporateTrainingBundle:OfflineExam/OfflineExamManage:offlineExamDelete }
+
+project_plan_offline_course_update:
+    path: /project_plan/{projectPlanId}/offline_course/{offlineCourseId}/update
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/Item/OfflineCourseItem:update }
+
+project_plan_offline_exam_update:
+    path: /project_plan/{projectPlanId}/offline_exam/{offlineExamId}/update
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/Item/OfflineExamItem:update }
+
+project_plan_exam_update:
+    path: /project_plan/{projectPlanId}/exam/{examId}/update
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/Item/OnlineExamItem:update }
+
+project_plan_study_data_user_detail:
+    path: /project_plan/{projectPlanId}/study/data/user_detail/{userId}
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanStudyData:studyDataUserDetail }
+
+project_plan_study_data_list:
+    path: /project_plan/{projectPlanId}/study/data/list
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanStudyData:studyDataList }
+
+project_plan_study_data_ajax_list:
+    path: /project_plan/{projectPlanId}/study/data/ajax/list
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanStudyData:studyDataAjaxList }
+
+project_plan_study_data_overview:
+    path: /project_plan/{id}/study/data/overview
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanStudyData:studyDataOverview }
+
+study_record_project_plan:
+    path: /study/record/project_plan/{userId}
+    defaults: { _controller: CorporateTrainingBundle:StudyRecord:projectPlanRecord }
+
+study_record_courses_list:
+    path: /study/record/{id}/courses/list/{userId}
+    defaults: { _controller: CorporateTrainingBundle:StudyRecord:courseList }
+
+study_record_offline_activity:
+    path: /study/record/offline_activity/{userId}
+    defaults: { _controller: CorporateTrainingBundle:StudyRecord:offlineActivityRecord }
+
+study_record_activity_enrollment_record:
+    path: /study/record/offline_activity/enrollment_record/{userId}
+    defaults: { _controller: CorporateTrainingBundle:StudyRecord:offlineActivityEnrollmentRecord}
+
+study_record_post_course:
+    path: /study/record/post_course/{userId}
+    defaults: { _controller: CorporateTrainingBundle:StudyRecord:postCourseRecord }
+
+study_record_post_course_list:
+    path: /study/record/post_course/list/{userId}
+    defaults: { _controller: CorporateTrainingBundle:StudyRecord:postCourseList }
+
+study_record_statistics_overview:
+    path: /study_record/statistics_overview/{userId}
+    defaults: { _controller: CorporateTrainingBundle:StudyRecord:statisticsOverview }
+
+project_plan_sort_item:
+    path: /project_plan/item/sort
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:sortItem }
+
+project_plan_offline_course_sort_task:
+    path: /project_plan/offline_course/task/sort
+    defaults: { _controller: CorporateTrainingBundle:OfflineCourse/OfflineCourseManage:sortTask }
+
+project_plan_items_detail:
+    path: /project_plan/{projectPlanId}/items/detail
+    defaults: { _controller: CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:itemsDetail }
+
+my_teaching_record:
+    path: /my/teaching/record
+    defaults: { _controller: CorporateTrainingBundle:My/TeachingRecord:index }
+
+my_teaching_course_record:
+    path: /my/teaching/course/record
+    defaults: { _controller: CorporateTrainingBundle:My/TeachingRecord:course }
+
+my_teaching_offline_course_record:
+    path: /my/teaching/offline_course/record
+    defaults: { _controller: CorporateTrainingBundle:My/TeachingRecord:offlineCourse }
+
+my_teaching_course_record_survey_score_data:
+    path: /my/teaching/course/record/ajax_get_course_survey_score_data
+    defaults: { _controller: CorporateTrainingBundle:My/TeachingRecord:ajaxGetCourseSurveyScoreData }
+
+my_teaching_course_record_course_rank_list:
+    path: /my/teaching/course/{courseType}/record/course/rank/list
+    defaults: { _controller: CorporateTrainingBundle:My/TeachingRecord:courseRankList }
+
+my_teaching_course_record_student_rank_list:
+    path: /my/teaching/course/{courseType}/record/student/rank/list
+    defaults: { _controller: CorporateTrainingBundle:My/TeachingRecord:studentRankList }
+
+teacher_ajax_list:
+    path: /teacher/ajax_list
+    defaults: {_controller: CorporateTrainingBundle:Teacher:ajaxList }
+
+resource_use_permission_accredit:
+    path: /resource/{type}/{resourceId}/use_permission/accredit
+    defaults: {_controller: CorporateTrainingBundle:ResourceUsePermission:accredit }
+
+resource_use_permission_user_match:
+    path: /resource/use_permission/user/match
+    defaults: {_controller: CorporateTrainingBundle:ResourceUsePermission:userMatch }
+
+resource_use_permission_record_list:
+    path: /resource/{type}/{resourceId}/use_permission/record_list
+    defaults: {_controller: CorporateTrainingBundle:ResourceUsePermission:recordList }
+
+resource_use_permission_record_ajax_list:
+    path: /resource/{type}/{resourceId}/use_permission/record/ajax_list
+    defaults: {_controller: CorporateTrainingBundle:ResourceUsePermission:ajaxRecordList }
+
+resource_use_permission_history_ajax_list:
+    path: /resource/{type}/{resourceId}/use_permission/history/ajax_list
+    defaults: {_controller: CorporateTrainingBundle:ResourceUsePermission:ajaxHistoryList }
+
+resource_use_permission_canceled_shared:
+    path: /resource/{recordId}/use_permission/record/canceled_shared
+    defaults: {_controller: CorporateTrainingBundle:ResourceUsePermission:canceledShared }
+
+classroom_courses_pick_ajax:
+    path: /classroom/{classroomId}/course/pick/ajax
+    defaults: {_controller: CorporateTrainingBundle:Classroom/Course:ajaxPick }
+
+classroom_use_permission_courses_pick_ajax:
+   path: /classroom/{classroomId}/use_permission/course/pick/ajax
+   defaults: {_controller: CorporateTrainingBundle:Classroom/Course:usePermissionAjaxPick }
+
+mobile_qrcode_ajax:
+    path:  /mobil/qrcode/ajax
+    defaults: { _controller: AppBundle:Common:ajaxMobileQrcode }
+  
+study_center_my:
+    path:  /study/center/my
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/H5:myStudyCenter }
+
+study_center_my_tasks:
+    path:  /study/center/my/tasks
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/H5:myTasks }
+    
+my_center:
+    path:  /my/center
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/H5:myDetail }
+    
+my_study_record:
+    path:  /my/study/record
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/H5:myStudyRecord }
+    
+study_center_my_courses_favorited:
+    path:  /study/center/my/courses/favorited
+    defaults: { _controller: CorporateTrainingBundle:StudyCenter/H5:favorited }
+    
+course_set_manage_locked_course_update:
+    path: /course_set/{id}/manage/locked/course/base
+    defaults: {_controller: CorporateTrainingBundle:Course/CourseSetManage:lockedCourseBase}
+    permissions: [admin_train_teach_manage_my_teaching_courses_manage, admin_course_manage]
+    methods: [POST]

@@ -1,0 +1,49 @@
+{% if resultSets %}
+{% for offlineActivity in resultSets %}
+  <div class="c-offline-activity">
+    <div class="c-offline-activity__l">
+      <div class="c-offline-activity__weekday">{% if offlineActivity.startTime %}{{ offlineActivity.startTime|weekday|trans }}{% else %}{{ '- -' }}{% endif %}</div>
+      <a class="dis-blk" href="{{ path('offline_activity_detail', {id: offlineActivity.id }) }}">
+        <img class="c-offline-activity__img" src="{{ filepath(offlineActivity['cover']['large']|default(''), 'activity.png') }}">
+      </a>
+    </div>
+    <div class="c-search-offline-activity__bd">
+      <a class="c-offline-activity__title" href="{{ path('offline_activity_detail', {id: offlineActivity.id }) }}">{{ offlineActivity.title|highlight_keyword(app.request.get('q')|default('')) }}</a>
+        {% set category = data('Category', {'categoryId': offlineActivity.categoryId}) %}
+        {% if category|default('') %}
+          <div class="c-offline-activity__lab-wrap">
+            <div class="c-offline-activity__lab ct-label ct-label--theme">{{ category.name|default('')}}</div>
+          </div>
+        {% endif %}
+        <div class="c-offline-activity__info-wrap">
+          <div class="c-offline-activity__info">
+            <div class="c-offline-activity__info-l">
+              {{ 'search.offlineactivity.time'|trans }}
+            </div>
+            <div class="c-offline-activity__info-r">
+              <span>{% if offlineActivity.startTime %}{{ offlineActivity.startTime|date('Y-m-d H:i') }}{% else %}{{ '- -' }}{% endif %} {{ 'search.offlineactivity.to'|trans }} {% if offlineActivity.endTime %}{{ offlineActivity.endTime|date('Y-m-d H:i') }}{% else %}{{ '- -' }}{% endif %}</span>
+            </div>
+          </div>
+          <div class="c-offline-activity__info">
+            <div class="c-offline-activity__info-l">
+              {{ 'search.offlineactivity.address'|trans }}
+            </div>
+            <div class="c-offline-activity__info-r">
+              <span>{{ offlineActivity.address|default('search.offlineactivity.empty_address'|trans) }}</span>
+            </div>
+          </div>
+          <div class="c-offline-activity__info">
+            <div class="c-offline-activity__info-l">
+              {{ 'search.offlineactivity.enrollTime'|trans }}
+            </div>
+            <div class="c-offline-activity__info-r">
+              <span>{% if offlineActivity.enrollmentEndDate %}{{ offlineActivity.enrollmentStartDate|date('Y-m-d H:i') }} {{ 'search.offlineactivity.to'|trans }} {{ offlineActivity.enrollmentEndDate|date('Y-m-d H:i') }}{% else %}{{ '- -' }}{% endif %}</span>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+{% endfor %}
+{% else %}
+  <div class="empty">{{'search.empty'|trans({'%name%':'search.offlineactivity.offline_activity'|trans})}}</div>
+{% endif %}

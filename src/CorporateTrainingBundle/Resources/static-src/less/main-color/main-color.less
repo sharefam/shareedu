@@ -1,0 +1,639 @@
+@import '../variables.less';
+
+// components
+.btn-reverse {
+  border: 1px solid @brand-primary;
+  color: @brand-primary;
+  &:hover, &:focus, &.active {
+    background-color: @brand-primary;
+  }
+}
+.btn-reverse-white {
+  &:hover, &:focus, &.active {
+    background-color: @brand-primary;
+    border: 1px solid @brand-primary;
+  }
+}
+
+.loading-line {
+  background-color: lighten(@brand-primary, 30%);
+}
+.loading-line div {
+  background-color: @brand-primary;
+}
+
+.nav {
+  &.nav-line {
+    >li {
+      &.active {
+        >a {
+          color: @brand-primary;
+        }
+      }
+      &:hover {
+        >a {
+          color: @brand-primary;
+        }
+      }
+    }
+  }
+}
+
+.tab-sec-item {
+  border: 1px solid @brand-primary;
+  color: @brand-primary;
+  &:hover , &:active ,　&.acitve {
+    background-color: @brand-primary;
+  }
+}
+
+.c-ctr-task-item__toggle-btn {
+  &:hover {
+    i {
+      color: @brand-primary;
+    }
+  }
+}
+
+.badge {
+  &.badge--primary {
+    background-color: @brand-primary;
+  }
+}
+
+.list-group-item.active > .badge, 
+.nav-pills > .active > a > .badge {
+  color: @brand-primary;
+}
+
+.project-plan-sortable-list {
+
+}
+
+.project-plan-sortable-item {
+  &:hover {
+    .project-plan-sortable-item__icon {
+      color: @brand-primary;
+    }
+
+    .project-plan-sortable-item__info {
+      color: @brand-primary;
+    }
+  }
+}
+
+.project-plan-sortable-item__close-btn {
+  &:hover {
+    color: @brand-primary;
+  }
+}
+
+.ct-btn-default {
+  background-color: #FFFFFF;
+
+  &:focus,
+  &:hover,
+  &.focus, 
+  &.active {
+    border: 1px solid darken(@brand-primary, 5%);
+    background-color: darken(@brand-primary, 5%); 
+  }
+
+  &:active {
+    border: 1px solid darken(@brand-primary, 10%);
+    background-color: darken(@brand-primary, 10%); 
+  }
+}
+
+.ct-btn-primary {
+  border: 1px solid @brand-primary; 
+  background-color: @brand-primary;
+
+  &:focus,
+  &:hover,
+  &.focus, 
+  &.active {
+    border: 1px solid darken(@brand-primary, 5%);
+    background-color: darken(@brand-primary, 5%); 
+  }
+
+  &:active {
+    border: 1px solid darken(@brand-primary, 10%);
+    background-color: darken(@brand-primary, 10%); 
+  }
+}
+
+// study-center pages
+
+.study-center .study-center-tooltip-intro .introjs-skipbutton {
+  &.is-last {
+    color: @brand-primary;
+  }
+}
+.introjs-skipbutton {
+  &.is-last {
+    color: @brand-primary;
+  }
+  i {
+    color: @brand-primary;
+  }
+}
+
+.introjs-nextbutton {
+  color: @brand-primary;
+}
+.study-center {
+  .post-tab-item {
+    &.active {
+      border: 2px solid @brand-primary;
+    }
+  }
+  .my-record-sec-header {
+    border-left: 4px solid @brand-primary;
+  }
+}
+
+// fullcalendar 
+
+
+.fc-event {
+  border: 1px solid fadeout(@brand-primary, 40%);
+  background-color: fadeout(@brand-primary, 40%);
+}
+
+
+// study-center-reward-point
+.study-board-item {
+  .my-reward-point {
+    &:hover {
+      color: @brand-primary !important;
+    }
+  }
+}
+
+//common
+.color-primary {
+  color: @brand-primary !important;
+}
+
+.link-gray {
+  &:hover {
+    color: @brand-primary !important;
+  }
+}
+
+//reset
+
+.class-course-list  {
+  .course-item {
+    .topic-item {
+      .title {
+        &:hover {
+          color: @brand-primary;
+        }
+      }
+    }
+    .media-course {
+      .course-show {
+        &:hover {
+          i {
+            color: @brand-primary;
+          }
+        }
+      }
+      .course-done-icon-wrapper {
+        background-color: @brand-primary;
+      }
+    }
+  }
+}
+
+// 额外的补充
+.course-pie-chart-hover {
+  color: @brand-primary;
+}
+
+// components/ btn.less
+.btn-rotate-45 {
+  color: @brand-primary;
+}
+
+.dropdown-department >a {
+  color: @brand-primary;
+}
+
+// ct-components nav-text
+.nav {
+  &.nav-text {
+    li {
+      &:hover, &.active {
+        a {
+          color: @brand-primary;
+        }
+      }
+    }
+  }
+}
+
+// ct-components
+.ct-label--theme {
+color: @brand-primary;
+background-color: fadeout(@brand-primary, 90%);
+}
+
+.ct-label--success {
+  background-color: @brand-success;
+}
+
+.ct-label--danger {
+  background-color: @brand-danger;
+}
+
+.ct-label--info {
+  background-color: @brand-info;
+}
+
+.ct-label--warning {
+  background-color: @brand-warning;
+}
+
+//home-page component
+
+.c-home-user-link__num {
+  color: @brand-primary;
+}
+
+.c-home-topic-item__label {
+  color: @brand-primary;
+  background-color: fadeout(@brand-primary, 80%);
+}
+
+.c-home-group {
+
+  &:hover, &:active {
+    border: 1px solid @brand-primary;
+  }
+}
+
+.c-home-teacher {
+
+  @media screen and (min-width: @screen-sm-min) {
+    &:hover, &:active {
+      border: 1px solid @brand-primary;
+    }
+  }
+}
+
+.c-home-act__num {
+  span {
+    color: @brand-primary;
+  }
+}
+
+.c-my-offline-activity__title {
+  &:hover, &:focus, &:active {
+    color: @brand-primary;
+  }
+}
+
+
+.c-home-panel--rank .c-home-panel__tab .nav-tabs > li.active > a {
+  color: @brand-primary;
+}
+
+.m-home-panel__tab {
+  > li {
+    &.active {
+      a {
+        color: @brand-primary;
+        border-color: @brand-primary;
+      }
+    }
+  }
+}
+
+.nav.m-nav-tabs {
+  > li {
+    &.active {
+      a {
+        color: @brand-primary;
+      }
+    }
+  }
+}
+
+.m-footer-tabs {
+  &__item {    
+    &.active {
+      color: @brand-primary;
+    }
+  }
+}
+// offline-activity
+
+.c-offline-activity__title {
+  &:hover {
+    color: @brand-primary;
+  }
+}
+
+.c-offline-activity-detail-info__hd {
+  &:before {  
+    background-color: @brand-primary;
+
+  }
+}
+
+// reward-point 
+
+.c-my-reward-point-item {
+
+  &.is-up {
+    .c-my-reward-point-item__icon {
+      color: @brand-primary;
+    }    
+  }
+}
+
+.o-my-reward-point__num {
+  color: @brand-primary;
+}
+
+// data-statistics
+
+.c-department-learn-data-board {
+  border-top: 4px solid @brand-primary;
+}
+
+.c-department-learn-data-board_icon {
+  color: @brand-primary;
+}
+
+// plugins
+
+.treeview-select {
+  .treeview-select-menu {
+    .check-icon {
+      color: @brand-primary;
+    }
+  }
+}
+
+// data-report
+
+
+.o-department-learn-data-sec__hd {
+  &:before {
+    background-color: @brand-primary;
+  }
+}
+
+.o-department-learn-data-user-detail-info__bd {
+  
+  span {
+    color: @brand-primary;
+  }
+}
+
+// task-list
+
+
+.task-list.task-list-hover {
+  .task-item.task-content:hover {
+    background-color: fadeout(@brand-primary, 95%);
+  }
+}
+
+// member-projectplan-modal
+
+
+.member-projectplan-treeview {
+  .check-icon {
+    color: @brand-primary;
+  }
+}
+
+
+
+.member-projectplan-modal__head {
+  .nav {
+    li {
+      &:hover, &.active {
+        a {
+          color: @brand-primary;
+        }
+      }
+    }
+  }
+}
+
+
+// project-plan 
+
+.project-plan-sortable-item {
+  &:hover {
+    .project-plan-sortable-item__icon {
+      color: @brand-primary;
+    }
+
+    .project-plan-sortable-item__info {
+      color: @brand-primary;
+    }
+  }
+}
+
+.project-plan-sortable-item__close-btn {
+  &:hover {
+    color: @brand-primary;
+  }
+}
+
+.c-project-plan__title {
+  &:hover, &:focus, &:active {
+    color: @brand-primary;
+  }
+}
+
+
+.project-plan-statistic-chart-item__head {
+  &:before {
+    background-color: @brand-primary;
+  }
+}
+
+.project-plan-user-detail-item__head {
+  &:before {
+    background-color: @brand-primary;
+  }
+}
+
+.unit-addition-select-item {
+  &:hover {
+    border: 2px solid @brand-primary;
+  }
+
+  &:active, &.active {
+    border: 2px solid @brand-primary;
+    background-color: @brand-primary;
+  }
+}
+
+.ct-project-overview__icon {
+  color: @brand-primary;
+}
+
+.ct-project-overview__content {
+  background-color: fadeout(@brand-primary, 90%);
+}
+
+.ct-project-overview__num {
+  color: @brand-primary;
+}
+// member-project-plan-modal
+
+.member-projectplan-modal__head {
+  .nav {
+    li {
+
+      &:hover, &.active {
+        a {
+          color: @brand-primary;
+        }
+      }
+    }
+  }
+}
+
+// c-project 
+
+.c-project-item-lesson {
+  &:hover {
+    background-color: fadeout(@brand-primary, 95%); 
+  }
+}
+
+
+// ct-nav
+
+.ct-nav-ghost-pills {
+  >li {
+    > a {
+      border: 1px solid @brand-primary; 
+      color: @brand-primary;
+    }
+
+    &.active, &:hover {
+      > a {
+        background-color: @brand-primary;
+      }
+    }
+  }
+}
+
+
+
+// ct-nav-link
+
+.ct-nav-link {
+  >li {
+    &:hover {
+      > a {
+        color: @brand-primary;
+      }
+    }
+  }
+}
+
+// ct-info-section
+
+.ct-info-section__head {
+  &:before {
+    background-color: @brand-primary;
+  }
+}
+
+// ct-project-overview
+
+.ct-project-overview__sidebar {
+  background-color: fadeout(@brand-primary, 90%);
+  .ct-project-overview__icon {
+    color: @brand-primary;
+  }
+}
+
+.ct-project-overview-complete-num {
+  color: @brand-primary;
+}
+
+
+// ct-badge
+
+.ct-btn {
+  .ct-badge {
+    color: @brand-primary;
+  }
+}
+
+.source-publish-ul {
+  li {
+    border: 1px solid @brand-primary;
+    &.active {
+      background: @brand-primary;
+      border-color: @brand-primary;
+      a {
+        border-color: @brand-primary;
+      }
+    }
+    a {
+      color: @brand-primary;
+    }
+    &:last-child {
+      border-right: 1px solid @brand-primary;
+    }
+  }
+}
+
+.h5-user-dashbord {
+  .user-dashbord-top__link {
+    color: @brand-primary;
+    border: 1px solid @brand-primary;
+  }
+  .user-dashbord-card {
+    &__tabs {
+     li {
+        &.active {
+          border-bottom: 1px solid @brand-primary;
+        }
+      }
+    }
+  }
+}
+
+.dashbord-list-item {
+  &__l {
+    .es-icon {
+      color: @brand-primary;
+    }
+  }
+}
+
+@media screen and(max-width: @screen-xs-min) {
+  .h5-header-tabs {
+    li {
+      &.active {
+        border-bottom: 1px solid @brand-primary;
+        a {
+          color: @brand-primary;
+        }
+      }
+    }
+  }
+}
+
+.h5-header-sub-tabs {
+  li.active {
+    a {
+      color: @brand-primary;
+    }
+  }
+}

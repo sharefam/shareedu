@@ -1,0 +1,98 @@
+.box-shadow(@box-shadow:none) {
+  -webkit-box-shadow: @box-shadow;
+     -moz-box-shadow: @box-shadow;
+          box-shadow: @box-shadow;
+}
+
+.animation(@animation) {
+  -webkit-animation: @animation;
+     -moz-animation: @animation;
+       -o-animation: @animation;
+          animation: @animation;
+}
+
+.animation-fill-mode(@type){
+  animation-fill-mode: @type;
+  -o-animation-fill-mode: @type;
+  -ms-animation-fill-mode: @type;
+  -moz-animation-fill-mode: @type;
+  -webkit-animation-fill-mode: @type;
+}
+
+.animation-delay(@tot) {
+  animation-delay: @tot;
+  -o-animation-delay: @tot;
+  -ms-animation-delay: @tot;
+  -moz-animation-delay: @tot; 
+  -webkit-animation-delay: @tot; 
+}
+
+.load-spinner {
+  text-align: center;
+}
+ 
+.load-spinner > div {
+  width: 10px;
+  height: 10px;
+  background-color: @gray;
+  border-radius: 100%;
+  display: inline-block;
+
+  .animation(bouncedelay 1.4s infinite ease-in-out);
+  .animation-fill-mode(both);
+}
+ 
+.load-spinner .load-bounce1 {
+  .animation-delay(-0.32s);
+}
+ 
+.load-spinner .load-bounce2 {
+  .animation-delay(-0.16s);
+}
+ 
+
+@keyframes bouncedelay {
+  0%, 80%, 100% {
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 
+  40% {
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}
+
+@-webkit-keyframes bouncedelay {
+  0%, 80%, 100% {
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 
+  40% {
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}
+
+@-moz-keyframes bouncedelay {
+  0%, 80%, 100% {
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  }
+
+  40% {
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}
+
+@-o-keyframes bouncedelay {
+  0%, 80%, 100% {
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  }
+
+  40% {
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}

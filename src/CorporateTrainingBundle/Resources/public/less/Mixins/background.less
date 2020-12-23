@@ -1,0 +1,27 @@
+.bg-image-url(@image-url) {
+  -webkit-background-image: url(@image-url);
+  -moz-background-image: url(@image-url);
+  -o-background-image: url(@image-url);
+  background-image: url(@image-url);
+}
+
+.bg-image-size(@image-width:center, @image-height:center) {
+  -webkit-background-size: @image-width @image-height;
+  -moz-background-size: @image-width @image-height;
+  -o-background-size: @image-width @image-height;
+  background-size: @image-width @image-height;
+}
+
+.bg-image-size(@image-size) {
+  -webkit-background-size: @image-size;
+  -moz-background-size: @image-size;
+  -o-background-size: @image-size;
+  background-size: @image-size;
+}
+
+.bg-image(@image-url, @image-size) {
+  .bg-image-url(@image-url);
+  .bg-image-size(@image-size);
+  /*兼容ie8以下*/
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src=@image-url,sizingMethod='scale');
+}

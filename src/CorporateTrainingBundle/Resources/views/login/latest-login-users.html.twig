@@ -1,0 +1,19 @@
+{% set latestLoginUsers = data('LatestLoginUsers',{'count':5})  %}
+<div class="es-section login-section latest-login-visitors">
+  <div class="container latest-user-list">
+    {% if latestLoginUsers %}
+      {% for i in 0..4 %}
+        {% if latestLoginUsers[i] is defined %}
+          <div class="latest-user-item">
+            <img class="avatar-sm avatar-mobile" src="{{ filepath(latestLoginUsers[i].mediumAvatar, 'avatar.png') }}" style="cursor: default">
+          </div>
+        {% endif %}
+        {% if latestLoginUsers[i] is not defined %}
+          <div class="latest-user-item">
+            <img class="avatar-sm avatar-mobile" src="/assets/img/default/avatar.png" style="cursor: default">
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>

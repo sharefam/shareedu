@@ -1,0 +1,94 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+{% do script(['libs/select2.js', 'libs/es-ckeditor/ckeditor.js','corporatetrainingbundle/js/project-plan/advanced-options-modal/index.js']) %}
+
+{% set modalSize = 'large' %}
+{% block title %}{{ 'project_plan.preparation.base.advanced_option'|trans }}{% endblock %}
+
+{% block body %}
+    <form method="post" id="project-plan-advanced-options-form" class="form-horizontal"
+          action="{{ path('project_plan_advanced_option', {id:projectPlan.id}) }}">
+        <div class="" id="source-publish">
+            {% include 'resource-access/index.html.twig' with {
+            resourceType: 'projectPlan',
+            resourceId: projectPlan.id,
+            conditionalAccess: projectPlan.conditionalAccess|default(0),
+            showAdvancedSetting: true
+            } %}
+        </div>
+        <div class="form-group">
+            <label  class="col-md-2 control-label" ></label>
+            <div class="col-sm-8 controls checkbox">
+                <label>
+                    <input type="checkbox" id="requireRemark" {% if advancedOption.requireRemark|default(0) %}checked {% endif %}>
+                    {{ 'project_plan.advanced_option.require_remark'|trans }}
+                </label>
+                <input type="text"  name="requireRemark" class="form-control hidden" value="{{ advancedOption.requireRemark|default(0) }}">
+            </div>
+        </div>
+        <div class="form-group {% if not advancedOption.requireRemark|default(0) %}hidden {% endif %}" id="remarkSetting">
+            <label  class="col-md-2 control-label" for="remarkRequirement">
+            {{ 'project_plan.advanced_option.remark_requirement'|trans }}
+            </label>
+            <div class="col-sm-8 controls">
+                <input type="text"  name="remarkRequirement" class="form-control" value="{{ advancedOption.remarkRequirement|default() }}" placeholder="{{ 'project_plan.advanced_option.remark_requirement_placeholder'|trans }}">
+            </div>
+        </div>
+      {% set cloud_attachment_enable = setting('cloud_attachment.enable') and setting('storage.upload_mode') == 'cloud'%}
+        <div class="form-group">
+            <label  class="col-md-2 control-label" ></label>
+            <div class="col-sm-8 controls checkbox">
+                <label {% if not cloud_attachment_enable %}data-toggle="popover" data-container="body" data-trigger="hover" data-placement="top" data-content="{{ 'project_plan.advanced_option.attachment_info'|trans }}"{% endif %}>
+                    <input type="checkbox" id="requireMaterial"{% if not cloud_attachment_enable %} disabled {% endif %} {% if advancedOption.requireMaterial|default(0) %}checked {% endif %}>
+                    {{ 'project_plan.advanced_option.require_material'|trans }}
+                </label>
+                <input type="text"  name="requireMaterial" class="form-control hidden" value="{{ advancedOption.requireMaterial|default(0) }}">
+                <p class="help-block">{{ 'project_plan.advanced_option.require_material_info'|trans }}
+                    <span data-toggle="tooltip" class="glyphicon glyphicon-question-sign color-gray text-sm js-data-popover"></span>
+                </p>
+                <div class="popover-content hidden">
+                    <div class="popover-item">
+                      {% set single_file_size = setting('cloud_attachment.fileSize',0) %}
+                          <div class="content">{{ 'project_plan.advanced_option.require_material_help'|trans({'%filesize%':single_file_size}) }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="materialSetting" {% if not advancedOption.requireMaterial|default(0) %}class="hidden" {% endif %}>
+            <div class="form-group">
+                <label  class="col-md-2 control-label" for="materialRequirement">
+                    {{ 'project_plan.advanced_option.material_requirement'|trans }}
+                </label>
+                <div class="col-sm-8 controls">
+                    <input type="text" class="form-control" id="materialRequirement" name="materialRequirement" value="{{ advancedOption.materialRequirement|default()|trans }}" placeholder="{{ 'project_plan.advanced_option.material_requirement_placeholder'|trans }}">
+                </div>
+            </div>
+            <div class="material-container">
+            <div class="form-group">
+                <label  class="col-md-2 control-label" for="material1">{{ 'project_plan.advanced_option.material'|trans }}</label>
+                <div class="col-sm-8 controls">
+                    <input type="text" class="form-control material" id="material1" name="material1" value="{{ advancedOption.material1|default()|trans }}" placeholder="{{ 'project_plan.advanced_option.material_requirement_placeholder'|trans }}">
+                </div>
+            </div>
+                <input type="text" name="materials" class="form-control hidden materials" value="{{ materials|join(',') }}">
+            </div>
+            <div class="form-group">
+                <label  class="col-md-2 control-label" ></label>
+                <div class="col-sm-8 controls">
+                    <span id="create-material" class="btn btn-default btn-sm">
+                        {{ 'project_plan.advanced_option.add_material'|trans }}<span class="es-icon es-icon-anonymous-iconfont"></span></span>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    </form>
+{% endblock %}
+{% block footer %}
+  {% if projectPlan.status == 'archived' %}
+      <a class="btn btn-primary pull-right" disabled data-toggle="tooltip" data-placement="top" title="{{ 'project_plan.project_plan_archived'|trans }}">{{ 'project_plan.btn.save_btn'|trans }}</a>
+  {% else %}
+      <button id="advanced-options-btn" data-submiting-text="{{ 'project_plan.btn.save_loading_btn'|trans }}" type="submit"
+              class="btn btn-primary pull-right js-save-btn" data-toggle="form-submit" data-loading-text="{{ 'project_plan.btn.save_loading_btn'|trans }}"
+      >{{ 'project_plan.btn.save_btn'|trans }}</button>
+  {% endif %}
+    <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{ 'project_plan.btn.cancel_btn'|trans }}</button>
+{% endblock %}

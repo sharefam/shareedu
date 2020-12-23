@@ -1,0 +1,134 @@
+{% set projectPlans = data('HomeProjectPlan', {'count': 1}) %}
+{% if projectPlans|default() %}
+  {% if is_mobile_client() %} 
+    {% include "default/home-project-plan-mobile.html.twig" %}
+  {% else %}
+    <section class="o-home-sec js-common-project-plan">
+      <div class="container">
+        <div class="o-home-sec__hd">
+          <div class="o-home-sec__title">{{config.title|default(config.defaultTitle|trans)}}</div>
+          <div class="o-home-sec__tab-wrap visible-lg visible-md clearfix">
+            <div class="o-home-sec__tab nav-btn-tab js-tab-link-wrap">
+              <ul class="nav nav-tabs nav-tabs_home" role="tablist">
+                <li class="js-tab-link" role="presentation"><a href="javascript:;">{{'homepage.project_plan.tab_all'|trans}}</a></li>
+                {% set categories = data('ProjectPlanCategories', {}) %}
+                {% if categories %}
+                  {% for category in categories %}
+                      {% if loop.index<4 %}
+                        <li class="js-tab-link" role="presentation"><a href="javascript:;">{{category.name|trans|plain_text(10)}}</a></li>
+                      {% endif %}
+                  {% endfor %}{% endif %}
+              </ul>
+              <ul class="nav navbar-nav o-home_more">
+                {% if categories and count(categories) >3 %}
+                  <li class="nav-more nav-hover">
+                      <a href="javascript:;">
+                        <i class="es-icon es-icon-morehoriz"></i>
+                      </a>
+                      <ul class="dropdown-menu" role="menu">
+                        {% for category in categories %}
+                          {% if loop.index>3 %}
+                            <li><a href="{{ path('project_plan_list', {categoryId:category.id}) }}">{{category.name|trans|plain_text(10)}}</a></li>
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                    </li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+          <a class="o-home-sec__more" href="{{ path('project_plan_list') }}">{{ 'homepage.project.link_more'|trans }} <i class="es-icon es-icon-chevronright"></i></a>
+        </div>
+        <div class="o-home-sec__bd">
+          <div class="row js-tab-block-wrap">
+            {# 需要处理两种情况，一个是全部，一个是单一分类 #}
+            <div class="tab-block js-tab-sec is-active">
+              {% set projectPlans = data('HomeProjectPlan', {'count': 4}) %}
+              {% if projectPlans %}
+                {% for projectPlan in projectPlans %}
+                  <div class="col-md-3 col-xs-6">
+                    <a class="c-home-act" href="{{ path('project_plan_detail', {id: projectPlan.id}) }}">
+                      <div class="c-home-act__hd">
+                        <div class="c-home-act__tag ct-tag">
+                          {% if projectPlan.enrollmentStartDate < date('now').timestamp and date('now').timestamp<projectPlan.enrollmentEndDate%}
+                          {{ 'project_plan.detail.btn_apply_loading'|trans }}
+                          {% endif %}
+                        </div>
+                        {{ lazy_img(filepath(projectPlan['cover']['large']|default(''), 'project-plan.png'), 'c-home-act__img', '', 'lazyload_course.png') }}
+                      </div>
+                      <div class="c-home-act__bd">
+                        <div class="c-home-act__title">{{ projectPlan.name }}</div>
+                        {% set category = data('Category', {'categoryId': projectPlan.categoryId}) %}
+                        <div class="c-home-act__label ct-label ct-label--theme">{{ category.name|sub_text(15) }}</div>
+                      </div>
+                      <div class="c-home-act__ft">
+                        <div class="c-home-act__date">{{ 'default.home_project_plan.apply'|trans }}{{ projectPlan.enrollmentStartDate|date('m-d') }} {{ 'project_plan.time_to'|trans }} {{ projectPlan.enrollmentEndDate|date('m-d') }}</div>
+                        <div class="c-home-act__num pull-right">
+                          {% set studentNum= data('ProjectPlanMemberNum', {'projectPlanId': projectPlan.id})%}
+                          <span>{{ studentNum|default(0) }}</span>/{% if projectPlan.maxStudentNum|default(0)  %}{{ projectPlan.maxStudentNum|default(0) }}{% else %}{{ 'project_plan.any'|trans }}{% endif %}
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                {% endfor %}
+              {% endif %}
+              {% if (4 - count(projectPlans)) > 0 %}
+                {% for i in 1..(4-count(projectPlans)) %}
+                  <div class="col-md-3 col-xs-6 hidden-xs">
+                    <img class="img-responsive mbl" src="{{ asset('static-dist/corporatetrainingbundle/img/act_def_pos@2x.png')}}">
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </div>
+
+
+            {% set length = count(categories) %}
+            {% if length > 0 %}
+            {% for i in 0..(length - 1) %}
+            <div class="tab-block js-tab-sec hidden-xs">
+              {% set projectPlans = data('HomeProjectPlan', {'count': 4, categoryId: categories[i].id}) %}
+              {% if projectPlans|default() %}
+                {% for projectPlan in projectPlans %}
+                  <div class="col-md-3 col-xs-6">
+                    <a class="c-home-act" href="{{ path('project_plan_detail', {id: projectPlan.id}) }}">
+                      <div class="c-home-act__hd">
+                        <div class="c-home-act__tag ct-tag">
+                          {% if projectPlan.enrollmentStartDate < date('now').timestamp and date('now').timestamp<projectPlan.enrollmentEndDate%}
+                            {{ 'project_plan.detail.btn_apply_loading'|trans }}
+                          {% endif %}
+                        </div>
+                        {{ lazy_img(filepath(projectPlan['cover']['large']|default(''), 'project-plan.png'), 'c-home-act__img', '', 'lazyload_course.png') }}
+                      </div>
+                      <div class="c-home-act__bd">
+                        <div class="c-home-act__title">{{ projectPlan.name }}</div>
+                        {% set category = data('Category', {'categoryId': projectPlan.categoryId}) %}
+                        <div class="c-home-act__label ct-label ct-label--theme">{{ category.name|sub_text(15) }}</div>
+                      </div>
+                      <div class="c-home-act__ft">
+                        <div class="c-home-act__date">{{ 'default.home_project_plan.apply'|trans }}{{ projectPlan.enrollmentStartDate|date('m-d') }} {{ 'project_plan.time_to'|trans }} {{ projectPlan.enrollmentEndDate|date('m-d') }}</div>
+                        <div class="c-home-act__num pull-right">
+                          {% set studentNum= data('ProjectPlanMemberNum', {'projectPlanId': projectPlan.id})%}
+                          <span>{{ studentNum|default(0) }}</span>/{% if projectPlan.maxStudentNum|default(0)  %}{{ projectPlan.maxStudentNum|default(0) }}{% else %}{{ 'project_plan.any'|trans }}{% endif %}
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                {% endfor %}
+              {% endif %}
+              {% if (4 - count(projectPlans)) > 0 %}
+                {% for i in 1..(4-count(projectPlans)) %}
+                  <div class="col-md-3 col-xs-6 hidden-xs">
+                    <img class="img-responsive mbl" src="{{ asset('static-dist/corporatetrainingbundle/img/act_def_pos@2x.png')}}">
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        </div>
+      </div>
+
+    </section>
+  {% endif %}
+{% endif %}

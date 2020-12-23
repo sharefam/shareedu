@@ -1,0 +1,41 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_project_plan_manage' %}
+
+{% do script(['corporatetrainingbundle/js/admin/project-plan/list/index.js']) %}
+
+{% block page_title %}{{ 'project_plan.manage'|trans }}{% endblock %}
+{% block page_buttons %}
+{% endblock %}
+{% block main %}
+  <div class="ct-well ct-mbl">
+    <form id="project-plan-search-form" class="form-inline" action="" method="post" novalidate>
+      <div class="form-group prl">
+        {% include 'org-select/index.html.twig' with {
+          id: 'resource-orgCode',
+          data: build_org_tree(app.user.manageOrgCodes),
+          placeholder: 'admin.org.select_placeholder'|trans,
+          treeName: 'orgIds',
+          ids: orgIds|default(0),
+        }
+        %}
+      </div>
+        <div class="form-group prl">
+          <select class="form-control" name="status">
+            {{ select_options(dict('projectPlanStatus'), app.request.get('status') ? app.request.query.get('status') : 'all') }}
+          </select>
+        </div>
+        <div class="form-group prl">
+          <input class="form-control" type="text" id="nameLike" name="nameLike" value="{{ app.request.get('nameLike') }}" placeholder="{{ 'project_plan.name'|trans }}">
+        </div>
+        <div class="form-group prl">
+           <button class="btn btn-primary">{{ 'form.btn.search'|trans }}</button>
+        </div>
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+        {% include 'admin/page-buttons/page-buttons.html.twig' %} 
+      </form>
+  </div>
+  <div class="table table-striped data-list">
+    {% include 'admin/project-plan/list-tr.html.twig'%}
+  </div>
+{% endblock %}

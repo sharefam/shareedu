@@ -1,0 +1,27 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+  {% block header %}{% endblock %}
+
+
+  {% block full_content %}
+    {% block top_content %}{% endblock %}
+      <div class="sign-in-qr-code">
+        <h2>{{exam.name|trans}}</h2>
+        <img class="qr-code-img" src="{{ qrcodeImgUrl }}">
+        <p class="gray-medium sign-in-info">{{'project_plan.wechat_scan_code.do_exam'|trans}}</p>
+        {% if setting('site.loginLogo') %}
+          <div class="login-logo-wrap text-center">
+            <img class="login-logo" src="{{ filepath('../' ~ setting('site.loginLogo'),'') }}">
+          </div>
+        {% else %}
+          <div class="login-logo-wrap text-center">
+            <img class="login-logo" src="/assets/img/logo/login_logo.png">
+          </div>
+        {% endif %}
+      </div>
+    {% block bottom_content %}{% endblock %}
+  {% endblock %}
+
+  {% block footer %}{% endblock %}
+{% endblock %}

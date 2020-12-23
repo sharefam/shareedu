@@ -1,0 +1,62 @@
+{% import 'admin/macro.html.twig' as admin_macro %}
+<tr id="user-table-tr-1">
+    <td>
+      {{ offlineCourse.title|default('')}}
+    </td>
+    <td>
+      {{ offlineCourse.memberCount|default(0) }}
+    </td>
+    <td>
+      {% if offlineCourse.attendTaskCount|default(0) %}
+        {{percent(offlineCourse.attendCount,offlineCourse.attendTaskCount) }}
+      {% else %}
+        {% if offlineCourse.endTime and date(offlineCourse.endTime) <= date() and offlineCourse.memberCount %}
+          0%
+        {% else %}
+          --
+        {% endif %}
+      {% endif %}
+    </td>
+    <td>
+      {% if offlineCourse.hasHomeTaskCount|default(0) %}
+        {{percent(offlineCourse.passHomeworkCount,offlineCourse.hasHomeTaskCount) }}
+      {% else %}
+        {% if offlineCourse.endTime and date(offlineCourse.endTime) <= date() and offlineCourse.hasHomeTaskCount%}
+          0%
+        {% else %}
+          --
+        {% endif %}
+      {% endif %}
+    </td>
+    <td class="text-sm">
+      {% set isSameDay = is_same_day(offlineCourse.startTime, offlineCourse.endTime) %}
+      {% if isSameDay %}
+        {% if offlineCourse.startTime == 0 %}
+          {{ '--'|trans }}
+        {% else %}
+          {{ offlineCourse.startTime|date('Y-m-d')  }}
+        {% endif %}
+      {% else %}
+        {% if offlineCourse.startTime == 0 %}
+          {{ '--'|trans }}
+        {% else %}
+          {{ offlineCourse.startTime|date('Y-m-d')  }}
+        {% endif %}
+        <br>
+        {% if offlineCourse.endTime == 0 %}
+          {{ '--'|trans }}
+        {% else %}
+          {{ offlineCourse.endTime|date('Y-m-d')  }}
+        {% endif %}
+      {% endif %}
+    </td>
+    {% if is_plugin_installed('Survey') %}
+        <td>
+          {% if offlineCourse.surveyScore|default(0) %}
+            {{ offlineCourse.surveyScore }}
+          {% else  %}
+            --
+          {% endif %}
+        </td>
+    {% endif %}
+</tr>

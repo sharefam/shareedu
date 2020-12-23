@@ -1,0 +1,79 @@
+<div class="panel-heading">
+  <div class="panel-title">{{'admin.default.quick_navigation'|trans}}</div>
+</div>
+<div class="panel-body">
+  <ul class="subfield-list four-subfield clearfix">
+    <li>
+      <h4>{{'admin.default.quick_navigation.user'|trans}}</h4>
+      <p>
+        <a {% if has_permission('admin_user_create') %}class="link-info" href="{{ path('admin_user') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %} >{{'admin.default.quick_navigation.user.create'|trans}}</a>
+      </p>
+      <p class="mtm">
+        <a {% if has_permission('admin_org') %}class="link-info" href="{{ path('admin_org') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %} >{{'admin.default.quick_navigation.user.org_create'|trans}}</a>
+      </p>
+      <p class="mtm">
+        <a {% if has_permission('admin_post_manage') %}class="link-info" href="{{ path('admin_post_manage') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %}>{{'admin.default.quick_navigation.user.post_create'|trans}}</a>
+      </p>
+      <p class="mtm">
+        <a {% if has_permission('admin_user_group_manage') %}class="link-info" href="{{ path('admin_user_group_manage') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %}>{{'admin.default.quick_navigation.user.user_group_create'|trans}}</a>
+      </p>
+      <p class="mtm">
+        <a {% if has_permission('admin_roles') %}class="link-info" href="{{ path('admin_roles') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %} >{{'admin.default.quick_navigation.user.role_create'|trans}}</a>
+      </p>
+    </li>
+    <li>
+      <h4>{{'admin.default.quick_navigation.course'|trans}}</h4>
+      <p>
+        <a {% if has_permission('admin_course_add') %}class="link-info" href="{{ path('course_set_manage_create') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %} >{{'admin.default.quick_navigation.course_create'|trans}}</a>
+      </p>
+      <p class="mtm">
+        <a {% if has_permission('admin_classroom_create') %}class="link-info" href="{{ path('admin_classroom_create') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %} >{{'admin.default.quick_navigation.course.classroom_create'|trans}}</a>
+      </p>
+      <p class="mtm">
+        <a {% if has_permission('admin_post_manage') %}class="link-info" href="{{ path('admin_post_manage') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %} >{{'admin.default.quick_navigation.course.post_manage'|trans}}</a>
+      </p>
+      <p class="mtm">
+        <a {% if has_permission('admin_course_category') %}class="link-info" href="{{ path('admin_course_category') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %} >{{'admin.default.quick_navigation.course.category_create'|trans}}</a>
+      </p>
+      <p class="mtm">
+        <a {% if has_permission('admin_offline_activity') %}class="link-info" href="{{ path('admin_offline_activity') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %} >{{'admin.default.quick_navigation.course.offline_activity'|trans}}</a>
+      </p> 
+    </li>
+    <li>
+      <h4>{{'admin.default.quick_navigation.operation'|trans}}</h4>
+      <p>
+        <a {% if has_permission('admin_operation_article_manage') %}class="link-info" href="{{ path('admin_article') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %}>{{'admin.default.quick_navigation.operation.article'|trans}}</a>
+      </p>
+      <p class="mtm">
+        <a {% if has_permission('admin_operation_group') %}class="link-info" href="{{ path('admin_group') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %} >{{'admin.default.quick_navigation.operation.group_create'|trans}}</a>
+      </p>
+      <p class="mtm">
+        <a {% if has_permission('admin_announcement') %}class="link-info" href="{{ path('admin_announcement') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %}>{{'admin.default.quick_navigation.operation.announcement'|trans}}</a>
+      </p>
+      <p class="mtm">
+        <a {% if is_plugin_installed('RewardPoint') and setting('reward_point.enable') and has_permission('admin_operation_reward_point') %}class="link-info" href="{{ path('admin_reward_point_account') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %}>{{'admin.default.quick_navigation.operation.reward_point'|trans}}</a>
+      </p>
+      <p class="mtm">
+        <a {% if is_plugin_installed('RewardPoint') and setting('reward_point.enable') and has_permission('admin_reward_point_product') %}class="link-info" href="{{ path('admin_reward_point_exchange') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %}>{{'admin.default.quick_navigation.operation.reward_point_exchange'|trans}}</a>
+      </p>
+    </li>
+    <li>
+      <h4>{{'admin.default.quick_navigation.system'|trans}}</h4>
+      <p>
+        <a {% if has_permission('admin_block_manage') %}class="link-info" href="{{ path('admin_block', {category:'all'}) }}"{% else %}class="link-disabled" href="javascript:;"{% endif %} >{{'admin.default.quick_navigation.system.block_manage'|trans}}</a>
+      </p>
+      <p class="mtm">
+        <a {% if has_permission('admin_setting') %}class="link-info" href="{{ path('admin_setting_site') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %} >{{'admin.default.quick_navigation.system.setting_site'|trans}}</a>
+      </p>
+      <p class="mtm">
+        <a {% if has_permission('admin_setting') %}class="link-info" href="{{ path('admin_setting_theme') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %} >{{'admin.default.quick_navigation.system.setting_theme'|trans}}</a>
+      </p>
+      <p class="mtm">
+        <a {% if has_permission('admin_setting_mobile') %}class="link-info" href="{{ path('admin_setting_mobile') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %} >{{'admin.default.quick_navigation.system.setting_mobile'|trans}}</a>
+      </p>
+      <p class="mtm">
+        <a {% if has_permission('admin_setting') %}class="link-info" href="{{ path('admin_setting_login_bind') }}"{% else %}class="link-disabled" href="javascript:;"{% endif %} >{{'admin.default.quick_navigation.system.setting_login_bind'|trans}}</a>
+      </p>
+    </li>
+  </ul>
+</div>

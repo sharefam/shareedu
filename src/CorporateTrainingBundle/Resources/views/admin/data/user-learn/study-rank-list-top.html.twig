@@ -1,0 +1,30 @@
+<div class="aside-department-list_item aside-department-list_item-top js-item-desc clearfix">
+  <div class="aside-department-list_item__l fl">
+    <div class="aside-department-list_item__label o-ct-item__label">{{ loop.index }}</div>
+  </div>
+  <div class="aside-department-list_item__r fl mlm">
+    {% set user = data('User', {userId:rank.userId}) %}
+    <div class="pull-left ct-rank-item_top ct-rank-item_outer-{{loop.index}}">
+      <div class="pull-left ct-rank-item_top ct-rank-item_top-{{loop.index}}">
+        <a href="javascript:;" class="js-user-card fl">
+          <img class="ct-rank-item__img" src="{{ filepath(user.smallAvatar, 'avatar.png') }}"/>
+        </a>
+      </div>
+    </div>
+    <div class="pull-left mlm">
+      {% set userTrueName = data('UserProfile', {userId:rank.userId}) %}
+      <div class="ct-rank-item_name" title="{% if userTrueName.truename %}{{ userTrueName.truename }}{% else %}{{ user.nickname|default('') }}{% endif %}">
+        {% if userTrueName.truename %}
+          {{ userTrueName.truename }}
+        {% else %}
+          {{ user.nickname|default('') }}
+        {% endif %}
+      </div>
+      {% set orgs = data('Orgs',{orgIds: user.orgIds}) %}
+      <div class="ct-rank-item_post js-item-post hidden" data-toggle="tooltip" data-placement="top" title={{ orgs.orgNames|default() }}>
+        {{ orgs.orgNames|default() }}
+      </div>
+      <div class="o-ct-rank-item__date js-item-active">{{rank.totalLearnTime|default(0)|time_format_hour}}</div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+{% extends 'old-bootstrap-modal-layout.html.twig' %}
+
+{% block title %}{{'admin.course.set_post_correlation'|trans}}{% endblock %}
+
+{% block body %}
+<div id="post-widget">
+
+  <form class="form-horizontal" id="post-correlation-form" action="{{ path('admin_course_post_correlation',{id:courseSet.id}) }}" method="post">
+    <div class="form-group">
+      <label class="col-md-2 control-label" for="post-name-field">{{'admin.course.associated'|trans}}</label>
+      <div class="col-md-7 controls">
+        {% if posts|default() %}
+          {% for post in posts%}
+            <div class="course_post_correlation mtm mbm row">
+            <div class="col-md-8 ">
+              {{ post.name }}
+            </div>
+            <a href="javascript:" class="col-md-4  post" data-url="{{ path('admin_course_post_correlation_delete', {'courseId':courseSet.defaultCourseId, 'postId':post.id}) }}">
+              <span class="glyphicon glyphicon-trash mrm"></span>{{ 'admin.course.set_post_correlation.btn.delete_btn'|trans }}</a>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="col-md-4 mts row">{{ 'site.data.empty'|trans }}</div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">{{'admin.course.set_post_correlation'|trans}}</label>
+      <div class="col-md-7 controls">
+        <input type="text" id="postNames" name="postNames" class="width-full select2-offscreen" tabindex="-1" data-url="{{ path('admin_course_post_match',{'courseId':courseSet.defaultCourseId}) }}">
+      </div>
+    </div>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+  </form>
+</div>
+{% endblock %}
+
+{% block footer %}
+  <button type="button" class="btn btn-link" data-dismiss="modal" tabindex="6">{{'form.btn.cancel'|trans}}</button>
+  <button id="post-btn" data-loading-text="{{ 'form.btn.save.submiting'|trans }}" type="submit" class="btn btn-primary" data-toggle="form-submit" data-target="#post-correlation-form" tabindex="4">{{'form.btn.save'|trans}}</button>
+  <script>app.load('corporatetrainingbundle/controller/course-set/post-correlation-modal')</script>
+{% endblock %}
+

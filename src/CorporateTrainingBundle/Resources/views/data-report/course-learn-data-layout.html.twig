@@ -1,0 +1,17 @@
+{% extends 'my/layout.html.twig' %}
+
+{% set side_nav = 'course-learn-data' %}
+
+{% block main %}
+  <div class="es-section data-section h400">
+    <ul class="nav nav-tabs mbl">
+      <li class="{% if submenu == 'person' %}active{% endif %}"> <a href="{{ path('data_report_course_learn_data_statistic') }}">{{'my.department.course_learn_data.personal_detail'|trans}}</a></li>
+      {#<li class="{% if submenu == 'department' %}active{% endif %}"> <a href="{{ path('data_report_course_learn_data_statistic_department') }}">{{'my.department.course_learn_data.department_summary'|trans}}</a></li>#}
+      {#<li class="{% if submenu == 'post' %}active{% endif %}"> <a href="{{ path('data_report_course_learn_data_statistic_post') }}">{{'my.department.course_learn_data.post_summary'|trans}}</a></li>#}
+      {#<li class="{% if submenu == 'category' %}active{% endif %}"> <a href="{{ path('data_report_course_learn_data_statistic_category') }}">{{'my.department.course_learn_data.category_summary'|trans}}</a></li>#}
+    </ul>
+    {% block main_content  %}
+
+    {% endblock %}
+  </div>
+{% endblock %}

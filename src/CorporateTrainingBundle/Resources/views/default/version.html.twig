@@ -1,0 +1,80 @@
+<div class="panel panel-default panel-160">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      {{'admin.default.version.product_version'|trans}}
+    </h3>
+  </div>
+  <div class="panel-body text-center">
+    <div class="col-xs-3 info-index-layout">
+      <div class="">
+        <div>{{'admin.default.version.system_version'|trans}}</div>
+        {% if mainAppUpgrade %}
+          <div class="mid-h-50">
+            <div class="dis-i-b">
+              <span class="glyphicon glyphicon-exclamation-sign text-danger"></span>
+              <span class="text">{{ mainAppUpgrade.package.fromVersion }}</span>
+              <a class="text link-underline text-danger" href="{{ path("admin_app_upgrades") }}">{{ 'admin.default.version.system_version.have_update'|trans }}</a>
+            </div>
+          </div>
+        {% else %}
+          <div class="mid-h-50">
+            <div class="dis-i-b">
+              <i class="glyphicon glyphicon-ok-sign text-success"></i>
+              <span class="">{{ constant('CorporateTrainingBundle\\System::CT_VERSION') }}</span>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-xs-3 info-index-layout">
+      <div class="">
+        <div>{{ 'admin.default.version.plugin'|trans }}</div>
+        {% if upgradeAppCount == 0 %}
+          <div class="mid-h-50">
+            <div class="dis-i-b">
+              <span class="glyphicon glyphicon-ok-sign text-success"></span>
+              <span class="text">{{ 'admin.homepage.status_bar.school_app_status.updated'|trans }}</span>
+            </div>
+          </div>
+        {% else %}
+          <div class="mid-h-50">
+            <div class="dis-i-b">
+              <span class="glyphicon glyphicon-exclamation-sign text-danger"></span>
+              <a class="text link-underline text-danger" href="{{ path("admin_app_upgrades") }}"> {{ upgradeAppCount }} {{ 'admin.homepage.status_bar.school_app_status.several_are_not_updated'|trans }}</a>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-xs-3 info-index-layout">
+      <div>
+        <div>{{'admin.default.version.app'|trans}}</div>
+        <div class="mts">
+          <div class="color-gray">
+            <i class="es-icon es-icon-apple "></i>
+            <span class="mlm">{{ ios.version|default('-.-.-') }}</span>
+          </div>
+          <div class="color-gray">
+            <i class="es-icon es-icon-android"></i>
+            <span class="mlm">{{ android.version|default('-.-.-') }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-3 info-index-layout">
+      <div>
+        <div>{{'admin.default.version.feedback'|trans}}</div>
+        <div class="mid-h-50">
+          <div class="dis-i-b">
+            <a class="qrcode-popover bottom">
+              <i class="es-icon es-icon-weixin color-success"></i><span class="mlm color-gray">{{'admin.default.version.feedback.wechat'|trans}}</span>
+              <div class="qrcode-content">
+                <img src="{{ asset('bundles/corporatetraining/img/corporate-training-wechat.jpg') }}" alt="{{'admin.default.version.feedback.wechat'|trans}}">
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

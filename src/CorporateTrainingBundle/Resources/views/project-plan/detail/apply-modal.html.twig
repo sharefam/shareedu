@@ -1,0 +1,89 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% do script(['libs/jquery-validation.js', 'corporatetrainingbundle/js/project-plan/apply/index.js']) %}
+{% set modalSize = 'large' %}
+{% set modal_class = 'project-plan-apply-modal' %}
+{% block title %}{{ 'project_plan.apply'|trans }}{% endblock %}
+{% block body %}
+    {% if rejectedRecord.status|default()== 'rejected' %}
+      <div class="alert alert-danger">
+          {{ 'project_plan.detail.rejected_reason'|trans }}：{{ rejectedRecord.rejectedReason|default() }}
+      </div>
+    {% endif %}   
+    <form id="project-plan-apply-form" class="form-horizontal"
+          action="{{ path('project_plan_apply', {id:projectPlan.id}) }}">
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                {{ 'project_plan.title'|trans }}:
+            </label>
+            <div class="col-md-10">
+              <div class="form-control-static">
+                {{ projectPlan.name|default() }}
+              </div>
+            </div>
+        </div>
+
+        <div class="form-group ">
+            <label class="col-md-2 control-label">
+                {{ 'project_plan.project_plan_date'|trans }}:
+            </label>
+            <div class="col-md-10">
+              <div class="form-control-static">
+                {% if projectPlan.startTime %}{{ projectPlan.startTime|default('--')|date('Y-m-d')}}{% else %}--{% endif %} {{ 'project_plan.time_to'|trans }} {% if projectPlan.startTime %}{{ projectPlan.endTime|default('--')|date('Y-m-d') }}{% else %}--{% endif %}              </div>
+            </div>
+        </div>
+
+        {% if advancedOption.requireRemark|default() %}
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="remark">{{'project_plan.advanced_option.remark'|trans}}:</label>
+                <div class="col-md-10 controls">
+                    <input type="text" id="remark" name="remark" placeholder="{{ advancedOption.remarkRequirement|default('project_plan.detail.remark_empty_message'|trans) }}" class="form-control">
+                </div>
+            </div>
+        {% endif %}
+
+        {% if advancedOption.requireMaterial|default() %}
+          <div class="form-group-table">
+            <label class="form-group-table-label" for="remark">
+              {{'project_plan.enrollment_record.enrollment_data'|trans}}:
+            </label>
+            <div class="form-group-table-content">
+              <p>{{ advancedOption.materialRequirement|default() }}</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-10 col-md-offset-2">
+              {% if not (setting('cloud_attachment.enable') and setting('cloud_attachment.projectPlaning' ) and setting('storage.upload_mode') == 'cloud') %}
+                <div class="mbm alert-danger">{{ 'project_plan.detail.cloud_attachment_message'|trans }}</div>
+              {% endif %}
+              <div class="ct-attachment-reset mbm" data-role="material1">
+                <span class="mrs">1.{{ advancedOption.material1|default('--') }}</span>
+                {{ render(controller('AppBundle:File/Attachment:formFields', {targetType: 'projectPlaning.material1', targetId: noneRecord.id|default(0)}, { 'currentTarget':'material1','useType':'material1','showLabel': true })) }}
+              </div>
+              {% if advancedOption.material2|default() %}
+                <div class="mbm ct-attachment-reset" data-role="material2">
+                  <span class="mrs">2.{{ advancedOption.material2|default('--') }}</span>
+                  {{ render(controller('AppBundle:File/Attachment:formFields', {targetType: 'projectPlaning.material2', targetId: noneRecord.id|default(0)}, { 'currentTarget':'material2','useType':'material2','showLabel': true })) }}
+                </div>
+              {% endif %}
+              {% if advancedOption.material3|default() %}
+                <div class="mbm ct-attachment-reset" data-role="material3">
+                  <span class="mrs">3.{{ advancedOption.material3|default('--') }}</span>
+                  {{ render(controller('AppBundle:File/Attachment:formFields', {targetType: 'projectPlaning.material3', targetId: noneRecord.id|default(0)}, { 'currentTarget':'material3','useType':'material3','showLabel': true })) }}
+                </div>
+              {% endif %} 
+            </div>
+          </div>
+        {% endif %}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    </form>
+{% endblock %}
+{% block footer %}
+  <div class="pull-right">
+    <button type="button" class="ct-btn ct-btn-default" data-dismiss="modal">{{ 'project_plan.btn.cancel_btn'|trans }}</button>
+    <button id="server-create-btn" data-submiting-text="{{ 'project_plan.btn.save_loading_btn'|trans }}" type="submit"
+            class="ct-btn ct-btn-primary js-save-btn" data-toggle="form-submit" data-loading-text="{{ 'project_plan.detail.btn_apply_loading'|trans }}"
+    >{{ 'project_plan.detail.btn_apply'|trans }}</button>
+
+    </div>
+{% endblock %}

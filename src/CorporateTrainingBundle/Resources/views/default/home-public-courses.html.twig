@@ -1,0 +1,91 @@
+{# 公共课程 #}
+{% if is_mobile_client() %} 
+  {% include "default/home-public-courses-mobile.html.twig" %}
+{% else %}
+  <section class="o-home-sec js-common-course">
+    <div class="container">
+      <div class="o-home-sec__hd">
+          <div class="o-home-sec__title">{{config.title|default(config.defaultTitle|trans)}}</div>
+        <div class="o-home-sec__tab-wrap visible-lg visible-md clearfix">
+          <div class="o-home-sec__tab nav-btn-tab js-tab-link-wrap clearfix">
+            <ul class="nav nav-tabs nav-tabs_home" role="tablist">
+                <li class="js-tab-link" role="presentation"><a href="javascript:;">{{'default.all'|trans}}</a></li>
+                {% set categories = data('Categories', {'group':'course', 'parentId': 0}) %}
+                {% if categories %}
+                  {% for category in categories %}
+                      {% if loop.index<4 %}
+                          <li class="js-tab-link" role="presentation"><a href="javascript:;">{{category.name|trans|plain_text(10)}}</a></li>
+                      {% endif %}
+                  {% endfor %}
+                {% endif %}
+            </ul>
+            <ul class="nav navbar-nav o-home_more">
+              {% if categories and count(categories) >3 %}
+                <li class="nav-more nav-hover">
+                    <a href="javascript:;">
+                      <i class="es-icon es-icon-morehoriz"></i>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                      {% for category in categories %}
+                        {% if loop.index>3 %}
+                          <li><a href="{{ path('course_set_explore', {category:category.code}) }}">{{category.name|trans|plain_text(10)}}</a></li>
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+        <a class="o-home-sec__more" href="{{ path('course_set_explore') }}">{{ 'homepage.public_course.link_more'|trans }}  <i class="es-icon es-icon-chevronright"></i></a>
+      </div>
+      <div class="o-home-sec__bd">
+        <div class="row js-tab-block-wrap">
+          <div class="tab-block js-tab-sec is-active">
+            {% set commonRecommendCourses = data('HomePublicCourses', {'count': 8}) %}
+            {% if commonRecommendCourses %}
+              {% for courseSet in commonRecommendCourses %}
+                <div class="col-md-3 col-xs-6">
+                  {% include 'course/widgets/ct-course-grid.html.twig' with {courseSet: courseSet} %}
+                </div>
+              {% endfor %}
+            {% endif %}
+
+            {% if (8 - count(commonRecommendCourses)) > 0 %}
+              {% for i in 1..(8-count(commonRecommendCourses)) %}
+                <div class="col-md-3 col-xs-6 hidden-xs">
+                  <img class="img-responsive mbl" src="{{ asset('static-dist/corporatetrainingbundle/img/course_def_pos@2x.png')}}">
+                </div>
+              {% endfor %}
+            {% endif %}
+          </div>
+          
+          {% set length = count(categories) %}
+          {% if length > 0 %}
+            {% for i in 0..(length - 1) %}
+              <div class="tab-block js-tab-sec hidden-xs">
+                {% set commonRecommendCourses = data('HomePublicCourses', {'count': 8, categoryId: categories[i].id}) %}
+                {% if commonRecommendCourses %}
+                {% for courseSet in commonRecommendCourses %}
+                  <div class="col-md-3 col-xs-6">
+                    {% include 'course/widgets/ct-course-grid.html.twig' with {courseSet: courseSet} %}
+                  </div>
+                  {% endfor %}
+                {% endif %}
+
+                {% if (8 - count(commonRecommendCourses))>0 %}
+                  {% for i in 1..(8 - count(commonRecommendCourses)) %}
+                    <div class="col-md-3 visible-lg">
+                      <img class="img-responsive mbl" src="{{ asset('static-dist/corporatetrainingbundle/img/course_def_pos@2x.png')}}">
+                    </div>
+                  {% endfor %}
+                {% endif %}
+              </div>
+            {% endfor %}
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}

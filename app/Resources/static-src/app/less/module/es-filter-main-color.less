@@ -1,0 +1,51 @@
+.es-filter {
+  .nav-sort {
+    > li > a {
+      &:hover {
+        color: @brand-primary;
+      }
+      &.active {
+        background-color: @brand-primary;
+      }
+    }
+
+    @media screen and (max-width: @screen-xs-max) {
+      &-mobile {
+        li > a.active {
+          color: @brand-primary;
+          background-color: transparent;
+        }
+      }
+    }
+  }
+  .btn-group.open .dropdown-toggle {
+    color: @brand-primary;
+  }
+  .filter {
+    .btn {
+      &:hover {
+        color: @brand-primary;
+        .es-transition;
+      }
+    }
+    label {
+      &:hover {
+        color: @brand-primary;
+      }
+    }
+  }
+}
+
+.mobile-search-tab {
+  @media (max-width: @screen-xs-max) {
+    .nav.nav-tabs {
+      > li {
+        &.active {
+          a {
+            border-bottom: 1px solid @brand-primary;
+          }
+        }
+      }
+    }
+   }
+}

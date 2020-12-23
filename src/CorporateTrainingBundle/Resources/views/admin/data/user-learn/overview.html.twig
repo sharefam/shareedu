@@ -1,0 +1,108 @@
+{% extends 'admin/layout.html.twig' %}
+{% set menu = 'admin_user_learn_data_overview' %}
+{% set script_controller = 'corporatetrainingbundle/controller/data/top-twenty' %}
+
+{% do script(['libs/echarts.js', 'corporatetrainingbundle/js/admin/data/user/overview/index.js']) %}
+{% block main %}
+  <div class="aside-panel">
+    <div class="aside-panel-heading">
+      <div class="aside-panel-heading_title">{{ 'admin.data_center.user_data.user_portrait'|trans }}</div>
+    </div>
+    <form id="user-learn-data-search" class="js-form-search">
+      <div id="aside-department-learn-data" class="form-inline ct-well ct-mbl">
+        <div class="form-group ft-sm">{{ 'admin.data_center.user_data.dataSearchTime.filter'|trans }}</div>
+        <div class="form-group prl js-learn-data">
+          <div id="date-range-picker">
+            <span class="user-data-select">
+              <input class="form-control js-date-range-input" style="width:200px;" type="text" name="dataSearchTime" value="{{ userPortraitSearchTime.startTime|date('Y/m/d') }}-{{ userPortraitSearchTime.endTime|date('Y/m/d') }}">
+              <i class="es-icon es-icon-arrowdropdown"></i>
+            </span>
+          </div>
+        </div>
+        <div class="form-group ft-sm prl">{{ 'admin.data_center.user_data.org.filter'|trans }}</div>
+        <div class="form-group prl">
+          <div class="dis-i-b">
+            {% include 'org-select/index.html.twig' with {
+              id: 'user-orgCode',
+              placeholder: 'admin.org.select_placeholder'|trans,
+              data: build_org_tree(app.user.manageOrgCodes),
+              treeName: 'orgCode'
+            }
+            %}
+          </div>
+        </div>
+        <div class="form-group ft-sm prl">{{ 'admin.data_center.user_data.post.filter'|trans }}</div>
+        <div class="dis-i-b prl">
+          {% include 'post/post-tree-select.html.twig' with {modal: 'list', selectedWith: 120} %}
+        </div>
+        <div class="form-group ft-sm">
+          <a class="btn btn-primary js-user-learn-search">{{ 'form.btn.search'|trans }}</a>
+        </div>
+      </div>
+    </form>
+    <div class="user-portrayal">
+      <div class="clearfix" id="analyze-container">
+        <div class="col-md-12 col-lg-12 user-analyze">
+          <div class="user-analyze_container">
+            <img src="/assets/img/backstage/user-data/pic.png">
+            <div class="analyze-group analyze-group-left">
+              <div class="analyze-group-list">
+                <div class="analyze-group-title">{{ 'admin.data_center.user_data.online_learn_hours'|trans }}</div>
+                <div class="analyze-group-num js-group-num" data-url="{{ path('admin_data_center_online_course_learn_time') }}">0</div>
+              </div>
+              <div class="analyze-group-list">
+                <div class="analyze-group-title">{{ 'admin.data_center.user_data.offline_learn_hours'|trans }}</div>
+                <div class="analyze-group-num js-group-num" data-url="{{ path('admin_data_center_offline_course_learn_time') }}">0</div>
+              </div>
+              <div class="analyze-group-dot"></div>
+            </div>
+            <div class="analyze-group analyze-group-bottom">
+              <div class="analyze-group-list">
+                <div class="analyze-group-title">{{ 'admin.data_center.user_data.online_course.learn_num'|trans }}</div>
+                <div class="analyze-group-num js-group-num" data-url="{{ path('admin_data_center_online_course_learn_count') }}">0</div>
+              </div>
+              <div class="analyze-group-list">
+                <div class="analyze-group-title">{{ 'admin.data_center.user_data.project_plan.learn_num'|trans }}</div>
+                <div class="analyze-group-num js-group-num" data-url="{{ path('admin_data_center_project_plan_attend_count') }}">0</div>
+              </div>
+              <div class="analyze-group-dot"></div>
+            </div>
+            <div class="analyze-group analyze-group-right">
+              <div class="analyze-group-list">
+                <div class="analyze-group-title">{{ 'admin.data_center.user_data.subject_exam.learn_num'|trans }}</div>
+                <div class="analyze-group-num js-group-num" data-url="{{ path('admin_data_center_exam_attend_count') }}">0</div>
+              </div>
+              <div class="analyze-group-list">
+                <div class="analyze-group-title">{{ 'admin.data_center.user_data.survey.learn_num'|trans }}</div>
+                <div class="analyze-group-num js-group-num" data-url="{{ path('admin_data_center_survey_attend_count') }}">0</div>
+              </div>
+              <div class="analyze-group-list">
+                <div class="analyze-group-title">{{ 'admin.data_center.user_data.activity.learn_num'|trans }}</div>
+                <div class="analyze-group-num js-group-num" data-url="{{ path('admin_data_center_offline_activity_count') }}">0</div>
+              </div>
+              <div class="analyze-group-dot"></div>
+            </div>
+            <div class="user-total">
+              <div class="user-total-num">{{ 'admin.data_center.user_data.total_learn_user_num'|trans }}
+                <span class="analyze-group-num  js-group-num js-group-num_total" data-url="{{ path('admin_data_center_user_count') }}">0</span>{{ 'admin.data_center.user_data.people'|trans }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="analyze-group-num js-group-num js-hotKeyWord" data-url="{{ path('admin_data_center_hot_keyword') }}">
+          <div class="col-md-12 col-lg-12">
+            <div class="user-group-tag">
+              <div class="user-group-tag_title">{{ 'admin.data_center.user_data.hot_keys'|trans }}</div>
+              <div class="user-group-tag_list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    {% include 'CorporateTrainingBundle::admin/data/user-learn/user-login-heatmap.html.twig' %}
+  </div>
+  <div>
+    {% include 'CorporateTrainingBundle::admin/data/user-learn/top-twenty-list.html.twig' %}
+  </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+<tr>
+  {% set courseSet = data('CourseSet', { id: course.courseSetId }) %}
+  <td>
+    <p class="text-sm" title="{{ courseSet.title }}">{{ courseSet.title|sub_text(16)|default() }}</p>
+    {% set category = data('Category', {categoryId:courseSet.categoryId}) %}
+    <span class="text-sm" title="{{ category.name|default('--') }}">{{'study_center.course_statistics.category'|trans}}：
+      {% if courseSet.categoryId == 0 %}
+        {{ 'study_center.course_statistics.status.category_empty'|trans }}
+      {% elseif courseSet.categoryId >0 and not category %}
+        {{ 'study_center.course_statistics.status.category_delete'|trans }}
+      {% else %}
+        {{ category.name|default('--')|sub_text(16) }}
+      {% endif %}
+  </td>
+  <td>{{course.watchTime|time_format_hour}}</td>
+  <td>{{course.learnTime|time_format_hour}}</td>
+  <td>
+    {% if course.finishedTime|default() %}
+      {{ course.finishedTime|date('Y-m-d') }}
+    {% else %}
+      {{'study_center.course_statistics.message.unfinish'|trans}}
+    {% endif %}
+  </td>
+  <td>
+    <a class="link-primary link-detail-focus" href="javascript:;" data-toggle="modal" data-url="{{ path('study_center_learn_record_detail_show', {courseId:course.id, userId:user.id|default(0)}) }}" data-target="#modal">{{'study_center.course_statistics.course_task_show'|trans}}</a>
+  </td>
+</tr>

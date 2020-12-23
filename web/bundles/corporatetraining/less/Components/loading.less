@@ -1,0 +1,65 @@
+.loading-line {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  overflow: hidden;
+  background-color: lighten(@brand-primary, 30%);
+}
+
+.loading-line-bot {
+  position: absolute;
+  bottom: -4px;
+}
+.loading-line div {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 4px;
+  background-color: @brand-primary;
+  animation: loading-line 2s ease infinite;
+}
+
+@keyframes loading-line
+{
+  from {
+    left: -100%;
+  }
+
+  to {
+    left: 100%;
+  }
+}
+
+@-moz-keyframes loading-line
+{
+  from {
+    left: -100%;
+  }
+
+  to {
+    left: 100%;
+  }
+}
+
+@-webkit-keyframes loading-line 
+{
+  from {
+    left: -100%;
+  }
+
+  to {
+    left: 100%;
+  }
+}
+
+@-o-keyframes loading-line 
+{
+  from {
+    left: -100%;
+  }
+
+  to {
+    left: 100%;
+  }
+}

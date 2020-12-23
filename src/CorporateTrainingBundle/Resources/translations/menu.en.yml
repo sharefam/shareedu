@@ -1,0 +1,86 @@
+admin.user.basic.basic_tab.change_post_btn: Change position
+admin.user.basic.basic_tab.roles_btn: Change role
+admin.user.basic.basic_tab.change_nickname_btn: Change nickname
+admin.teacher.profession_field: Teaching profession
+admin.teacher.profession_field_create: Add teaching profession
+admin.post.basic_menu: Positions
+admin.post.basic_tab: Positions
+admin.post.basic_tab.group_create_btn: Create position group
+admin.org.basic_menu: Organizations
+admin.org.basic_tab: Organization
+admin.role.basic_menu: Role Setting
+admin.role.basic_tab: Role Setting
+admin.user_group.basic_menu: User Group
+admin.user_group.basic_tab: User Group
+admin.user_group.basic_tab.user_group_create_btn: Add user group
+admin.course.basic_tab.post_correlation_btn: Correlate to position
+admin.teacher.basic.level: Teacher Level
+admin.teacher.basic.level.create_btn: Add teacher level
+admin.teacher.basic.setting_btn: Teacher set
+admin.setting_ip_blacklist_basic_menu: IP Limit
+admin.setting_ip_blacklist_basic_tab: IP Limit
+admin.mail_setting_basic_menu: Email Setting
+admin.mail_setting.notification_setting: Email notify setting
+admin.setting_user.sync_account_docking: Account docking setting
+
+# offline_activity
+admin.offline_activity.create: Create offline activities
+admin.offline_activity.management: Offline Activities
+admin.offline_activity.open: Publish
+admin.offline_activity.close: Close
+admin.offline_activity.category.management: Offline Activity Categories
+admin.offline_activity.category.create: Create Category
+admin.offline_activity.QR_code: Sign qr code
+
+##project_plan
+admin.project_plan.manage: Projects
+admin.project_plan.create: Create project
+admin.project_plan.manage_list.close: Close
+admin.project_plan.manage_list.delete: Delete
+admin.project_plan.manage_list.publish: Publish
+admin.project_plan.manage_list.archive: Archive
+admin.project_plan.category.manage: Project Categories
+admin.project_plan.category.create: Create Category
+
+## 培训
+admin.nav.train: Train
+admin.teaching.basic_menu: My Teaching
+admin.train.basic.basic_drop.teaching_course: Course
+admin.train.basic.basic_drop.teaching_classroom: Topic
+admin.train.basic.basic_drop.teaching_project_plan: Project Plan
+admin.online_course.basic_menu: Online Course
+admin.course.basic.basic_drop.course_back: Course
+admin.course.basic.basic_drop.classroom: Topic
+admin.project_plan.basic_menu: Project Plan
+admin.offline_activity.basic_menu: Offline Activity
+admin.teacher_manage.basic_menu: Teacher Manage
+admin.train.basic.basic_drop.create_btn: Create project
+
+## data
+admin.nav.data: Data Center
+admin_data.basic.menu: User Data
+admin_data.user_learn_data_overview.menu: Overview
+admin_data.user_learn_data_detail.menu: Detail
+admin.train.basic.basic_drop.teacher_data: Teacher Data
+admin.train.basic.basic_drop.teacher_data.overview: Overview
+admin.train.basic.basic_drop.teacher_data.detail: Detail
+admin_data.project_plan_data_overview.menu: Project Plan Data
+admin.train.basic.basic_drop.project_pan.overview: Overview
+admin.train.basic.basic_drop.project_pan.detail: Detail
+
+admin.train.basic.basic_drop.course_data: Online Course Data
+admin.train.basic.basic_drop.course_data.overview: Overview
+admin.train.basic.basic_drop.course_data.detail: Detail
+
+admin.operation.message.center.basic_menu: Message Center
+admin.operation.content.supervise.basic_menu: Content Supervision
+admin.operation.course.discuss.basic_menu: Course Discuss
+
+admin.system.setting.basic_menu: System Settings
+admin.system.tool.basic_menu: System Tools
+
+admin.setting.logo_and_favicon: LOGO
+
+admin.department.course_learn_data.department_summary: 'Department Summary'
+admin.department.course_learn_data.post_summary: 'Post Summary'
+admin.department.course_learn_data.category_summary: 'Category Summary'

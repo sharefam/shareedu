@@ -1,0 +1,41 @@
+<div class="org-tree-item js-org-tree-item" id='tree-item-{{ org.id }}' data-refresh-url="{{ path('admin_org_show', {id: org.id}) }}">
+  <div class="row org-tree-item__head" title="{{ org.name }}">
+    <div class="col-md-3">
+      <div class="org-tree-item__info" style="padding-left: {{ 24 * (org.depth - 1 ) }}px;">
+        {% if hasChildren %}
+          <i id='load-btn-{{ org.id }}' class="org-tree-item-icon glyphicon glyphicon-chevron-right js-org-tree-item-load-btn"
+             data-url="{{ path('admin_org_children_show', {id: org.id}) }}"></i>
+        {% else %}
+          <i class="org-tree-item-icon"></i>
+        {% endif %}
+        {{ org.name }}
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="org-tree-item__info" >{{ org.code }}</div>
+    </div>
+    <div class="col-md-2">
+      <div class="org-tree-item__info org-tree-item__children_num">{{ org.childrenNum }}</div>
+    </div>
+    <div class="col-md-2">
+      <div class="org-tree-item__info">{{ user.nickname|default('') }}</div>
+    </div>
+    <div class="col-md-3">
+      <div class="org-tree-item__hover">
+        <a href="javascript:;" class="btn btn-default btn-sm" data-url="{{ path('admin_org_update', {id:org.id}) }}"
+           data-toggle="modal" data-target="#modal">
+          <i class="glyphicon glyphicon-edit"></i> {{ 'admin.org_manage.edit_btn'|trans }}
+        </a>
+        {% if org.depth <= 5 %}
+          <a href="javascript:;" class="btn btn-default btn-sm"
+             data-url="{{ path('admin_org_batch_create', {parentId:org.id}) }}" data-toggle="modal"
+             data-target="#modal"><i class="glyphicon glyphicon-plus"></i> {{ 'admin.org_manage.batch_add_btn'|trans }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="org-tree-item__body js-org-tree-item-wrap">
+  </div>
+</div>
+</div>

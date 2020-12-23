@@ -1,0 +1,138 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% do script(['libs/echo-js.js','libs/echarts.js', 'corporatetrainingbundle/js/admin/data/teacher/overview/index.js']) %}
+
+{% set menu = 'admin_data_center_teacher_overview' %}
+
+{% block main %}
+  <div class="ct-panel" style="margin-top: -32px;padding-left: 9px">
+    <div class="ct-panel-body ct-panel-adside_row clearfix">
+      <div class="col ct-mbl ct-echat-title">{{ 'admin.data_center.teacher.overview.chart_title.data'|trans }}</div>
+      <div class="clearfix">
+        <div class="col-xs-6">
+          <div id="teacher-survey-chart" class="echart-content">
+            <div class="ct-overView-title">
+              <span class="echart-txt">{{ 'admin.data_center.chart_title.survey'|trans|raw }}</span>
+            </div>
+            <select class="ct-echart-select form-control" style="width: auto" name="year" id="year">
+              <option value="thisYear">{{ 'admin.data_center.btn.this_year'|trans }}</option>
+              <option value="lastYear">{{ 'admin.data_center.btn.last_year'|trans }}</option>
+            </select>
+            <div class="ct-tab-time ct-tab-time_mr">
+              <ul class="js-nav clearfix">
+                <li class="active" data-url="{{ path('admin_data_center_teacher_overview_survey_data',{type:'all'}) }}"><a href="javascript:;">{{ 'admin.data_center.survey.btn.all'|trans }}</a></li>
+                <li data-url="{{ path('admin_data_center_teacher_overview_survey_data',{type:'online'}) }}"><a href="javascript:;">{{ 'admin.data_center.survey.btn.online'|trans }}</a></li>
+                <li data-url="{{ path('admin_data_center_teacher_overview_survey_data', {type:'offline'}) }}"><a href="javascript:;">{{ 'admin.data_center.survey.btn.offline'|trans }}</a></li>
+              </ul>
+            </div>
+            <ul class="ct-tab-time bar-or-pie" data-type="survey">
+              <li data-type="pie"><a href="javascript:;"><i class="ct-icon ct-icon-pie"></i></a></li>
+              <li class="active" data-type="bar"><a href="javascript:;"><i class="ct-icon ct-icon-bar"></i></a></li>
+            </ul>
+
+            <div id="admin-teacher-survey-data" class="admin-teacher-echart"></div>
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div id="profession-field-chart" class="echart-content">
+            <div class="ct-overView-title">{{ 'admin.data_center.chart_title.profession_field'|trans }}
+              <ul class="ct-tab-time bar-or-pie" data-type="profession-field">
+                <li data-type="pie"><a href="javascript:;"><i class="ct-icon ct-icon-pie"></i></a></li>
+                <li class="active" data-type="bar"><a href="javascript:;"><i class="ct-icon ct-icon-bar"></i></a></li>
+              </ul>
+            </div>
+            <div id="admin-teacher-profession-field-data" data-url="{{ path('admin_data_center_teacher_overview_profession_field_data') }}"  class="admin-teacher-echart"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-6">
+        <div id="teacher-level-chart" class="echart-content">
+          <div class="ct-overView-title">{{ 'admin.data_center.chart_title.level'|trans }}
+            <ul class="ct-tab-time bar-or-pie" data-type="level">
+              <li class="active" data-type="pie"><a href="javascript:;"><i class="ct-icon ct-icon-pie"></i></a></li>
+              <li data-type="bar"><a href="javascript:;"><i class="ct-icon ct-icon-bar"></i></a></li>
+            </ul>
+          </div>
+          <div id="admin-teacher-level-data" data-url="{{ path('admin_data_center_teacher_overview_level_data') }}"  class="admin-teacher-echart admin-teacher-echart_pie"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ct-panel ct-panel-teacher" style="padding-left: 9px">
+    <div class="ct-panel-heading overview-rank-title ct-mbs clearfix">
+      <span class="ct-panel-title fl">{{ 'admin.data_center.teacher.overview.rank_title'|trans }}</span>
+      <div class="o-ct-tab_time  fl mar-no">
+        <ul class="clearfix">
+          <li class="js-tab-link active" data-type="current"><a href="javascript:;">{{ 'admin.data_center.btn.this_year'|trans }}</a></li>
+          <li class="js-tab-link" data-url="last"><a href="javascript:;">{{ 'admin.data_center.btn.last_year'|trans }}</a></li>
+        </ul>
+      </div>
+    </div>
+      <div class="ct-panel-body ct-panel-adside_row clearfix">
+        <div class="col col-lg-3 col-md-6 col-sm-12">
+          <div class="item-container item-container_height js-search-wrap" data-currentUrl="{{ path('my_teaching_course_record_course_rank_list', {date: 'thisYear',courseType: 'course',from: 'admin'}) }}" data-lastUrl="{{ path('my_teaching_course_record_course_rank_list', {date: 'lastYear',courseType: 'course',from: 'admin'}) }}">
+            <div class="o-ct-home-panel js-ajax-tab-block-wrap">
+              <div class="ct-overView-title">{{ 'admin.data_center.teacher.overview.online_course_rank'|trans }}</div>
+              <div class="ct-tab-time hidden">
+                <ul class="clearfix">
+                  <li class="js-tab-link active"><a href="javascript:;" data-url="{{ path('my_teaching_course_record_course_rank_list', {date: 'thisYear',courseType: 'course',from: 'admin'}) }}">{{ 'admin.data_center.btn.this_year'|trans }}</a></li>
+                  <li class="js-tab-link"><a href="javascript:;" data-url="{{ path('my_teaching_course_record_course_rank_list', {date: 'lastYear',courseType: 'course',from: 'admin'}) }}">{{ 'admin.data_center.btn.last_year'|trans }}</a></li>
+                </ul>
+              </div>
+              <div class="ct-rank-bd js-tab-sec js-rank-list">
+                {{ render(controller('CorporateTrainingBundle:My/TeachingRecord:courseRankList',{courseType: 'course',from: 'admin'})) }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col col-lg-3 col-md-6 col-sm-12">
+          <div class="item-container item-container_height js-search-wrap" data-currentUrl="{{ path('my_teaching_course_record_course_rank_list', {date: 'thisYear',courseType: 'offline-course',from: 'admin'}) }}" data-lastUrl="{{ path('my_teaching_course_record_course_rank_list', {date: 'lastYear',courseType: 'offline-course',from: 'admin'}) }}">
+            <div class="o-ct-home-panel js-ajax-tab-block-wrap">
+              <div class="ct-overView-title">{{ 'admin.data_center.teacher.overview.offline_course_rank'|trans }}</div>
+              <div class="ct-tab-time hidden">
+                <ul>
+                  <li class="js-tab-link active"><a href="javascript:;" data-url="{{ path('my_teaching_course_record_course_rank_list', {date: 'thisYear',courseType: 'offline-course',from: 'admin'}) }}">{{ 'admin.data_center.btn.this_year'|trans }}</a></li>
+                  <li class="js-tab-link"><a href="javascript:;" data-url="{{ path('my_teaching_course_record_course_rank_list', {date: 'lastYear',courseType: 'offline-course',from: 'admin'}) }}">{{ 'admin.data_center.btn.last_year'|trans }}</a></li>
+                </ul>
+              </div>
+              <div class="ct-rank-bd js-tab-sec js-rank-list">
+                {{ render(controller('CorporateTrainingBundle:My/TeachingRecord:courseRankList',{courseType: 'offline-course',from: 'admin'})) }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col col-lg-3 col-md-6 col-sm-12">
+          <div class="item-container item-container_height js-search-wrap" data-currentUrl="{{ path('my_teaching_course_record_student_rank_list', {date: 'thisYear', courseType: 'course', from: 'admin'}) }}" data-lastUrl="{{ path('my_teaching_course_record_student_rank_list', {date: 'lastYear', courseType: 'course', from: 'admin'}) }}">
+            <div class="o-ct-home-panel js-ajax-tab-block-wrap">
+              <div class="ct-overView-title">{{ 'admin.data_center.teacher.overview.online_studnet_rank'|trans }}</div>
+              <div class="ct-tab-time hidden">
+                <ul>
+                  <li class="js-tab-link active"><a href="javascript:;" data-url="{{ path('my_teaching_course_record_student_rank_list', {date: 'thisYear', courseType: 'course', from: 'admin'}) }}">{{ 'admin.data_center.btn.this_year'|trans }}</a></li>
+                  <li class="js-tab-link"><a href="javascript:;" data-url="{{ path('my_teaching_course_record_student_rank_list', {date: 'lastYear', courseType: 'course', from: 'admin'}) }}">{{ 'admin.data_center.btn.last_year'|trans }}</a></li>
+                </ul>
+              </div>
+              <div class="ct-rank-bd js-tab-sec js-rank-list">
+                {{ render(controller('CorporateTrainingBundle:My/TeachingRecord:studentRankList',{courseType: 'course', from: 'admin'})) }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col col-lg-3 col-md-6 col-sm-12">
+          <div class="item-container item-container_height js-search-wrap" data-currentUrl="{{ path('my_teaching_course_record_student_rank_list', {date: 'thisYear', courseType: 'offline-course', from: 'admin'}) }}" data-lastUrl="{{ path('my_teaching_course_record_student_rank_list', {date: 'lastYear', courseType: 'offline-course', from: 'admin'}) }}">
+            <div class="o-ct-home-panel js-ajax-tab-block-wrap">
+              <div class="ct-overView-title">{{ 'admin.data_center.teacher.overview.offline_studnet_rank'|trans }}</div>
+              <div class="ct-tab-time hidden">
+                <ul>
+                  <li class="js-tab-link active"><a href="javascript:;" data-url="{{ path('my_teaching_course_record_student_rank_list', {date: 'thisYear', courseType: 'offline-course', from: 'admin'}) }}">{{ 'admin.data_center.btn.this_year'|trans }}</a></li>
+                  <li class="js-tab-link"><a href="javascript:;" data-url="{{ path('my_teaching_course_record_student_rank_list', {date: 'lastYear', courseType: 'offline-course', from: 'admin'}) }}">{{ 'admin.data_center.btn.last_year'|trans }}</a></li>
+                </ul>
+              </div>
+              <div class="ct-rank-bd js-tab-sec js-rank-list">
+                {{ render(controller('CorporateTrainingBundle:My/TeachingRecord:studentRankList',{courseType: 'offline-course', from: 'admin'})) }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+   </div>
+{% endblock %}

@@ -1,0 +1,14 @@
+<li class="media">
+  <div class="pull-left">
+    <span class="glyphicon glyphicon-volume-down media-object"></span>
+  </div>
+  <div class="media-body">
+    <div class="notification-body">
+      {% set data = notification.content %}
+      你已加入<a href="{{ path('offline_activity_detail', {'id': data.id}) }}">《{{ data.title }}》</a>, 活动开始时间: {{ data.startTime|default(null)|date('Y-m-d H:i') }}, 活动地点: {{ data.address }}, 请准时参加!
+    </div>
+    <div class="notification-footer">
+      {{ notification.createdTime|date_format }}
+    </div>
+  </div>
+</li>

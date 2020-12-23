@@ -1,0 +1,46 @@
+{% extends 'layout.html.twig' %}
+
+{% do script(['libs/jquery-validation.js','corporatetrainingbundle/js/project-plan/create/index.js']) %}
+
+{% block content %}
+  <div class="panel panel-default panel-page panel-create-course">
+    <div class="panel-heading">
+      <h2>{{ 'project_plan.create'|trans }}</h2>
+    </div>
+    <form id="project-plan-create-form" class="form-horizontal" method="post" action="{{ path('admin_train_project_plan_create')}}">
+      <div class="row form-group">
+        <div class="col-md-2 control-label">
+          <label for="title">{{ 'project_plan.name'|trans }}:</label>
+        </div>
+        <div class="col-md-8 controls">
+          <input type="text" id="name" name="name" class="form-control" placeholder="">
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-md-2 control-label">
+          <label for="">{{ 'project_plan.org'|trans }}</label>
+        </div>
+        <div class="col-md-8 controls">
+          {% include 'org-select/index.html.twig' with {
+              id: 'user-orgCode',
+              placeholder: 'site.org.select_placeholder'|trans,
+              data: build_org_tree(app.user.manageOrgCodes),
+              treeName: 'orgCode'
+            }
+          %}
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-md-2 control-label">
+        </div>
+        <div class="col-md-4 controls">
+          <input id="project-plan-create-btn" data-loading-text="{{ 'project_plan.btn.create_loading_btn'|trans }}" class="btn btn-fat btn-primary" type="button" value="{{ 'project_plan.btn.create_btn'|trans }}">
+          <a class="btn btn-fat btn-link" href="{{ app.request.headers.get('Referer') }}">{{ 'project_plan.btn.cancel_btn'|trans }}</a>
+        </div>
+      </div>
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    </form>
+  </div>
+{% endblock %}

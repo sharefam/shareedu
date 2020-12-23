@@ -1,0 +1,57 @@
+{% import "macro.html.twig" as web_macro %}
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th width="15%">{{ 'project_plan.member.nick_name'|trans }}</th>
+    <th width="20%">{{ 'project_plan.member.department_post'|trans }}</th>
+    <th width="10%">{{ 'project_plan.member.progress'|trans }}</th>
+    <th width="12%">{{ 'project_plan.summary.study_data.online_learn_time'|trans }}</th>
+    <th width="12%">{{ 'project_plan.study_data.online_completion_degree'|trans }}</th>
+    <th width="12%">{{ 'project_plan.study_data.offline_attendance_rate'|trans }}</th>
+    <th width="12%">{{ 'project_plan.study_data.homework_passing_rate'|trans }}</th>
+    <th width="10%">{{ 'project_plan.btn.detail_btn'|trans }}</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for member in members %}
+    {% set user = users[member.userId] %}
+    {% set profile = data('UserProfile', { 'userId' : user.id}) %}
+    {% set orgs = data('Orgs',{orgIds: users[member.userId].orgIds}) %}
+    <tr>
+      <td>
+        {{ profile.truename  }}
+        <br><span class="text-muted text-sm">{{ user.nickname|default('--'|trans) }}</span>
+      </td>
+      <td>
+        {{ orgs.0.name|default('--') }}
+        {% if orgs.1|default(false) %}
+          <i class="es-icon es-icon-more ft-xsm" data-toggle="popover" data-container="body" data-trigger="hover"
+             data-placement="top" data-content="{{ orgs.orgNames|default() }}"></i>
+        {% endif %}
+        <br><span class="text-muted text-sm">{{ posts[user.postId]['name']|default('--'|trans) }}</span>
+      </td>
+      <td>{% if member.progress|default(0) %}{{ member.progress }}%{% else %}--{% endif %}</td>
+      <td>{% if onlineCourseLearnTime[user.id].totalLearnTime|default(0) %}{{ onlineCourseLearnTime[user.id].totalLearnTime|time_format}}{% else %}--{% endif %}</td>
+      <td>{% if member.finishedOnlineCourseNum|default(0) %}{{ member.onlineCourseFinishedRate }}%{% else %}--{% endif %}</td>
+      <td>{% if member.offlineCourseAttendNum|default(0) %}{{ member.offlineCourseAttendRate }}%{% else %}--{% endif %}</td>
+      <td>{% if member.offlineCoursePassedHomeworkNum|default(0) %}{{ member.offlineCoursePassedHomeworkRate }}%{% else %}--{% endif %}</td>
+      <td>
+        <a class="btn btn-default btn-sm" href="{{ path('project_plan_study_data_user_detail', {projectPlanId:projectPlan.id,userId:user.id}) }}" type="button">{{'project_plan.btn.detail_btn'|trans}}</a>
+      </td>
+    </tr>
+  {% else %}
+    <tr>
+      <td class="text-center" colspan="20">
+        <div class="empty">
+          {{ 'project_plan.empty'|trans }}
+        </div>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<nav class="text-center">
+  {{ web_macro.ajax_paginator(paginator) }}
+</nav>

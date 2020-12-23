@@ -1,0 +1,5 @@
+{% extends 'admin/data/course/overview/layout.html.twig' %}
+
+{% block chart %}
+  <div id="admin-data-center-course-online-data" style="height: 500px;" data-url="{{ path('admin_data_online_course_data_overview_data', {type: 'student'}) }}"></div>
+{% endblock %}

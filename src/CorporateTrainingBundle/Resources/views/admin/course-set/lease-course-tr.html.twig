@@ -1,0 +1,48 @@
+{% import "admin/macro.html.twig" as admin_macro %}
+
+{% import "common/data-dict-macro.html.twig" as dict_macro %}
+
+<tr id="course-tr-{{ courseSet.id }}">
+  {% include 'org/parts/table-body-checkbox.html.twig' %}
+  <td>{{ courseSet.id }}</td>
+  <td>
+    <a href="{{ path('course_set_show', {id: courseSet.id}) }}"
+       target="_blank"><strong>{{ courseSet.title }}</strong></a>
+    {% if courseSet.type == 'live' %}
+      <span class="label label-success live-label mls">{{ 'admin.course_manage.manage.live_course'|trans }}</span>
+    {% endif %}
+    <br>
+    <span class="text-muted text-sm">{{ 'admin.course_manage.manage.category'|trans }}：{{ category.name|default('--') }}</span>
+    {% if courseSet.recommended %}
+      <span class="label label-default">{{ 'admin.course_manage.manage.recommend'|trans({'%recommendedTime%': courseSet.recommendedTime|date('Y-m-d'), '%recommendedSeq%': courseSet.recommendedSeq}) }}</span>
+    {% endif %}
+  </td>
+  <td>{{ courseSet.resourceCode }}</td>
+  {% include 'org/parts/table-body-td.html.twig' with {orgCode: courseSet.orgCode} %}
+  <td>
+    <a class="" data-toggle="modal" data-target="#modal" data-url="{{path('admin_course_manage_use_record',{courseId:courseSet.defaultCourseId})}}" href="javascript:">
+       {{'site.default.classroom'|trans}}：{{ courseSet.classroomNum|default(0) }}<br>{{'project_mobile'|trans}}：{{ courseSet.projectPlanNum|default(0) }}
+    </a>
+  </td>
+  <td>{{ courseSet.studentNum }}</td>
+  <td>{{ dict_macro.courseStatus( courseSet.status) }}</td>
+  <td>{% if courseSet.deadline > 0 %}{{ courseSet.deadline|date('Y-m-d') }}{% else %}--{% endif %}</td>
+  <td>
+    {% if courseSet.deadline > 0 and courseSet.deadline < "now"|date("U") %}
+      <span class="text-danger">{{ 'admin.course_manage.manage.lease_course.expired_status'|trans }}</span>
+    {% else %}
+      <span class="text-success">{{ 'admin.course_manage.manage.lease_course.unexpired_status'|trans }}</span>
+    {% endif %}
+  </td>
+  <td>
+    <div class="btn-group">
+
+      {% if has_permission('admin_course_content_manage') %}
+        <a class="btn btn-default btn-sm" href="{{ path('course_set_manage_base', {id:courseSet.id}) }}"
+           target="_blank">{{ 'admin.course_manage.manage.manage_btn'|trans }}</a>
+      {% endif %}
+      {% include 'admin/role/templates/group-button.html.twig' with {parentCode: 'admin_course_manage', group:'groupButton', filter: filter, target: 'normal_index',courseSet: courseSet} %}
+    </div>
+  </td>
+</tr>
+

@@ -1,0 +1,19 @@
+{% if courses|default() %}
+{% do load_script('course/related-courses-block') %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="es-icon es-icon-explore"></i>{{'course.recommend_course.content_title'|trans}}</h3>
+  </div>
+  <div class="panel-body">
+    <div class="course-list no-shadow no-margin">
+      <div class="row">
+        {% for courseSet in courses %}
+          <div class="col-lg-4 col-md-6 col-xs-6 hidden-sm hidden-xs">
+            {% include 'course/widgets/course-grid.html.twig' %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

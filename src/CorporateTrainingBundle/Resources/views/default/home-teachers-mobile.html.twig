@@ -1,0 +1,47 @@
+{# 讲师 #}
+<section class="o-home-sec">
+  <div class="container">
+    <div class="m-home-sec__title pos-rel">{{config.title|default(config.defaultTitle|trans)}}
+      <a href="{{ path('teacher') }}" class="m-article-more">{{ 'site.default.more'|trans }}</a>
+    </div>
+    <div class="o-home-sec__bd">
+      <div class="row">
+          {% for teacher in teachers %}
+            <div class="col-xs-6">
+              <a class="c-home-teacher card-show" href="{{ path('user_show', {id:teacher.uuid}) }}">
+                <div class="c-home-teacher__hd">
+                  <img class="c-home-teacher__avatar" src="{{filepath(teacher.largeAvatar, 'avatar.png')}}">
+                </div>
+                <div class="c-home-teacher__bd">
+                  {% set userProfile = data('UserProfile', {userId: teacher.id}) %}
+                  <div class="c-home-teacher__name">
+                    {{ userProfile.truename|default(teacher.nickname) }}
+                  </div>
+                  <div class="c-home-teacher__post">
+                      {% if teacher.title %}
+                          {{ teacher.title }}
+                      {% else %}
+                          {{'homepage.teacher.empty_title_message'|trans}}
+                      {% endif %}</div>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+          {% if count<6%}
+              {% for i in 1..(6-count) %}
+                <div class="col-md-2 col-xs-6 visible-lg">
+                  <img class="img-responsive mbl" src="{{ asset('static-dist/corporatetrainingbundle/img/teacher_def_pos@2x.png')}}">
+                </div>
+              {% endfor %}
+          {% elseif 6<count and count <12%}
+              {% for i in 1..(12-count) %}
+                <div class="col-md-2 col-xs-6 visible-lg">
+                  <img class="img-responsive mbl" src="{{ asset('static-dist/corporatetrainingbundle/img/teacher_def_pos@2x.png')}}">
+                </div>
+              {% endfor %}
+          {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+

@@ -1,0 +1,24 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set script_controller = 'corporatetrainingbundle/controller/mail/set' %}
+
+{%  set menu = 'admin_mail_notification_setting' %}
+
+{% block main %}
+  {{ web_macro.flash_messages() }}
+  <form class="form-horizontal" id="mail-set-form" method="post" action="">
+
+    <div class="form-group">
+      <div class="col-md-12 controls">
+        {% include 'CorporateTrainingBundle::admin/mail/rule-table.html.twig' %}
+      </div>
+    </div>
+
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    <div class="form-group">
+      <div class="controls ct-mlm">
+        <button type="submit" class="btn btn-primary">{{'form.btn.save'|trans}}</button>
+      </div>
+    </div>
+  </form>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% import 'admin/macro.html.twig' as admin_macro %}
+<tr id="teacher-table-tr-{{ user.id }} " >
+    <td><input type="checkbox"  data-role="batch-item"></td>
+    <td>
+      {% set profile = data('UserProfile', { 'userId' : user.id}) %}
+      {% if profile.truename %}
+        <strong>{{ admin_macro.user_link_by_truename(user, profile.truename) }}</strong>
+      {% else %}
+        <strong>{{ admin_macro.user_link(user) }}</strong>
+      {% endif %}
+        {% if user.locked %}
+            <label class="label label-danger">{{'admin.user.teacher.basic_tab.fields.forbid_label'|trans}}</label>
+        {% endif %}
+          <span class="label label-primary promoted {% if not user.promoted %}hidden{% endif %} ">{{'admin.user.teacher.basic_tab.fields.recommend_label'|trans}}</span>
+      <br>
+      {% if profile.truename %}
+        <span class="text-muted text-sm">{{ user.nickname|default() }}</span>
+      {% endif %}
+
+    </td>
+    <td>
+      {% set orgs = data('Orgs',{orgIds: user.orgIds}) %}
+      {{ orgs.0.name|default('--') }}
+      {% if orgs.1|default(false) %}
+        <i class="es-icon es-icon-more ft-xsm" data-toggle="popover" data-container="body" data-trigger="hover"
+           data-placement="top" data-content="{{ orgs.orgNames|default() }}"></i>
+      {% endif %}
+    </td>
+
+    <td>
+        {% if teacherProfile.levelId|default() %}
+            {% set level = data('TeacherLevel',{levelId: teacherProfile.levelId}) %}
+          {{ level.name|default() }}
+        {% else %}
+          --
+        {% endif %}
+    </td>
+    <td>
+      {% if teacherProfile.teacherProfessionFieldIds|default() %}
+        {% set teacherProfessionFields = data('TeacherProfessionFields',{teacherProfessionFieldIds: teacherProfile.teacherProfessionFieldIds, delimiter: '/'}) %}
+          <span class="color-gray">{{ teacherProfessionFields.0.name|default('--') }}</span>
+        {% if teacherProfessionFields.1|default(false) %}
+            <i class="es-icon es-icon-more ft-xsm" data-toggle="popover" data-container="body" data-trigger="hover"
+               data-placement="top" data-content="{{ teacherProfessionFields.teacherProfessionFieldNames|default() }}"></i>
+        {% endif %}
+      {% else %}
+          --
+      {% endif %}
+    </td>
+    <td>
+        {{ 'admin.teacher.teaching_online_course'|trans }}：{{ user.courseNum|default(0) }}<br>
+        {{ 'admin.teacher.teaching_offline_course'|trans }}：{{ user.offlineCourseNum|default(0) }}
+    </td>
+    {% if is_plugin_installed('Survey') %}
+      <td>
+        {% if user.courseSurveyScore|default(0) %}
+          {{ user.courseSurveyScore|default(0) }}
+        {% else  %}
+          --
+        {% endif %}
+        <br>
+        {% if user.offlineCourseSurveyScore|default(0) %}
+          {{ user.offlineCourseSurveyScore|default(0) }}
+        {% else  %}
+          --
+        {% endif %}
+      </td>
+    {% endif %}
+    <td>
+       {{ user.courseStudentNum|default(0) }}<br>
+        {{ user.offlineCourseStudentNum|default(0) }}
+    </td>
+    <td>
+        <div class="btn-group">
+            <a href="{{ path('admin_teacher_course_archives', {userId:user.id}) }}" class="btn btn-default btn-sm">{{ 'admin.teacher.list.teacher_archives'|trans }}</a>
+            {% include 'admin/role/templates/group-button.html.twig' with {parentCode: 'admin_train_teacher_manage_list', group:'groupButton', user: user} %}
+        </div>
+    </td>
+</tr>

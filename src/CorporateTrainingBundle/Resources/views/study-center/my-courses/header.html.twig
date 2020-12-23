@@ -1,0 +1,14 @@
+<ul class="nav nav-pills nav-sm pull-left">
+  <li role="presentation" class="{% if tab_nav == 'learning' %}active{% endif %}" >
+    <a href="{{ path('study_center_my_courses_learning') }}">{{'study_center.my_courses.learning'|trans}}</a>
+  </li>
+  <li role="presentation" class="{% if tab_nav == 'learned' %}active{% endif %}">
+    <a href="{{ path('study_center_my_courses_learned') }}">{{'study_center.my_courses.learned'|trans}}</a>
+  </li>
+</ul>
+<div class="pull-right">
+  <div class='course-filtrate dis-i-b'>
+    <span class="color-black">{{ 'study_center.btn.filtrate'|trans }}</span>
+    <span class='es-icon es-icon-keyboardarrowdown'></span>
+  </div>
+</div>

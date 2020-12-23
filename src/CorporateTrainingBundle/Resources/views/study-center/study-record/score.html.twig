@@ -1,0 +1,64 @@
+<div class="phm pvm">
+  <div class="phl">
+    <table id="post-member-table" class="table table-hover table-striped">
+      <thead>
+      <tr>
+        <th>{{'study_center.study_record.score.task_name'|trans}}</th>
+        <th>{{'study_center.study_record.score'|trans}}</th>
+        {% if tab_type != 'department_manage' and app.user.id == userId %}
+          <th>{{'study_center.study_record.score.show_detail'|trans}}</th>
+        {% endif %}
+      </tr>
+      </thead>
+      <tbody>
+      {% if testPaperResults|default() or homeworkResults|default() %}
+        {% if testPaperResults|default() %}
+          {% for testPaperResult in testPaperResults %}
+            <tr>
+              <td>
+                {{ testPaperResult.paperName|default() }}<span class="mlm label label-primary">{{'study_center.study_record.score.exam'|trans}}</span>
+              </td>
+              <td>
+                {% if testPaperResult.status != 'reviewing' %}{{ testPaperResult.score }}{% else %}<label data-toggle="tooltip" data-placement="top" title={{'study_center.study_record.score.reviewing'|trans}}>?</label>{% endif %}/{{ testPapers[testPaperResult.testId].score }}
+              </td>
+              {% if tab_type != 'department_manage' and app.user.id == userId %}
+                <td>
+                  <a href="{{ path('course_task_show', {courseId:testPaperResult.courseId, id:testPaperResult.taskId}) }}" target="_blank">{{ 'study_center.course_statistics.course_task_show'|trans }}</a>
+                </td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        {% endif %}
+
+        {% if homeworkResults|default() %}
+          {% for homeworkResult in homeworkResults %}
+            <tr>
+              <td>
+                {{ homeworkResult.paperName|default() }}<span class="mlm label label-primary">{{'study_center.study_record.score.homework'|trans}}</span>
+              </td>
+              <td>
+                {% if homeworkResult.status != 'reviewing' %}
+                  {{ dict_text('passedStatus', homeworkResult.passedStatus) }}
+                {% else %}
+                  {{'study_center.study_record.score.reviewing'|trans}}
+                {% endif %}
+              </td>
+              {% if tab_type != 'department_manage' and app.user.id == userId %}
+                <td>
+                  <a href="{{ path('course_task_show', {courseId:homeworkResult.courseId, id:homeworkResult.taskId}) }}" target="_blank">{{ 'study_center.course_statistics.course_task_show'|trans }}</a>
+                </td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        {% endif %}
+      {% else %}
+        <tr>
+          <td colspan="20">
+            <div class="empty">{{'study_center.course_statistics.message.course_record_empty'|trans}}</div>
+          </td>
+        </tr>
+      {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>

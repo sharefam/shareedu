@@ -1,0 +1,73 @@
+<div class="member-projectplan-modal__body ">
+  <div class="">
+    <div class="js-search-by-post row">
+      <div class="col-xs-6 ">
+        <div class="member-projectplan-content member-projectplan-content--department">
+          {% if is_plugin_installed('PostMap') %}
+            <div class='btn-post-select_group'>
+              <a  class='btn btn-sm btn-default btn-primary'>{{ 'advanced_user_select.group.post'|trans }}</a><a class='btn btn-sm btn-default'>{{ 'advanced_user_select.promotion_route'|trans }}</a>
+            </div>
+          {% endif %}
+          <div class='js-tab-block-wrap'>
+            <div class='post-group'>
+            {% for postGroup in postGroups %}
+              <div class="department-select-item js-department-select-item">
+                <div class="department-select-item__head">
+                  <a class="department-select-item__select-all js-select-all link-gray" data-id="{{ postGroup.id }}" href="javascript:;">{{ 'site.datagrid.radios.all'|trans }}</a>
+                  <div class="department-select-item__title">{{ postGroup.name }}</div>
+                </div>
+                <div class="department-select-item__body">
+                  {% set posts = postGroup.posts %}
+                  {% for post in posts %}
+                    <div class="checkbox department-select-item__checkbox post-select-item" data-role="group-{{ postGroup.id }}" data-id="{{ post.id }}"
+                         data-name="{{ post.name }}">
+                      <label>
+                        <input type="checkbox" class="checkbox-item"> {{ post.name }}
+                      </label>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+          {% if is_plugin_installed('PostMap') %}
+            <div class='post-group' style='display:none'>
+              {% for postRank in postRanks %}
+                <div class="department-select-item js-department-select-item">
+                  <div class="department-select-item__head">
+                    <a class="department-select-item__select-all js-select-all link-gray" data-id="{{ postRank.id }}" href="javascript:;">{{ 'site.datagrid.radios.all'|trans }}</a>
+                    <div class="department-select-item__title">{{ postRank.name }}</div>
+                  </div>
+                  <div class="department-select-item__body">
+                    {% set posts = postRank.posts %}
+                    {% for post in posts %}
+                      <div class="checkbox department-select-item__checkbox post-select-item" data-role="rank-{{ postRank.id }}" data-id="{{ post.id }}"
+                           data-name="{{ post.name }}">
+                        <label>
+                          <input type="checkbox" class="checkbox-item"> {{ post.name }}
+                        </label>
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+        </div>
+      </div>
+
+      <div class="col-xs-6">
+        <div class="member-projectplan-content">
+          <div class="js-input-group">
+            <input class="form-control" type="text" name="name-search" id="postModalSelectInput">
+          </div>
+          <div class="member-projectplan-content__input-tip">
+            {{'advanced_user_select.member_post.tip'|trans }}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

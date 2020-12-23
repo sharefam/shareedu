@@ -1,0 +1,21 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% do script(['corporatetrainingbundle/js/project-plan/batch-audit-modal/index.js']) %}
+
+{% block title %}{{'project_plan.enrollment_record.batch_audit'|trans}}{% endblock %}
+
+{% block body %}
+  <form action="">
+    <div class="form-group">
+      <div class="col-md-2"></div>
+    </div>
+    <div class="col-md-7">
+      <span>{{ 'project_plan.selected'|trans }}<i id="batch-record-num"></i>{{ 'project_plan.selected_tips_end'|trans }}</span>
+    </div>
+  </form>
+{% endblock %}
+
+{% block footer %}
+  <button class="btn btn-primary" data-url="{{ path('project_plan_verify_batch_pass') }}" id="batch-pass-btn" type="button">{{'project_plan.enrollment_record.batch_pass'|trans}}</button>
+  <button class="btn btn-danger" data-url="{{ path('project_plan_verify_batch_reject') }}" id="batch-reject-btn" type="button">{{'project_plan.enrollment_record.batch_reject'|trans}}</button>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% if offlineActivityGroup %}
+<div class="c-my-offline-activity-list">
+  <div class="c-my-offline-activity-list__hd">
+    <div class="c-my-offline-activity-list__title hidden-xs">{{ 'study_center.my_offline_activity.enroll_year'|trans({"%year%": offlineActivityGroup[0].year}) }}</div>
+  </div>      
+  <div class="c-my-offline-activity-list__bd">
+    {% for offlineActivity in offlineActivityGroup %}
+      {% set category = data('Category',{'categoryId': offlineActivity.categoryId}) %}
+      <div class="c-my-offline-activity">
+        <div class="c-my-offline-activity__l">
+          <div class="c-my-offline-activity__date">
+            {{ offlineActivity.day }}<br>
+            <span>{{ offlineActivity.month|month_format }}</span>
+          </div>
+          <div class="c-my-offline-activity__img--wrap">
+            <a class="" href="{{ path('offline_activity_detail', {id: offlineActivity.id}) }}">
+              <img class="c-my-offline-activity__img" src="{{ filepath(offlineActivity['cover']['large']|default(''), 'activity.png') }}" >
+            </a>
+            {% if offlineActivity['member'].attendedStatus == 'attended' %}
+              <div class="c-my-offline-activity__label ct-label ct-label--info">{{ 'study_center.my_offline_activity.status.attended'|trans }}</div>
+            {% elseif offlineActivity['member'].attendedStatus == 'unattended'%}
+              <div class="c-my-offline-activity__label ct-label ct-label--warning">{{ 'study_center.my_offline_activity.status.unattended'|trans }}</div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="c-my-offline-activity__bd">
+          <a class="c-my-offline-activity__title" href="{{ path('offline_activity_detail', {id: offlineActivity.id}) }}">
+            {{offlineActivity.title}}</a>
+          <div class="c-my-offline-activity__label-wrap">
+            <div class="ct-label">{{category.name}}</div>
+          </div>
+        </div>
+        <div class="c-my-offline-activity__r">
+          {% if offlineActivity['member'].passedStatus != 'none' %}
+          <div class="c-my-offline-activity__info text-right">
+            <div class="c-my-offline-activity__num">{{offlineActivity['member'].score}}</div>
+            {% if offlineActivity['member'].evaluate %}
+              <a class="c-my-offline-activity__comment link-gray " data-trigger="hover" data-placement="bottom" data-container='body' data-toggle="popover" data-placement="bottom" data-content="{{offlineActivity['member'].evaluate }}">{{ 'study_center.my_offline_activity.btn.show_evaluate'|trans }}
+              </a>
+            {% else %}
+              <span class="c-my-offline-activity__comment link-gray ">{{ 'study_center.my_offline_activity.evaluate_empty'|trans }}
+            </span>
+            {% endif %}
+          </div>
+          {% endif %} 
+          <div class="c-my-offline-activity__img-status-wrap">
+          {% if offlineActivity['member'].passedStatus == 'passed' %}
+            <img class="c-my-offline-activity__img-status" src="{{asset('my_offline_activity_img_pass'|trans)}}">
+          {% elseif offlineActivity['member'].passedStatus == 'unpassed'%}
+            <img class="c-my-offline-activity__img-status" src="{{asset('my_offline_activity_img_fail'|trans)}}">
+          {% endif %} 
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>       
+</div>
+{% endif %}

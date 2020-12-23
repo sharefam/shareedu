@@ -1,0 +1,63 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set modal_class = 'unit-addition-modal js-modal-close' %}
+{% set hide_footer = true %}
+
+{% do script(['libs/jquery-validation.js', 'libs/bootstrap-datetimepicker.js', 'corporatetrainingbundle/js/project-plan/item/offline-exam/index.js']) %}
+
+{% block title %}
+  {% if offlineExam|default() %}
+    {{ 'project_plan.preparation.items.edit_items'|trans }}
+  {% else %}
+    {{ 'project_plan.preparation.items.add_items'|trans }}
+  {% endif %}
+{% endblock %}
+
+{% block body %} 
+<div class="unit-offline-exam">
+  <form class="form-horizontal" id="offline-exam-form" {% if offlineExam|default() %} action="{{ path('project_plan_item_update', {id:item.id, projectPlanId:projectPlanId}) }}"{% else %} action="{{ path('project_plan_item_add', {id: projectPlanId, type: 'offline_exam'}) }}" {% endif %} method="post">
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'project_plan.item.exam_title'|trans }}</label>
+      </div>
+      <div class="col-md-9">
+        <input class="form-control" type="text" name="title" value="{{ offlineExam.title|default('') }}">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'project_plan.item.exam_time'|trans }}</label>
+      </div>
+      <div class="col-md-4 controls">
+        <input type="text" id="startTime" name="startTime" class="form-control" for="startTime" placeholder="{{ 'project_plan.start_time'|trans }}" value="{% if offlineExam.startTime|default(null) %}{{ offlineExam.startTime|date('Y-m-d H:i') }} {% endif %}">
+      </div>
+      <div class="col-md-4 controls">
+        <input type="text" id="endTime" name="endTime" class="form-control" for="startTime" placeholder="{{ 'project_plan.end_time'|trans }}" value="{% if offlineExam.endTime|default(null) %}{{ offlineExam.endTime|date('Y-m-d H:i') }} {% endif %}">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'project_plan.item.exam_place'|trans }}</label>
+      </div>
+      <div class="col-md-9">
+        <input class="form-control" type="text" name="place" value="{{ offlineExam.place|default('') }}">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'project_plan.item.exam_score'|trans }}</label>
+      </div>
+      <div class="col-md-9">
+      {{ 'project_plan.item.exam_score_info1'|trans }} <input class="form-control dis-i-b" id="score" type="text" name="score" style="width: 100px;" value="{{ offlineExam.score|default('') }}">
+      {{ 'project_plan.item.exam_score_info2'|trans }} <input class="form-control dis-i-b" id="passScore" type="text" name="passScore" style="width: 100px;" value="{{ offlineExam.passScore|default('') }}">{{ 'project_plan.item.exam_score_info3'|trans }}
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-9">
+        <button class="ct-btn ct-btn-primary" id="create-offline-exam-btn" type="button" data-loading-text="{{ 'project_plan.btn.save_loading_btn'|trans }}">{{ 'project_plan.btn.save_btn'|trans }}</button>
+        <button class="ct-btn ct-btn-default mlm" type="button" data-dismiss="modal">{{ 'project_plan.btn.cancel_btn'|trans }}</button>
+      </div>
+    </div>
+  </form>
+</div>  
+{% endblock %}

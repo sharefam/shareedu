@@ -1,0 +1,103 @@
+parameters:
+
+  theme_jianmo_name: "简墨"
+
+  theme_jianmo_default:
+    maincolor: default
+    navigationcolor: default
+    blocks:
+      left:
+        - title: ""
+          count: ""
+          code: "home-news"
+          defaultTitle: "新鲜事"
+          id: "homeNews"
+        - title: ""
+          code: "home-offline-activity"
+          defaultTitle: "活动报名"
+          id: "homeOfflineActivity"
+        - title: ""
+          code: "home-project-plan"
+          defaultTitle: "培训项目"
+          id: "homeProjectPlan"
+        - title: ""
+          count: ""
+          code: "home-department-courses"
+          defaultTitle: "部门专属"
+          id: "homeDepartmentCourses"
+        - title: ""
+          count: ""
+          code: "home-public-courses"
+          defaultTitle: "公共课程"
+          id: "homePublicCourses"
+        - title: ""
+          count: ""
+          code: "home-classrooms"
+          defaultTitle: "公共专题"
+          id: "homeClassrooms"
+        - title: ""
+          count: ""
+          code: "home-group"
+          defaultTitle: "话题小组"
+          id: "homeGroup"
+        - title: ""
+          count: ""
+          code: "home-teachers"
+          defaultTitle: "讲师导师"
+          id: "homeTeachers"
+    bottom: simple
+
+  theme_jianmo_all:
+    maincolor: default
+    navigationcolor: default
+    blocks:
+      left:
+        - title: ""
+          count: ""
+          code: "home-news"
+          defaultTitle: "新鲜事"
+          id: "homeNews"
+        - title: ""
+          code: "home-offline-activity"
+          defaultTitle: "活动报名"
+          id: "homeOfflineActivity"
+        - title: ""
+          code: "home-project-plan"
+          defaultTitle: "培训项目"
+          id: "homeProjectPlan"
+        - title: ""
+          count: ""
+          code: "home-department-courses"
+          defaultTitle: "部门专属"
+          id: "homeDepartmentCourses"
+        - title: ""
+          count: ""
+          code: "home-public-courses"
+          defaultTitle: "公共课程"
+          id: "homePublicCourses"
+        - title: ""
+          count: ""
+          code: "home-classrooms"
+          defaultTitle: "公共专题"
+          id: "homeClassrooms"
+        - title: ""
+          count: ""
+          code: "home-group"
+          defaultTitle: "话题小组"
+          id: "homeGroup"
+        - title: ""
+          count: ""
+          code: "home-teachers"
+          defaultTitle: "讲师导师"
+          id: "homeTeachers"
+          count: ""
+  bottom: simple
+services:
+#    topxia_admin.example:
+#        class: %topxia_admin.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+        # - title: ""
+        #   count: ""
+        #   code: "home-category"
+        #   defaultTitle: "课程分类"
+        #   id: "homeCategory"

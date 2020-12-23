@@ -1,0 +1,45 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% do script(['libs/echo-js.js','libs/echarts.js','libs/bootstrap-datetimepicker.js','corporatetrainingbundle/js/admin/data/projectPlan/overview/index.js']) %}
+
+{% set menu = 'admin_data_center_project_plan_overview' %}
+
+{% block main %}
+  <div class="aside-panel">
+    <form id="project-plan-data-search">
+      <div id="aside-department-learn-data" class="form-inline ct-well ct-mbl">
+      <div class="form-group js-learn-data prl">
+        <div class="ct-label ft-sm prl">{{ 'admin.data_center.project_plan.year.filter'|trans }}</div>
+        <input class="form-control" type="text" id="year"
+          value="{{ year }}"
+          name="year" placeholder="{{ '年份'|trans }}">
+      </div>
+        <div class="form-group prl">
+          <div class="ct-label ft-sm prl">{{ 'admin.data_center.project_plan.category.filter'|trans }}</div>
+          <div class="dis-i-b">
+            <select id="categoryId" name="categoryId" class="form-control">
+              {{ select_options(category_choices('projectPlan'), app.request.query.get('categoryId'), 'my.department.course_learn_data.all_category'|trans) }}
+            </select>
+          </div>
+        </div>
+        <div class="form-group prl">
+          <div class="ct-label ft-sm prl">{{ 'admin.data_center.project_plan.org.filter'|trans }}</div>
+          <div class="dis-i-b">
+            {% include 'org-select/index.html.twig' with {
+              id: 'user-orgCode',
+                placeholder: 'site.org.select_placeholder'|trans,
+                data: build_org_tree(app.user.manageOrgCodes),
+                treeName: 'orgCode',
+              }
+            %}
+          </div>
+        </div>
+        <div class="form-group prl">
+          <button class="btn btn-primary search-btn" id="js-user-learn-search">{{ 'form.btn.search'|trans }}</button>
+        </div>
+      </div>
+    </form>
+    <div id="project-plan-data" style="height: 500px;"></div>
+    <input type="hidden" id="chartData" value="{{ chartData }}">
+  </div>
+{% endblock %}

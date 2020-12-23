@@ -1,0 +1,21 @@
+{% if courseSet.discountId > 0 %}
+  {% if courseSet.discount == 0 %}
+    <!-- 限免 -->
+    <span class="tag-discount free"></span>
+  {% else %}
+    <!-- 折扣 -->
+    <span class="tag-discount"></span>
+  {% endif %}
+{% endif %}
+{% if courseSet.serializeMode == 'serialized' %}
+  <span class="tags"><span class="{{ 'tag-serialing'|trans }}"></span></span>
+{% elseif courseSet.serializeMode == 'finished' %}
+  <span class="tags"><span class="{{ 'tag-finished'|trans }}"></span></span>
+{% endif %}
+{% if courseSet.type|default() == 'live' %}
+  <span class="tags">
+    <span class="{{ 'tag-live'|trans }}"></span>
+  </span>
+{% endif %}
+
+

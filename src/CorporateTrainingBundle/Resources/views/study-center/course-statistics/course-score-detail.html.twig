@@ -1,0 +1,64 @@
+{% import "macro.html.twig" as web_macro %}
+{% extends 'study-record/online-course-record/layout.html.twig' %}
+{% set type_nav = 'detail' %}
+{% block course_record_content %}
+<div class="my-record-sec">
+  <div class="my-record-sec-body js-course-count">
+    <div class="">
+      <div class="js-tab-block-wrap">
+        <form class="department-manage-search-form form-inline clearfix mbl" method="get" novalidate>
+          <div class="form-group department-manage-search-form-group">
+            <label>{{ 'form.select_options.category_choices'|trans }}：</label>
+            <select class="form-control department-manage-search-form-group__type" id="categoryId" name="categoryId">
+              {{ select_options(category_choices('course'), app.request.query.get('categoryId'), 'study_record.statistics_overview.categories_all'|trans) }}
+            </select>
+          </div>
+          <div class="form-group department-manage-search-form-group">
+            <label>{{ 'form.select_options.status_choices'|trans }}：</label>
+            <select class="form-control department-manage-search-form-group__type" id="learnStatus" name="learnStatus">
+              {{ select_options({all:'study_center.select_options.status.all'|trans, learning:'study_center.select_options.status.unfinish'|trans, learned:'study_center.select_options.status.finished'|trans}, app.request.query.get('learnStatus')? app.request.query.get('learnStatus'):'all')}}
+            </select>
+          </div>
+          <div class="form-group department-manage-search-form-group">
+            <label class="">{{ 'study_center.course_statistics.course_title'|trans }}：</label>
+            <input class="form-control department-manage-search-form-group__info" type="text" id="titleLike"
+                   name="titleLike" value="{{ app.request.query.get('titleLike') }}" placeholder="{{ 'study_center.course_statistics.course_title'|trans }}">
+          </div>
+            <button class="btn btn-primary js-submit" type="submit">{{ 'study_center.course_statistics.btn.search_btn'|trans }}</button>
+        </form>
+        <div class="course-list">
+            <div class="table-responsive mtl">
+                <table class="table table-sm table-bordered">
+                    <thead>
+                    <tr>
+                        <th>{{ 'study_center.course_statistics.course_title'|trans }}</th>
+                        <th>{{ 'study_center.course_statistics.course_watch_time'|trans }}</th>
+                        <th>{{ 'study_center.header.user_learnTime'|trans }}</th>
+                        <th>{{ 'study_center.course_statistics.course_finished_time'|trans }}</th>
+                        <th>{{ 'study_center.course_statistics.course_record_detail'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if courses|default() %}
+                        {% for course in courses %}
+                            {% include 'study-center/course-statistics/course-score-detail-tr.html.twig' %}
+                        {% endfor %}
+                    {% else %}
+                      <tr>
+                        <td colspan="20">
+                          <div class="empty">{{ 'study_center.course_statistics.message.course_record_empty'|trans }}</div>
+                        </td>
+                      </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+          {{  web_macro.paginator(paginator) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% do script(['corporatetrainingbundle/js/study-center/record/statistics/index.js']) %}

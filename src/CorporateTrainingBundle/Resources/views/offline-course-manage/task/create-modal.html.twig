@@ -1,0 +1,79 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% do script(['libs/jquery-validation.js', 'libs/bootstrap-datetimepicker.js', 'corporatetrainingbundle/js/offline-course-item/create/index.js']) %}
+
+{% block title %}
+  {{ 'offline_course.tasks.add_task'|trans }}
+{% endblock %}
+
+{% block body %}
+  <form id="offline-course-task-create-form" class="form-horizontal" action="{{ path('training_offline_course_manage_task_create', {id: course.id, type: type}) }}" method="post">
+    <div class="form-group">
+      <label class="col-md-2 control-label" for="title">
+        {{ 'offline_course.course_title'|trans }}
+      </label>
+      <div class="col-md-8 controls">
+        <input name="title" type="text" class="form-control" placeholder="{{ 'offline_course.course_title.placeholder'|trans }}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-md-2 control-label">
+        {{ 'offline_course.tasks.start_time'|trans }}
+      </label>
+      <div class="col-md-4 controls">
+        <input name="startTime" id="startTime" type="text" class="form-control" placeholder="{{ 'project_plan.start_time'|trans }}">
+      </div>
+      <div class="col-md-4 controls">
+        <input name="endTime" id="endTime" type="text" class="form-control" placeholder="{{ 'project_plan.end_time'|trans }}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-md-2 control-label" for="place">
+        {{ 'offline_course.tasks.place'|trans }}
+      </label>
+      <div class="col-md-8 controls">
+        <input name="place" type="text" class="form-control" placeholder="{{ 'offline_course.tasks.place'|trans }}">
+      </div>
+    </div>
+    {% set cloud_attachment_enable = setting('cloud_attachment.enable') and setting('storage.upload_mode') == 'cloud'%}
+
+    <div class="form-group">
+      <label class="col-md-2 control-label" for="hasHomework"></label>
+      <div class="col-md-8 controls checkbox">
+        <label {% if not cloud_attachment_enable %}data-toggle="popover" data-container="body" data-trigger="hover" data-placement="top" data-content="{{ 'project_plan.advanced_option.attachment_info'|trans }}"{% endif %}>
+          <input name="hasHomework" {% if not cloud_attachment_enable %} disabled {% endif %}id="hasHomework" type="checkbox">
+          {{ 'offline_course.tasks.homework'|trans }}
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group homework-require hidden">
+      <label class="col-md-2 control-label" for="homeworkDeadline">
+        {{ 'offline_course.tasks.homework_submitted'|trans }}</br>{{ 'offline_course.deadline'|trans }}
+      </label>
+      <div class="col-md-4 controls mtm">
+        <input name="homeworkDeadline" id="homeworkDeadline" type="text" class="form-control" placeholder="{{ 'offline_course.choose_time'|trans }}">
+      </div>
+    </div>
+
+    <div class="form-group homework-require hidden">
+      <label class="col-md-2 control-label" for="homeworkDemand">
+        {{ 'offline_course.tasks.homework_requirement'|trans }}
+      </label>
+      <div class="col-md-8 controls">
+        <textarea class="form-control" name="homeworkDemand" cols="30" rows="10"></textarea>
+      </div>
+    </div>
+
+    <input type="hidden" name="mode" value="lesson">
+    <input type="hidden" name="mediaType" value="offlineCourse">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+  </form>
+{% endblock %}
+
+{% block footer %}
+  <button id="create-form-submit" type="button" class="btn btn-primary pull-right" data-loading-text="{{ 'project_plan.btn.submit_loading_btn'|trans }}">{{ 'form.btn.save'|trans }}</button>
+  <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{'form.btn.cancel'|trans}}</button>
+{% endblock %}

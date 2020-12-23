@@ -1,0 +1,66 @@
+{% import "macro.html.twig" as web_macro %}
+
+<table class="table table-middle table-striped">
+  <thead>
+    <tr>
+      <th width="5%"><input type="checkbox" data-role="batch-select"></th>
+      <th width="20%">{{ 'project_plan.member.nick_name'|trans }}</th>
+      <th width="20%">{{ 'project_plan.member.post'|trans }}</th>
+      <th width="15%">{{ 'offline_course.attendance_status'|trans }}</th>
+      <th width="20%">{{ 'project_plan.operation'|trans }}</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% if projectPlanMembers|default(null) %}
+    {% for projectPlanMember in projectPlanMembers %}
+      <tr data-role="item">
+        <td><input value="{{projectPlanMember.userId}}" type="checkbox" data-role="batch-item"></td>
+        <td>
+          <p><strong>{{ projectPlanMember.truename|default('--') }}</strong></p>
+          {{ projectPlanMember.userInfo.nickname|default('--') }}
+        </td>
+        <td>
+          <p>
+            <strong>
+              {% set post= data('Post', {postId: projectPlanMember.userInfo.postId}) %}
+              {{ post.name|default('--') }}
+            </strong>
+          </p>
+          {% if setting('magic.enable_org','0') %}
+            {% set orgs = data('Orgs',{orgIds: projectPlanMember.userInfo.orgIds}) %}
+            {{ orgs.0.name|default('--')}}
+            {% if orgs.1|default(false) %}
+              <i class="es-icon es-icon-more ft-xsm"  data-toggle="popover" data-container="body" data-trigger="hover" data-placement="top" data-content="{{ orgs.orgNames|default() }}"></i>
+            {% endif %}
+          {% endif %}
+        </td>
+        <td>
+          {% set attendStatus = projectPlanMember.attendance.attendStatus|default('unattended') %}
+          {% if attendStatus == 'unattended' %}
+            {% if isTaskExpire|default('') %}
+              {{ 'project_plan.status.absenteeism'|trans }}
+            {% else %}
+              {{ 'project_plan.status.unattend'|trans }}
+            {% endif %}
+          {% elseif attendStatus == 'attended' %}
+            {{ 'project_plan.status.registered'|trans }}
+          {% endif %}
+        </td>
+        <td>
+          <div class="btn-group">
+            <button href="#modal" data-toggle="modal" data-url="{{ path('project_plan_offline_course_task_attendance_manage_attend', {id: taskId, userId: projectPlanMember.userId}) }}" class="btn btn-default btn-sm">{{ 'offline_course.attendance'|trans }}</button>
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
+  {% else %}
+    <tr class="empty">
+      <td colspan="20">{{ 'project_plan.record_empty'|trans }}</td>
+    </tr>
+  {% endif %}
+  </tbody>
+</table>
+
+<nav class="text-center">
+  {{ web_macro.ajax_paginator(paginator) }}
+</nav>

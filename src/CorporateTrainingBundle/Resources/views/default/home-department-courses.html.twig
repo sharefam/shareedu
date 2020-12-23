@@ -1,0 +1,76 @@
+{# 部门 #}
+{% set rootOrgId = 1 %}
+{% set user = app.user %}
+{% if rootOrgId in user.orgIds|default(0) and count(user.orgIds) == 1 %}{% else %}
+  {% set classrooms = data('HomeDepartmentClassroom',{'count': config.count|default(4)}) %}
+
+  {% set countclassroom = 0 %}
+  {% set countcourset = 0 %}
+
+  {% if classrooms|default() %}
+    {% set countclassroom = count(classrooms) %}
+  {% endif %}
+
+  {% if courseSets|default() %}
+    {% set countcourset = count(courseSets) %}
+  {% endif %}
+
+  {% if is_mobile_client() %} 
+    {% include "default/home-department-courses-mobile.html.twig" %}
+  {% else %}
+    <section class="o-home-sec js-home-department">
+      <div class="container">
+        <div class="o-home-sec__hd">
+          <div class="o-home-sec__title">{{config.title|default(config.defaultTitle|trans)}}</div>
+          <div class="o-home-sec__tab-wrap">
+            <div class="o-home-sec__tab nav-btn-tab">
+              <ul class="nav nav-tabs js-tab-link-wrap" role="tablist">
+                <li class="js-tab-link" role="presentation"><a href="javascript:;">{{'default.home_classroom.course'|trans}}</a></li>
+                <li class="js-tab-link" role="presentation"><a href="javascript:;">{{'default.home_classroom.classroom'|trans}}</a></li>
+              </ul>
+            </div>
+          </div>
+          <a class="o-home-sec__more" href="{{ path('study_center_my_department_courses') }}">{{ 'homepage.department_course.link_more'|trans }} <i class="es-icon es-icon-chevronright"></i></a>
+        </div>
+        <div class="o-home-sec__bd">
+          <div class="row">
+            <div class="js-tab-block-wrap">
+              <div class="tab-block js-tab-sec is-active">
+                {% if courseSets|default() %}
+                  {% for courseSet in courseSets %}
+                    <div class="col-md-3 col-xs-6">
+                      {% include 'course/widgets/ct-course-grid.html.twig' with {courseSet: courseSet} %}
+                    </div>
+                  {% endfor %}
+                {% endif %}
+                {% if countcourset < 4 %}
+                  {% for i in 1..(4 - countcourset) %}
+                    <div class="col-md-3 col-xs-6 visible-lg">
+                      <img class="img-responsive mbl" src="{{ asset('static-dist/corporatetrainingbundle/img/course_def_pos@2x.png')}}">
+                    </div>
+                  {% endfor %}
+                {% endif %}
+              </div>
+              <div class="tab-block js-tab-sec">
+                {% if classrooms|default() %}
+                  {% for classroom in classrooms %}
+                    <div class="col-md-6">
+                      {% include 'default/widgets/ct-home-classroom.html.twig' with { classroom: classroom } %}
+                    </div>
+                  {% endfor %}
+                {% endif %}
+                  {% if countclassroom < 4%}
+                    {% for i in 1..(4 - countclassroom) %}
+                      <div class="col-md-6 visible-lg blank-img">
+                        <img class="img-responsive mbl" src="{{ asset('static-dist/corporatetrainingbundle/img/theme_def_pos@2x.png')}}">
+                      </div>
+                    {% endfor %}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  {% endif %}  
+{% endif %}

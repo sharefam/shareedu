@@ -1,0 +1,22 @@
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th width="33%">{{ 'course_set.live.category'|trans }}</th>
+        <th width="33%">{{ 'classroom.course_num'|trans }}</th>
+        <th width="33%">{{ 'offline_activity.statistics.learned_time'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if topFiveCategorySummaryDatas|default() %}
+        {% for categoryId, data in topFiveCategorySummaryDatas %}
+            {% include 'offline-activity-manage/course-tbody.html.twig' %}
+        {% endfor %}
+    {% else %}
+        <tr>
+            <td colspan="3">
+                <div class="empty">{{ 'site.datagrid.empty'|trans }}</div>
+            </td>
+        </tr>
+    {% endif %}
+    </tbody>
+</table>

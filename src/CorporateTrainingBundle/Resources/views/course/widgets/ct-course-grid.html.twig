@@ -1,0 +1,14 @@
+{# 这个课程也许会替换旧的课程#}
+<a class="c-home-course" href="{{ path('course_set_show', {id: courseSet.id }) }}">
+  <div class="c-home-course__hd">
+    {% include 'course/widgets/course-tags.html.twig' with { courseSet: courseSet} %}
+    {{ lazy_img(filepath(course_set_cover(courseSet, 'large'), 'courseSet.png'), 'c-home-course__img', '', 'lazyload_course.png') }}
+  </div>
+  <div class="c-home-course__bd">
+    <div class="c-home-course__title">{{ courseSet.title|default() }}</div>
+    <div class="c-home-course__info-wrap">
+      <div class="c-home-course__info-item"><i class="es-icon es-icon-people"></i>{{ courseSet.studentNum|default(0) }}</div>
+      <div class="c-home-course__info-item"><i class="es-icon es-icon-textsms"></i>{{ courseSet.ratingNum|default(0) }}</div>
+    </div>
+  </div>
+</a>

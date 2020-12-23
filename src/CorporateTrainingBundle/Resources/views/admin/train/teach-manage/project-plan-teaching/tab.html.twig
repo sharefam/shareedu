@@ -1,0 +1,8 @@
+<ul id="ct-nav-tabs_data" class="nav nav-tabs ct-mbxl">
+  <li class="{% if filter == 'course' %}active{% endif %}">
+    <a href="{{path('admin_train_teach_manage_project_plan_teaching', {filter:'course'}) }}">{{'project_plan.implementation.course_item_list'|trans}}</a>
+  </li>
+  <li class="{% if filter == 'offlineCourse' %}active{% endif %}">
+    <a href="{{path('admin_train_teach_manage_project_plan_teaching', {filter:'offline_course'}) }}">{{'project_plan.implementation.offline_course_item_list'|trans}}</a>
+  </li>
+</ul>

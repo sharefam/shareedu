@@ -1,0 +1,43 @@
+{% extends 'v2/ct-ctr-layout.html.twig' %}
+
+{% block title %}{{'project_plan.manage'|trans}} - {{ parent() }}{% endblock %}
+{% set tab_nav = tab_nav|default(null) %}
+
+{% block  ct_ctr_layout_head %}
+  {{ render(controller('CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:header', {projectPlan:projectPlan,manage: true})) }}
+{% endblock %} 
+
+{% block cd_head_content %}
+  <ul class="cd-tabs mar-no">
+    {% if hasProjectPlanManagePermission is not defined or hasProjectPlanManagePermission %}
+      {% if projectPlan.status == 'published' or projectPlan.status == 'archived'%}
+        <li class="{% if tab_nav == 'overview-board' %}active{% endif %}">
+          <a href="{{ path('project_plan_manage_overview_board', {id: projectPlan.id}) }}">{{ 'project_plan.manage.overview_board'|trans }}</a>
+        </li>
+      {%endif%}
+      <li class="{% if tab_nav == 'preparation' %}active{% endif %}">
+        <a href="{{ path('project_plan_manage_base', {id: projectPlan.id}) }}">{{ 'project_plan.manage.preparation'|trans }}</a>
+      </li>
+      <li class="{% if tab_nav == 'implementation' %}active{% endif %}">
+        <a href="{{ path('project_plan_member_manage_list', {id: projectPlan.id}) }}">{{ 'project_plan.manage.implementation'|trans }}</a>
+      </li>
+    {% endif %}
+    <li class="{% if tab_nav == 'summary' %}active{% endif %}">
+      <a href="{{ path('project_plan_study_data_overview', {id: projectPlan.id}) }}">{{ 'project_plan.manage.summary'|trans }}</a>
+    </li>
+  </ul>
+{% endblock %}
+
+{% block cd_body_content %}
+  {% if tab_nav != 'overview-board' %}
+    {% block sidebar %}
+      {{ render(controller('CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:sidebar', {id:projectPlan.id,sideNav: side_nav|default(null), tabNav: tab_nav|default(null)})) }}
+    {% endblock %}
+  {% endif %}
+
+  <div class="cd-main">
+    {% block main %}
+
+    {% endblock %}
+  </div>              
+{% endblock %}   

@@ -1,0 +1,33 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_project_plan_category_manage' %}
+{% block page_buttons %}
+{% endblock %}
+{% block main %}
+  {{ web_macro.flash_messages() }}
+  <form id="project-plan-category-search-form" class="form-inline ct-well ct-mbl" action="{{path('admin_project_plan_category_manage')}}" method="get" novalidate>
+    <div>
+      <div class="form-group prl">
+        <input class="form-control" type="text" id="name" name="name" value="{{ app.request.query.get('name') }}" placeholder="{{'project_plan.category.name_search_placeholder'|trans}}">
+      </div>
+      <div class="form-group prl">
+        <button class="btn btn-primary">{{'form.btn.search'|trans}}</button>
+      </div>
+      {% include 'admin/page-buttons/page-buttons.html.twig' %} 
+    </div>
+  </form>
+  <ul class="list-table" id="category-table" style="margin-bottom: 0">
+    <li class="th">
+      <div class="row">
+        <div class="td col-md-8">{{'project_plan.category.name'|trans}}</div>
+        <div class="td col-md-2">{{'project_plan.category.code'|trans}}</div>
+        <div class="td col-md-2">{{ 'project_plan.operation'|trans }}</div>
+      </div>
+    </li>
+    {% include 'admin/project-plan/category/tbody.html.twig' %}
+  </ul>
+  <p class="text-muted">
+    <span class="mrl">{{ 'project_plan.total'|trans }}<strong class="inflow-num">{{ categoryNum|default(0) }}</strong>{{ 'project_plan.category.num_info'|trans }}</span>
+  </p>
+  {{ admin_macro.paginator(paginator) }}
+{% endblock %}

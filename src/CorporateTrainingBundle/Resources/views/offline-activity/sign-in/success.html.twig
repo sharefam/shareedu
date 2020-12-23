@@ -1,0 +1,26 @@
+{% extends 'layout.html.twig' %}
+
+{% do script(['libs/jquery-validation.js','corporatetrainingbundle/js/offline-activity/sign-in/index.js']) %}
+
+{% set bodyClass = "sign-in-body" %}
+
+{% block body %}
+  {% block header %}
+  {% endblock %}
+
+  {% block full_content %}
+    {% block top_content %}{% endblock %}
+
+    <section class="sign-in-status">
+      <div class="sign-in-icon-wrap sign-in-right"><i class="es-icon es-icon-done"></i></div>
+      <p class="right-tip sign-in-status-tip">{{ 'offline_activity.wechat_sign_in.success'|trans }}</p>
+    </section>
+
+    {% block bottom_content %}{% endblock %}
+  {% endblock %}
+
+  {% block footer %}
+  {% endblock %}
+{% endblock %}
+
+

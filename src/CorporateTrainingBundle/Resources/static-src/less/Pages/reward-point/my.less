@@ -1,0 +1,145 @@
+.c-my-reward-point-item {
+  position: relative;
+  padding: 6px 14px;
+  margin-top: 20px;
+
+  &.is-up {
+    .c-my-reward-point-item__icon {
+      //color: @brand-primary;
+    }    
+
+    .c-my-reward-point-item__num {
+      color: @brand-warning;
+    }
+  }
+
+  &.is-down {
+    .c-my-reward-point-item__icon {
+      color: @gray;
+    }
+
+    .c-my-reward-point-item__num {
+      color: @gray-dark;
+    }
+  }
+}
+
+.c-my-reward-point-item__l {
+  float: left;
+}
+
+.c-my-reward-point-item__bd {
+  margin-left: 30px;
+}
+
+.c-my-reward-point-item__r {
+  position: absolute;
+  top: 0;
+  right: 14px;
+}
+
+.c-my-reward-point-item__content {
+  font-size: 14px;
+  color: @gray-darker;
+  line-height: 20px;
+}
+
+.c-my-reward-point-item__icon {
+  font-size: 20px;
+}
+
+.c-my-reward-point-item__num {
+  font-size: 24px;
+  line-height: 32px;
+} 
+
+
+.o-my-reward-point {
+  margin: 30px 0;
+}
+
+.o-my-reward-point-detail {
+  margin-top: 40px;
+}
+
+.o-my-reward-point-detail__hd {
+  font-size: 14px;
+  color: @gray-dark;
+  line-height: 20px;
+
+  span {
+    font-size: 12px;
+  }
+}
+
+.o-my-reward-point-detail__bd {
+  margin-top: 16px;
+  border-top: 1px solid #F5F5F5;
+}
+
+.o-my-reward-point-list {
+  margin-top: 30px;
+}
+
+.o-my-reward-point-list__bd {
+
+}
+
+.o-my-reward-point-list__hd {
+  font-size: 18px;
+  color: #C1C1C1;
+  line-height: 24px;
+}
+
+.o-my-reward-point__bd {
+
+}
+
+.o-my-reward-point__ft {
+
+}
+
+.o-my-reward-point__hd {
+  position: relative;
+  padding: 30px;
+  background: #F5F5F5;
+
+  p {
+    margin: 0;
+    font-size: 18px;
+    color: @gray-darker;
+    line-height: 24px;
+  }
+}
+
+.o-my-reward-point__mall-link-wrap {
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+
+  span {
+    color: @gray;
+  }
+
+  a {
+    color: @gray-dark;
+    .es-transition;
+
+    &:link, &:active {
+      color: @gray-dark; 
+    }
+
+    &:hover {
+      color: @gray-darker; 
+    }
+  }
+}
+
+.o-my-reward-point__num {
+  margin-top: 20px;
+  font-size: 36px;
+  //color: @brand-primary;
+  letter-spacing: 4px;
+  line-height: 42px;
+  font-weight: bold;
+}

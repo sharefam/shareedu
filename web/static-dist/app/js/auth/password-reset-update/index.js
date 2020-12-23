@@ -1,0 +1,1 @@
+webpackJsonp(["app/js/auth/password-reset-update/index"],{dcde93291a9fe102bb08:function(e,r,s){"use strict";var a=$("#password-reset-update-form");a.validate({rules:{"form[password]":{required:!0,check_password:!0},"form[confirmPassword]":{required:!0,equalTo:"#form_password"}}})}},["dcde93291a9fe102bb08"]);

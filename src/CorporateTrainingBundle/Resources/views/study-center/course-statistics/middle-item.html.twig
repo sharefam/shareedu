@@ -1,0 +1,18 @@
+<div class="my-record-sec-header">
+  <ul class="nav nav-tabs" role="tablist">
+    <li  role="presentation" class="{% if tab_types == 'projectPlanRecord' %}active{% endif %}">
+      <a href="{{ path('study_center_learn_record', {tab_types:'projectRecord'}) }}">{{'study_center.tab.project_record'|trans}}</a>
+    </li>
+    <li  role="presentation" class="{% if tab_types == 'learningStatistics' %}active{% endif %}">
+            <a href="{{ path('study_center_learn_record', {tab_types:'learningStatistics'}) }}">{{'study_center.tab.learning_statistics'|trans}}</a>
+    </li>
+    <li  role="presentation" class="{% if tab_types == 'offlineActivityRecord' %}active{% endif %}">
+          <a href="{{ path('study_center_learn_record', {tab_types:'offlineActivityRecord'}) }}">{{'study_center.tab.offline_activity_record'|trans}}</a>
+    </li>
+    {% if is_plugin_installed('Exam') %}
+      <li role="presentation" class="{% if tab_types == 'examRecord' %}active{% endif %}">
+        <a href="{{ path('study_center_learn_record', {tab_types:'examRecord'}) }}">{{ 'exam.record.exam_record'|trans }}</a>
+      </li>
+    {% endif %}
+  </ul>
+</div>

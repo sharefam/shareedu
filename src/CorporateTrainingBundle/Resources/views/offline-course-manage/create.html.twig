@@ -1,0 +1,37 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set modal_class = 'unit-addition-modal js-modal-close' %}
+
+{% do script(['libs/jquery-validation.js']) %}
+
+{% block title %}
+    {{ 'offline_course.add_tasks'|trans }}
+{% endblock %}
+{% block body %}
+<div class="unit-offline-course">
+  <form class="form-horizontal" id="offline-course-form" action="{{ path('project_plan_offline_course_create') }}" method="post">
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'offline_course.course_title'|trans }}</label>
+      </div>
+      <div class="col-md-9">
+        <input class="form-control" type="text" name="title">
+      </div>
+    </div>
+    <div class="form-group" id="teachers-form-group">
+      <div class="col-md-2 control-label"><label>{{'course.teacher_setup.exist_teacher'|trans}}</label></div>
+      <div class="col-md-9 controls">
+        <div id="course-teachers" data-field-name="teachers" data-query-url="{{path('training_offline_course_manage_teachers_match')}}"></div>
+        <div class="help-block">{{'course.teacher_setup.exist_teacher.add_tips'|trans}}</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-9">
+        <button id="offline-course-btn" class="ct-btn ct-btn-primary" type="button" data-loading-text="{{ 'project_plan.btn.save_loading_btn'|trans }}">{{ 'project_plan.btn.save_btn'|trans }}</button>
+        <button class="ct-btn ct-btn-default mlm" type="button" data-dismiss="modal">{{ 'project_plan.btn.cancel_btn'|trans }}</button>
+      </div>
+    </div>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+  </form>
+</div>    
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends 'my/teaching-record/teaching-record-layout.html.twig' %}
+
+{% set side_nav = 'my-teaching-record' %}
+
+{% do script(['libs/echarts.js', 'corporatetrainingbundle/js/my/teaching-record/index.js']) %}
+
+{% block main_content %}
+  <div class="o-department-learn-data">
+    <div class="o-department-learn-data__hd">
+      <div class="row c-department-learn-data-board-wrap">
+        <div class="col-md-4">
+          <div class="c-department-learn-data-board">
+            <div class="c-department-learn-data-board__hd">
+              {{ 'teaching_record.year_course_student_num'|trans }}
+            </div>
+            <div class="c-department-learn-data-board__bd">
+              {{ user.courseStudentNum|default(0) }}
+            </div>
+            <div>
+              <i class="c-department-learn-data-board_icon es-icon es-icon-my"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="c-department-learn-data-board">
+            <div class="c-department-learn-data-board__hd">
+              {{ 'teaching_record.year_offline_course_student_num'|trans }}
+            </div>
+            <div class="c-department-learn-data-board__bd">
+              {{ user.offlineCourseStudentNum|default(0) }}
+            </div>
+            <i class="c-department-learn-data-board_icon es-icon es-icon-my"></i>
+          </div>
+        </div>
+        {% if is_plugin_installed('Survey') %}
+          <div class="col-md-4">
+            <div class="c-department-learn-data-board">
+              <div class="c-department-learn-data-board__hd">
+                {{ 'teaching_record.year_evaluation'|trans }}
+              </div>
+              <div class="c-department-learn-data-board__bd">
+                {{ user.teacherTotalScore|default(0) }}
+              </div>
+              <div>
+                <i class="c-department-learn-data-board_icon es-icon es-icon-wendangkeshi"></i>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    {% if is_plugin_installed('Survey') %}
+      <div class="o-department-learn-data__bd">
+        <div class="c-data-learn-time-chart">
+          <div class="c-data-learn-time-chart__hd">
+            <div class="pull-right">
+              <ul class="nav nav-text js-nav">
+                <li class="active" data-url="{{ path('my_teaching_course_record_survey_score_data', {date: 'thisYear'}) }}"><a href="javascript:;">{{ 'teaching_record.this_year'|trans }}</a></li>
+                <li data-url="{{ path('my_teaching_course_record_survey_score_data', {date: 'lastYear'}) }}"><a href="javascript:;">{{ 'teaching_record.last_year'|trans }}</a></li>
+              </ul>
+            </div>
+            <div class="c-data-learn-time-chart__title">
+              {{ 'teaching_record.survey_chart'|trans }}
+            </div>
+          </div>
+          <div class="data-learn-time-chart__bd">
+            <div id="survey-data" style="height: 400px;">
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    <div class="o-department-learn-data__ft">
+      <div class="row">
+        <div class="col-md-6 js-search-wrap">
+          <div class="c-department-learn-panel js-ajax-tab-block-wrap">
+            <div class="c-department-learn-panel__hd">
+              <div class="c-department-learn-panel__title">
+                {{ 'teaching_record.course_rank_list'|trans }}
+                <div class="c-department-learn-panel__nav">
+                  <ul class="nav nav-text js-nav">
+                    <li class="js-tab-link active"><a href="javascript:;" data-url="{{ path('my_teaching_course_record_course_rank_list', {courseType: 'course', date: 'thisYear'}) }}">{{ 'teaching_record.this_year'|trans }}</a></li>
+                    <li class="js-tab-link"><a href="javascript:;" data-url="{{ path('my_teaching_course_record_course_rank_list', {courseType: 'course', date: 'lastYear'}) }}">{{ 'teaching_record.last_year'|trans }}</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="c-department-learn-panel__bd c-home-rank-list js-tab-sec">
+              {{ render(controller('CorporateTrainingBundle:My/TeachingRecord:courseRankList',{courseType: 'course'})) }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 js-search-wrap">
+          <div class="c-department-learn-panel js-ajax-tab-block-wrap">
+            <div class="c-department-learn-panel__hd">
+              <div class="c-department-learn-panel__title">
+                {{ 'teaching_record.student_rank_list'|trans }}
+                <div class="c-department-learn-panel__nav">
+                  <ul class="nav nav-text js-nav">
+                    <li class="js-tab-link active"><a href="javascript:;" data-url="{{ path('my_teaching_course_record_student_rank_list', {courseType: 'course', date: 'thisYear'}) }}">{{ 'teaching_record.this_year'|trans }}</a></li>
+                    <li class="js-tab-link"><a href="javascript:;" data-url="{{ path('my_teaching_course_record_student_rank_list', {courseType: 'course', date: 'lastYear'}) }}">{{ 'teaching_record.last_year'|trans }}</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="c-department-learn-panel__bd c-home-rank-list js-tab-sec">
+              {{ render(controller('CorporateTrainingBundle:My/TeachingRecord:studentRankList',{courseType: 'course'})) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+
+

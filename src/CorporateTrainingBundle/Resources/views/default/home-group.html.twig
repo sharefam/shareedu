@@ -1,0 +1,56 @@
+{# 小组 #}
+{% set count = 0 %}
+{% if activeGroup|default() %}
+  {% set count = count(activeGroup) %}
+{% endif %}
+{% if is_mobile_client() %} 
+{% include "default/home-group-mobile.html.twig" %}
+{% else %}
+<section class="o-home-sec">
+  <div class="container">
+    <div class="o-home-sec__hd">
+      <div class="o-home-sec__title">{{config.title|default(config.defaultTitle|trans)}}</div>
+      <a class="o-home-sec__more" href="{{path('group_search_group')}}">{{ 'homepage.group.link_more'|trans }} <i class="es-icon es-icon-chevronright"></i></a>
+    </div>
+    <div class="o-home-sec__bd">
+      <div class="row">
+        {% if activeGroup|default() %}
+          {% for group in activeGroup %}
+            <div class="col-md-3">
+              <a class="c-home-group media" href="{{path('group_show',{id:group.id})}}" title="{{group.title}}">
+                <div class="c-home-group__l media-left">
+                  <img class="c-home-group__img" src="{{filepath(group.logo, 'group.png')}}">
+                </div>
+                <div class="c-home-group__r media-body">
+                  <div class="c-home-group__title">{{group.title}}</div>
+                  <div class="c-home-group__info-wrap">
+                    <div class="c-home-group__icon-item">
+                      <i class="es-icon es-icon-people"></i>{{ group.memberNum }}
+                    </div>
+                    <div class="c-home-group__icon-item">
+                      <i class="es-icon es-icon-textsms"></i>{{ group.threadNum }}
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        {% endif %}
+          {% if count < 4 %}
+              {% for i in 1..(4 - count) %}
+                <div class="col-xs-3 visible-lg">
+                  <img class="img-responsive mbl" src="{{ asset('static-dist/corporatetrainingbundle/img/group_def_pos@2x.png')}}">
+                </div>
+              {% endfor %}
+          {% elseif 4 < count and count < 8 %}
+              {% for i in 1..(8 - count) %}
+                <div class="col-xs-3 visible-lg">
+                  <img class="img-responsive mbl" src="{{ asset('static-dist/corporatetrainingbundle/img/group_def_pos@2x.png')}}">
+                </div>
+              {% endfor %}
+          {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}

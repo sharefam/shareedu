@@ -1,0 +1,47 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_sync_setting' %}
+
+{% block main %}
+
+  {{ web_macro.flash_messages() }}
+
+  <form class="form-horizontal" id="syn-setting" method="post" action="{{ path('admin_sync_setting') }}">
+
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        {{ 'admin.org_manage.sync_department'|trans }}
+      </div>
+      <div class="col-md-8 radios">
+        {{ radios('enable', {1:'admin.login_connect.open'|trans, 0:'admin.login_connect.closed'|trans}, setting.enable|default(0)) }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        CorpId
+      </div>
+      <div class="col-md-8">
+        <input class="form-control" name="key" type="text" value="{{ setting.key|default() }}">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        Secret
+      </div>
+      <div class="col-md-8">
+        <input class="form-control" name="secret" type="text" value="{{ setting.secret|default() }}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="controls col-md-offset-2 col-md-8">
+        <button type="submit" class="btn btn-primary">{{ 'form.btn.submit'|trans }}</button>
+      </div>
+    </div>
+    <input class="hidden" type="text" name="times" value="{{ setting.times|default(0) }}">
+    <input class="hidden" type="text" name="type" value="{{ setting.type|default('dingtalk') }}">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+
+  </form>
+{% endblock %}

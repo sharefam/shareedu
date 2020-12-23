@@ -1,0 +1,106 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ 'my.teaching.course_set.create'|trans }} - {{ parent() }}{% endblock %}
+
+{% do script(['libs/jquery-validation.js','app/js/courseset/create/index.js']) %}
+
+{% block content %}
+    <div class="row">
+        <div class="panel panel-default panel-page panel-create-course">
+            <div class="panel-heading"><h2>{{ 'my.teaching.course_set.create'|trans }}</h2></div>
+
+            {% if not app.user.largeAvatar or not app.user.title or not userProfile.about %}
+                {% include 'TopxiaWebBundle:Settings:user-profile.html.twig' %}
+            {% else %}
+                <form id="course-create-form" class="form-horizontal" method="post">
+
+                    {{ web_macro.flash_messages() }}
+
+                    <div class="course-piece">
+                        {{ 'my.teaching.course_set.select_type'|trans }}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 col-md-offset-2">
+                            <div class="course-select active" data-type="normal">
+                                <i class="es-icon es-icon-putongkecheng "></i>
+                                <div class="course-type">{{ 'my.teaching.course_set.select_type.course'|trans }}</div>
+                                <div class="course-intro">{{ 'my.teaching.course_set.select_type.course.tips'|trans }}</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            {% if not setting('live-course.live_course_enabled') %}
+                            <div class="course-select disabled" data-toggle="tooltip" data-placement="top"
+                                 title="{{ 'my.teaching.course_set.select_type.live_open_course.available_after_open'|trans }}"
+                                 data-type="live">
+                                {% else %}
+                                <div class="course-select" data-type="live">
+                                    {% endif %}
+                                    <i class="es-icon es-icon-zhibokecheng "></i>
+                                    <div class="course-type">{{ 'my.teaching.course_set.select_type.live_course'|trans }}</div>
+                                    <div class="course-intro">{{ 'my.teaching.course_set.select_type.live_course.tips'|trans }}</div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="col-md-3">
+                                <div class="course-select " data-type="open">
+                                    <i class="es-icon es-icon-lubogongkaike"></i>
+                                    <div class="course-type">录播公开课</div>
+                                    <div class="course-intro">免费、无门槛观看的视频课程，主要用于营销推广</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                {% if not setting('live-course.live_course_enabled') %}
+                                <div class="course-select disabled" data-toggle="tooltip" data-placement="top"
+                                     title="云直播开启后可用"
+                                     data-type="liveOpen">
+                                    {% else %}
+                                    <div class="course-select" data-type="liveOpen">
+                                        {% endif %}
+                                        <i class="es-icon es-icon-zhibokecheng2"></i>
+                                        <div class="course-type">直播公开课</div>
+                                        <div class="course-intro">免费、无门槛参与的直播课程，主要用于营销推广</div>
+                                    </div>
+                                </div> -->
+                            </div>
+
+                            {% include 'OrgBundle:Org:course-create-org-tree-select.html.twig' %}
+
+                            <div class="course-title row">
+                                <div class="col-md-2 controls-label text-lg">
+                                    <div class="course-piece title">
+                                        {{ 'my.teaching.course_set.select_type.course_title'|trans }}
+                                    </div>
+                                </div>
+                                <div class="col-md-10 controls">
+                                    <input type="text" id="course_title" name="title" required="required"
+                                           class="form-control"
+                                           data-widget-cid="widget-1" data-explain="">
+                                    <div class="help-block" style="display:none;"></div>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                {% if not setting('copyright.owned') %}
+                                    <span class="mrm"><a href="http://www.qiqiuyu.com/course/22" class="text-muted"
+                                                         target="_blank">{{ 'my.teaching.course_set.select_type.how_do_create'|trans }}</a></span>
+                                {% endif %}
+                                <input id="course-create-btn" data-submiting-text="{{ 'form.btn.create.submiting'|trans }}"
+                                       class="btn btn-fat btn-primary"
+                                       type="submit" value="{{ 'form.btn.create'|trans }}">
+                                <a class="btn btn-fat btn-link"
+                                   href="{{ app.request.headers.get('Referer') }}">{{ 'form.btn.cancel'|trans }}</a>
+                            </div>
+
+                            <input type="hidden" name="type" value="normal"/>
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+                        </div>
+                    </div>
+                </form>
+
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

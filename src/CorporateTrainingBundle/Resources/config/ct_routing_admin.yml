@@ -1,0 +1,642 @@
+admin:
+    path:  /
+    defaults: { _controller: CorporateTrainingBundle:Admin/Analysis:index }
+
+admin_today_focus:
+    path: /today/focus/{type}/{time}
+    defaults: { _controller: CorporateTrainingBundle:Admin/Focus:Focus, type: 'my' }
+
+admin_work_calendar:
+    path: /work/calendar/{type}
+    defaults: { _controller: CorporateTrainingBundle:Admin/Focus:workCalendar, type: 'my' }
+
+admin_train_teach_manage_my_teaching_courses:
+    path: /train/teach_manage/my/teaching/courses/{filter}
+    defaults: { _controller: CorporateTrainingBundle:Admin/Train/CourseSet:teaching, filter: 'normal' }
+
+admin_train_teach_manage_my_teaching_classrooms:
+    path: /train/teach_manage/my/teaching/classrooms
+    defaults: { _controller: CorporateTrainingBundle:Admin/Train/Classroom:teaching }
+
+admin_train_teach_manage_project_plan_teaching:
+    path: /train/teach_manage/project_plan/teaching/{filter}
+    defaults: { _controller: CorporateTrainingBundle:Admin/Train/ProjectPlanTeaching:teaching, filter: 'course' }
+
+admin_train_project_plan_manage_list:
+    path: /train/project_plan/manage/list
+    defaults: { _controller: CorporateTrainingBundle:Admin/Train/ProjectPlan:manage }
+
+admin_train_project_plan_create:
+    path: /train/project_plan/create
+    defaults: { _controller: CorporateTrainingBundle:Admin/Train/ProjectPlan:create }
+
+admin_train_project_plan_publish:
+    path: /train/project_plan/{id}/ajax_publish
+    defaults: { _controller: CorporateTrainingBundle:Admin/Train/ProjectPlan:ajaxPublish }
+
+admin_train_project_plan_close:
+    path: /train/project_plan/{id}/ajax_close
+    defaults: { _controller: CorporateTrainingBundle:Admin/Train/ProjectPlan:ajaxClose }
+
+admin_train_project_plan_archive:
+    path: /train/project_plan/{id}/ajax_archive
+    defaults: { _controller: CorporateTrainingBundle:Admin/Train/ProjectPlan:ajaxArchive }
+
+admin_train_project_plan_remove:
+    path: /train/project_plan/{id}/ajax_remove
+    defaults: { _controller: CorporateTrainingBundle:Admin/Train/ProjectPlan:ajaxRemove }
+
+admin_setting_course_setting:
+    path:  /setting/course-setting
+    defaults: { _controller: CorporateTrainingBundle:Admin/CourseSetting:setting }
+
+admin_setting_default_course_picture_crop:
+    path:  /setting/default/course/picture/crop
+    defaults: { _controller: CorporateTrainingBundle:Admin/CourseSetting:defaultCoursePictureCrop }
+    permissions: [admin_setting_avatar,course_manage_picture,admin_setting_course_setting]
+
+admin_user_quick_entrance_choose:
+    path: /user/quick_entrance/choose
+    defaults: { _controller: CorporateTrainingBundle:Admin/Analysis:chooseQuickEntrances }
+
+admin_user_active_chart:
+    path: /user/active/chart
+    defaults: { _controller: CorporateTrainingBundle:Admin/Analysis:userActiveChart }
+
+admin_user_change_nickname:
+    path:  /user/{id}/change/nickname
+    defaults: { _controller: CorporateTrainingBundle:Admin/User:changeNickname }
+
+admin_online:
+    path: /online
+    defaults: { _controller: CorporateTrainingBundle:Admin/Online:index }
+
+admin_post_manage:
+    path: /post
+    defaults: { _controller: CorporateTrainingBundle:Admin/Post:index }
+    permissions: [admin_post_manage]
+
+admin_post_group_create:
+    path: /post/group/create
+    defaults: { _controller: CorporateTrainingBundle:Admin/Post:createGroup }
+    permissions: [admin_post_manage, admin_post_group_create]
+
+admin_post_group_edit:
+    path: /post/group/{id}/edit
+    defaults: { _controller: CorporateTrainingBundle:Admin/Post:editGroup }
+
+admin_post_group_delete:
+    path: /post/group/{id}/delete
+    defaults: { _controller: CorporateTrainingBundle:Admin/Post:deleteGroup }
+
+admin_post_group_sort:
+    path: /post/group/sort
+    defaults: { _controller: CorporateTrainingBundle:Admin/Post:sortGroup }
+
+admin_post_group_name_check:
+    path: /post/group/name/check
+    defaults: { _controller: CorporateTrainingBundle:Admin/Post:checkGroupName }
+
+admin_post_create:
+    path: /post/{groupId}/create
+    defaults: { _controller:CorporateTrainingBundle:Admin/Post:create }
+
+admin_post_edit:
+    path: /post/{id}/edit
+    defaults: { _controller: CorporateTrainingBundle:Admin/Post:edit }
+
+admin_post_delete:
+    path: /post/{id}/delete
+    defaults: { _controller: CorporateTrainingBundle:Admin/Post:delete }
+
+admin_post_sort:
+    path: /post/sort
+    defaults: { _controller: CorporateTrainingBundle:Admin/Post:sort }
+
+admin_post_name_check:
+    path: /post/name/check
+    defaults: { _controller: CorporateTrainingBundle:Admin/Post:checkName }
+
+admin_post_checkcode:
+    path: /post/checkcode
+    defaults: { _controller: CorporateTrainingBundle:Admin/Post:checkCode }
+
+admin_post_course:
+    path: /post/{postId}/course
+    defaults: { _controller: CorporateTrainingBundle:Admin/PostCourse:index }
+
+admin_post_choose_courses:
+    path: /post/{postId}/choose/courses
+    defaults: { _controller: CorporateTrainingBundle:Admin/PostCourse:chooseCourses }
+
+admin_post_ajax_choose_manage_courses:
+  path: /post/{postId}/choose/manage/courses
+  defaults: { _controller: CorporateTrainingBundle:Admin/PostCourse:ajaxChooseManageCourses }
+
+admin_post_ajax_choose_use_permission_courses:
+  path: /post/{postId}/choose/use_permission/courses
+  defaults: { _controller: CorporateTrainingBundle:Admin/PostCourse:ajaxChooseUsePermissionCourses }
+
+admin_post_assign_courses:
+    path: /post/{postId}/assign/courses
+    defaults: { _controller: CorporateTrainingBundle:Admin/PostCourse:assignCourses }
+    methods: [POST]
+
+admin_post_course_delete:
+    path: /post_course/{id}/delete
+    defaults: { _controller: CorporateTrainingBundle:Admin/PostCourse:delete }
+    methods: [POST]
+
+admin_post_courses_sort:
+    path: /post_course/{postId}/sort
+    defaults: { _controller: CorporateTrainingBundle:Admin/PostCourse:sort }
+    methods: [POST]
+
+admin_user_change_post:
+    path:  /user/{id}/change/post
+    defaults: { _controller: CorporateTrainingBundle:Admin/User:changePost }
+
+admin_user_batch_update_post:
+    path:  /user/post/batch/update
+    defaults: { _controller: CorporateTrainingBundle:Admin/User:batchUpdatePost }
+
+admin_user_batch_update_orgs:
+    path:  /user/orgs/batch/update
+    defaults: { _controller: CorporateTrainingBundle:Admin/User:batchUpdateOrgs }
+
+admin_offline_activity:
+    path: /offline/activity/list
+    defaults: { _controller: CorporateTrainingBundle:Admin/OfflineActivity:list }
+    permissions: [admin_offline_activity_manage]
+
+admin_offline_activity_ajax_list:
+  path: /offline/activity/ajax_list
+  defaults: { _controller: CorporateTrainingBundle:Admin/OfflineActivity:ajaxList }
+  permissions: [admin_offline_activity_manage]
+
+admin_offline_activity_category:
+    path: /offline_activity/category
+    defaults: { _controller: CorporateTrainingBundle:Admin/OfflineActivityCategory:category }
+    permissions: [admin_offline_activity_category_manage]
+
+admin_offline_activity_category_create:
+    path: /offline_activity/category/create
+    defaults: { _controller: CorporateTrainingBundle:Admin/OfflineActivityCategory:create }
+    permissions: [admin_offline_activity_manage, admin_offline_activity_category_create]
+
+admin_offline_activity_category_edit:
+    path:  /offline_activity/category/{id}/edit
+    defaults: { _controller: CorporateTrainingBundle:Admin/OfflineActivityCategory:edit }
+    permissions: [admin_offline_activity_manage]
+
+admin_offline_activity_category_delete:
+    path:  /offline_activity/category/{id}/delete
+    defaults: { _controller: CorporateTrainingBundle:Admin/OfflineActivityCategory:delete }
+    methods: [POST]
+
+admin_user_group_member_list:
+    path:  /user_group/{id}/member
+    defaults: { _controller: CorporateTrainingBundle:Admin/UserGroupMember:list}
+
+admin_user_group_member_add:
+    path:  /user_group/{id}/member/add
+    defaults: { _controller: CorporateTrainingBundle:Admin/UserGroupMember:add}
+
+admin_user_group_member_delete:
+    path:  /user_group_member/{id}/delete
+    defaults:  { _controller: CorporateTrainingBundle:Admin/UserGroupMember:delete}
+
+admin_user_group_member_match:
+    path:  /user_group_member/match_json
+    defaults:  { _controller: CorporateTrainingBundle:Admin/UserGroupMember:match}
+
+admin_user_group_manage:
+    path: /user_group
+    defaults: { _controller: CorporateTrainingBundle:Admin/UserGroup:index }
+    permissions: [admin_user_group_manage]
+
+admin_user_group_create:
+    path: /user_group/create
+    defaults: { _controller: CorporateTrainingBundle:Admin/UserGroup:create }
+    permissions: [admin_user_group_manage, admin_user_group_create]
+
+admin_user_group_edit:
+    path: /user_group/{id}/edit
+    defaults: { _controller: CorporateTrainingBundle:Admin/UserGroup:edit }
+
+admin_user_group_delete:
+    path: /user_group/{id}/delete
+    defaults: { _controller: CorporateTrainingBundle:Admin/UserGroup:delete }
+
+admin_user_group_check_name:
+    path: /user_group/name/check
+    defaults: { _controller: CorporateTrainingBundle:Admin/UserGroup:checkGroupName }
+
+admin_user_group_check_code:
+    path: /user_group/code/check
+    defaults: { _controller: CorporateTrainingBundle:Admin/UserGroup:checkGroupCode }
+
+admin_sync_setting:
+    path: /org/sync/setting
+    defaults: { _controller: CorporateTrainingBundle:Admin/OrgManage:syncSetting }
+
+admin_org_sync_department:
+    path: /org/sync/department
+    defaults: { _controller: CorporateTrainingBundle:Admin/OrgManage:syncDepartment }
+
+admin_org_sync_department_from:
+    path: /org/sync/department/from
+    defaults: { _controller: CorporateTrainingBundle:Admin/OrgManage:syncDepartmentFrom }
+
+admin_org_sync_department_to:
+    path: /org/sync/department/to
+    defaults: { _controller: CorporateTrainingBundle:Admin/OrgManage:syncDepartmentTo }
+
+admin_project_plan_manage:
+    path: /project_plan
+    defaults: { _controller: CorporateTrainingBundle:Admin/ProjectPlan:index}
+    permissions: [admin_project_plan_manage]
+
+admin_project_plan_manage_ajax_list:
+  path: /project_plan/ajax_list
+  defaults: { _controller: CorporateTrainingBundle:Admin/ProjectPlan:ajaxList}
+  permissions: [admin_project_plan_manage]
+
+admin_project_plan_category_manage:
+    path: /project_plan/category
+    defaults: { _controller: CorporateTrainingBundle:Admin/ProjectPlan:category}
+    permissions: [admin_project_plan_category_manage]
+
+admin_project_plan_category_create:
+    path: /project_plan/category/create
+    defaults: { _controller: CorporateTrainingBundle:Admin/ProjectPlan:createCategory}
+    permissions: [admin_project_plan_category_manage, admin_project_plan_category_create]
+
+admin_project_plan_category_edit:
+    path: /project_plan/category/{id}/edit
+    defaults: { _controller: CorporateTrainingBundle:Admin/ProjectPlan:editCategory}
+    permissions: [admin_project_plan_category_manage]
+
+admin_project_plan_category_delete:
+    path: /project_plan/category/{id}/delete
+    defaults: { _controller: CorporateTrainingBundle:Admin/ProjectPlan:deleteCategory}
+    permissions: [admin_project_plan_category_manage]
+
+admin_user_batch_update_locked:
+    path:  /user/locked/batch/update
+    defaults: { _controller: CorporateTrainingBundle:Admin/User:batchLockUser }
+
+admin_default_discovery_column_edit:
+    path:  /discovery_column/{id}/default/edit
+    defaults: { _controller: CorporateTrainingBundle:Admin/DiscoveryColumn:defaultEdit }
+
+admin_course_post_correlation:
+    path: /course_set/{id}/post_correlation
+    defaults: { _controller: CorporateTrainingBundle:Admin/CourseSet:setPostCorrelation }
+    permissions: [admin_course_manage]
+
+admin_course_post_match:
+    path: /course_set/{courseId}/post_macth
+    defaults: { _controller: CorporateTrainingBundle:Admin/CourseSet:postMatch }
+
+admin_course_post_correlation_delete:
+    path: /course_set/{courseId}/post/{postId}/macth
+    defaults: { _controller: CorporateTrainingBundle:Admin/CourseSet:deletePostCorrelation }
+    permissions: [admin_course_manage]
+
+admin_org_batch_create:
+    path: /org/batch_create
+    defaults: { _controller: CorporateTrainingBundle:Admin/OrgManage:batchCreate }
+
+admin_org_batch_create_checkname:
+    path: /org/batch_create/checkname
+    defaults: { _controller: CorporateTrainingBundle:Admin/OrgManage:batchCreateCheckName }
+
+admin_post_batch_create_name_check:
+    path: /post/batch_create/name/check
+    defaults: { _controller: CorporateTrainingBundle:Admin/Post:batchCreateCheckName }
+
+admin_org_children_show:
+    path: /org/{id}/childrens/show
+    defaults: { _controller: CorporateTrainingBundle:Admin/OrgManage:findOrgChildrens }
+
+admin_org_show:
+    path: /org/{id}/show
+    defaults: { _controller: CorporateTrainingBundle:Admin/OrgManage:findOrg }
+
+admin_sync_account_docking:
+    path: /setting/sync_account_docking
+    defaults: { _controller: CorporateTrainingBundle:Admin/UserSetting:syncAccountDocking }
+
+admin_teacher_profession_field:
+    path: /teacher/profession_field
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:teacherProfessionField }
+    permissions: [admin_teacher_profession_field]
+
+admin_teacher_profession_field_create:
+    path: /teacher/create/profession_field
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:teacherProfessionFieldCreate }
+    permissions: [admin_teacher_profession_field]
+
+admin_teacher_profession_field_update:
+    path: /teacher/update/{id}/profession_field
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:teacherProfessionFieldUpdate }
+    permissions: [admin_teacher_profession_field]
+
+admin_teacher_profession_field_delete:
+    path: /teacher/delete/{id}/profession_field
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:teacherProfessionFieldDelete }
+    permissions: [admin_teacher_profession_field]
+
+admin_teacher_profession_field_name_check:
+    path: /teacher/profession_field/name/check
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:teacherProfessionFieldNameCheck }
+
+admin_teacher_level:
+    path: /teacher/level/list
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:levelList }
+
+admin_teacher_level_create:
+    path: /teacher/level/create
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:createLevel }
+
+admin_teacher_level_edit:
+    path: /teacher/level/{id}/update
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:updateLevel }
+
+admin_teacher_level_check:
+    path: /teacher/level/check
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:checkLevel }
+
+admin_teacher_level_delete:
+    path: /teacher/level/{id}/delete
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:deleteLevel }
+
+admin_teacher_promote_sort:
+    path:  /teacher/promote/sort
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:sort }
+    methods: [POST]
+
+admin_teacher_setting:
+    path:  /teacher/{userId}/setting
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:setting }
+
+admin_teacher_level_match:
+    path:  /teacher/level/match
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:levelMatch }
+
+admin_teacher_profession_match:
+    path:  /teacher/profession/match
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:teacherProfessionFieldMatch }
+
+admin_teacher_course_archives:
+    path:  /teacher/{userId}/course/archives
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:teacherCourseArchives }
+
+admin_teacher_offline_course_archives:
+    path:  /teacher/{userId}/offline_course/archives
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:teacherOfflineCourseArchives }
+
+admin_teacher_batch_setting:
+    path:  /teacher/batch_setting
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:batchSetting }
+
+admin_teacher_list_exporter:
+    path: /teacher/list/exporter
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:teacherListExporter }
+
+admin_teacher_course_exporter:
+    path: /teacher/online_course/exporter
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:teacherCourseExporter }
+
+admin_teacher_offline_course_exporter:
+    path: /teacher/offline_course/exporter
+    defaults: { _controller: CorporateTrainingBundle:Admin/Teacher:teacherOfflineCourseExporter }
+
+admin_mail_notification_setting:
+    path: /mail/notification/setting
+    defaults: { _controller: CorporateTrainingBundle:Admin/MailSetting:set }
+
+admin_mail_notification_template_preview:
+    path: /mail/notification/{type}/template/preview
+    defaults: { _controller: CorporateTrainingBundle:Admin/MailSetting:previewTemplate }
+
+admin_data_center_teacher_overview:
+    path: /data_center/teacher/overview
+    defaults: { _controller: CorporateTrainingBundle:Admin/Data/TeacherData:teacherOverview }
+
+admin_data_center_teacher_overview_survey_data:
+    path: /data_center/teacher/overview/survey_data
+    defaults: { _controller: CorporateTrainingBundle:Admin/Data/TeacherData:teacherSurveyData }
+
+admin_data_center_teacher_overview_profession_field_data:
+    path: /data_center/teacher/overview/profession_field_data
+    defaults: { _controller: CorporateTrainingBundle:Admin/Data/TeacherData:teacherProfessionFieldData }
+
+admin_data_center_teacher_overview_level_data:
+    path: /data_center/teacher/overview/level_data
+    defaults: { _controller: CorporateTrainingBundle:Admin/Data/TeacherData:teacherLevelData }
+
+admin_data_center_teacher_detail:
+    path: /data_center/teacher/detail
+    defaults: { _controller: CorporateTrainingBundle:Admin/Data/TeacherData:teacherDetail }
+
+admin_data_center_teacher_detail_ajax:
+   path: /data_center/teacher/detail/ajax
+   defaults: { _controller: CorporateTrainingBundle:Admin/Data/TeacherData:ajaxTeacherDetail}
+
+admin_user_learn_data_overview:
+    path: /user/learn_data/overview
+    defaults: { _controller: CorporateTrainingBundle:Admin/Data/UserLearnData:userLearnDataOverview }
+
+admin_user_learn_data_detail:
+    path: /user/learn_data/detail
+    defaults: { _controller: CorporateTrainingBundle:Admin/Data/UserLearnData:userLearnDataDetail}
+
+admin_user_learn_data_custom_column_save:
+    path: /user/learn_data/custom_column/save
+    defaults: { _controller: CorporateTrainingBundle:Admin/Data/UserLearnData:ajaxSaveCustomColumns}
+    methods: [POST]
+
+admin_user_learn_data_ajax_detail:
+    path: /user/learn_data/ajax/detail
+    defaults: { _controller: CorporateTrainingBundle:Admin/Data/UserLearnData:ajaxUserLearnDataDetail}
+
+admin_user_top_twenty_list:
+    path: /user/top_twenty/list
+    defaults: { _controller: CorporateTrainingBundle:Admin\Data\UserLearnData:topTwentyList }
+
+admin_data_center_user_count:
+    path: /data_center/user/count
+    defaults: { _controller: CorporateTrainingBundle:Admin\Data\UserLearnData:userCount}
+
+admin_data_center_online_course_learn_time:
+    path: /data_center/user/online_course_learn_time
+    defaults: { _controller: CorporateTrainingBundle:Admin\Data\UserLearnData:userOnlineCourseLearnTime}
+
+admin_data_center_offline_course_learn_time:
+    path: /data_center/user/offline_course_learn_time
+    defaults: { _controller: CorporateTrainingBundle:Admin\Data\UserLearnData:userOfflineLearnTime}
+
+admin_data_center_online_course_learn_count:
+    path: /data_center/user/online_course_learn_count
+    defaults: { _controller: CorporateTrainingBundle:Admin\Data\UserLearnData:userOnlineCoursesLearnCount}
+
+admin_data_center_project_plan_attend_count:
+    path: /data_center/user/project_plan_attend_count
+    defaults: { _controller: CorporateTrainingBundle:Admin\Data\UserLearnData:userProjectPlansJoinCount}
+
+admin_data_center_exam_attend_count:
+    path: /data_center/user/exam_attend_count
+    defaults: {_controller: CorporateTrainingBundle:Admin\Data\UserLearnData:userAttendExamsCount}
+
+admin_data_center_survey_attend_count:
+    path: /data_center/user/survey_attend_count
+    defaults: {_controller: CorporateTrainingBundle:Admin\Data\UserLearnData:userAttendSurveysCount}
+
+admin_data_center_offline_activity_count:
+    path: /data_center/user/offline_activity_count
+    defaults: {_controller: CorporateTrainingBundle:Admin\Data\UserLearnData:userAttendOfflineActivitiesCount}
+
+admin_data_center_hot_keyword:
+    path: /data_center/user/hotKeyWord
+    defaults: {_controller: CorporateTrainingBundle:Admin\Data\UserLearnData:hotKeyWord}
+
+admin_data_center_project_plan_overview:
+    path: /data_center/project_plan/overview
+    defaults: { _controller: CorporateTrainingBundle:Admin/Data/ProjectPlanData:projectPlanDataOverview }
+
+admin_data_center_project_plan_detail:
+    path: /data_center/project_plan/detail
+    defaults: { _controller: CorporateTrainingBundle:Admin/Data/ProjectPlanData:projectPlanDataDetail }
+
+admin_data_center_project_plan_ajax_detail:
+    path: /data_center/project_plan/ajax/detail
+    defaults: { _controller: CorporateTrainingBundle:Admin/Data/ProjectPlanData:projectPlanDataAjaxDetail }
+
+admin_data_online_course_data_overview:
+    path: /data_center/{type}/num/overview
+    defaults: { _controller: CorporateTrainingBundle:Admin\Data\CourseData:overview, type: 'course' }
+
+admin_data_online_course_data_overview_data:
+    path: /data_center/{type}/num/overview/data
+    defaults: { _controller: CorporateTrainingBundle:Admin\Data\CourseData:overviewData, type: 'course' }
+
+admin_data_online_course_data_detail:
+    path: /data_center/course/detail
+    defaults: { _controller: CorporateTrainingBundle:Admin\Data\CourseData:detail }
+
+admin_data_online_course_data_show:
+    path: /data_center/course_set/{courseSetId}/course/{courseId}/data/show
+    defaults: { _controller: CorporateTrainingBundle:Admin\Data\CourseData:courseData }
+
+admin_data_center_user_login_heatmap:
+    path: /data_center/user_login/heatmap
+    defaults: { _controller: CorporateTrainingBundle:Admin\Data\UserLearnData:userLoginHeatmap }
+
+admin_course_category:
+    path: /course/category
+    defaults: { _controller: CorporateTrainingBundle:Admin/Course:category }
+
+admin_setting_logo_and_favicon:
+    path: /setting/logo_and_favicon
+    defaults: { _controller: CorporateTrainingBundle:Admin/SiteSetting:logo }
+
+admin_setting_logo_and_favicon_save:
+    path: /setting/logo_and_favicon/save
+    defaults: { _controller: CorporateTrainingBundle:Admin/SiteSetting:saveLogo }
+
+admin_setting_login_logo_upload:
+    path:  /setting/login_logo/upload
+    defaults: { _controller: CorporateTrainingBundle:Admin/SiteSetting:loginLogoUpload }
+    methods: [POST]
+    permissions: [admin_setting_message]
+
+admin_setting_login_logo_remove:
+    path:  /setting/login_logo/remove
+    defaults: { _controller: CorporateTrainingBundle:Admin/SiteSetting:loginLogoRemove }
+    methods: [POST]
+    permissions: [admin_setting_message]
+
+admin_data_report_course_learn_data_statistic_department:
+    path: /data_report/course/learn_data_statistic/department
+    defaults: { _controller: CorporateTrainingBundle:Admin\Data\DataReport:courseLearnDataStatisticDepartment }
+
+admin_data_report_course_learn_data_statistic_department_list:
+    path: /data_report/course/learn_data_statistic/department/list
+    defaults: { _controller: CorporateTrainingBundle:Admin\Data\DataReport:courseLearnDataStatisticDepartmentList }
+
+admin_data_report_course_learn_data_statistic_post:
+    path: /data_report/course/learn_data_statistic/post
+    defaults: { _controller: CorporateTrainingBundle:Admin\Data\DataReport:courseLearnDataStatisticPost }
+
+admin_data_report_course_learn_data_statistic_post_list:
+    path: /data_report/course/learn_data_statistic/post/list
+    defaults: { _controller: CorporateTrainingBundle:Admin\Data\DataReport:courseLearnDataStatisticPostList }
+
+admin_data_report_course_learn_data_statistic_category:
+    path: /data_report/course/learn_data_statistic/category
+    defaults: { _controller: CorporateTrainingBundle:Admin\Data\DataReport:courseLearnDataStatisticCategory }
+
+admin_data_report_course_learn_data_statistic_category_list:
+    path: /data_report/course/learn_data_statistic/category/list
+    defaults: { _controller: CorporateTrainingBundle:Admin\Data\DataReport:courseLearnDataStatisticCategoryList }
+
+admin_data_report_department_learn_and_login_statistic_data:
+    path: /data_report/ajax_get_learn_and_login_data/department
+    defaults: { _controller: CorporateTrainingBundle:Admin\Data\DataReport:ajaxGetLearnAndLoginStatisticData }
+
+admin_user_permissions:
+    path:  /user/{id}/permissions
+    defaults: { _controller: CorporateTrainingBundle:Admin/User:permissions }
+    permissions: [admin_user_permissions]
+
+admin_course_set_ajax_list:
+    path:  /course_set/{filter}/index/ajax_list
+    defaults: { _controller: CorporateTrainingBundle:Admin/CourseSet:ajaxList, filter:'normal' }
+    permissions: [admin_course_manage]
+
+admin_course_set_recommend_ajax_list:
+    path: /course_set/recommend/ajax_list
+    defaults: { _controller: CorporateTrainingBundle:Admin/CourseSet:ajaxRecommendList }
+
+admin_course_set_data_ajax_list:
+    path:  /course_set/{filter}/data/ajax_list
+    defaults: { _controller: CorporateTrainingBundle:Admin/CourseSet:ajaxDataList , filter:'normal'}
+
+admin_classroom_ajax_list:
+    path:  /classroom/index/ajax_list
+    defaults: { _controller: CorporateTrainingBundle:Admin/ClassroomAdmin:ajaxList }
+    permissions: [admin_classroom_manage]
+
+admin_lease_course:
+    path: /lease/course
+    defaults: { _controller: CorporateTrainingBundle:Admin/CourseSet:leaseCourse }
+
+admin_dingtalk_template_list:
+    path: /dingtalk/template/setting
+    defaults: { _controller: CorporateTrainingBundle:Admin/DingTalk:index }
+
+admin_dingtalk_template_preview:
+    path: /dingtalk/{type}/template/preview
+    defaults: { _controller: CorporateTrainingBundle:Admin/DingTalk:previewTemplate }
+
+dingtalk_check_sync_setting:
+    path: /dingtalk/sync_setting/check
+    defaults: { _controller: CorporateTrainingBundle:Admin/UserSetting:checkDingTalkSyncSetting }
+    
+admin_job_set_next_exec_time:
+    path: /job/{id}/set_next_exec_time
+    defaults: { _controller: CorporateTrainingBundle:Admin/Job:setNextExecTime }
+    
+admin_queue_job_list:
+    path: /job/queue/list
+    defaults: { _controller: CorporateTrainingBundle:Admin/Job:queueJobList }
+    
+admin_course_manage_use_record:
+    path: /course/{courseId}/use/record
+    defaults: { _controller: CorporateTrainingBundle:Admin/CourseSet:useRecord }
+
+admin_course_manage_use_record_list:
+    path: /course/{courseId}/use/record/{type}/list
+    defaults: { _controller: CorporateTrainingBundle:Admin/CourseSet:useRecordList }

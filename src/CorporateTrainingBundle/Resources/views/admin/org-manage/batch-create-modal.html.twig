@@ -1,0 +1,34 @@
+{% extends 'old-bootstrap-modal-layout.html.twig' %}
+
+{% block title %}{{'admin.org_manage.batch_setting'|trans}}{% endblock %}
+
+{% block body %}
+  <div id="post-widget">
+
+    <form class="form-horizontal" id="org-form" action="{{ path('admin_org_batch_create',{parentId:parentOrg.id}) }}" method="post">
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="org-names">{{'admin.org_manage.batch_setting.org_name'|trans}}</label>
+        <div class="col-md-8 controls">
+          <textarea id="org-names" name="orgNames" class="form-control" rows="10" data-url="{{ path('admin_org_batch_create_checkname',{parentId: parentOrg.id|default(0),exclude:parentOrg.id|default(null)}) }}"></textarea>
+          <div class="help-block">{{ 'admin.org_manage.batch_setting.org_name.message.help'|trans }}</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="parent-org">{{'admin.org_manage.batch_setting.parentOrg'|trans}}</label>
+        <div class="col-md-8 controls">
+          <label class="control-label" id="parent-org">{{ parentOrg.name|default() }}</label>
+        </div>
+      </div>
+      <input type="hidden" name="parentId" value="{{ parentOrg.id|default(0) }}">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    </form>
+  </div>
+{% endblock %}
+
+{% block footer %}
+  <button type="button" class="btn btn-link" data-dismiss="modal" tabindex="6">{{'form.btn.cancel'|trans}}</button>
+  <button id="org-btn" data-submiting-text="{{'form.btn.submit.submiting'|trans}}" type="submit" class="btn btn-primary" data-toggle="form-submit" data-target="#org-form" tabindex="4">{{'form.btn.save'|trans}}</button>
+  <script>app.load('corporatetrainingbundle/controller/org-manage/batch-create-org-modal')</script>
+{% endblock %}
+
+

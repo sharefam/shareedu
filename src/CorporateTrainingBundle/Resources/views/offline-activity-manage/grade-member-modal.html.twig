@@ -1,0 +1,71 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% do script(['libs/jquery-validation.js', 'corporatetrainingbundle/js/offline-activity-manage/grade-member-modal/index.js']) %}
+
+{% set modalSize = 'large' %}
+
+{% block title %}{{'offline_activity.examination'|trans}}{% endblock %}
+
+{% set user = data('User', {userId: member.userId}) %}
+{% set userProfile = data('UserProfile', {userId: member.userId}) %}
+{% set post = data('Post', {postId: user.postId}) %}
+{% set orgs = data('Orgs', {orgIds: user.orgIds}) %}
+
+{% block body %}
+  <form class="form-horizontal" id="grade-member-form" method="post" action="{{ path('offline_activity_manage_grade_member', {id:member.id}) }}" data-id="{{ member.id }}">
+    
+    <div class="form-group">
+      <div class="col-md-3 control-label">
+        <label>{{ 'student.profile.truename'|trans }}:</label>
+      </div>
+      <div class="col-md-7">
+        <p class="form-control-static">{{ userProfile.truename|default(user.nickname) }}</p>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <div class="col-md-3 control-label">
+        <label>{{ 'student.profile.post'|trans }}:</label>
+      </div>
+      <div class="col-md-7">
+        <p class="form-control-static">{{ orgs.orgNames|default('student.profile.empty')|trans }}-{{ post.name|default('student.profile.empty')|trans }}</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-3 control-label">
+        <label>{{ 'offline_activity.examination.score'|trans }}:</label>
+      </div>
+      <div class="col-md-7 controls">
+        <input class="form-control" id="score" name="score" type="text" value="{{ member.score|default(0) }}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-3 control-label">
+        <label>{{ 'offline_activity.evaluate.set'|trans }}:</label>
+      </div>
+      <div class="col-md-7 controls">
+        <textarea class="form-control" rows="6" name="evaluate">{{ member.evaluate|default() }}</textarea>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-3 control-label">
+        <label>{{ 'offline_activity.examination.result'|trans }}:</label>
+      </div>
+      <div class="col-md-7 radios">
+        {% set passedStatus =  (member.passedStatus in ['passed', 'unpassed']) ? member.passedStatus : 'passed' %}
+        {{ radios('passedStatus', {'passed':'offline_activity.examination.passed'|trans, 'unpassed':'offline_activity.examination.unpassed'|trans}, passedStatus) }}
+      </div>
+    </div>
+    
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+
+  </form>
+{% endblock %}
+
+{% block footer %}
+  <button class="btn btn-primary pull-right" id="grade-member-submit" type="button">{{'form.btn.save'|trans}}</button>
+  <button class="btn btn-link pull-right" type="button" data-dismiss="modal">{{'form.btn.cancel'|trans}}</button>
+{% endblock %}

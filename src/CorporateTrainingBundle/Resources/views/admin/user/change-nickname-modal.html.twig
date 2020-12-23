@@ -1,0 +1,34 @@
+{% extends 'old-bootstrap-modal-layout.html.twig' %}
+
+{% block title %}{{'admin.user.change_nickname'|trans({'%nickname%': user.nickname})}}{% endblock %}
+
+{% block body %}
+
+  <form class="form-horizontal" id="change-nickname-form"  action="{{ path('admin_user_change_nickname', {id:user.id}) }}"  method="post">
+
+    <div class="row form-group">
+      <div class="col-md-3 control-label"><label for="code">{{'admin.user.change_nickname.nickname'|trans}}</label></div>
+      <div class="col-md-8 controls">
+        <div style="margin-top: 7px;">
+          {{user.nickname}}
+        </div>
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-md-3 control-label"><label for="code">{{'admin.user.change_nickname.new_nickname'|trans}}</label></div>
+      <div class="col-md-8 controls">
+        <input class="form-control" type="text" id="nickname" value="" name="newNickname" data-url="{{path('admin_user_create_nickname_check')}}">
+      </div>
+    </div>
+
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+  </form>
+
+{% endblock %}
+
+{% block footer %}
+  <button id="change-nickname-btn" data-submiting-text="{{'form.btn.submit.submiting'|trans}}" class="btn btn-primary pull-right" data-toggle="form-submit" data-target="#change-nickname-form">{{'form.btn.submit'|trans}}</button>
+  <button type="button" class="btn btn-link" data-dismiss="modal">{{'form.btn.cancel'|trans}}</button>
+  <script>app.load('corporatetrainingbundle/controller/user/change-nickname')</script>
+{% endblock %}

@@ -1,0 +1,101 @@
+services:
+    topxia.authentication.failure_handler:
+        class: AppBundle\Handler\AuthenticationFailureHandler
+        parent: security.authentication.failure_handler
+
+    topxia.logout.success_handler:
+        class: AppBundle\Handler\LogoutSuccessHandler
+        parent: security.logout.success_handler
+
+    user.login_listener:
+        class: AppBundle\Handler\LoginSuccessHandler
+        arguments: ['@security.authorization_checker']
+        tags: [{ name: kernel.event_listener, event: security.interactive_login }]
+
+    user.login_generate_notification_handler:
+        class: AppBundle\Handler\GenerateNotificationHandler
+        arguments: ['@service_container']
+        tags: [{ name: kernel.event_listener, event: security.interactive_login }]
+
+security:
+    encoders:
+        Biz\User\CurrentUser: sha256
+
+    providers:
+        custom_provider:
+            id: topxia.user_provider
+
+    role_hierarchy: "%role_hierarchy%"
+
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        disabled:
+            pattern: ^/(anon|callback|api)/
+            security: false
+
+        main:
+            pattern:    /.*
+            form_login:
+                login_path: login
+                check_path: login_check
+                use_referer: true
+                failure_handler: topxia.authentication.failure_handler
+                success_handler: topxia.authentication.success_handler
+            remember_me:
+                secret: "%secret%"
+                lifetime: 432000
+                path: /
+                domain: "%cookie_domain%"
+            logout:
+                path:   logout
+                success_handler: topxia.logout.success_handler
+            anonymous:  true
+    access_control:
+        - { path: ^/task, role: ROLE_USER }
+        - { path: ^/my, role: ROLE_USER }
+        - { path: ^/settings, role: ROLE_USER }
+        - { path: ^/cashier, role: ROLE_USER }
+        - { path: ^/order, role: ROLE_USER }
+        # - { path: ^/note, role: ROLE_USER }
+        - { path: ^/message, role: ROLE_USER }
+#        - { path: ^/study/center/department/manage, role: ROLE_DEPARTMENT_ADMIN }
+        - { path: ^/admin/course, role: ROLE_BACKEND }
+        - { path: ^/admin/user, role: ROLE_BACKEND }
+        - { path: ^/admin/app, role: ROLE_BACKEND }
+        - { path: ^/admin/setting, role: ROLE_BACKEND }
+        - { path: ^/admin/offline/activity, role: ROLE_BACKEND }
+        - { path: ^/admin/logs, role: ROLE_BACKEND }
+        - { path: ^/admin/upgrade, role: ROLE_BACKEND }
+        - { path: ^/admin/optimize, role: ROLE_BACKEND }
+        - { path: ^/admin, role: ROLE_BACKEND }
+        - { path: /login, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /online/sample, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/common/crontab, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /password/reset, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /password/reset/check/mobile, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /password/reset/update, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /raw/password/update, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /edu_cloud/sms_check/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /register/captcha/modal, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /captcha_num, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /register/.*/check, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /edu_cloud/sms_send, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/hls, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/file/upload, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/mapi_v2, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /systeminfo, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/translations/js, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/mobile, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /edu_cloud/sms/callback/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/uploadfile/upload, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/player/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/qrcode/parse/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/global_file/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/co_marketing/cloud/file/.*/share/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/course/task/media/.*/question_markers/show, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /switch/language, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /.*, role: ROLE_USER }

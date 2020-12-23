@@ -1,0 +1,105 @@
+{% extends 'project-plan/layout.html.twig' %}
+
+{% block title %}{{ 'project_plan.preparation.items'|trans }} - {{ parent() }}{% endblock %}
+{% set tab_nav = 'preparation' %}
+{% set side_nav = 'item-manage' %}
+{% do script(['corporatetrainingbundle/js/project-plan/item-manage/index.js']) %}
+
+{% block main %}
+  <div class="cd-main__heading">
+    <div class="cd-main__title">
+      {{ 'project_plan.preparation.items'|trans }}
+      <span class="pull-right">
+          {% if projectPlan.status == 'archived' %}
+            <a class="btn btn-primary btn-sm" disabled data-toggle="tooltip" data-placement="bottom" title="此项目已归档"><span class="es-icon es-icon-anonymous-iconfont"></span>
+              {{ 'project_plan.preparation.items.add_items'|trans }}
+            </a>
+          {% else %}
+            <a id="create-course" href="" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal" data-url="{{ path('project_plan_item_type_choose', {id: projectPlan.id})}}">
+              <span class="es-icon es-icon-anonymous-iconfont"></span>
+              {{ 'project_plan.preparation.items.add_items'|trans }}
+            </a>
+          {% endif %}
+        </span>
+    </div>
+  </div>
+  <div class="cd-main__body">
+    <ul id="sortable-list" class="ct-project-unit-list sortable-list" data-sortUrl="{{ path('project_plan_sort_item') }}">
+      {% for projectPlanItem in projectPlanItems %}
+        <li class="ct-project-unit drag" id="{{ projectPlanItem.id }}">
+          <div class="ct-project-unit__head">
+            <i class="ct-project-unit__icon es-icon
+              {% if projectPlanItem.targetType == 'course' %}
+                es-icon-book
+              {% elseif projectPlanItem.targetType == 'offline_course' %}
+                es-icon-teacher
+              {% elseif projectPlanItem.targetType == 'exam' %}
+                es-icon-Online_Exam 
+              {% elseif projectPlanItem.targetType == 'offline_exam' %}
+                es-icon-Offline_Exam
+              {% endif %}
+              color-primary">
+            </i>
+            {% if projectPlan.status != 'archived' %}
+              <div class="ct-project-unit__hover">
+                  {% if projectPlanItem.targetType == 'course' %}
+                    {% if projectPlanItem.detail is defined %}
+                      <a class="link-gray" data-url="{{ path('project_plan_item_update', {id: projectPlanItem.id, projectPlanId:projectPlan.id }) }}" data-toggle="modal" data-target="#modal"><i class="es-icon es-icon-setting"></i>{{ 'project_plan.btn.setting_btn'|trans }}</a>
+                    {% endif %}
+                  {% elseif projectPlanItem.targetType == 'offline_course' %}
+                    <a class="link-gray" data-url="{{ path('project_plan_offline_course_update', {projectPlanId:projectPlan.id, offlineCourseId: projectPlanItem.targetId}) }}" data-toggle="modal" data-target="#modal"><i class="es-icon es-icon-setting"></i>{{ 'project_plan.btn.setting_btn'|trans }}</a>
+                  {% elseif projectPlanItem.targetType == 'exam' %}
+                    {% if not is_plugin_installed('Exam') %}
+                      <span class="btn color-gray">{{ 'exam.plugin_is_not_install'|trans }}</span>
+                    {% else %}
+                      <a class="link-gray" data-url="{{ path('project_plan_exam_view_qrcode', {id:projectPlan.id, examId: projectPlanItem.targetId }) }}" data-toggle="modal" data-target="#modal"><i class="es-icon es-icon-qrcode"></i>{{ 'project_plan.overview_board.exam.qrcode'|trans }}</a>
+                      <a class="link-gray" data-url="{{ path('project_plan_exam_update', {projectPlanId:projectPlan.id, examId: projectPlanItem.targetId }) }}" data-toggle="modal" data-target="#modal"><i class="es-icon es-icon-setting"></i>{{ 'project_plan.btn.setting_btn'|trans }}</a>
+                    {% endif %}
+                  {% elseif projectPlanItem.targetType == 'offline_exam' %}
+                    <a class="link-gray" data-url="{{ path('project_plan_offline_exam_update', {projectPlanId:projectPlan.id, offlineExamId: projectPlanItem.targetId}) }}" data-toggle="modal" data-target="#modal"><i class="es-icon es-icon-setting"></i>{{ 'project_plan.btn.setting_btn'|trans }}</a>
+                  {% endif %}
+                  <a href="javascript:;" id="remove-item" class="link-gray" data-url="{{ path('project_plan_item_remove', {id: projectPlanItem.id}) }}"><i class="es-icon es-icon-delete"></i>{{ 'project_plan.btn.delete_btn'|trans }}</a>
+              </div>
+            {% endif %}
+            <div class="ct-project-unit__title">
+                <span class="js-project-unit-number">{{ projectPlanItem.seq }}.</span>
+                {% if projectPlanItem.targetType != 'exam' %}
+                  {% if projectPlanItem.detail is defined %}
+                    {{ projectPlanItem.detail.title|default() }}
+                  {% else %}
+                    <b class="color-danger">{{ 'project_plan.item.course_delete'|trans }}</b>
+                  {% endif %}
+                {% else %}
+                  {{ projectPlanItem.detail.name|default() }}
+                {% endif %}
+              </div>
+          </div>
+          <div class="ct-project-unit__body">
+            {% if projectPlanItem.targetType == 'offline_course' and projectPlanItem.detail.taskNum == 0 %}
+              <div class="color-warning">{{ 'project_plan.preparation.items.no_tasks'|trans }}
+                <a class="color-primary" href="{{ path('training_offline_course_manage_tasks', {id: projectPlanItem.detail.id}) }}" target="_blank">{{ 'project_plan.preparation.items.add_tasks'|trans }}</a>
+              </div>
+            {% else %}
+              {{ 'project_plan.preparation.items.item_date'|trans }}：
+              {% if projectPlanItem.startTime == 0 %}
+                {{ '--'|trans }}
+              {% else %}
+                {{ projectPlanItem.startTime|date('Y-m-d H:i')  }}
+              {% endif %}
+              {{ 'project_plan.time_to'|trans }}
+              {% if projectPlanItem.endTime == 0 %}
+                {{ '--'|trans }}
+              {% else %}
+                {{ projectPlanItem.endTime|date('Y-m-d H:i')  }}
+              {% endif %}
+            {% endif %}
+          </div>
+        </li>
+      {% else %}
+        <div class="empty">
+          {{ 'project_plan.empty'|trans }}
+        </div>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

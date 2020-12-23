@@ -1,0 +1,4 @@
+{% import "macro.html.twig" as web_macro %}
+<input id="data" class="hidden" value="{{ userLearnData|default([])}}">
+<input id="tips" class="hidden" value="{{ tips|default([])}}">
+{{web_macro.ajax_paginator(paginator) }}

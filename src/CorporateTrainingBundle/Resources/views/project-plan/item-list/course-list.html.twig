@@ -1,0 +1,112 @@
+{% extends 'project-plan/layout.html.twig' %}
+
+{% block title %}{{ 'project_plan.implementation.course_item_list'|trans }} - {{ parent() }}{% endblock %}
+{% set side_nav = 'course-item-list' %}
+{% set tab_nav = 'implementation' %}
+{% do script(['corporatetrainingbundle/js/project-plan/item-manage/index.js']) %}
+
+{% block main %}
+<div class="cd-main__heading">
+  <div class="cd-main__title">
+      {{ 'project_plan.implementation.course_item_list'|trans }}
+  </div>
+</div>
+<div class="cd-main__body">
+  <div class="ct-project-unit-list">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>{{ 'project_plan.item.course_title'|trans }}</th>
+          <th>{{ 'project_plan.implementation.course_date'|trans }}</th>
+          <th>{{ 'project_plan.implementation.course_no_review'|trans }}</th>
+          <th>{{ 'project_plan.implementation.course_learn_time'|trans }}
+            <span data-toggle="tooltip" class="glyphicon glyphicon-question-sign color-gray text-sm js-data-popover"></span>
+            <div class="popover-content hidden">
+              <div class="popover-item">
+                <div class="content">{{ 'project_plan.implementation.course_learn_time_info'|trans }}</div>
+              </div>
+            </div>
+          </th>
+          <th>{{ 'project_plan.finishing_rate'|trans }}</th>
+          <th>{{ 'project_plan.member.progress'|trans }}</th>
+        </tr>
+        </thead>
+      <tbody>
+        {% for item in items %}
+          {% set memberCount = count(item.projectPlanMembers)|default(0) %}
+          <tr>
+            <td>{{ item.course.title|default() }}<br>
+              <span class="text-muted text-sm">{{ 'project_plan.teacher'|trans }}：
+                {% if item.course.teacherIds.0|default() %}
+                  {% set user = data('User', {userId: item.course.teacherIds.0}) %}
+                  {% set userProfile = data('UserProfile', {userId: item.course.teacherIds.0}) %}
+                  {{ userProfile.truename|default(user.nickname) }}
+                {% endif %}
+              </span>
+            </td>
+            <td>
+              {% if item.startTime == 0 %}
+                {{ '--'|trans }}
+              {% else %}
+                {{ item.startTime|date('Y-m-d')  }}
+              {% endif %}
+              <br>
+              {% if item.endTime == 0 %}
+                {{ '--'|trans }}
+              {% else %}
+                {{ item.endTime|date('Y-m-d')  }}
+              {% endif %}
+            </td>
+            <td>{% if item.courseData.reviewingHomeworkCount|default(0) %}<a href="{{ path('course_manage_homework_check_list', {id: item.targetId}) }}" target="_blank">{% endif %}{{ 'project_plan.offline_course.homework'|trans }}：{{ item.courseData.reviewingHomeworkCount|default(0) }}</a><br>{% if item.courseData.reviewingTestPaperCount|default(0) %}<a href="{{ path('course_manage_testpaper_check_list', {id: item.targetId}) }}" target="_blank">{% endif %}{{ 'project_plan.exam'|trans }}：{{ item.courseData.reviewingTestPaperCount|default(0) }}</a></td>
+            <td>
+              {% set totalLearnTime = item.courseData.itemCourseLearnTime/3600|default() %}
+              {% if item.courseData.hasCompulsoryLearnRecords and memberCount %}
+                {{ (totalLearnTime/memberCount)|round(1, 'floor') }}/{{ totalLearnTime|round(1, 'floor') }}
+              {% else %}
+                {% if item.endTime and date(item.endTime) <= date() and item.courseData.countCompulsoryCourseTasks and memberCount %}
+                    0/0
+                {% else %}
+                    --/--
+                {% endif %}
+              {% endif %}
+            </td>
+            <td>
+              {% if item.courseData.courseCompletionCount and memberCount %}
+                {{ percent(item.courseData.courseCompletionCount,memberCount) }}
+              {% else %}
+                {% if item.endTime and date(item.endTime) <= date() and item.courseData.countCompulsoryCourseTasks and memberCount %}
+                  0%
+                {% else %}
+                  --
+                {% endif %}
+              {% endif %}
+            </td>
+            <td>
+              {% if item.courseData.courseProgress and memberCount %}
+                {{ percent(item.courseData.courseProgress, memberCount) }}
+              {% else %}
+                {% if item.endTime and date(item.endTime) <= date() and item.courseData.countCompulsoryCourseTasks and memberCount %}
+                  0%
+                {% else %}
+                  --
+                {% endif %}
+              {% endif %}
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td class="text-center" colspan="20">
+              <div class="empty">
+                {{ 'project_plan.empty'|trans }}
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+  </div>
+  <nav class="text-center">
+    {{ web_macro.paginator(paginator) }}
+  </nav>
+</div>
+{% endblock %}

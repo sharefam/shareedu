@@ -1,0 +1,39 @@
+{% extends 'study-center/department-courses/layout.html.twig' %}
+
+{% set tab_type = 'department' %}
+{% set tab_nav = 'classroom' %}
+{% block department_body %}
+  <div class="class-list row">
+    {% if classrooms %}
+      {% for classroom in classrooms %}
+        <div class="col-md-4 col-sm-6">
+          <div class="class-item">
+            <div class="class-img">
+              <a href="{{ path('classroom_show', {id:classroom.id}) }}" target="_blank">
+                {{ lazy_img(filepath(classroom.middlePicture, 'classroom.png'), 'img-responsive', classroom.title, 'lazyload_class.png') }}
+                <h3>{{ classroom.title }}</h3>
+                <div class="image-overlay"></div>
+              </a>
+            </div>
+            <div class="class-serve">
+              {% include 'classroom/service-block.html.twig' with {'services':classroom.service} %}
+            </div>
+            <ul class="class-data clearfix">
+              <li><i class="es-icon es-icon-wendangkeshi"></i>{{classroom.courseNum}}</li>
+              <li><i class="es-icon es-icon-people"></i>{{classroom.studentNum + classroom.auditorNum }}</li>
+              <li><i class="es-icon es-icon-textsms"></i>{{classroom.threadNum}}</li>
+            </ul>
+          </div>
+        </div>
+      {% endfor %}
+      
+    {% else %}
+      {% set locale = app.request.locale %}
+      {% set classroomName = (locale and 'en' == locale) ? 'Topic' : get_classroom_name() %}
+      <div class="empty">{{'study_center.department_courses.classrooms'|trans({'%name%':classroomName})}}</div>
+    {% endif %}
+  </div>
+  <nav class="text-center">
+    {{ web_macro.paginator(paginator) }}
+  </nav>
+{% endblock %}

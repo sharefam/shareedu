@@ -1,0 +1,48 @@
+<div class="js-tab-block-wrap">
+  <ul class="nav nav-line js-tab-link-wrap">
+    <li class="js-tab-link active">
+      <a href="javascript:;">{{ 'project_plan.item_detail'|trans }}</a>
+    </li>
+    <li class="js-tab-link">
+      <a href="javascript:;">{{ 'project_plan.result_detail'|trans }}</a>
+    </li>
+  </ul>
+  <div class="tab-block js-tab-sec is-active">
+    <ul class="ct-mts">
+      {% if offlineCourse.taskNum == 0 %}
+        <div class="empty">{{ 'project_plan.empty'|trans }}</div>
+      {% else %}
+        {% if offlineCourseItems|default() %}
+          {% for item in offlineCourseItems %}
+            {% set offlineCourseTaskResult = data('OfflineCourseTaskResult', {taskId: item.id, userId:userId|default(app.user.id)}) %}
+              {% if item.type == 'offlineCourse' %}
+              <li class="c-project-item-lesson">
+                <div class="c-project-item-lesson__head">
+                  {% if offlineCourseTaskResult.finishedTime|default(0) %}
+                    <i class="c-project-item-lesson__icon es-icon es-icon-iccheckcircleblack24px color-primary left-menu"></i>
+                  {% else %}
+                    <i class="c-project-item-lesson__icon es-icon es-icon-undone-check color-gray left-menu"></i>
+                  {% endif %}
+                  <span class="c-project-item-lesson__title">{{ item.title|default('') }}</span>
+                  <div class="c-project-item-lesson__hover">
+                    {% if offlineCourseTaskResult.attendStatus|default() %}
+                      {% if offlineCourseTaskResult.attendStatus == 'attended' %}
+                        <span class="color-success">{{ 'project_plan.status.registered'|trans }}</span>
+                      {% elseif offlineCourseTaskResult.attendStatus == 'unattended' %}
+                        <span class="color-danger">{{ 'project_plan.status.absenteeism'|trans }}</span>
+                      {% endif %}
+                    {% endif %}
+                  </div>
+                </div>
+              </li>
+              {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endif %}
+    </ul>
+  </div>
+  <div class="tab-block js-tab-sec">
+    {{ render(controller('CorporateTrainingBundle:StudyRecord:offlineCourseStudyRecord', {offlineCourseId:offlineCourse.id, userId:userId })) }}
+  </div>
+</div>
+

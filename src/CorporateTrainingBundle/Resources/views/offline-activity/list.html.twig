@@ -1,0 +1,29 @@
+{% extends 'layout.html.twig' %}
+
+{% set bodyClass = 'offline-activity' %}
+
+{% do script(['corporatetrainingbundle/js/offline-activity/list/index.js']) %}
+
+{% block full_content %}
+<div class="container">
+    <section class="o-list c-offline-activity-list">
+        <div class="o-list__hd clearfix">
+            <ul class="nav nav-pills nav-sm nav-pills-mobile pull-left">
+                <li role="presentation" class="{% if type == 'ongoing' %}active{% endif %}">
+                    <a href="{{ path('offline_activity_list', {type:'ongoing'}) }}">{{ 'offline_activity.status.ongoing'|trans }}</a>
+                </li>
+                <li role="presentation" class="{% if type == 'end' %}active{% endif %}">
+                    <a href="{{ path('offline_activity_list', {type:'end'}) }}">{{ 'offline_activity.status.finished'|trans }}</a>
+                </li>
+            </ul>
+            <a class="pull-right link-dark mts" href="{{ path('study_record_offline_activity',{userId: app.user.id}) }}">{{ 'offline_activity.detail.my_activities.check'|trans }}<i class="es-icon es-icon-chevronright"></i></a>
+        </div>
+        <div class="o-list__bd c-offline-activity-list__bd js-list" id="offline-activity-container" data-url="{{ path('offline_activity_more', {type:type}) }}" data-total="{{ total }}">
+        </div>
+
+        <div class="o-list__ft js-list-ft">
+            <a class="c-offline-activity-more link-dark js-offline-activity-more btn" href="javascript:;">{{ 'offline_activity.btn.loading'|trans }}</a>
+        </div>
+    </section>
+</div>
+{% endblock %}

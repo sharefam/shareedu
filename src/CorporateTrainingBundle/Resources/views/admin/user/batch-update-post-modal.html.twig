@@ -1,0 +1,29 @@
+{% extends 'old-bootstrap-modal-layout.html.twig' %}
+
+{% set modalSize = 'large' %}
+
+{% block title %}{{ 'admin.user.batch_update_post'|trans }}{% endblock %}
+{% block body %}
+<style>
+  .user-help {
+    line-height: 36px;
+  }
+</style>
+  <form id="batch-setting-post-form" class="form-horizontal" method="post"
+        action="{{ path('admin_user_batch_update_post') }}">
+    <div class="form-group">
+      {% include 'post/post-tree-select.html.twig' with {modal: 'modal'} %}
+    </div>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    <input type="hidden" name="ids" id="batch-ids">
+
+  </form>
+{% endblock %}
+
+{% block footer %}
+  <button id="batch-setting-post-btn" data-submiting-text="{{ 'form.btn.submit.submiting'|trans }}" type="submit" class="btn btn-primary pull-right"
+          data-toggle="form-submit" data-target="#batch-setting-post-form">{{ 'form.btn.submit'|trans }}
+  </button>
+  <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{ 'form.btn.cancel'|trans }}</button>
+  <script>app.load('corporatetrainingbundle/controller/user/batch-update-post-modal')</script>
+{% endblock %}

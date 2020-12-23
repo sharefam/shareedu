@@ -1,0 +1,43 @@
+{% extends 'project-plan/study-data/study-data-layout.html.twig' %}
+
+{% set side_nav = 'studyData' %}
+{% set type = 'list' %}
+
+{% do script(['libs/select2.js','libs/jquery-validation.js','libs/bootstrap-datetimepicker.js', 'corporatetrainingbundle/js/project-plan/member-statistic-data-list/index.js']) %}
+
+{% block main_content %}
+  <form class=" department-manage-search-form form-inline clearfix mbl" id="member-statistic-data-list-form" method="post" novalidate>
+    <div class="form-group department-manage-search-form-group department-manage-search-form-group--first">
+      <label>{{'project_plan.department_filter'|trans}}：</label>
+      <div class="department-manage-search-form-group__select">
+        {% include 'org-select/index.html.twig' with {
+          id: 'resource-orgCode',
+          data: build_org_tree(app.user.manageOrgCodes),
+          placeholder: 'admin.org.select_placeholder'|trans,
+          treeName: 'orgIds',
+          ids: orgIds|default(0),
+        }
+        %}
+      </div>
+    </div>
+
+    <div class="form-group department-manage-search-form-group">
+      <label>{{ 'form.placeholder.keyword'|trans }}：</label>
+      <input type="text" id="username" name="username" class="form-control department-manage-search-form-group__info" value="{{ app.request.get('username') }}"
+             placeholder="{{ 'project_plan.form.name_placeholder'|trans }}">
+    </div>
+
+    <div class="form-group department-manage-search-form-group department-manage-search-form-group--first">
+      <label class="mts">{{'project_plan.post_filter'|trans}}：</label>
+      {% include 'post/post-tree-select.html.twig' with {modal: 'list', isFront: 1} %}
+    </div>
+    <button class="btn btn-primary">{{ 'project_plan.manage_list.search'|trans }}</button>
+    <button type="button" class="btn btn-primary js-exporter" data-url="{{ path('exporter_export', {type: 'project_plan_member_statistic_data', formSubmission: 'post' }) }}">{{'project_plan.btn.export_btn'|trans}}</button>
+    <input type="hidden" name="projectPlanId" value="{{ projectPlan.id }}">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+  </form>
+
+  <div class="table-responsive js-table-wrap mts data-list">
+    {% include 'project-plan/study-data/member-statistic-data-list.html.twig' %}
+  </div>
+{% endblock %}

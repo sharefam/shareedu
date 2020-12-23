@@ -1,0 +1,35 @@
+{% for projectPlan in projectPlans %}
+<div class="c-ctr-task-item js-course-item js-page-wrapper">
+  <div class="c-ctr-task-item__media media js-page-load-btn" data-url="{{ path('study_center_project_plan_detail_list', {id:projectPlan.id, userId:app.user.id|default(0)}) }}">
+    <div class="c-ctr-task-item__media-left media-left">
+      <img class="c-ctr-task-item__img" src="{{ filepath(projectPlan['cover']['middle']|default(''), 'project-plan.png') }}" alt="{{ projectPlan.name }}">
+    </div>
+    <div class="media-body">
+      <div class="c-ctr-task-item__hover">
+        <div class="js-chart course-pie-chart hidden-xs" data-percent="{{ projectPlan.progress|default(0) }}" >
+          <a class="course-pie-chart-hover js-pie-chart-hover">
+            <span class="c-ctr-task-item__percent js-c-ctr-task-item__percent"></span>
+          </a>
+        </div>
+          <span class="c-ctr-task-item__toggle-btn">
+            <i class="es-icon es-icon-menu"></i>
+          </span>
+      </div>
+      <div class="c-ctr-task-item__title">
+        {{ projectPlan.name|default('') }}
+      </div>
+      <div class="c-ctr-task-item__info">
+        <span>{{'project_plan.project_plan_date'|trans}}：</span>
+        {% if projectPlan.startTime %}
+          {{ projectPlan.startTime|date('Y-m-d') }} {{ 'project_plan.time_to'|trans }} {{ projectPlan.endTime|date('Y-m-d') }}
+        {% else %}
+          {{ 'project_plan.any'|trans }}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="c-ctr-task-item__bd js-page-content">
+
+  </div>
+</div>
+{% endfor %}

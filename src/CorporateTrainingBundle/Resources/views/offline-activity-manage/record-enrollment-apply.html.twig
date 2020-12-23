@@ -1,0 +1,67 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% do script(['corporatetrainingbundle/js/offline-activity-manage/record-enrollment-apply/index.js']) %}
+{% block title %}
+  <h4 class="modal-title">{{ 'offline_activity.study_record'|trans }}
+  </h4>
+{% endblock %}
+{% block body %}
+  <div class="o-user-manual-sec__hd">
+      {{ 'offline_activity.study_record.overview'|trans }}
+  </div>
+  <div class="study-center">
+    <div class=" user-info bg-gray">
+      <div class="row">
+        <div class="col-sm-4">
+          {% set profile = data('UserProfile', { 'userId' : userInfo.id}) %}
+          <span>{{ 'student.profile.truename'|trans }} : {{ profile.truename|trans }}</span>
+        </div>
+        <div class="col-sm-4">
+          {% if userInfo.post is empty %}
+            <span>--</span>
+          {% else %}
+            <span>{{ 'student.profile.post'|trans }} : {{ userInfo.post|trans }}</span>
+          {% endif %}
+        </div>
+        <div class="col-sm-4">
+          {% set orgs = data('Orgs',{orgIds: userInfo.orgIds}) %}
+          <span> {{ 'site.org'|trans }} : {{ orgs.0.name|default('--') }}
+            {% if orgs.1|default(false) %}
+              <i class="es-icon es-icon-more ft-xsm" data-toggle="popover" data-container="body" data-trigger="hover"
+                 data-placement="top" data-content="{{ orgs.orgNames|default() }}"></i>
+            {% endif %}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <div>
+    <div class="o-user-manual-sec__hd">
+      {{ 'offline_activity.post_course.learning_status'|trans }}
+    </div>
+    {% include 'offline-activity-manage/post-course-tbody.html.twig' %}
+  </div>
+  <br>
+  <div>
+    <ul class="nav nav-tabs learning-status-tab" style="margin-bottom: 20px">
+      <li role="presentation" class="projectplan-record active"><a>{{ 'offline_activity.project_plan_record'|trans }}</a></li>
+      <li role="presentation" class="course-record"><a>{{ 'offline_activity.course_record'|trans }}</a></li>
+      <li role="presentation" class="offline-activity-record"><a>{{ 'offline_activity.activity_record'|trans }}</a></li>
+    </ul>
+    <div class="panel-body projectplan-record-list table-responsive mtl"
+         style="max-height: 250px; overflow-y: scroll; display: block;">
+        {{ render(controller('CorporateTrainingBundle:ProjectPlan/MemberManage:record', {userId: userInfo.id|default(0), tab_types:tab_types, source:'offline_activity'})) }}
+    </div>
+    <div class="course-record-list" style="max-height: 250px; overflow-y: scroll; display: none;">
+      {{ render(controller('CorporateTrainingBundle:StudyCenter/CourseStatistics:statisticsByCategories', {userId: userInfo.id|default(0), tab_types:tab_types, source:'offline_activity'})) }}
+    </div>
+    <div class="offline-activity-record-list table-responsive mtl"
+         style="max-height: 250px; overflow-y: scroll; display: none;">
+      {{ render(controller('CorporateTrainingBundle:StudyCenter/StudyRecord:offlineActivityRecord', {userId: userInfo.id|default(0), tab_types:tab_types, source:'offline_activity'})) }}
+    </div>
+  </div>
+{% endblock %}
+{% block footer %}
+  <button type="button" class="btn btn-primary" data-dismiss="modal">{{ 'form.btn.close'|trans }}</button>
+{% endblock %}

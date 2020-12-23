@@ -1,0 +1,38 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+{% block title %}{{'admin.post_course.add_course'|trans}}-{{ post.name|default() }}{% endblock %}
+{% set modal_class= "modal-lg" %}
+{% do script(['corporatetrainingbundle/js/admin/post-course/pick-course/index.js']) %}
+{% block body %}
+<div id="courses-picker-body" class="use-permission-body">
+      <ul class="nav nav-tabs mbl" style="margin-top: -15px">
+      <li class="js-tab-link active" data-type="js-manage-data-list" data-url="{{ path('admin_post_ajax_choose_manage_courses',{postId:post.id}) }}" role="presentation"><a href="javascript:;">{{ 'classroom.course_pick.manage_tab'|trans }}</a></li>
+      <li class="js-tab-link" data-type="js-use-permission-data-list" data-url="{{ path('admin_post_ajax_choose_use_permission_courses',{postId:post.id}) }}" role="presentation"><a href="javascript:;">{{ 'classroom.course_pick.use_permission_tab'|trans }}</a></li>
+    </ul>
+
+  <input id="itemIds" type="hidden" value="[]">
+  <div class="row mtl">
+    <div class="col-md-12">
+      <div class="courses-list">
+          <div class="js-tab-block-wrap">
+            <div class="tab-block js-tab-sec is-active">
+              <div class="table table-striped data-list js-manage-data-list" data-type="js-manage-data-list">
+                {{ render(controller('CorporateTrainingBundle:Admin/PostCourse:ajaxChooseManageCourses', {postId:post.id})) }}
+              </div>
+            </div>
+            <div class="tab-block js-tab-sec">
+              <div class="table table-striped data-list js-use-permission-data-list" data-type="js-use-permission-data-list">
+              </div>
+            </div>
+          </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+  <button id="js-save" data-url="{{ path('admin_post_assign_courses', {postId:post.id}) }}" class="btn btn-primary pull-right">{{ 'classroom.add_course_btn'|trans }}</button>
+  <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{ 'form.btn.cancel'|trans }}</button>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% import "macro.html.twig" as web_macro %}
+
+<div class="es-section course-manage-header clearfix">
+  <h1 class="title">
+    {{ offlineCourse.title }}
+  </h1>
+
+  {% if 'ROLE_TRAINING_ADMIN' in app.user.roles or 'ROLE_SUPER_ADMIN' in app.user.roles %}
+    <div class="toolbar hidden-xs">
+      <div class="btn-group">
+        <a class="btn btn-default btn-sm" href="{{ path('project_plan_manage_items', {id: projectPlanId}) }}">{{'offline_course.to_project_plan_base'|trans}}</a>
+      </div>
+    </div>
+  {% endif %}
+</div>

@@ -1,0 +1,16 @@
+<div class="page-header clearfix">
+    <h1 class="pull-left"><%= Translator.trans('admin.importer.template.success.title') %></h1>
+</div>
+
+<div class="row">
+    <div id="user-import">
+        <% $.each(checkInfo, function(index, item){  %>
+            <div class="col-md-offset-2"><%= item %></div><br>
+        <%}) %>
+        <div class="col-md-offset-2"><%= Translator.trans('admin.importer.template.success.check_success') %> <b><%= importData.length %></b><%= Translator.trans('admin.importer.template.success.check_success_data') %></div><br>
+        <div class="col-md-offset-2">
+            <button type="button" class="btn btn-primary" id="start-import-btn"><%= Translator.trans('admin.importer.template.success..import_verify_tips_start') %></button>
+            <a type="button" class="btn btn-primary" href="#index"><%= Translator.trans('admin.importer.template.success..back_btn') %></a>
+        </div>
+    </div>
+</div>

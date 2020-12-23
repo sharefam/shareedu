@@ -1,0 +1,9 @@
+{% set nodes = grouped_permissions_without_btn(menu|parent_permission.code|parent_permission.code|default(null))|json_encode %}
+{% set code = menu|parent_permission.code|default(null) %}
+
+<div class="cd-layout-sidebar hidden-xs" data-nodes="{{nodes}}">
+  <div class="sidebar-title">
+      <h5>{{ 'site.data.title'|trans }}</h5>
+  </div>
+  <ul class="cd-sidebar-container" data-code={{code|default()}}></ul>
+</div>

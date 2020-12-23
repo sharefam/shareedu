@@ -1,0 +1,76 @@
+{% extends 'layout.html.twig' %}
+
+{% set mobile = is_show_mobile_page() %}
+{% set bodyClass = 'course-list-page ' %}
+{% set siteNav = 'course/explore' %}
+{% do script(['libs/echo-js.js','app/js/course/explore/index.js']) %}
+
+{% block keywords %}{% if categoryArray %}{{ categoryArray.name }}{% if categoryParent %}{{ ',' }}{{ categoryParent.name|default('') }}{% endif %}{% else %}{{ 'category.all_category' }}{% endif %}{% endblock %}
+  {% block description %}{{ categoryArrayDescription|default('')|plain_text(100) }}{% endblock %}
+    {% block title %}{{ categoryArray.name|default('category.all_category'|trans) }} - {{ setting('site.name') }}{% if setting('site.slogan') %}{{ ' - ' }}{{ setting('site.slogan') }}{% endif %}{% if not setting('copyright.owned') %} - Powered By EduSoho{% endif %}
+    {% endblock %}
+
+{% block top_content %}
+    <div class="es-banner hidden-xs">
+        <div class="container">
+            <div class="title">
+                <i class="es-icon es-icon-viewcomfy"></i>
+        {{ 'explore.course.list'|trans }}
+            </div>
+
+            {% set classrooms = data('Classrooms',{count:1}) %}
+            <div class="more">
+                {% if classrooms|default(null) %}
+                  {% set locale = app.request.locale %}
+                  {% set classroomName = (locale and 'en' == locale) ? 'Topic' : get_classroom_name() %}
+                    <a class="btn btn-primary btn-lg" href="{{ path('classroom_explore') }}">
+            {{ 'explore.course.view_name_btn'|trans({'%name%': classroomName}) }}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if mobile %}
+        {% include 'course-set/search-mobile.html.twig' %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% set type = filter.type|default('all') %}
+    {% set price = filter.price|default('all') %}
+    {% set orderBy = orderBy|default('latest') %}
+    {% set currentLevelId = filter.currentLevelId|default('all') %}
+    {% set path = app.request.get('_route') %}
+
+    {% if is_mobile_client() %}
+      {% include 'course-set/explore-tab.html.twig' %}
+    {% endif %}
+    <div class="js-tabs-container  {% if is_mobile_client() and app.request.query.all|length == 0 %} hidden{% endif %}">
+      {{ render(controller('AppBundle:Category:treeNav',{tags:tags, path:path, category:category, filter: {type: type,price: price,currentLevelId: currentLevelId},orderBy: orderBy, group:'course'})) }}
+    </div>
+    {% if not is_mobile_client() %}
+      {% include 'course-set/explore-tab.html.twig' %}
+    {% endif %}
+
+    <div class="course-list {% if is_mobile_client() %} mt20{% endif %}">
+        <div class="row">
+            {% if courseSets %}
+                {% for courseSet in courseSets %}
+                    <div class="col-lg-3 col-md-4 col-xs-6">
+                        {% include 'course/widgets/course-grid.html.twig' with {courseSet: courseSet} %}
+                    </div>
+                {% endfor %}
+            {% else %}
+        <div class="empty">{{ 'explore.course.empty'|trans }}</div>
+            {% endif %}
+        </div>
+    </div>
+    {% if not mobile %}
+        <nav class="text-center">{{ web_macro.paginator(paginator) }}</nav>
+    {% endif %}
+{% endblock %}
+
+{% block bottom %}
+    {% include 'mobile/footer-tool-bar.html.twig' with { mobile_tool_bar: 'course' } %}
+{% endblock %}

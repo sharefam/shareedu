@@ -1,0 +1,105 @@
+{% extends 'layout.html.twig' %}
+{% set bodyClass ="study-center" %}
+
+{% do script(['corporatetrainingbundle/js/study-center/index.js','libs/echo-js.js'], 1) %}
+
+{% block header %}
+  {% if is_mobile_client() %}
+    <div class="ct-header-h5 ptm pbm">
+      <a href="javascript:;" class="ct-header-h5__back js-back-icon">
+        <i class="es-icon es-icon-return"></i>
+      </a>
+      <span>{% if studyCenterTitle|default('') %}{{ studyCenterTitle }}{% endif %}</span>
+      {% if has_history|default('') %}
+        <a href="{{has_history}}" class="ct-header-h5__r">
+          <span class="rc-header-icon">
+            <i class="es-icon {% if esIcon|default('') %}{{ esIcon }}{% else %}es-icon-pie{% endif %}"></i>
+          </span>
+
+          {% if headerRightTitle|default('') %}{{ headerRightTitle }}{% else %}历史记录{% endif %}
+        </a>
+      {% endif %}
+    </div>
+  {% else %}
+    {{ parent() }}
+  {% endif  %}
+{% endblock %}
+
+{% block full_content %}
+<section class="">
+
+  {% block study_center_header %}
+    <div class="study-center-header hidden-xs">
+      {% block study_center_header_cover %}
+        {% if app.user.id|default() %}
+          {% cache 'study/center/' ~ app.user.id ~ '/header' 600 %}
+          {{ render(controller('CorporateTrainingBundle:StudyCenter/Header:header', {userId:app.user.id})) }}
+          {% endcache %}
+        {% endif %}
+      {% endblock %}
+
+      {% block study_center_header_navi %}
+        {% include 'CorporateTrainingBundle::study-center/header-navi.html.twig' %}
+      {% endblock %}
+    </div>
+  {% endblock %}
+
+  <div class="stydy-center-body">
+    <div class="container {% if is_mobile_client() %}h5-container{% endif %}">
+      {% block study_center_body %}
+        <div class="row">
+          {% block study_center_body_content %}
+            <div class="col-md-8">
+              <div class="{% if board is defined %}{% else %} defined {% endif %} ">
+                <div class="study-center-inner">
+                  {% block inner %}
+
+                  {% endblock %}
+                </div>
+              </div>
+            </div>
+          {% endblock %}
+          {% block study_center_body_right_sidebar %}
+            <div class="col-md-4 hidden-xs">
+              {% if tab_type == 'myTask' %}
+                {% cache 'study/center/recommend_courses' 6000 %}
+                {{ render(controller('CorporateTrainingBundle:Course/Course:recommendCoursesBlock')) }}
+                {% endcache %}
+              {% endif %}
+
+              {% if tab_type == 'myTask' %}
+                {% cache 'study/center/group_list' 600 %}
+                {{ render(controller('CorporateTrainingBundle:StudyCenter/SideBar:groupList')) }}
+                {% endcache %}
+              {% endif %}
+
+              {% cache 'study/center/live/course' 600 %}
+              {{ render(controller('CorporateTrainingBundle:StudyCenter/SideBar:liveCourse')) }}
+              {% endcache %}
+
+              {% if tab_type != 'myTask' %}
+                {% cache 'study/center/hot/courses' 600 %}
+                {{ render(controller('CorporateTrainingBundle:StudyCenter/SideBar:hotCourses')) }}
+                {% endcache %}
+              {% endif %}
+
+              {% if tab_type == 'myTask' %}
+                {% cache 'study/center/discusses' 600 %}
+                {{ render(controller('CorporateTrainingBundle:StudyCenter/SideBar:discusses', {postId:app.user.postId|default(0)})) }}
+                {% endcache %}
+              {% endif %}
+
+              {% if tab_type == 'myTask' %}
+                {% cache 'study/center/' ~ app.user.postId ~ '/rank/list' 600 %}
+                {{ render(controller('CorporateTrainingBundle:StudyCenter/SideBar:rankList')) }}
+                {% endcache %}
+              {% endif %}
+            </div>
+          {% endblock %}
+        </div>
+      {% endblock %}
+    </div>
+  </div>
+
+</section>
+{% endblock %}

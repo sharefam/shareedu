@@ -1,0 +1,66 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_cloud_video_overview' %}
+{% block tabs %}{% endblock %}
+
+{% block main %}
+
+  <div class="panel panel-default notice-panel">
+    <div class="panel-body panel-body-bg">
+      <i class="es-icon es-icon-infooutline text-primary"></i>
+      <div class="text-md start-msg mbl">{{'admin.edu_cloud.edu_video.no_enable'|trans}}</div>
+      <form class="form-horizontal notice-desc-mb" role="form" method="post" action="{{ path('admin_cloud_video_switch') }}">
+        <button type="submit" class="btn btn-primary btn-lg" name="upload_mode" value="cloud">{{'admin.edu_cloud.edu_video.enable'|trans}}</button>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+      </form>
+    </div>
+    <div class="edu-cloud-video-intro">
+    </div>
+  </div>
+  <ul class="edu-cloud-intro row clearfix">
+    <li class="list-item col-md-6">
+     <div class="list-item-container">
+       <a class="list-item-pic" href="javascript:;">
+         <img src="/assets/img/backstage/cloud-video/teach.png">
+       </a>
+       <div class="list-item-txt">
+         <div class="list-item-txt_title">专注教育</div>
+         <div class="list-item-txt_desc">提供视频随堂练习、视频字幕、视频弹题等多项针对在线教育的视频教学手段。</div>
+       </div>
+     </div>
+    </li>
+       <li class="list-item col-md-6">
+     <div class="list-item-container">
+       <a class="list-item-pic" href="javascript:;">
+         <img src="/assets/img/backstage/cloud-video/st.png">
+       </a>
+       <div class="list-item-txt">
+         <div class="list-item-txt_title">优质视听</div>
+         <div class="list-item-txt_desc">采用CDN(内容分发网络)技术,200多个国内外优质节点,保障高清流畅的视听体验。</div>
+       </div>
+     </div>
+    </li>
+    <li class="list-item col-md-6">
+     <div class="list-item-container">
+       <a class="list-item-pic" href="javascript:;">
+         <img src="/assets/img/backstage/cloud-video/safety.png">
+       </a>
+       <div class="list-item-txt">
+         <div class="list-item-txt_title">稳定安全</div>
+         <div class="list-item-txt_desc">提供视频水印、视频指纹等多项安全措施，防止视频盗录，有效阻止视频盗播和恶意下载。</div>
+       </div>
+     </div>
+    </li>  
+     <li class="list-item col-md-6">
+     <div class="list-item-container">
+       <a class="list-item-pic" href="javascript:;">
+         <img src="/assets/img/backstage/cloud-video/cost.png">
+       </a>
+       <div class="list-item-txt">
+         <div class="list-item-txt_title">高性价比</div>
+         <div class="list-item-txt_desc">针对在线教育的视频动态转码技术,以及浏览器缓存播放,移动端离线播放等多项功能,节省流量成本。</div>
+       </div>
+     </div>
+    </li>  
+  </ul>
+{% endblock %}

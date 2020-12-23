@@ -1,0 +1,31 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% do script(['libs/jquery-validation.js', 'libs/select2.js', 'corporatetrainingbundle/js/offline-course-item/create-survey/index.js']) %}
+
+{% block title %}
+  {{ 'offline_course.tasks.add_survey'|trans }}
+{% endblock %}
+
+{% block body %}
+  <form id="offline-course-task-create-form" class="form-horizontal" action="{{ path('training_offline_course_manage_task_edit', {courseId: task.offlineCourseId, taskId: task.id}) }}" method="post">
+
+    <div class="form-group">
+      <label class="col-md-2 control-label" for="title">
+        {{ 'offline_course.tasks.survey_title'|trans }}
+      </label>
+      <div class="col-md-8">
+        <input class="form-control" type="text" name="title" placeholder="{{ 'offline_course.course_title.placeholder'|trans}}" value="{{ task.title|default() }}" />
+      </div>
+    </div>
+    {% include 'SurveyPlugin::questionnaire-manage/pick-questionnaire/survey-set-questionnaire.html.twig' with {lableName:'offline_course.tasks.choose_survey', modal:1,name: 'mediaId', questionnaireType:'feedback',questionnaireName: questionnaire.name|default(), questionnaireId:questionnaire.id|default()} %}
+
+    <input type="hidden" name="mode" value="lesson">
+    <input type="hidden" name="mediaType" value="offlineCourseQuestionnaire">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+  </form>
+{% endblock %}
+
+{% block footer %}
+  <button id="create-form-submit" type="button" class="btn btn-primary pull-right" data-loading-text="{{ 'project_plan.btn.save_loading_btn'|trans }}">{{'form.btn.save'|trans}}</button>
+  <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{'form.btn.cancel'|trans}}</button>
+{% endblock %}

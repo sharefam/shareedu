@@ -1,0 +1,16 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set modalSize = 'large' %}
+
+{% block title %}{{'offline_activity.evaluate.view'|trans}}{% endblock %}
+
+{% block body %}
+    <div class="form-group">
+      <div class="col-md-3 control-label">
+        <label>{{ 'offline_activity.evaluate.set'|trans }}:</label>
+      </div>
+      <div class="col-md-7 controls">
+        {{ member.evaluate|default() }}
+      </div>
+    </div>
+{% endblock %}

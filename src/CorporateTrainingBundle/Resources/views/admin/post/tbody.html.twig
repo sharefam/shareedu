@@ -1,0 +1,46 @@
+<li id="post-table-body" data-group-sort-url="{{ path('admin_post_group_sort') }}" data-post-sort-url="{{ path('admin_post_sort') }}">
+    {% if postGroups is not empty %}
+        {{ _self.showPostTree(postGroups, ranks, false) }}
+    {% else %}
+        <div class="row empty">{{'admin.post.empty'|trans}}</div>
+    {% endif %}
+</li>
+
+{% macro showPostTree(postGroups, ranks, isChildren) %}
+  <ul class="list-table sortable-item-list sortable-list">
+  {% for postGroup in postGroups %}
+    <li id="postGroup-{{ postGroup.id }}" class="th" data-name="{{ postGroup.name }}" data-id="{{ postGroup.id }}" style="display: block">
+      <div class="row row-expand">
+        <div class="td col-md-8 name sort-handle">
+          {% if postGroup.posts|default(null) is not empty %}<i id="group-i-{{postGroup.id}}" class="list-table-tree-icon"></i> {% endif %}{{ postGroup.name }}
+        </div>
+        <div class="td col-md-4 operation">
+          <a href="javascript:;" class="btn btn-default btn-sm " data-toggle="modal" data-url="{{ path('admin_post_group_edit', {id:postGroup.id}) }}" data-target="#modal"><i class="glyphicon glyphicon-edit"></i>{{'admin.post.btn.edit_btn'|trans}}</a>
+          <a href="javascript:;" class="btn btn-default btn-sm delete-post-group" data-url="{{ path('admin_post_group_delete', {id:postGroup.id}) }}" data-id="postGroup-{{ postGroup.id }}"><i class="glyphicon glyphicon-trash"></i>{{'admin.post.btn.delete_btn'|trans}}</a>
+          <a href="javascript:;" class="btn btn-default btn-sm" data-toggle="modal" data-url="{{ path('admin_post_create',{groupId:postGroup.id}) }}" data-target="#modal"><i class="glyphicon glyphicon-plus"></i>{{'admin.post.btn.batch_add_btn'|trans}}</a>
+        </div>
+      </div>
+      {% if postGroup.posts|default(null) is not empty %}
+        <ul class="list-table sortable-list">
+          <hr style="margin: 0px; border: 1px solid #ddd;">
+        {% for post in postGroup.posts %}
+          <li id="post-{{ post.id }}" data-name="{{ post.name }}" data-id="{{ post.id }}" data-group-id="{{ post.groupId }}" style="display: block">
+            <div class="row row-expand post" style="font-weight: normal">
+              <div class="td col-md-1 sort-handle post-seq">{{post.seq}}</div>
+              <span class="td col-md-2 ">{{post.name}}</span>
+              <span class="td col-md-3 ">{{post.code}}</span>
+              <span class="td col-md-2 ">{{ postGroup.name|default('site.data.empty') }}</span>
+              <div class="td col-md-4 operation">
+                <a href="javascript:;" class="btn btn-default btn-sm " data-toggle="modal" data-target="#modal" data-url="{{ path('admin_post_edit', {id:post.id}) }}"><i class="glyphicon glyphicon-edit"></i>{{'admin.post.btn.edit_btn'|trans}}</a>
+                <a href="javascript:;" class="btn btn-default btn-sm delete-post" data-url="{{ path('admin_post_delete', {id:post.id}) }}" data-id="post-{{ post.id }}" data-group-id="group-id-{{ post.groupId }}"><i class="glyphicon glyphicon-trash"></i>{{'admin.post.btn.delete_btn'|trans}}</a>
+                <a href="{{ path('admin_post_course', {postId:post.id}) }}" class="btn btn-default btn-sm bind-course"><i class="glyphicon glyphicon-magnet"></i>{{'admin.post_course.btn.assigned_course_btn'|trans}}</a>
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </li>
+  {% endfor %}
+  </ul>
+{% endmacro %}

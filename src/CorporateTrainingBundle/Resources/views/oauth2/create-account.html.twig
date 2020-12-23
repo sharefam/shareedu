@@ -1,0 +1,38 @@
+{% extends 'oauth2/layout.html.twig' %}
+{% do script(['libs/jquery-validation.js','corporatetrainingbundle/js/oauth2/create/index.js']) %}
+
+{% block page_title %}
+  {{ 'user.oauth.register_account'|trans }}
+{% endblock %}
+
+{% block panel_body %}
+
+  <div class="text-center cd-mb32">
+    <img class="third-party-avatar" src="{% if oauthUser.avatar is empty %}{{ filepath('', 'avatar.png') }}{% else %}{{ asset(oauthUser.avatar) }}{% endif %}">
+  </div>
+
+  <form class="third-party-form clearfix" id="third-party-create-account-form" method="post">
+
+    <div class="form-group cd-form-group">
+      <label class="third-party-form__label" for="nickname">{{ 'user.register.username_label'|trans }}</label>
+      <input class="form-control" type="text" id="nickname" name="nickname" placeholder="{{ 'user.oauth.register.nickname_placeholder'|trans }}" data-url="{{ path('register_nickname_check') }}" value="{% if oauthUser.accountType == 'nickname' %}{{ oauthUser.account|default() }}{% endif %}">
+    </div>
+
+    <div class="form-group cd-form-group">
+      <label class="third-party-form__label" for="password">{{ 'user.register.password_label'|trans }}</label>
+      <input class="form-control" type="password" id="password" name="password" placeholder="{{ 'user.oauth.register.password__placeholder'|trans }}">
+    </div>
+
+    <input type="hidden" id="accountType" name="accountType" value="nickname">
+
+    <button class="btn cd-btn cd-btn-primary cd-btn-lg btn-block cd-mb16 js-submit-btn" id="submit-btn" data-loading-text="{{'form.btn.submit.submiting'|trans}}" type="button" data-url="{{ path('oauth2_login_create') }}">{{ 'oauth2.bind_login.btn.user_create_btn'|trans }}</button>
+
+    {% if setting('auth.user_terms') == 'opened' %}
+      <span class="pull-left third-party-link">{{ 'user.register.read_detail'|trans }}<a href="{{ path('user_terms') }}" target="_blank">《{{'user.register.user_service_protocol'|trans}}》</a></span>
+    {% endif %}
+    <a class="pull-right third-party-link" href="{{ path('oauth2_login_index') }}">{{ 'user.oauth.bind_existed_account'|trans }}</a>
+
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+  </form>
+
+{% endblock %}

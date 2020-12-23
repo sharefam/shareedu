@@ -1,0 +1,85 @@
+{% extends 'layout.html.twig' %}
+
+{% do script('corporatetrainingbundle/js/project-plan/show-list/index.js') %}
+
+{% set bodyClass = 'project-plan-list-page' %}
+{% block content %}
+  <section class="mbl hidden-xs">
+    <a class="pull-right link-dark mts" href="{{ path('study_center_my_task_training_list') }}">{{ 'project_plan.my_projects.look_over'|trans }}<i class="es-icon es-icon-chevronright"></i></a>
+    <div class="project-plan-list-title">
+      {{ 'project_plan.apply'|trans }}
+    </div>
+  </section>
+
+  <section class="project-plan-list">
+    <div class="project-plan-list__head">
+      <div class="c-choice-row-wrap">
+       {% if not is_mobile_client() %} 
+        <div class="c-choice-row">
+          <div class="c-choice-row__label">{{ 'project_plan.status_filter'|trans }}：</div>
+          <div class="c-choice-row__content">
+            <form class="form-inline" id="project-plan-search-form">
+              <div class="form-group">
+                <select class="form-control project-plan-list__form-control" id="timeStatus" name="timeStatus">
+                  {{ select_options(dict('projectPlanTimeStatus'), app.request.query.get('timeStatus') ? app.request.query.get('timeStatus') : 'all') }}
+                </select>
+              </div>
+              <div class="form-group mlm">
+                <div class="ct-input-wrap">
+                  <input class="form-control project-plan-list__form-control" type="text" name="nameLike" value="{{ app.request.query.get('nameLike') ? app.request.query.get('nameLike') : '' }}" placeholder="{{ 'project_plan.name_like_placeholder'|trans }}">
+                  <i class="es-icon es-icon-search name-search"></i>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input id="enrollment" type="checkbox" name="enrollment" value="{{ app.request.query.get('enrollment') ? app.request.query.get('enrollment') : 1 }}" {% if app.request.query.get('enrollment') ==1 %}checked{% endif %}> {{ 'project_plan.detail.btn_apply_loading'|trans }}
+                  </label>
+                  <input id="categoryId" name="categoryId" hidden value="{{ app.request.query.get('categoryId')|default() }}">
+                </div>
+              </div>
+            </form>
+
+
+          </div>
+        </div>
+       {% else %}
+          <form class="project-plan-mobile-form clearfix" id="project-plan-search-form">
+            <ul class="nav nav-pills nav-sm nav-pills-mobile pull-left">
+              {% for key,item  in dict('projectPlanTimeStatus') %}
+                <li class="{% if app.request.query.get('timeStatus')|default('all') == key %} active{% endif %}">
+                  <a href="javascript:;" class="js-plan-state" data-val="{{key}}">{{item}}</a>
+                </li>
+              {% endfor %}
+            </ul>
+            <a class="pull-right link-dark mts" href="{{ path('study_center_my_task_training_list') }}">{{ 'project_plan.my_projects.look_over'|trans }}<i class="es-icon es-icon-chevronright"></i></a>
+            <input type="hidden" name="timeStatus" class="js-time-state">
+            <input id="categoryId" name="categoryId" hidden value="{{ app.request.query.get('categoryId')|default() }}">
+          </form>
+       {% endif %}
+        <div class="c-choice-row">
+          <div class="c-choice-row__label">{{ 'project_plan.classification'|trans }}</div>
+          <div class="c-choice-row__content">
+            <div class="c-choice-row__fill">
+              <ul class="nav ct-nav-link">
+                <li role="presentation" class="js-category"><a data-id="" {% if not app.request.query.get('categoryId')%}class="color-primary"{% endif %} href="javascript:;">{{ 'project_plan.btn.all_btn'|trans }}</a></li>
+                {% set categories = data('ProjectPlanCategories',{}) %}
+                  {% for category in categories %}
+                    <li role="presentation" class="js-category"><a data-id="{{category.id}}" {% if app.request.query.get('categoryId')|default(0) == category.id %}class="color-primary" {% endif %} href="javascript:;">{{category.name|trans}}</a></li>
+                  {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="project-plan-list__body">
+        {% for projectPlan in projectPlans %}
+          {% include 'project-plan/project-plan-item.html.twig'%}
+        {% endfor %}
+        {{ web_macro.paginator(paginator) }}
+    </div>
+
+  </section>
+
+{% endblock %}

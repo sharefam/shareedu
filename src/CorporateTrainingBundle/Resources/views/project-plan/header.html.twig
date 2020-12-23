@@ -1,0 +1,31 @@
+{% import "macro.html.twig" as web_macro %}
+{% do script(['corporatetrainingbundle/js/project-plan/header/index.js']) %}
+
+<div class="es-section course-manage-header clearfix">
+  <a href="{{ path('project_plan_detail',{id:projectPlan.id}) }}">
+    <img class="picture" src="{{ filepath(projectPlan['cover']['large']|default(''), 'project-plan.png') }}" />
+  </a>
+  <h1 class="title">
+    <a class="link-dark" href="{{ path('project_plan_detail',{id:projectPlan.id}) }}">{{ projectPlan.name|default()}}</a>
+    {% if projectPlan.status=='closed' %}
+      <span class="label label-danger ">{{'project_plan.status.closed'|trans}}</span>
+    {% elseif projectPlan.status=='unpublished' %}
+      <span class="label label-warning ">{{'project_plan.status.unpublished'|trans}}</span>
+    {% elseif projectPlan.status=='published' %}
+      <span class="label label-success ">{{'project_plan.status.published'|trans}}</span>
+    {% elseif projectPlan.status=='archived' %}
+      <span class="label label-warning ">{{'project_plan.status.archived'|trans}}</span>
+    {% endif %}
+  <div class="teachers">
+
+  </div>
+  </h1>
+  <div class="toolbar hidden-xs">
+
+    {% if projectPlan.status != 'published' %}
+      <div class="btn-group">
+        <button class="btn btn-success btn-sm projectplan-publish-btn" data-url="{{ path('project_plan_publish', {id:projectPlan.id}) }}" {% if projectPlan.status == 'archived' %}data-notify-title="{{ 'project_plan.manage_list.cancel_archive'|trans }}" {% else %}data-notify-title="{{ 'project_plan.manage_list.publish'|trans }}"{% endif %}>{% if projectPlan.status == 'archived' %}{{'project_plan.manage_list.cancel_archive'|trans}}{% else %}{{'project_plan.manage_list.publish'|trans}}{% endif %}</button>
+      </div>
+    {% endif %}
+  </div>
+</div>

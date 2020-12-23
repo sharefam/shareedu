@@ -1,0 +1,51 @@
+<div class="quick-navigation-wrapper">
+  <div class="ct-panel">
+    <div class="ct-panel-heading">
+      <span class="ct-panel-title">{{ 'admin.homepage.quick_entrance'|trans }}</span>
+    </div>
+    <div class="ct-panel-body ct-panel-body_row">
+      <div class="quick-nav-content clearfix">
+        {% for index, module in quickEntrances %}
+          {% for entrance in module.data %}
+            <div class="col col-lg-2 col-md-3 col-sm-6">
+              <a target="_blank" href="{{ permission_path(entrance) }}" >
+                <div class="item-container clearfix {{index}}" data-code={{entrance.code}}>
+                  <div class="content-item ct-item-width_60">
+                    <i class="ct-icon {{ entrance.icon|default() }} text-{{ entrance.icon|default() }}"></i>
+                  </div>
+                  <div class="content-item">
+                    <div class="content-item-title">
+                      {% if entrance.code == "admin_user_learn_data_overview" %}
+                        {{ 'admin.data_center.user_data'|trans }}
+                      {% elseif entrance.code == 'admin_data_center_teacher_overview' %}
+                        {{ 'admin.data_center.teacher_data'|trans }}
+                      {% elseif entrance.code == 'admin_data_center_project_plan_overview' %}
+                        {{ 'admin.data_center.project_plan_data'|trans }}
+                      {% elseif entrance.code == 'admin_data_online_course_data_overview' %}
+                        {{ 'admin.teacher.teaching_online_course_data'|trans }}
+                      {% else %}
+                        {{ entrance.name }}
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        {% endfor %}
+        <div class="col col-lg-2 col-md-3 col-sm-6">
+          <div class="item-container entrance clearfix">
+            <a href="#modal" data-toggle="modal" data-url="{{ path('admin_user_quick_entrance_choose') }}">
+              <div class="content-item">
+                <i class="glyphicon glyphicon-plus"></i>
+              </div>
+              <div class="content-item add-entrance">
+                <span>{{ 'admin.homepage.quick_entrance_edit'|trans }}</span>
+              </div>
+            </a>  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

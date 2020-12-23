@@ -1,0 +1,28 @@
+{% import "macro.html.twig" as web_macro %}
+
+<div class="panel panel-default aside-panel">
+  <div class="panel-heading">
+    <div class="panel-title">
+      {{'study_center.side_bar.news'|trans}}
+      <a class="more" href="{{ path('article_show') }}" target="_blank">
+        <i class="es-icon es-icon-morehoriz"></i>
+      </a>
+    </div>
+  </div>
+  <div class="panel-body">
+    {% if articles %}
+      {% for index, article in articles %}
+        <div class="text-ovf aside-new">
+          <span class="num">{{ index + 1}}</span>
+          <span class="mls va-mid">
+              <a class="link-gray" href="{{ path('article_detail', {id:article.id}) }}" title="{{ article.title|default() }}">{{ article.title|default() }}</a>
+          </span>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="empty">
+        {{ 'study_center.side_bar.news.empty'|trans }}
+      </div>
+    {% endif %}
+  </div>
+</div>

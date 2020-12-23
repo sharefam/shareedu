@@ -1,0 +1,52 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set modalSize = 'large' %}
+
+{% block title %}{{ 'project_plan.remove_member'|trans }}{% endblock %}
+
+{% do script(['corporatetrainingbundle/js/project-plan/member-delete/index.js']) %}
+
+{% block body %}
+  <form class="form-horizontal">
+    <div class="form-group">
+      <label class="col-md-4 control-label">{{ 'project_plan.member.nick_name'|trans }}</label>
+      <div class="col-md-8">
+        <p class="form-control-static">
+          {{ userProfile.truename|default(user.nickname) }}
+        </p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-md-4 control-label">{{ 'project_plan.member.department'|trans }}</label>
+      <div class="col-md-8">
+        <p class="form-control-static">
+          {% if orgs|default() %}
+            {% for org in orgs %}
+              {{ org.name|default() }}
+            {% endfor %}
+          {% endif %}
+        </p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-md-4 control-label">{{ 'project_plan.member.post'|trans }}</label>
+      <div class="col-md-8">
+        <p class="form-control-static">
+          {{ post.name|default('project_plan.member.post_empty'|trans) }}
+        </p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-3"></div>
+      <label class="col-md-9">{{ 'project_plan.member.remove_info'|trans }}</label>
+    </div>
+
+  </form>
+{% endblock %}
+{% block footer %}
+  <button type="button" id="member-delete" class="btn btn-primary pull-right" data-notify-title="{{ 'project_plan.remove_member'|trans }}" data-url="{{ path('project_plan_member_remove',{id:projectMember.id}) }}">{{'project_plan.member.remove'|trans}}</button>
+  <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{ 'project_plan.btn.cancel_btn'|trans }}</button>
+{% endblock %}

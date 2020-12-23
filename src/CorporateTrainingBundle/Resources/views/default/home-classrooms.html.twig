@@ -1,0 +1,87 @@
+{# 公共专题 #}
+{% if is_mobile_client() %} 
+  {% include "default/home-classrooms-mobile.html.twig" %}
+{% else %}
+<section class="o-home-sec js-common-classroom">
+  <div class="container">
+    <div class="o-home-sec__hd">
+      <div class="o-home-sec__title">{{config.title|default(config.defaultTitle|trans)}}</div>
+      <div class="o-home-sec__tab-wrap visible-lg visible-md">
+        <div class="o-home-sec__tab nav-btn-tab js-tab-link-wrap clearfix">
+          <ul class="nav nav-tabs nav-tabs_home" role="tablist">
+            <li class="js-tab-link" role="presentation"><a href="javascript:;">{{'homepage.classroom.tab_all'|trans}}</a></li>
+            {% set categories = data('Categories', {'group':'classroom', 'parentId': 0}) %}
+            {% if categories %}
+              {% for category in categories %}
+                  {% if loop.index<4 %}
+                      <li class="js-tab-link" role="presentation"><a href="javascript:;">{{category.name|trans|plain_text(10)}}</a></li>
+                  {% endif %}
+              {% endfor %}
+            {% endif %}
+          </ul>
+          <ul class="nav navbar-nav o-home_more">
+            {% if categories and count(categories) >3 %}
+              <li class="nav-more nav-hover">
+                  <a href="javascript:;">
+                    <i class="es-icon es-icon-morehoriz"></i>
+                  </a>
+                  <ul class="dropdown-menu" role="menu">
+                    {% for category in categories %}
+                      {% if loop.index>3 %}
+                        <li><a href="{{ path('classroom_explore', {category:category.code}) }}">{{category.name|trans|plain_text(10)}}</a></li>
+                      {% endif %}
+                    {% endfor %}
+                  </ul>
+                </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+      <a class="o-home-sec__more" href="{{ path('classroom_explore') }}">{{ 'homepage.classroom.link_more'|trans }} <i class="es-icon es-icon-chevronright"></i></a>
+    </div>
+    <div class="o-home-sec__bd">
+      <div class="row js-tab-block-wrap">
+        <div class="tab-block js-tab-sec is-active">
+          {% set classrooms = data('RecommendPublicClassrooms',{'count':config.count|default(4)})%}
+          {% set count= count(classrooms)%}
+          {% for classroom in classrooms %}
+            <div class="col-md-6">
+              {% include 'default/widgets/ct-home-classroom.html.twig' with { classroom: classroom } %}
+            </div>
+          {% endfor %}
+          {% if count < 4 %}
+            {% for i in 1..(4 - count) %}
+              <div class="col-md-6 visible-lg blank-img">
+                <img class="img-responsive mbl" src="{{ asset('static-dist/corporatetrainingbundle/img/theme_def_pos@2x.png')}}">
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+
+        {% set length = count(categories) %}
+        {% if length > 0 %}
+          {% for i in 0..(length - 1) %}
+            <div class="tab-block js-tab-sec hidden-xs">
+              {% set classrooms = data('RecommendPublicClassrooms',{'count':config.count|default(4), categoryId:categories[i].id})%}
+              {% set count= count(classrooms)%}
+              {% for classroom in classrooms %}
+                <div class="col-md-6">
+                  {% include 'default/widgets/ct-home-classroom.html.twig' with { classroom: classroom } %}
+                </div>
+              {% endfor %}
+              {% if count < 4 %}
+                {% for i in 1..(4 - count) %}
+                  <div class="col-md-6 visible-lg blank-img">
+                    <img class="img-responsive mbl" src="{{ asset('static-dist/corporatetrainingbundle/img/theme_def_pos@2x.png')}}">
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </div>
+          {% endfor %}
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}

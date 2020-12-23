@@ -1,0 +1,41 @@
+{% extends 'layout.html.twig' %}
+
+{% do script(['libs/jquery-validation.js','corporatetrainingbundle/js/offline-activity/sign-in/index.js']) %}
+
+{# 签到页面 #}
+
+{% set bodyClass = "sign-in-body" %}
+{% block body %}
+
+  {% block header %}
+  {% endblock %}
+
+  {% block full_content %}
+    {% block top_content %}{% endblock %}
+    <section class="sign-in-section">
+      {% if setting('site.loginLogo') %}
+        <div class="login-logo-wrap text-center">
+          <img class="login-logo" src="{{ filepath('../' ~ setting('site.loginLogo'),'') }}">
+        </div>
+      {% else %}
+        <div class="login-logo-wrap text-center">
+          <img class="login-logo" src="/assets/img/logo/login_logo.png">
+        </div>
+      {% endif %}
+      <form class="form-vertical" id="offline-sign-in-form" action="{{ path('offline_activity_sign_in',{activityId:offlineActivity.id}) }}" method="post">
+        <div class="form-group sign-in-wrap">
+          <input class="form-control sign-in-validate-input js-sign-in" type="text" name="field" placeholder="{{ 'offline_activity.sign_in_placeholder'|trans }}">
+        </div>
+        <div class="form-group">
+          <button id="sign-in-btn" class="btn btn-primary btn-lg btn-block bor-no sign-in-btn" type="submit">{{'offline_activity.sign_in'|trans}}</button>
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+      </form>
+    </section>
+    {% block bottom_content %}{% endblock %}
+  {% endblock %}
+
+  {% block footer %}
+  {% endblock %}
+{% endblock %}
+

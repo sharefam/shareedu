@@ -1,0 +1,54 @@
+<div class="aside-department-list clearfix">
+  <div class="col col-sm-6 col-md-6 col-lg-3">
+    <div class="aside-department-col">
+      {% for rank in studyRanks|slice(0,5) %}
+          {% if loop.index < 4 %}
+            {% include 'admin/data/user-learn/study-rank-list-top.html.twig' with rank %}
+          {% else %}
+             {% include 'admin/data/user-learn/study-rank-list.html.twig' with {'rank' : rank, 'num': 0} %}
+          {% endif %}
+      {% endfor %}
+      {% if (5 - studyRanks|slice(0, 5)|length) > 0 %}
+        {% for rank in 1..(5 - studyRanks|slice(0,5)|length) %}
+          {% include 'admin/data/user-learn/study-rank-empty.html.twig' %}
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+  <div class="col col-sm-6 col-md-6 col-lg-3">
+    <div class="aside-department-col">
+      {% for rank in studyRanks|slice(5,5) %}
+        {% include 'admin/data/user-learn/study-rank-list.html.twig' with {'rank' : rank, 'num': 5} %}
+      {% endfor %}
+      {% if (5 - studyRanks|slice(5,5)|length) > 0 %}
+        {% for rank in 1..(5 - studyRanks|slice(5,5)|length) %}
+          {% include 'admin/data/user-learn/study-rank-empty.html.twig' %}
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+  <div class="col col-sm-6 col-md-6 col-lg-3">
+    <div class="aside-department-col aside-department-col_border">
+      {% for rank in studyRanks|slice(10, 5) %}
+        {% include 'admin/data/user-learn/study-rank-list.html.twig' with {'rank' : rank, 'num': 10} %}
+      {% endfor %}
+      {% if (5 - studyRanks|slice(10, 5)|length) > 0 %}
+        {% for rank in 1..(5 - studyRanks|slice(10,5)|length) %}
+          {% include 'admin/data/user-learn/study-rank-empty.html.twig' %}
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+  <div class="col col-sm-6 col-md-6 col-lg-3">
+    <div class="aside-department-col aside-department-col_border">
+      {% for rank in studyRanks|slice(15,5) %}
+        {% include 'admin/data/user-learn/study-rank-list.html.twig' with {'rank' : rank, 'num': 15} %}
+      {% endfor %}
+      {% if (5 - studyRanks|slice(15,5)|length) > 0 %}
+        {% for rank in 1..(5 - studyRanks|slice(15,5)|length) %}
+          {% include 'admin/data/user-learn/study-rank-empty.html.twig' %}
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</div>

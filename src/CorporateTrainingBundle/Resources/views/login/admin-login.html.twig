@@ -1,0 +1,32 @@
+{% extends 'layout.html.twig' %}
+{% do script(['libs/jquery-validation.js','corporatetrainingbundle/js/login/index.js'])%}
+
+{% block body %}    
+  <div class="admin-set">
+    <div class="admin-set__head">
+      <div class="admin-set__title">
+        {{ 'admin_login.set_title'|trans }}
+      </div>
+      <div class="admin-set__tip">
+        {{ 'admin_login.set_tip'|trans }}
+      </div>
+      <div class="admin-set__line"></div>
+    </div>
+    <div class="admin-set__body">
+      <form class="form-horizontal" id="change-password-form" action="{{ path('change_password') }}" method="post">
+        <div class="form-group">
+          <div class="hidden"><label class="control-label" for="newPassword"></label></div>
+          <div class="controls"><input class="form-control" id="newPassword" type="password" name="newPassword" required placeholder="{{ 'admin_login.set.new_password.placeholder'|trans }}"></div>
+        </div>
+        <div class="form-group">
+          <div class="hidden"><label class="control-label" for="confirmPassword"></label></div>
+          <div class="controls"><input class="form-control" type="password" name="confirmPassword" required placeholder="{{ 'admin_login.set.confirm_password.placeholder'|trans }}"></div>
+        </div>
+        <div class="admin-set__next-wrap">
+          <a class="ct-btn ct-btn-primary admin-set__next" type="submit">下一步</a>
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+      </form>
+    </div>
+  </div>
+{% endblock %}

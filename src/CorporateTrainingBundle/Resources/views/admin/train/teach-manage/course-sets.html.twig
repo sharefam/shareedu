@@ -1,0 +1,140 @@
+{% extends 'admin/layout.html.twig' %}
+{% do script(['libs/jquery-validation.js','corporatetrainingbundle/js/admin/train/index.js'])%}
+
+{% set menu = 'admin_train_teach_manage_my_teaching_courses' %}
+{% import "common/data-dict-macro.html.twig" as dict_macro %}
+
+{% block main %}
+  {% include 'CorporateTrainingBundle::admin/train/teach-manage/course-set-tab.html.twig' %}
+  <div class="ct-well form-inline clearfix ct-mbl">
+    <div class="form-group plt">
+      <a class="btn btn-success" target="_blank" href="{{ path('course_set_manage_create') }}">
+        <span class="es-icon es-icon-anonymous-iconfont"></span>{{'my.teaching.course_set.create_btn'|trans}}
+      </a>
+    </div>
+  </div>
+  <table class="table table-striped" id="course-table" style="word-break:break-all;">
+    <thead>
+      <tr>
+        <th width="35%">{{ 'my.teaching.course_set.title'|trans }}</th>
+        <th width="15%">{{ 'my.teaching.course_set.reviewing'|trans }}</th>
+        <th width="15%">{{ 'my.teaching.course_set.discussion'|trans }}</th>
+        {% if filter == 'classroom' %}
+          {% set locale = app.request.locale %}
+          {% set classroomName = (locale and 'en' == locale) ? 'Topic' : get_classroom_name() %}
+          <th width="15%">{{ 'my.teaching.course_set.belong_classroom'|trans({'%classroom%':classroomName}) }}</th>
+        {% else %}
+          <th width="15%">
+            {{ 'site.default.student'|trans }}{{ 'site.data.count'|trans }}</th>
+        {% endif %}
+        {% if is_plugin_installed('Survey') %}
+          <th>{{ 'teaching.course.survey'|trans }}</th>
+        {% endif %}
+        <th width="10%">{{ 'teaching.course.operation'|trans }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for courseSet in courseSets %}
+        <tr class="course-table__row">
+          <td>
+            <a class="pull-left mrm link-primary" target="_blank" href="{{ path('course_show',{id: courseSet.defaultCourseId}) }}">
+              <img class="course-picture" src="{{ filepath(course_set_cover(courseSet, 'middle'), 'courseSet.png') }}" alt="{{ courseSet.title }}" width="100">
+            </a>
+            <div class="mts">
+              {% if courseSet.status == 'published' %}
+                <a class="link-primary" target="_blank" href="{{ path('course_show',{id: courseSet.defaultCourseId}) }}">{{ courseSet.title }}</a>
+              {% else %}
+                <a class="link-primary" target="_blank" href="{{ path('course_show', {id: courseSet.defaultCourseId, previewAs: 'member'}) }}">{{ courseSet.title }}</a>
+              {% endif %}
+              <br/>
+              {% if courseSet.courseNum > 1 %}
+                <a href="{{ path('course_set_manage_courses', {courseSetId: courseSet.id}) }}">
+                  <span class="label label-warning mr5">{{ 'my.teaching.course_set.courseSetCount'|trans({'%courseSetCount%': courseSet.courseNum}) }}</span>
+                </a>
+              {% endif %}
+            </div>
+            <div class="mts">
+              {% if courseSet.type == 'live' %}
+                <span class="label label-success live-label mr5">{{ 'my.teaching.course_set.live_label'|trans }}</span>
+              {% endif %}
+              {{ dict_macro.courseStatus( courseSet.status) }}
+            </div>
+          </td>
+          <td>
+            <div class="mts">
+              <span class="course-set__num">{{ 'my.teaching.course_set.testpaper'|trans }}：{{ courseSet.testpaperNum['reviewing']|default(0) }}</span>
+              <a href="{{path('course_manage_testpaper_check_list',{id: courseSet.defaultCourseId})}}" target="_blank" class="course-set-tip link-primary" style="display: none;">{{ 'my.teaching.course_set.testpaper'|trans }}：{{ courseSet.testpaperNum['reviewing']|default(0) }}</a>
+              <br>
+              <span class="course-set__num">{{ 'my.teaching.course_set.homework'|trans }}：{{ courseSet.homeworkNum['reviewing']|default(0) }}</span>
+              <a href="{{path('course_manage_homework_check_list',{id: courseSet.defaultCourseId})}}" target="_blank" class="course-set-tip link-primary" style="display: none;">{{ 'my.teaching.course_set.homework'|trans }}：{{ courseSet.homeworkNum['reviewing']|default(0) }}</a>
+            </div>
+          </td>
+          <td>
+            <div class="mts">
+              <span class="course-set__num">{{ 'my.teaching.course_set.question'|trans }}：{{ courseSet.questionNum|default(0) }}</span>
+              <a href="{{ path('my_course_show', {id: courseSet.defaultCourseId, 'tab': 'threads'}) }}" target="_blank" class="course-set-tip link-primary" style="display: none;">{{ 'my.teaching.course_set.question'|trans }}：{{ courseSet.questionNum|default(0) }}</a>
+              <br>
+              <span class="course-set__num">{{ 'my.teaching.course_set.discussion'|trans }}：{{ courseSet.discussionNum|default(0) }}</span>
+              <a href="{{ path('my_course_show', {id: courseSet.defaultCourseId, 'tab': 'threads'}) }}" target="_blank" class="course-set-tip link-primary" style="display: none;">{{ 'my.teaching.course_set.discussion'|trans }}：{{ courseSet.discussionNum|default(0) }}</a>
+            </div>
+          </td>
+          {% if filter == 'classroom' %}
+            <td>
+              {% set classroom = classrooms[courseSet.id] | default(null) %}
+              <div class="mts ptm">
+                {% if classroom %}
+                  <a class="link-primary" href="{{path('classroom_show',{id:classroom.classroomId})}}" target="_blank">{{classroom.classroomTitle}}</a>
+                {% else %}
+                  {{'my.teaching.course_set.classrooms_not_found_label'|trans}}
+                {% endif %}
+              </div>
+            </td>
+          {% else %}
+            <td>
+              <div class="mts ptm">
+                <span class="course-set__num">{{ courseSet.studentNum }}</span>
+                <a href="{{path('course_set_manage_course_students',{courseSetId: courseSet.id,courseId:courseSet.defaultCourseId})}}" class="course-set-tip link-primary" target="_blank" style="display: none;">{{ courseSet.studentNum }}</a>
+              </div>
+            </td>
+          {% endif %}
+          {% if is_plugin_installed('Survey') %}
+            <td>
+              <div class="mts ptm">
+                <span class="course-set__num">
+                  {% if courseSet.surveyScore | default(0) %}{{ courseSet.surveyScore }}
+                  {% else  %}--{% endif %}/5.00</span>
+                <a href="{{ path('course_teacher_evaluate_list', {id: courseSet.id}) }}" target="_blank" class="course-set-tip link-primary" style="display: none;">{{ 'my_traching.course.survey'|trans }}</a>
+              </div>
+            </td>
+          {% endif %}
+
+          <td>
+            <div class="mts ptm">
+              <a class="mr10 link-primary" target="_blank" href="{{ path('course_set_manage_base', {id: courseSet.id}) }}">
+                {{ 'course.teaching_plan.manage_btn'|trans }}
+              </a>
+            </div>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td class="text-center" colspan="20">
+            <div class="empty">
+              <a class="link-primary" href="{{ path('course_set_manage_create') }}" target="_blank">
+                {% if filter | default('normal') == 'live' %}
+                  {{ 'my.teaching.course_set.live_empty_hint'|trans }}
+                {% else %}
+                  {{ 'my.teaching.course_set.empty_hint'|trans }}
+                {% endif %}
+              </a>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <nav class="text-center">
+    {{ admin_macro.paginator(paginator) }}
+  </nav>
+
+{% endblock %}

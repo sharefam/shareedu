@@ -1,0 +1,36 @@
+{% extends 'project-plan/layout.html.twig' %}
+
+{% block title %}{{ 'project_plan.preparation.cover.set_picture'|trans }} - {{ parent() }}{% endblock %}
+{% set tab_nav = 'preparation' %}
+{% set side_nav = 'cover' %}
+{% do script(['corporatetrainingbundle/js/project-plan/cover-crop/index.js']) %}
+{% set token = upload_token('tmp', 'image') %}
+{% block main %}
+  <div class="cd-main__heading">
+    <div class="cd-main__title">
+      {{ 'project_plan.preparation.cover.set_picture'|trans }}
+    </div>
+  </div>
+  <div id="project-plan-picture-crop-form" class="cd-main__body">
+    <div class="form-group clearfix">
+      <div class="col-md-offset-2 col-md-8 controls">
+        <img class="img-responsive" src="{{ filepath(pictureUrl) }}"
+             id="project-plan-picture-crop"
+             width="{{scaledSize.width}}" height="{{scaledSize.height}}" data-natural-width="{{ naturalSize.width }}" data-natural-height="{{ naturalSize.height }}" />
+        <div class="help-block">{{'project_plan.preparation.cover.set_picture_tips'|trans}}</div>
+      </div>
+    </div>
+
+    <div class="form-group clearfix">
+      <div class="col-md-offset-2 col-md-8 controls">
+        <button class="btn btn-fat btn-primary upload-picture-btn"
+                data-url="{{path('project_plan_manage_cover_crop', {id: projectPlan.id})}}"
+                data-goto-url="{{path('project_plan_manage_cover',{id: projectPlan.id})}}"
+                id="upload-picture-btn" data-loading-text="{{'project_plan.btn.save_loading_btn'|trans}}">{{'project_plan.btn.save_btn'|trans}}</button>
+        <a href="javascript:;" class="go-back btn btn-link">{{'project_plan.preparation.cover.again_select_picture'|trans}}</a>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+

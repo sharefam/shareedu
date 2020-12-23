@@ -1,0 +1,14 @@
+{% if syncSetting.enable | default(0) %}
+  {% if syncSetting.syncTime | default(0) %}
+    <span>上次同步：{{ syncSetting.syncTime|default(0)|date('Y-m-d H:i:s') }}</span>{% endif %}
+  {% if syncSetting.times | default(0) <= 0 %}
+    <a class="btn btn-success ct-mrm" data-url="{{ path('admin_org_sync_department') }}" data-toggle="modal" data-target="#modal">{{ 'admin.org_manage.btn.sync_department_btn'|trans }}</a>
+  {% else %}
+    <a class="btn btn-success ct-mrm sync-department-from" data-loading-text="{{'admin.org_manage.btn.sync_department_btn_loading'|trans}}" data-url="{{ path('admin_org_sync_department_from') }}">{{ 'admin.org_manage.btn.sync_btn'|trans }}</a>
+  {% endif %}
+{% else %}
+  <a class="btn btn-success  ct-mrm" data-toggle="modal" data-target="#modal" data-url="{{ path('importer_index', {type: 'org'}) }}">{{'admin.org_manage.btn.inporter_btn'|trans}}</a>
+{% endif %}
+{% if manageOrgs | length == 1 %}
+  <a class="btn btn-success ct-mrm" href="{{ path('exporter_export', {type: 'org_list', parentId: app.request.query.get('orgId') ? app.request.query.get('orgId') : org.id}) }}">{{'admin.org_manage.btn.exporter_btn'|trans}}</a>
+{% endif %}

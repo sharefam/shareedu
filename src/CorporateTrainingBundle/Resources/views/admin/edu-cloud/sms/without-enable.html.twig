@@ -1,0 +1,44 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_edu_cloud_sms_overview' %}
+{% block tabs %}{% endblock %}
+{% block main %}
+<div class="panel panel-default notice-panel">
+  <div class="panel-body panel-body-bg">
+    {{ web_macro.flash_messages() }}
+    <i class="es-icon es-icon-infooutline text-primary"></i>
+    <div class="text-md start-msg mbl">{{'admin.edu_cloud.edu_sms.no_enabled_sms'|trans}}</div>
+    {% if overview.isBuy == false %}
+      <div class="color-gray">{{'admin.edu_cloud.edu_sms.start_enabled_sms'|trans({'%smsBuyUrl%': path('admin_cloud_buy', {type:'sms'}), '%smsShowUrl%': path('admin_cloud_show', {type:'sms'})})|raw}}</div>
+    {% endif %}
+    <form class="form-horizontal notice-desc-mb" role="form" method="post" action="{{ path('admin_edu_cloud_sms_status') }}">
+      <button type="submit" class="btn btn-primary btn-lg" {% if overview.isBuy == false %}disabled="disabled"{% endif %} name="sms-open">{{'admin.edu_cloud.edu_sms.start_enabled_sms_btn'|trans}}</button>
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    </form>
+  </div>
+</div>
+ <ul class="edu-cloud-intro row clearfix">
+    <li class="list-item col-md-6">
+     <div class="list-item-container">
+       <a class="list-item-pic" href="javascript:;">
+         <img src="/assets/img/backstage/cloud-note/import.png">
+       </a>
+       <div class="list-item-txt">
+         <div class="list-item-txt_title">重要讯息， 即刻送达</div>
+         <div class="list-item-txt_desc">采用106专用通道，保证5秒响应，让员工第一时间掌握重要的教学资讯。</div>
+       </div>
+     </div>
+    </li>
+    <li class="list-item col-md-6">
+     <div class="list-item-container">
+       <a class="list-item-pic" href="javascript:;">
+         <img src="/assets/img/backstage/cloud-note/tem.png">
+       </a>
+       <div class="list-item-txt">
+         <div class="list-item-txt_title">短信模板，应有尽有</div>
+         <div class="list-item-txt_desc">12种短信通知场景，免开发，免运维，即开即用。</div>
+       </div>
+     </div>
+    </li>  
+  </ul>
+{% endblock %}

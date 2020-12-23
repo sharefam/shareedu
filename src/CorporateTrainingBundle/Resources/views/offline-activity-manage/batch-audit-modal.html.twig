@@ -1,0 +1,21 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% do script(['corporatetrainingbundle/js/offline-activity-manage/batch-audit-modal/index.js']) %}
+
+{% block title %}{{'offline_activity.enrollment.batch_audit'|trans}}{% endblock %}
+
+{% block body %}
+  <form action="">
+    <div class="form-group">
+      <div class="col-md-2"></div>
+    </div>
+    <div class="col-md-7">
+      {{ 'offline_activity.enrollment.tips'|trans|raw }}
+    </div>
+  </form>
+{% endblock %}
+
+{% block footer %}
+  <button class="btn btn-primary" data-url="{{ path('offline_activity_verify_batch_pass') }}" id="batch-pass-btn" type="button">{{'offline_activity.enrollment.batch_pass'|trans}}</button>
+  <button class="btn btn-danger" data-url="{{ path('offline_activity_verify_batch_reject') }}" id="batch-reject-btn" type="button">{{'offline_activity.enrollment.batch_reject'|trans}}</button>
+{% endblock %}

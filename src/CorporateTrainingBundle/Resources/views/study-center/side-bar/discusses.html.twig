@@ -1,0 +1,52 @@
+{% import "macro.html.twig" as web_macro %}
+{% if threads|default(false) %}
+
+<div class="panel panel-default aside-panel">
+  <div class="panel-heading">
+    <div class="panel-title">
+      {{'study_center.side_bar.discusses'|trans}}
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="aside-discuss">
+    {% for thread in threads %}
+      <div class="aside-discuss-item clearfix">
+        {% if thread.type == 'question'%}
+          <i class="es-icon es-icon-help color-danger pull-left" data-toggle="tooltip" data-placement="top" title="{{'study_center.side_bar.discusses.question'|trans}}"></i>
+        {% endif %}
+        {% if thread.type == 'event'%}
+          <i class="es-icon es-icon-locationcircle color-primary pull-left" data-toggle="tooltip" data-placement="top" title="{{'study_center.side_bar.discusses.event'|trans}}"></i>
+        {% endif %}
+        {% if thread.type == 'discussion' %}
+          <i class="es-icon es-icon-chatcircle color-info pull-left" data-toggle="tooltip" data-placement="top" title="{{'study_center.side_bar.discusses.discussion'|trans}}"></i>
+        {% endif %}
+        <div class="aside-discuss-item-body">
+          <a class="link-dark aside-discuss-item-title text-ovf" target="_blank" href="{{ path('course_thread_show', {courseId:thread.courseId, threadId:thread.id}) }}">{{ thread.title }}
+          </a>
+          <div class="mtm">
+            {% if thread.lastPostUserId|default(0) %}
+              {% set profile = data('UserProfile', {userId: thread.lastPostUserId}) %}
+            {% endif %}
+            {% if thread.postNum > 0 %}
+              {% set poster = users[thread.lastPostUserId] %}
+              <span class="gray-medium ft-xsm">
+                {{ profile.truename|default(poster.nickname) }} {{'study_center.side_bar.discusses.update'|trans}}
+              </span>
+            {% else %}
+              {% if thread.userId|default(0) %}
+                {% set profile = data('UserProfile', {userId: thread.userId}) %}
+              {% endif %}
+              {% set author = users[thread.userId] %}
+              <span class="gray-medium ft-xsm">
+                {{ profile.truename|default(author.nickname) }} {{'study_center.side_bar.discusses.publish'|trans}}
+              </span>
+            {% endif %}
+            {% if thread.postNum <= 0 %}{% endif %}<span class="gray-medium ft-xsm">{{ thread.lastPostTime|smart_time }}</span>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+  </div>
+</div>
+{% else %}{% endif %}

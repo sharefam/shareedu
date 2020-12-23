@@ -1,0 +1,90 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% do script(['libs/jquery-validation.js','corporatetrainingbundle/js/admin/train/index.js'])%}
+
+{% set menu = 'admin_train_teach_manage_my_teaching_classrooms' %}
+{% import "common/data-dict-macro.html.twig" as dict_macro %}
+{% set locale = app.request.locale %}
+{% set classroomName = (locale and 'en' == locale) ? 'Topic' : get_classroom_name() %}
+
+{% block main %}
+  <table class="table table-striped" id="course-table" style="word-break:break-all;">
+    <thead>
+    <tr>
+      <th width="35%">{{ classroomName }}</th>
+      <th width="20%">{{ 'teaching.classroom.reviewing'|trans }}</th>
+      <th width="20%">{{ 'classroom.course_num'|trans }}</th>
+      <th width="10%">{{ 'classroom.student_num'|trans }}</th>
+      <th width="15%">{{ 'teaching.classroom.operation'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if classrooms %}
+      {% for classroom in classrooms %}
+        <tr class="course-table__row">
+          <td>
+            <a class="pull-left mrm link-primary" href="{{ path('classroom_show', {id:classroom.id}) }}">
+              <img class="course-picture" src="{{ filepath(classroom.middlePicture, 'classroom.png') }}"
+                   alt="{{ classroom.title }}" width="100">
+            </a>
+            <div class="mts">
+              <a class="link-primary" href="{{ path('classroom_show',{id:classroom.id}) }}">{{ classroom.title }}</a>
+              <br/>
+            </div>
+            <div class="mts">
+              {% if classroom.status == "draft" %}
+                <span class="color-gray">{{'classroom.status.unpublish'|trans}}</span>
+              {% elseif classroom.status == 'published' %}
+                <span class="color-success">{{ 'classroom.published'|trans }}</span>
+              {% elseif classroom.status == "closed" %}
+                <span class="color-danger">{{'classroom.status.closed'|trans}}</span>
+              {% endif %}
+            </div>
+          </td>
+          <td>
+            <div class="mtm">
+              <span class="course-set__num">{{ 'my.teaching.course_set.testpaper'|trans }}：{{ classroom.testpaperNum['reviewing']|default(0) }}</span>
+              <a href="{{path('classroom_manage_testpaper', {id:classroom.id})}}" target="_blank" class="course-set-tip link-primary">{{ 'my.teaching.course_set.testpaper'|trans }}：{{ classroom.testpaperNum['reviewing']|default(0) }}</a>
+              <br>
+              <span class="course-set__num">{{ 'my.teaching.course_set.homework'|trans }}：{{ classroom.homeworkNum['reviewing']|default(0) }}</span>
+              <a href="{{path('classroom_manage_homework', {id:classroom.id})}}" target="_blank" class="course-set-tip link-primary">{{ 'my.teaching.course_set.homework'|trans }}：{{ classroom.homeworkNum['reviewing']|default(0) }}</a>
+            </div>
+          </td>
+          <td>
+            <div class="mts ptm"> 
+              <span class="course-set__num">{{ classroom.coursesCount }}</span>
+              {% if classroom_permit(classroom.id, 'Manage') or is_granted('ROLE_ADMIN') %}
+                <a href="{{path('classroom_manage_courses', {id:classroom.id})}}" class="course-set-tip link-primary" target="_blank">{{ classroom.coursesCount }}</a>
+              {% endif %}
+            </div>
+          </td>
+          <td>
+            <div class="mts ptm">
+                <span class="course-set__num">{{ classroom.studentCount }}</span>
+                {% if classroom_permit(classroom.id, 'Manage') or is_granted('ROLE_ADMIN') %}
+                  <a href="{{path('classroom_manage_students', {id:classroom.id})}}" class="course-set-tip link-primary" target="_blank">{{ classroom.studentCount }}</a>
+                {% endif %}
+            </div>
+          </td>
+          <td>
+            <div class="mts ptm">
+              <a class="mr10 link-primary" target="_blank" href="{% if classroom_permit(classroom.id, 'Manage') or is_granted('ROLE_ADMIN') %}{{ path('classroom_manage', {id: classroom.id}) }}{% else %}{{ path('classroom_manage_testpaper', {id:classroom.id,status:'reviewing'}) }}{% endif %}">{{ 'my.teaching.classroom.manage_btn'|trans({'%classroom%' : classroomName}) }}</a>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+    {% else %}
+      <tr>
+        <td class="text-center" colspan="20">
+          <div class="empty">
+            {{'site.datagrid.empty'|trans}}
+          </div>
+        </td>
+      </tr>
+    {% endif %}
+    </tbody>
+  </table>
+  <nav class="text-center">
+    {{ admin_macro.paginator(paginator) }}
+  </nav>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% do load_script('corporatetrainingbundle/controller/user-group-member/tbody') %}
+<li>
+    {% if userGroupMembers is empty %}
+        <div class="row empty">{{'admin.user_group.member.empty'|trans}}</div>
+    {% endif %}
+</li>
+
+{% for userGroupMember in userGroupMembers %}
+<li id="postGroup-{{ userGroupMember.id }}">
+    {% set user = data('UserProfile', {userId:userGroupMember.memberId}) %}
+    {% set org = data('Org', {id:userGroupMember.memberId}) %}
+    {% set post = data('Post', {postId:userGroupMember.memberId}) %}
+  <div class="row row-expand">
+    <div class="td col-md-3">
+      {% if userGroupMember.memberType == 'user' %}
+        {{ user.truename|default('- -') }}
+      {% elseif userGroupMember.memberType == 'org' %}
+        {{ org.name|default('- -') }}
+      {% else %}
+        {{ post.name|default('- -') }}
+      {% endif %}
+    </div>
+    <div class="td col-md-3">
+        {% if userGroupMember.memberType == 'user' %}
+            {{ 'admin.user_group.member.user'|trans }}
+        {% elseif userGroupMember.memberType == 'org' %}
+            {{ 'admin.user_group.member.org'|trans }}
+        {% else %}
+            {{ 'admin.user_group.member.post'|trans }}
+        {% endif %}
+    </div>
+    <div class="td col-md-3">
+        {% if userGroupMember.memberType == 'user' %}1
+        {% else %}
+            {{ userGroupMember.num|default('- -') }}
+        {% endif %}
+    </div>
+    <div class="td col-md-3 operation">
+      <a href="javascript:;" class="btn btn-default btn-sm js-delete-user-group-member" data-url="{{ path('admin_user_group_member_delete', {id:userGroupMember.id}) }}" data-id="postGroup-{{ userGroupMember.id }}"><i class="glyphicon glyphicon-trash"></i>{{'admin.user_group.member.btn.delete_btn'|trans}}</a>
+    </div>
+  </div>
+</li>
+{% endfor %}

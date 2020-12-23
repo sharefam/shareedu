@@ -1,0 +1,22 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{'offline_activity.management'|trans}} - {{ parent() }}{% endblock %}
+
+{% do script(['libs/jquery-intro.js','app/js/courseset-manage/index.js']) %}
+
+{% block content %}
+  {% block course_header %}
+    {{ render(controller('CorporateTrainingBundle:offlineActivity/offlineActivityManage:header', {offlineActivity:offlineActivity,manage: true})) }}
+  {% endblock %}
+  <div class="row">
+    <div class="col-md-3">
+      {{ render(controller('CorporateTrainingBundle:offlineActivity/offlineActivityManage:sidebar', {offlineActivityId:offlineActivity.id,sideNav: side_nav|default(null)})) }}
+    </div>
+    <div class="col-md-9">
+      {% block main %}{% endblock %}
+    </div>
+  </div>
+  {% endblock %}
+
+{% block bottom %}
+{% endblock %}

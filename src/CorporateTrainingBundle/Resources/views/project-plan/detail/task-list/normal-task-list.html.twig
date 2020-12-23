@@ -1,0 +1,33 @@
+<div class="course-detail-content">
+  <ul class="task-list task-list-md task-list-hover js-task-list-ul">
+    {% if courseItems|default() %}
+      {% for key, item in courseItems %}
+        {% if item.itemType == 'chapter' and item.type == 'chapter' %}
+          <li class="task-item task-item-chapter bg-gray-lighter js-task-chapter">
+            <i class="es-icon es-icon-menu left-menu"></i>
+            <a href="javascript:void(0);" class="title gray-dark">{{ 'project_plan.item.online_course.chapter_number'|trans({'%number%': item.number}) }}: {{ item.title }}</a>
+            <i class="right-menu es-icon es-icon-remove js-remove-icon"></i>
+          </li>
+        {% elseif item.itemType == 'chapter' and item.type == 'unit' %}
+          <li class="task-item task-item-part color-gray bg-gray-lighter">
+            <span class="title">{{ 'project_plan.item.online_course.task_number'|trans({'%number%': item.number}) }}: {{ item.title }}</span>
+          </li>
+        {% elseif item.itemType == 'task' %}
+          {% set task = item %}
+            {% set task_lock = (course.learnMode == 'lockMode') %}
+          {% set file = files[task.activity.mediaId] | default(null) %}
+          <li class="task-item task-content mouse-control" data-toggle="tooltip" data-placement="top" title="{% if task.result.status|default(null) == 'finish' and taskResult.status|default() %}{{'project_plan.finish_time'|trans}}:{{ taskResult.finishedTime|date('Y-m-d H:i') }}{% endif %}">
+            <i class="es-icon es-icon-undone-check color-gray left-menu"></i>
+            {% if course.status == 'published' and task.status == 'published' %}
+                  <a class="title">
+                    {{ 'course.catalogue.task_status.task'|trans({'%taskNumber%':taskIndex|default(task.number) ,'%taskTitle%':task.title}) }}
+                  </a>
+            {% endif %}
+          </li>
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      <div class="empty">{{'project_plan.empty'|trans}}</div>
+    {% endif %}
+  </ul>
+</div>

@@ -1,0 +1,49 @@
+{% if isFront|default() %}
+  {% do script(['libs/new-bootstrap-treeview.js', 'corporatetrainingbundle/js/treeview/index.js']) %}
+{% else %}
+  {% if modal == 'modal' %}
+    <script>app.load('corporatetrainingbundle/controller/tree-view/treeview')</script>
+  {% else %}
+    {% do load_script('corporatetrainingbundle/controller/tree-view/treeview') %}
+  {% endif %}
+{% endif %}
+
+
+  {% set user = app.user %}
+  {% set userOrgCodes = user.manageOrgCodes %}
+
+  {#默认用户所属部门取默认值使用带参则为userOrg管理范围部门取默认值#}
+  {% if userOrg|default() %}
+    {% set userOrgCodes = user.orgCodes %}
+  {% endif %}
+
+  {% set currentOrgTree = data('OrgTreeCurrentUser',{orgCodes: userOrgCodes }) %}
+  {% set flag = 1 %}
+  {% set requestOrgCodes = app.request.get('orgCodes')|default(0) %}
+  {% set currentOrgCode = app.request.get('orgCode')|default(userOrgCodes[0]) %}
+
+  {% if requestOrgCodes|default() %}
+    {% set currentOrgCodes = requestOrgCodes %}
+  {% endif %}
+
+  {% if orgCodes|default() %}
+    {% set currentOrgCodes = orgCodes %}
+  {% endif %}
+
+  {% set orgsString = data('OrgsStringByOrgCodes', {orgCodes: currentOrgCodes|default()}) %}
+<div id={{id}} class="tree-wrapper" data={{id}} data-id={{id}} data-width={{width}} data-flag={{flag}} >
+  <input type="hidden" value="{{arrTree}}" id="input-data-{{id}}">
+    <div id="input-check-node-{{id}}" class="form-control input-check-node" >
+      <div class='tag'>
+      <span>{{ orgsString.orgNamesString|default() }}</span>
+      </div>
+    </div>
+   <p id="help-block-{{id}}" class="help-block" style='display: none;font-size:14px'>{{ 'org_treeview_mutiple.tips'|trans }}</p>
+    <div id='search-wrapper-{{id}}' class='search-wrapper'>
+        <input id='input-search-{{id}}' type='text' class='form-control input-search' style='width:100%;display: none' autocomplete="off" placeholder='{{ 'org_treeview_mutiple.placeholder'|trans }}'>
+      <div id="treeview-checkable-{{id}}" class="treeview"></div>
+    </div>
+  <div id="checkable-output-{{id}}" class="checkable-output" style="display: none"></div>
+  <input type="hidden" value="{{ orgsString.orgCodesString|default() }}" class="treeview-val" name="{{ parameter }}">
+  <input type="hidden" value="{{ orgsString.orgIdsString|default() }}" class="treeview-val-ids">
+</div>

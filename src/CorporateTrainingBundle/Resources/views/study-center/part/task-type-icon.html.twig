@@ -1,0 +1,4 @@
+<span class="right-menu color-gray">
+  {% set meta = activity_meta(course.toLearnTask.type) %}
+  <i class="{{ meta.icon }} color-gray" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{'study_center.part.course_task'|trans({'%meta%': meta.name})  }}" data-container="body"></i>
+</span>

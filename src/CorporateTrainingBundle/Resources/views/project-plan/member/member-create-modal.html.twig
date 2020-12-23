@@ -1,0 +1,23 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set modalSize = 'large' %}
+
+{% block title %}{{ '添加成员'|trans }}{% endblock %}
+
+{% do script(['libs/select2.js','libs/jquery-validation.js','libs/bootstrap-datetimepicker.js', 'corporatetrainingbundle/js/project-plan/member/index.js']) %}
+
+{% block body %}
+<form id="projectplan-member-form" class="form-horizontal" method="post">
+  <div class="row">
+    <div class="col-md-6 controls">
+      <input type="text" id="training_member" class="select2-offscreen" tabindex="-1"
+             data-url="{{ path('project_plan_member_match') }}">
+      <input id="members" type="text" hidden name="trainingMembers">
+    </div>
+    <div class="col-md-6 controls">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+      <button type="button" id="member-submit" class="btn btn-primary" data-url="{{ path('project_plan_member_create',{id:id}) }}">{{'project_plan.btn.add_btn'|trans}}</button>
+    </div>
+  </div>
+</form>
+{% endblock %}

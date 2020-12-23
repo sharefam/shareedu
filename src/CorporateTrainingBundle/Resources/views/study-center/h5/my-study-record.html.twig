@@ -1,0 +1,72 @@
+{% extends 'layout.html.twig' %}
+{% set bodyClass = "h5-dashbord" %}
+{% do script(['corporatetrainingbundle/js/h5/dashbord/index.js']) %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+  <div class="h5-user-dashbord">
+    <div class="user-dashbord-top pos-rel">
+      <div class="user-dashbord-top__content clearfix">
+        <img class="user-dashbord-top__avatar pull-left" src="{{ filepath(app.user.largeAvatar, 'avatar.png') }}">
+        <div class="user-dashbord-top__info ct-mlm pull-left">
+            <div class="user-dashbord-top__name">{{ app.user.nickname}}</div>
+            <div class="user-dashbord-top__org">{{ orgNames }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="user-dashbord-middle">
+      <div class="user-dashbord-card">
+         <div class="user-dashbord-card__tabs">
+            <ul class="js-dashbord-tab">
+              <li class="active" data-type="current">{{ 'teaching_record.this_year'|trans }}</li>
+              <li data-type="last">{{ 'teaching_record.last_year'|trans }}</li>
+              <li data-type="history">{{ 'study_center.department_manage.study_record_historry'|trans }}</li> 
+            </ul>
+         </div>
+         <div class="user-dashbord-card__content">
+            <div class="dashbord-card-info">
+               <div class="dashbord-card-info__hd">{{ 'admin.data_center.user_data.online_learn_hours'|trans }}</div>
+               <div class="dashbord-card-info__bd"><span class="js-on-line">{{thisYearTime.onlineTime}}</span>{{ 'site.date.hour'|trans }}</div>
+            </div>
+            <div class="dashbord-card-info">
+               <div class="dashbord-card-info__hd">{{ 'admin.data_center.user_data.offline_learn_hours'|trans }}</div>
+               <div class="dashbord-card-info__bd"><span class="js-off-line">{{thisYearTime.offlineTime}}</span>{{ 'site.date.hour'|trans }}</div>
+            </div>
+         </div>
+      </div>
+    </div> 
+    <div class="user-dashbord-bottom">
+      <a href="{{path('study_record_project_plan', { userId: app.user.id}) }}" class="dashbord-list-item clearfix">
+        <div class="pull-left dashbord-list-item__l">
+          <i class="es-icon es-icon-learningrecord icon-txt"></i><span class="ct-mls">{{ 'study_record.project_plan'|trans }}</span>
+        </div>
+        <div class="pull-right dashbord-list-item__r">
+          <i class="es-icon es-icon-list"></i>
+        </div> 
+      </a> 
+      <a href="{{ path('study_record_offline_activity',{userId: app.user.id}) }}" class="dashbord-list-item clearfix">
+        <div class="pull-left dashbord-list-item__l">
+          <i class="es-icon es-icon-offlineactivities icon-txt"></i><span class="ct-mls">{{ 'my.department.data_report.offline_activity_record'|trans }}</span>
+        </div>
+        <div class="pull-right dashbord-list-item__r">
+          <i class="es-icon es-icon-list"></i>
+        </div>
+      </a> 
+      <a href="{{ path('study_record_statistics_overview',{userId: app.user.id}) }}" class="dashbord-list-item clearfix">
+        <div class="pull-left dashbord-list-item__l">
+          <i class="es-icon es-icon-data icon-txt"></i><span class="ct-mls">{{ 'study_record.online_course_learn_record'|trans }}</span>
+        </div>
+        <div class="pull-right dashbord-list-item__r">
+          <i class="es-icon es-icon-list"></i>
+        </div>        
+      </a> 
+    </div>
+
+    <div class="hidden js-current-year" data-on-line="{{thisYearTime.onlineTime}}" data-off-line="{{thisYearTime.offlineTime}}"></div>
+    <div class="hidden js-last-year" data-on-line="{{lastYearTime.onlineTime}}" data-off-line="{{lastYearTime.offlineTime}}"></div>
+    <div class="hidden js-history-year" data-on-line="{{totalTime.onlineTime}}" data-off-line="{{totalTime.offlineTime}}"></div>
+
+  </div>
+{% endblock %}

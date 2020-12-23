@@ -1,0 +1,47 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set modal_class = 'unit-addition-modal js-unit-addition-modal' %}
+
+{% do script(['libs/bootstrap-datetimepicker.js','libs/jquery-sortable.js', 'libs/select2.js', 'libs/jquery-validation.js', 'corporatetrainingbundle/js/project-plan/item/index.js']) %}
+
+{% block title %}
+  {{ 'project_plan.preparation.items.add_items'|trans }}
+{% endblock %}
+
+{% block body %}
+  <div class="unit-addition-select js-unit-addition-select">
+    <div class="unit-addition-select__body">
+      <div class="row">
+        {% for key, projectPlan in projectPlan_metas() %}
+          {% if key == 'exam' and not is_plugin_installed('Exam') %}
+              <div class="col-md-3">
+                <div data-toggle="popover" data-trigger="hover" data-container="body" data-placement="top" data-content="{{ 'project_plan.preparation.items.choose_exam_item_info'|trans }}">
+                <div class="unit-addition-select-item">
+                  <div class="unit-addition-select-item__head">
+                    <i class="{{ projectPlan.icon }}">
+                    </i>
+                  </div>
+                  <div class="unit-addition-select-item__body">
+                    {{ projectPlan.name|default()|trans }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% else %}
+            <div class="col-md-3">
+              <div class="unit-addition-select-item js-unit-addition-select-item" data-url="{{ path('project_plan_item_add', {id: id, type: key}) }}">
+                <div class="unit-addition-select-item__head">
+                  <i class="{{ projectPlan.icon }}">
+                  </i>
+                </div>
+                <div class="unit-addition-select-item__body">
+                  {{ projectPlan.name|default()|trans }}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

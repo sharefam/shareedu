@@ -1,0 +1,68 @@
+<li class="c-project-item-lesson">
+  <div class="c-project-item-lesson__head">
+    {% if examResult %}
+      <i class="c-project-item-lesson__icon es-icon es-icon-iccheckcircleblack24px color-primary left-menu"></i>
+    {% else %}
+      <i class="c-project-item-lesson__icon es-icon es-icon-undone-check color-gray left-menu"></i>
+    {% endif %}
+    <span class="gray-dark">{{ exam.name|default('') }}</span>
+    <div class="c-project-item-lesson__hover">
+      <div class="c-task-exam-item__r">
+        {% if member.status|default('') == 'finished' %}
+          {% if examResult.score >= exam.passScore %}
+            <span>{{ 'project_plan.member.score'|trans }}：<span class="color-success">{{ examResult.score|default(0) }}</span>/{{ testPaper.score|default(0) }}</span>
+            <span class="color-success">{{ 'project_plan.status.passed'|trans }}</span>
+          {% elseif examResult.score < exam.passScore %}
+            <span>{{ 'project_plan.member.score'|trans }}：<span class="color-danger">{{ examResult.score|default(0) }}</span>/{{ testPaper.score|default(0) }}</span>
+            <span class="color-danger">{{ 'project_plan.status.unpass'|trans }}</span>
+          {% endif %}
+          {% if exam.resitTimes > member.finishedCount or exam.resitTimes == 0 %}
+            <a class="{% if examResult.passStatus == 'unpassed' %}color-danger{% else %}color-success{% endif %}" href="{{ path('exam_show',{id:exam.id}) }}">，{{ 'project_plan.status.retake'|trans }}</a>
+            <a class="color-gray ct-mlm link-dark" href="{{ path('exam_result_show', {resultId: member.resultId}) }}" target="_blank">{{ 'project_plan.btn.show_result_btn'|trans }}</a>
+          {% else %}
+            <span class="color-gray ct-mlm link-dark">{{ 'project_plan.btn.show_result_btn'|trans }}</span>
+          {% endif %}
+        {% endif %}
+
+        {% if member.status|default('') == 'absent' %}
+          <span class="color-danger">{{ 'project_plan.status.missing_exam'|trans }}</span>
+        {% endif %}
+
+        {% if member.status|default('') == 'notStart' %}
+          {% if exam.startTime > currentTime %}
+            <span class="color-gray">{{ 'project_plan.status.unstart'|trans }}</span>
+          {% elseif currentTime < exam.endTime %}
+            <span class="color-gray link-dark">{{ 'project_plan.study_center.do_exam'|trans }}</span>
+          {% else %}
+            <span class="color-danger">{{ 'project_plan.status.missing_exam'|trans }}</span>
+          {% endif %}
+        {% endif %}
+
+        {% if member.status|default('') == 'doing' %}
+          <span class="color-gray link-dark">{{ 'project_plan.study_center.continue_exam'|trans }}</span>
+        {% endif %}
+
+        {% if member.status|default('') == 'reviewing' %}
+          <span class="color-gray">{{ 'project_plan.study_center.reviewing'|trans }}</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="c-project-item-lesson__body">
+    <div class="c-project-item-lesson__info">
+      <i class="es-icon es-icon-time mrs"></i>
+      {% if exam.startTime|default('') %}
+        {% if isSameDay %}
+          {{ exam.startTime|date('m-d H:i') }}-{{ exam.endTime|date('H:i') }}
+        {% else %}
+          {{ exam.startTime|date('m-d H:i') }}-{{ exam.endTime|date('m-d H:i') }}
+        {% endif %}
+      {% else %}
+        {{ 'project_plan.detail.item.time_empty_info'|trans}}
+      {% endif %}
+    </div>
+    <div class="c-project-item-lesson__info">
+      <i class="es-icon es-icon-location mrs"></i>{{'project_plan.online_exam'|trans}}
+    </div>
+  </div>
+</li>

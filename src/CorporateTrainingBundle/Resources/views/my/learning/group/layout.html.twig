@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+{% block title %}- {{ parent() }}{% endblock %}
+{% set bodyClass = 'group-page' %}
+
+{% block content %}
+  {% include 'my/learning/group/group-member-breadcrumb.html.twig' %}
+  {% block group_body %}
+    <div class="row">
+      <div class="col-md-9 group-main">
+        {% block group_main %}{% endblock %}
+      </div>
+      {% block group_side %}
+        {{ render(controller('CorporateTrainingBundle:Group:sidebar')) }}
+      {% endblock %}
+    </div>
+  {% endblock %}  
+{% endblock %}

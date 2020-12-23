@@ -1,0 +1,49 @@
+{% if offlineExam %}
+  {% set examResult = data('OfflineExamResult', {examId: offlineExam.id}) %}
+<div class="c-project-item__content">
+  <i class="c-project-item__icon es-icon es-icon-Offline_Exam"></i>
+  {{ offlineExam.title|default('') }}
+  <div class="c-project-item__hover">
+
+    <div class="ct-devider va-mid">
+      {% if offlineExam.startTime|default(0) %}
+        <div class="ct-devider__item">
+          <span class="c-project-item__head-info">
+            {% set isSameDay = is_same_day(offlineExam.startTime, offlineExam.endTime) %}
+            {% if isSameDay %}
+              {{ offlineExam.startTime|date('Y-m-d') }}
+            {% else %}
+              {{ offlineExam.startTime|date('Y-m-d') }} {{ 'project_plan.time_to'|trans }} {{ offlineExam.endTime|date('Y-m-d') }}
+            {% endif %}
+          </span>
+        </div>
+      {% endif %}
+
+      <div class="ct-devider__item">
+        <span class="c-project-item__head-info">
+          <span class="">{{ 'project_plan.member.score'|trans }}：</span>
+          {% if examResult.score|default(0) %}
+            {% if examResult.score >= offlineExam.passScore %}
+              <span class="color-success">{{ examResult.score|default(0) }}</span>
+            {% else %}
+              <span class="color-danger">{{ examResult.score|default(0) }}</span>
+            {% endif %}
+          {% else %}
+            --
+          {% endif %}
+
+          <span class="">/{{ offlineExam.score|default(0) }}</span>
+
+          {% if examResult.status|default('') == 'passed' %}
+            <span class="color-success ct-mls">{{ 'project_plan.pass'|trans }}</span>
+          {% elseif examResult.status|default('') == 'unpassed' %}
+            <span class="color-danger ct-mls">{{ 'project_plan.status.unpass'|trans }}</span>
+          {% endif %}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="empty">{{ 'project_plan.study_data.online_exam_empty'|trans }}</div>
+{% endif %}

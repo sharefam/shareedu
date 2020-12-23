@@ -1,0 +1,11 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% do script(['corporatetrainingbundle/js/project-plan/attend/index.js']) %}
+{% set modalSize = 'large' %}
+{% block title %}{{ 'project_plan.apply'|trans }}{% endblock %}
+{% block body %}
+<p>{{ 'project_plan.apply_danger_info'|trans }}</p>
+{% endblock %}
+{% block footer %}
+    <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{ 'project_plan.btn.close_btn'|trans }}</button>
+{% endblock %}

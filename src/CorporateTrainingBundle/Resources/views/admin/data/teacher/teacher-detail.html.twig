@@ -1,0 +1,121 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_data_center_teacher_detail' %}
+
+{% do script(['libs/select2.js', 'corporatetrainingbundle/js/admin/data/teacher/detail/index.js']) %}
+
+{% block main %}
+  <div id="teacher-search-container" class="aside-panel">
+    <form id="user-search-form" class="form-inline ct-well ct-mbl" action="" method="get" novalidate="novalidate">
+      <div class="form-group ft-sm prl">{{ 'admin.data_center.teacher.detail.form_date_range'|trans }}</div>
+      <div class="form-group prl js-learn-data">
+        <div id="date-range-picker">
+          <span class="user-data-select">
+            <input class="form-control js-date-range-input" style="width:200px;" type="text" name="courseCreateTime" value="{{ courseCreateTime.startTime|date('Y/m/d') }}-{{ courseCreateTime.endTime|date('Y/m/d') }}">
+            <i class="es-icon es-icon-arrowdropdown"></i>
+          </span>
+        </div>
+      </div>
+      <div class="form-group ft-sm prl">{{ 'admin.data_center.teacher.detail.form_org'|trans }}</div>
+      <div class="form-group prl js-learn-data">
+          {% include 'org-select/index.html.twig' with {
+              id: 'teacher-manage-orgCode',
+              placeholder: '--组织机构--',
+              data: build_org_tree(app.user.manageOrgCodes),
+              treeName: 'orgCode',
+            }
+          %}
+      </div>
+      <div class="form-group ft-sm prl">{{ 'admin.data_center.teacher.detail.form_post'|trans }}</div>
+      <div class="dis-i-b prl js-learn-data">
+        {% include 'post/post-tree-select.html.twig' with {modal: 'list', selectedWith: 120} %}
+      </div>
+      <div>
+      <div class="form-group ft-sm prl">{{ 'admin.data_center.project_plan.filter'|trans }}</div>
+      <div class="form-group prl js-learn-data">
+        <select id="keywordType" name="keywordType" class="form-control">
+          {{ select_options(dict('teacherKeyWordType'), app.request.query.get('keywordType') ? app.request.query.get('keywordType') : 'truename') }}
+        </select>
+      </div>
+      <div class="form-group prl js-learn-data">
+        <input style="max-width:180px;" type="text" id="keyword" name="keyword" class="form-control" value="{{ app.request.query.get('keyword') }}" placeholder="{{ 'form.placeholder.keyword'|trans }}">
+      </div>
+      <div class="form-group prl js-learn-data ">
+        <button class="btn btn-primary search-btn">{{'admin.teacher.list.btn.search_btn'|trans}}</button>
+        <a class="btn btn-success search-btn ct-mlm" href="{{ path('exporter_export', {type: 'data_center_teacher_detail', courseCreateTime: courseCreateTime.startTime|date('Y/m/d')~'-'~courseCreateTime.endTime|date('Y/m/d'), keyword: app.request.query.get('keyword'), keywordType: app.request.query.get('keywordType') ? app.request.query.get('keywordType'):'truename', orgCode: app.request.query.get('orgCode')?app.request.query.get('orgCode') : '1.', postId: app.request.query.get('postId')? app.request.query.get('postId'):'' }) }}">{{'project_plan.btn.export_btn'|trans}}</a>
+      </div>      
+      </div>
+    </form>
+
+    <div id="teacher-detail" class="tableData" v-cloak="v-cloak">
+      <el-table :data="tableData" style="width: 100%" max-height="600" :header-row-class-name="getRowClass">
+        <el-table-column fixed="fixed" label="{{ 'user.fields.truename_label'|trans }}" width="150">
+          <template slot-scope="scope">
+            <img class="el_pic_avatar" :src="scope.row.coverImgUri"/>
+            <el-popover placement="top" trigger="hover" v-if="nameLen(scope.row.truename)">
+              <template>
+                  <div>${scope.row.truename}</div>
+              </template>
+              <div slot="reference" class="el_avatar-name plm"><span>${scope.row.truename}</span></div>
+            </el-popover>
+            <div v-else class="el_avatar-name plm" :title='scope.row.truename'>${scope.row.truename}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="{{ 'site.org'|trans }}" width="150">
+          <template slot-scope="scope">
+            <div class="dis-i-b mrm">${scope.row.org.name}</div>
+            <el-popover placement="top" trigger="hover" v-if="scope.row.org.orgs.length > 1 ? true : false">
+              <template>
+               <div v-for="item in scope.row.org.orgs" class="org-popover">
+                  <div class="dis-i-b"><i class="ct-icon ct-icon-organization mrs"></i>${item.name}</div>
+                  <span class="mrm">{{ 'site.org.code'|trans }}</span>${item.code}
+               </div>
+              </template>
+              <div slot="reference" class="dis-i-b">
+                <i class="es-icon es-icon-more"></i>
+              </div>
+            </el-popover>
+            <div><span class="mrm">{{ 'site.org.code'|trans }}</span>${scope.row.org.code}</div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="post" label="{{ 'post.post-tree-select.psot'|trans }}" width="150"></el-table-column>
+        <el-table-column prop="level" label="{{ 'admin.teacher.list.level'|trans }}" width="150"></el-table-column>
+        <el-table-column label="{{ 'admin.teacher.list.field'|trans }}" width="150">
+          <template slot-scope="scope">
+            <div class="dis-i-b mrs">${scope.row.professionField.fieldName}</div>
+             <el-popover placement="top" trigger="hover" v-if='scope.row.professionField.fieldName=="--" ? false : true' popper-class="profession-popover">
+              <template>
+               <div  class="org-popover">
+                  <div class="dis-i-b">${scope.row.professionField.fieldNames}</div>
+               </div>
+              </template>
+              <div slot="reference" class="dis-i-b">
+                <i class="es-icon es-icon-more"></i>
+              </div>
+            </el-popover>
+          </template>
+        </el-table-column>
+        <el-table-column prop="courseNum" label="{{ 'admin.data_center.teacher.detail.online_course_num'|trans }}" width="130"></el-table-column>
+        <el-table-column prop="courseStudentNum" label="{{ 'admin.data_center.teacher.detail.online_course_student_num'|trans }}" width="130"></el-table-column>
+        {% if is_plugin_installed('Survey') %}
+          <el-table-column prop="courseSurveyScore" label="{{ 'admin.data_center.teacher.detail.online_course_survey'|trans }}" width="130"></el-table-column>
+        {% endif %}
+        <el-table-column prop="offlineCourseTime" label="{{ 'admin.data_center.teacher.detail.offline_course_time'|trans }}" width="130"></el-table-column>
+        <el-table-column prop="offlineCourseStudentNum" label="{{ 'admin.data_center.teacher.detail.offline_course_student_num'|trans }}" width="110"></el-table-column>
+        {% if is_plugin_installed('Survey') %}
+          <el-table-column prop="offlineCourseSurveyScore" label="{{ 'admin.data_center.teacher.detail.offline_course_survey'|trans }}" width="110"></el-table-column>
+          <el-table-column prop="teacherTotalScore" label="{{ 'admin.data_center.teacher.detail.teacher_survey'|trans }}" width="80"></el-table-column>
+        {% endif %}
+        <el-table-column fixed="right" label="{{ 'admin.user.fields.operation_label'|trans }}" width="160">
+          <template slot-scope="scope">
+            <a :href="scope.row.archivesPatch" class="el_link">{{ 'admin.teacher.list.teacher_archives'|trans }}</a>
+            <el-button @click="showUserDetail(scope.row.userDetailPatch)" type="text" class="el_link">{{ 'user.settings.personal_info_menu'|trans }}</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="data-list">
+        {% include 'admin/data/teacher/detail-tr.html.twig'%}
+      </div>
+    </div>
+  </div>
+{% endblock %}

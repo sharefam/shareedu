@@ -1,0 +1,43 @@
+{% extends 'v2/layout.html.twig' %}
+
+{% block header %}
+  {% if not is_mobile_client() %}
+    {{ parent() }}
+  {% endif %}
+{% endblock %}
+
+{% block head %}
+  {% include 'study-record/head.html.twig' with { headType: 'training', headTitle: 'study_record.project_plan'|trans } %}
+{% endblock %}
+
+{% block page_title %}
+    {{ 'study_record.project_plan'|trans }}
+{% endblock %}
+{% set side_nav = 'study-record' %}
+
+{% block main_body %}
+  {% if not is_mobile_client() %}
+    <ul class="cd-tabs ct-mbxl">
+      <li {% if type_nav == 'project-plan' %}class="active"{% endif %}>
+        <a href="{{ path('study_record_project_plan', {userId: userId|default(app.user.id)}) }}">
+          {{ 'project_plan.study_record'|trans }}
+        </a>
+      </li>
+      <li {% if type_nav == 'post-course' %}class="active"{% endif %}>
+        <a href="{{ path('study_record_post_course',{userId: userId|default(app.user.id)}) }}">
+          {{ 'study_center.record.post_course'|trans }}
+        </a>
+      </li>
+      {% if is_plugin_installed('Exam') %}
+        <li {% if type_nav == 'exam' %}class="active"{% endif %}>
+          <a href="{{ path('exam_record',{userId: userId|default(app.user.id)}) }}">
+            {{ 'exam.record.exam_record'|trans }}
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  {% endif %}
+  {% block training_record_content %}
+      
+  {% endblock %}
+{% endblock %}

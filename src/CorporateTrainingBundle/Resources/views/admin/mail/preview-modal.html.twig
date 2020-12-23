@@ -1,0 +1,26 @@
+{% extends 'old-bootstrap-modal-layout.html.twig' %}
+
+{% set modalSize = 'large' %}
+
+{% block title %}{{ title|default('')|trans }}{% endblock %}
+{% block body %}
+  <div class="mail-template-modal-body">
+    {% for template in templates|default() %}
+      <div class="template mbl">
+        <label>{{ template.title|trans }}</label>
+        <div class="template-body">
+          <div class="mtm">{{ 'admin.mail_setting.mail_notification.preview.greeting'|trans }}</div><br/>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ template.message|default('')|trans}}</p>
+          <div class="pull-right">{{ 'admin.mail_setting.mail_notification.preview.sign'|trans }}</div>
+          <div class="mtl mbm">{{ 'admin.mail_setting.mail_notification.preview.notice'|trans }}</div>
+        </div>
+      </div>
+      {% else %}
+        <div class="empty">{{ 'site.data.empty'|trans }}</div>
+    {% endfor %}
+  </div>
+{% endblock %}
+
+{% block footer %}
+  <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">{{ 'form.btn.close'|trans }}</button>
+{% endblock %}

@@ -1,0 +1,14 @@
+<li class="media">
+  <div class="pull-left">
+    <span class="glyphicon glyphicon-volume-down media-object"></span>
+  </div>
+  <div class="media-body">
+    <div class="notification-body">
+      {% set data = notification.content %}
+      你被邀请任命为线下课程<a href="{{ path('admin_train_teach_manage_project_plan_teaching',{'filter': 'offline_course'})}}">《{{ data.title }}》</a>讲师，负责课程教学。<a href="{{ path('admin_train_teach_manage_project_plan_teaching',{'filter': 'offline_course'})}}">查看详情</a>。
+    </div>
+    <div class="notification-footer">
+      {{ notification.createdTime|date_format }}
+    </div>
+  </div>
+</li>

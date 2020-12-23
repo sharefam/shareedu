@@ -1,0 +1,44 @@
+.nav {
+  
+  &.nav-line {
+    border-bottom: 1px solid @border-color;
+    text-align: center;
+
+    >li {
+      position: relative;
+      display: block;
+      margin-bottom: -1px;
+      float: left; 
+      min-width: 80px;
+
+      &.active {
+        >a {
+          margin-right: 2px;
+          color: @brand-primary;
+          border-top-left-radius: 4px;
+          border-top-right-radius: 4px;
+          border-color: @border-color;
+          border-bottom-color: transparent;
+          background-color: #ffffff;
+        }
+      }
+
+      &:hover {
+        >a {
+          color: @brand-primary;
+        }
+      }
+
+      > a {
+        padding: 10px 20px;
+        color: @gray-darker;
+        border: 1px solid transparent;
+        cursor: pointer;
+        .es-transition; 
+
+      }
+
+
+    }
+  }
+}

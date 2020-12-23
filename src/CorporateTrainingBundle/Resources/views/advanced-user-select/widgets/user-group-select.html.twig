@@ -1,0 +1,28 @@
+<div class="member-projectplan-modal__body ">
+  <div class="">
+    <div class="js-search-by-group row">
+      <div class="col-xs-6 ">
+        <div class="member-projectplan-content group-select">
+          {% for userGroup in userGroups %}
+            <div class="checkbox group-select-item" data-id="{{ userGroup.id }}" data-name="{{ userGroup.name }}">
+              <label>
+                <input type="checkbox"> {{ userGroup.name }}
+              </label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-xs-6">
+        <div class="member-projectplan-content">
+          <div class="js-input-group">
+            <input class="form-control" type="text" name="name-search" id="groupModalInput">
+          </div>
+          <div class="member-projectplan-content__input-tip">
+            {{'advanced_user_select.member_user_group.tip'|trans }}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

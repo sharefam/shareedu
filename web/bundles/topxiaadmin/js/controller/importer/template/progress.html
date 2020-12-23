@@ -1,0 +1,24 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title"><%= Translator.trans('admin.importer.template.progress.batch_import') %></h4>
+        </div>
+        <div class="modal-body">
+            <div id="import-progress" class="package-update-progress">
+                <div class="progress progress-striped active">
+                    <div class="progress-bar progress-bar-success" style="width: 0%"></div>
+                </div>
+                <div class="text-success progress-text">
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a data-loading-text="<%= Translator.trans('admin.importer.template.progress.loading') %>" class="btn btn-primary hidden js-finish-import-btn" href="javascript:;"><%= Translator.trans('admin.importer.template.progress.complete_import') %></a>
+            <span class="text-danger js-import-progress-text hidden"><%= Translator.trans('admin.importer.template.progress.import_loading') %></span>
+        </div>
+    </div>
+</div>
+
+
+

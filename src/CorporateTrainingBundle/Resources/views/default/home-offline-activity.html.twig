@@ -1,0 +1,79 @@
+{% if offlineActivities|default() %}
+  {% if is_mobile_client() %} 
+    {% include "default/home-offline-activity-mobile.html.twig" %}
+  {% else %}
+  <section class="o-home-sec">
+    <div class="container">
+      <div class="o-home-sec__hd">
+        <div class="o-home-sec__title">{{config.title|default(config.defaultTitle|trans)}}</div>
+        <a class="o-home-sec__more" href="{{ path('offline_activity_list') }}">{{ 'homepage.offline_activity.link_more'|trans }} <i class="es-icon es-icon-chevronright"></i></a>
+      </div>
+      <div class="o-home-sec__bd row">
+        {% set is_scroll_swiper = (offlineActivities|length >= 4) %}
+        <div class="home-act-swiper js-home-act-swiper visible-lg visible-md">
+          <section {% if is_scroll_swiper %} id="home-act-swiper" {% endif %} class="swiper-container">
+            <div class="swiper-wrapper">
+              {% for offlineActivity in offlineActivities %}
+                <div class="col-sm-3 col-xs-12 {% if is_scroll_swiper %} swiper-slide swiper-hidden {% endif %}">
+                  <a class="c-home-act" href="{{ path('offline_activity_detail', {'id':offlineActivity.id}) }}">
+                    <div class="c-home-act__hd">
+                      <img class="c-home-act__img" src="{{ filepath(offlineActivity['cover']['middle']|default(''), 'activity.png') }}">
+                    </div>
+                    <div class="c-home-act__bd">
+                      <div class="c-home-act__title">{{ offlineActivity.title }}</div>
+                      {% set category = data('Category', {'categoryId': offlineActivity.categoryId}) %}
+                      <div class="c-home-act__label ct-label ct-label--theme">{{ category.name|sub_text(15) }}</div>
+                      
+                    </div>
+                    <div class="c-home-act__ft">
+                      <div class="c-home-act__date">{{ 'homepage.offline_activity.text_enrollment_period'|trans({'%start%':offlineActivity.enrollmentStartDate|date('m-d'), '%end%':offlineActivity.enrollmentEndDate|date('m-d')}) }}</div>
+                      <div class="c-home-act__num pull-right"><span>{{ offlineActivity.studentNum }}</span>／{% if  offlineActivity.maxStudentNum|default(0) == 0%}{{ 'no.limit'|trans }}{% else %}{{offlineActivity.maxStudentNum|default(0)}}{% endif %}</div>
+                    </div>
+                  </a>
+                </div>                 
+              {% endfor %}
+              {% set offlineActivitiesCount = offlineActivities|length %}
+              {% if offlineActivitiesCount < 4 %}
+                {% for i in 1..(4 - offlineActivitiesCount) %}
+                  <div class="col-md-3 col-xs-12">
+                      <img class="img-responsive mbl" src="{{ asset('static-dist/corporatetrainingbundle/img/act_def_pos@2x.png')}}">
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </div>
+          </section>
+          {% if is_scroll_swiper %}
+            <a class="swiper-btn swiper-l-btn js-swiper-l-btn" href="javascript:;"><i class="es-icon es-icon-chevronleft"></i></a>
+            <a class="swiper-btn swiper-r-btn js-swiper-r-btn" href="javascript:;"><i class="es-icon es-icon-chevronright"></i></a>
+          {% endif %}
+        </div>
+        <div class="home-act-swiper js-home-act-swiper-1 hidden-lg hidden-md">
+          <section id="home-act-swiper-1" class="swiper-container">
+            <div class="swiper-wrapper">
+              {% for offlineActivity in offlineActivities %}
+                <div class="col-sm-3 col-xs-12 swiper-slide swiper-hidden">
+                  <a class="c-home-act" href="{{ path('offline_activity_detail', {'id':offlineActivity.id}) }}">
+                    <div class="c-home-act__hd">
+                      <img class="c-home-act__img" src="{{ filepath(offlineActivity['cover']['middle']|default(''), 'activity.png') }}">
+                    </div>
+                    <div class="c-home-act__bd">
+                      <div class="c-home-act__title">{{ offlineActivity.title }}</div>
+                      {% set category = data('Category', {'categoryId': offlineActivity.categoryId}) %}
+                      <div class="c-home-act__label ct-label ct-label-theme">{{ category.name|sub_text(15) }}</div>
+                      
+                    </div>
+                    <div class="c-home-act__ft">
+                      <div class="c-home-act__date">{{ 'homepage.offline_activity.text_enrollment_period'|trans({'%start%':offlineActivity.enrollmentStartDate|date('m-d'), '%end%':offlineActivity.enrollmentEndDate|date('m-d')}) }}</div>
+                      <div class="c-home-act__num pull-right"><span>{{ offlineActivity.studentNum }}</span>／{% if  offlineActivity.maxStudentNum|default(0) == 0%}{{ 'no.limit'|trans }}{% else %}{{offlineActivity.maxStudentNum|default(0)}}{% endif %}</div>
+                    </div>
+                  </a>
+                </div>                 
+              {% endfor %}
+            </div>
+          </section>
+        </div>
+      </div>   
+    </div>
+  </section>
+  {% endif %}
+{% endif %}

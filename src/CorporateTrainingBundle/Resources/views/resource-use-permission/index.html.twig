@@ -1,0 +1,14 @@
+{% set colmd = colmd|default(8) %}
+{% set lablecolmd = lablecolmd|default(2) %}
+{% set nocolmd = nocolmd|default(false) %}
+{% set count = data('ResourceUsePermissionSharedCount',{resourceType:resourceType, resourceId: resourceId}) %}
+<div class="form-group">
+  <label class="{% if not nocolmd %} col-md-{{lablecolmd}}{% endif %} control-label">{{ labelTitle|default('resource_use_permission.accredit.title')|trans }}</label>
+  <div class="col-md-8">
+    <div style="margin-top: 7px">
+      <span>{{ 'resource_use_permission.shared'|trans }}</span><span class="color-primary js-record-count" >{{ count|default(0) }}</span>{{ 'admin.data_center.user_data.people'|trans }}
+      <a href="#modal" data-toggle="modal" class="mlm" data-url="{{ path('resource_use_permission_accredit', {type: resourceType,resourceId:resourceId}) }}">{{ 'resource_use_permission.accredit_btn'|trans }}</a>
+      <a href="#modal" data-toggle="modal" class="mlm" data-url="{{ path('resource_use_permission_record_list', {type: resourceType,resourceId:resourceId}) }}">{{ 'resource_use_permission.record_list'|trans }}</a>
+    </div>
+</div>
+</div>

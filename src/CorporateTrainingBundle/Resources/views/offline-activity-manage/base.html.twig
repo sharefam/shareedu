@@ -1,0 +1,101 @@
+{% extends 'offline-activity-manage/layout.html.twig' %}
+
+{% block title %}{{ 'offline_activity.info'|trans }} - {{ parent() }}{% endblock %}
+{% set side_nav = 'base' %}
+{% do script(['libs/es-ckeditor/ckeditor.js','libs/jquery-validation.js', 'corporatetrainingbundle/js/offline-activity-manage/base/index.js']) %}
+
+{% block main %}
+	<div class="panel panel-default" role="offline-activity-manage-base">
+    <div class="panel-heading">{{ 'offline_activity.info'|trans }}</div>
+    <div class="panel-body">
+      <form class="form-horizontal" id="offlineActivity-form" action="{{path('offline_activity_manage_base', {id: offlineActivity.id})}}" method="post">
+        {{ web_macro.flash_messages() }}
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="title" >{{ 'offline_activity.title'|trans }}:</label>
+          <div class="col-md-8">
+            <input type="text" id="title" name="title" required="required" class="form-control" placeholder="{{ 'offline_activity.create.title_length_placeholder'|trans }}" value="{{ offlineActivity.title|default('') }}">
+            <div class="help-block" style="display:none;"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="categoryId">{{ 'offline_activity.type'|trans }}:</label>
+          <div class="col-md-4 controls">
+            <select id="categoryId" name="categoryId" class="form-control width-input width-input-large">
+              {{ select_options(category_choices('offlineActivity'), offlineActivity.categoryId) }}
+            </select>
+            <div class="help-block" style="display:none;"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="orgCode">{{ 'site.org'|trans }}</label>
+          <div class="col-md-8 controls">
+              {% include 'org/org-treeview.html.twig' with {id: 'user-orgCode', placeholder: 'site.org.select_placeholder'|trans, width:180, parameter: 'orgCode', orgCode: offlineActivity.orgCode, arrTree: build_org_tree(app.user.manageOrgCodes), modal: 'list', isFront: 1} %}
+          </div>
+        </div>
+        <div class="form-group">
+          <label  class="col-md-2 control-label" >{{'offline_activity.time'|trans}}:</label>
+          <div class="col-md-3 controls">
+            <input type="text" id="startDate" name="startTime" data-url="" class="form-control" for="startDate" placeholder="{{ 'offline_activity.time.startTime'|trans }}" value="{{ offlineActivity.startTime|date_format}}" {% if status %}disabled="true"{% endif %}>
+          </div>
+          <div class="col-md-3 controls">
+            <input type="text" id="endDate" name="endTime" data-url="" class="form-control" for="endDate" placeholder="{{ 'offline_activity.time.endTime'|trans }}" value="{{ offlineActivity.endTime|date_format}}" {% if status %}disabled="true"{% endif %}>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="address" style="hint:dsakl">{{'offline_activity.place'|trans}}:</label>
+          <div class="col-md-8 controls">
+            <input type="text" id="address" name="address" class="form-control" placeholder="{{ 'offline_activity.place_placeholder'|trans }}" value="{{ offlineActivity.address|default('') }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="maxStudentNum">{{'offline_activity.student_limit_num'|trans}}:</label>
+          <div class="col-md-8 controls">
+            <input type="text" id="maxStudentNum" name="maxStudentNum" class="form-control" placeholder="{{ 'offline_activity.student_limit_num_placeholder'|trans }}" value="{{ offlineActivity.maxStudentNum}}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="enrollmentEndDate">{{ 'offline_activity.enrollment_time'|trans }}:</label>
+          <div class="col-md-3 controls">
+            <input type="text" id="enrollmentStartDate" name="enrollmentStartDate" class="form-control" for="enrollmentStartDate" placeholder="{{ 'offline_activity.enrollment.startTime'|trans }}" value="{{ offlineActivity.enrollmentStartDate|date_format}}" {% if status %}disabled="true"{% endif %}>
+          </div>
+          <div class="col-md-3 controls">
+            <input type="text" id="enrollmentEndDate" name="enrollmentEndDate" class="form-control" for="enrollmentEndDate" placeholder="{{ 'offline_activity.enrollment.endTime'|trans }}" value="{{ offlineActivity.enrollmentEndDate|date_format}}" {% if status %}disabled="true"{% endif %}>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="summary">{{'offline_activity.introducation'|trans}}:</label>
+          <div class="col-md-8 controls">
+             <textarea name="summary" rows="10" id="summary" class="form-control"
+                       data-image-upload-url="{{ path('editor_upload', {token:upload_token('default')}) }}"
+             >{{ offlineActivity.summary|default('') }}</textarea>
+          </div>
+        </div>
+        <div class="" id="source-publish">
+          {% include 'resource-visible/index.html.twig' with {
+            resourceType: 'offlineActivity',
+            resourceId: offlineActivity.id,
+            recourseShowable:offlineActivity.showable|default(1),
+            resource: offlineActivity,
+            showAccessSetting: true,
+          } %}
+        </div>
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="summary"></label>
+          <div class="col-sm-8 controls checkbox">
+            <label>
+              <input type="checkbox" id="requireAudit" {% if offlineActivity.requireAudit %}checked {% endif %}>
+              {{ 'offline_activity.need_enrollment_verify'|trans }}
+            </label>
+            <input type="text"  name="requireAudit" class="form-control hidden" >
+          </div>
+        </div>
+        <div class="form-group">
+           <div class="col-sm-offset-2 col-sm-8">
+             <button id="offlineActivity-base-submit" type="button" class="btn btn-primary" data-loading-text="{{ 'form.btn.save.submiting'|trans }}">{{ 'form.btn.save'|trans }}</button>
+           </div>
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+      </form>
+    </div>
+  </div>
+{% endblock %}

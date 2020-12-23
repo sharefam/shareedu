@@ -1,0 +1,105 @@
+{% extends 'layout.html.twig' %}
+
+{% if is_mobile_client() %} 
+  {% set bodyClass = 'classroom-list-page' %}
+{% else %}
+  {% set bodyClass = 'classroom-list-page bg-blank' %}
+{% endif %}
+
+{% block keywords %}{% if categoryArray %}{{categoryArray.name}}{% if categoryParent %}{{ ","}}{{ categoryParent.name|default('') }}{% endif %}{% else %}{{'category.all_category'|trans}}{% endif %}{% endblock %}
+  {% block description %}{{ categoryArrayDescription|default('')|plain_text(100) }}{% endblock %}
+{% block title %}{{ categoryArray.name|default('category.all_category'|trans)  }} - {{setting('site.name')}}{% if setting('site.slogan') %}{{' - '}}{{ setting('site.slogan')}}{% endif %}{% if not setting('copyright.owned') %} - Powered By EduSoho{% endif %}
+    {% endblock %}
+{% set locale = app.request.locale %}
+{% set classroomName = (locale and 'en' == locale) ? 'Topic' : get_classroom_name() %}
+{% do script(['libs/echo-js.js', 'app/js/classroom/explore/index.js']) %}
+
+{% block top_content %}
+
+  <div class="es-banner hidden-xs">
+    <div class="container">
+      <div class="title">
+        <i class="es-icon es-icon-viewcomfy"></i>
+        {{'explore.classroom.list'|trans({'%name%': classroomName})}}
+      </div>
+      <div class="more">
+        <a class="btn btn-primary btn-lg" href="{{ path('course_set_explore') }}">
+          {{'explore.view_course_btn'|trans}}
+        </a>
+        {#<a class="btn btn-primary btn-lg" href="{{ path('open_course_explore') }}">#}
+          {#{{'查看公开课'|trans}}#}
+        {#</a>#}
+      </div>
+    </div>
+  </div>
+  
+{% endblock %}
+{% block content %}
+  {% set price = filter.price|default('all')%}
+  {% set orderBy = orderBy|default('createdTime')%}
+  {% set currentLevelId = filter.currentLevelId|default('all')%}
+  
+  {% if is_mobile_client() %}
+    {% include 'classroom/explore-tab.html.twig' %}
+  {% endif %}
+
+  <div class="js-tabs-container  {% if is_mobile_client() and app.request.query.all|length == 0 %} hidden{% endif %}">
+    {{ render(controller('AppBundle:Category:treeNav',{category:category, tags:tags, path:path, filter:{price: price,currentLevelId: currentLevelId},orderBy:orderBy,group:'classroom'})) }}
+  </div>
+  
+  {% if not is_mobile_client() %}
+    {% include 'classroom/explore-tab.html.twig' %}
+  {% endif %}
+
+  <div class="class-list row {% if is_mobile_client() %} mt20{% endif %}">
+    {% if classrooms %}
+      {% for classroom in classrooms %}
+       {% if is_mobile_client() %}
+        <div class="col-md-4 col-sm-6 col-xs-6">
+          <div class="m-home-theme card-show m-ct-mbs">
+            <div class="m-home-theme__hd">
+              <a href="{{ path('classroom_show', {id:classroom.id}) }}">
+                {{ lazy_img(filepath(classroom.middlePicture, 'classroom.png'), 'img-responsive', classroom.title, 'lazyload_class.png') }}
+              </a>
+            </div>
+            <div class="m-home-theme__bd">
+              <div class="m-home-theme__title">{{ classroom.title }}</div>
+              <div class="m-home-theme__info-num">共{{ classroom.courseNum }}门课程</div>
+              <div class="m-home-act__label">
+                {% set category = data('Category', {'categoryId': classroom.categoryId|default(0)}) %}
+                <i class="es-icon es-icon-label"></i>{{ category.name|default('course.select_list.category_empty'|trans)|sub_text(10) }}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <div class="col-md-4 col-sm-6 col-xs-6">
+          <div class="class-item">
+            <div class="class-img">
+              <a href="{{ path('classroom_show', {id:classroom.id}) }}" target="_blank">
+                {{ lazy_img(filepath(classroom.middlePicture, 'classroom.png'), 'img-responsive', classroom.title, 'lazyload_class.png') }}
+                <h3>{{ classroom.title }}</h3>
+                <div class="image-overlay"></div>
+              </a>
+            </div>
+            <div class="class-serve">
+              {% include 'classroom/service-block.html.twig' with {'services':classroom.service} %}
+            </div>
+            <ul class="class-data clearfix">
+              <li><i class="es-icon es-icon-book"></i>{{classroom.courseNum}}</li>
+              <li><i class="es-icon es-icon-people"></i>{{classroom.studentNum + classroom.auditorNum }}</li>
+              <li><i class="es-icon es-icon-textsms"></i>{{classroom.threadNum}}</li>
+            </ul>
+          </div>
+        </div>
+        {% endif %}
+      {% endfor %}
+      
+    {% else %}
+      <div class="empty">{{'explore.classroom.empty'|trans({'%name%':classroomName})}}</div>
+    {% endif %}
+  </div>
+  <nav class="text-center">
+    {{ web_macro.paginator(paginator) }}
+  </nav>
+{% endblock %}

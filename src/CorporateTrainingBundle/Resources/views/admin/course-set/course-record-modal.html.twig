@@ -1,0 +1,27 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set modal_class = 'unit-addition-modal js-modal-close js-record-list' %}
+{% block title %}{{'admin.course_manase.use_record.modal_title'|trans}}{% endblock %}
+{% do script(['corporatetrainingbundle/js/admin/train/course-use-record/index.js']) %}
+
+{% block body %}
+  <div class="course-record-ul js-resource-btn mts">
+    <ul class="clearfix">
+      <li class="js-tab-link js-classroom-tab active" data-type="classroom" data-url="{{ path('admin_course_manage_use_record_list',{'courseId':courseId, 'type': 'classroom'}) }}">
+        <a href="javascript:;">{{ 'admin.course_manage.use_record.classroom'|trans }}</a>
+      </li>
+      <li  class="js-tab-link js-project-tab" data-type="projectPlan" data-url="{{ path('admin_course_manage_use_record_list',{'courseId':courseId, 'type': 'projectPlan'}) }}">
+          <a href="javascript:;">{{ 'project_plan'|trans }}</a>
+      </li>
+    </ul>
+  </div>
+  <div class="js-course-list mtl">
+    {% include  'CorporateTrainingBundle::admin/course-set/course-record-list.html.twig' %}
+  </div>
+
+{% endblock %}
+
+{% block footer %}
+  <button type="button" class="btn btn-link" data-dismiss="modal" tabindex="6">{{'form.btn.cancel'|trans}}</button>
+{% endblock %}
+

@@ -1,0 +1,36 @@
+{% if tasks|default() %}
+  <div class="panel panel-default aside-panel">
+    <div class="panel-heading">
+      <div class="panel-title">
+        {{'study_center.side_bar.live_course'|trans}}
+      </div>
+    </div>
+    <div class="panel-body">
+      {% if tasks|default() %}
+        {% for task in tasks %}
+          <div class="aside-live-lesson text-ovf">
+            {% if task.startTime < currentTime %}
+              <span class="label label-live label-live-running mrm">{{'study_center.side_bar.live_course.live_running'|trans}}</span>
+            {% else %}
+              <span class="label label-live label-live-not-start mrm">{{'study_center.side_bar.live_course.not-start'|trans}}</span>
+            {% endif %}
+            <span class="aside-live-date ft-sm">
+              {{ task.startTime|date('m-d日 H:i') }}
+            </span>
+            {% if task.isMember|default(0) %}
+              {% set taskUrl = path('course_task_show', {courseId:task.courseId, id:task.id}) %}
+            {% else %}
+              {% set taskUrl = path('course_show', {id:task.courseId}) %}
+            {% endif %}
+
+            <a class="link-gray ft-sm" target="_blank" href="{{ taskUrl }}">{{ task.title|default() }}</a>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty text-center">
+          {{ 'study_center.side_bar.live_course.empty'|trans }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}

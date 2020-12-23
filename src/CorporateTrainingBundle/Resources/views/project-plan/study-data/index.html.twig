@@ -1,0 +1,197 @@
+{% extends 'project-plan/study-data/study-data-layout.html.twig' %}
+
+{% set side_nav = 'studyData' %}
+{% set type = 'list' %}
+
+{% set profile = data('UserProfile', { 'userId' : user.id}) %}
+{% set orgs = data('Orgs',{orgIds: user.orgIds}) %}
+
+{% block main_content %}
+  <ol class="breadcrumb breadcrumb--tra">
+    <li><a href="{{ path('project_plan_study_data_list',{projectPlanId:projectPlan.id}) }}">{{ 'project_plan.study_data.user_detail'|trans }}</a></li>
+    <li class="active">{{ profile.truename }}</li>
+  </ol>
+  <div class="project-plan-user-detail">
+    <div class="project-plan-user-detail-item">
+      <div class="project-plan-user-detail-item__head">{{ 'project_plan.study_data.overview'|trans }}</div>
+      <div class="project-plan-user-detail-item__body">
+        <div class="project-plan-user-detail-info">
+          <div class="project-plan-user-detail-info__content">
+            <div class="row">
+              <div class="project-plan-user-info col-md-4">
+                <div class="project-plan-user-info__title">{{ 'project_plan.member.department'|trans }}</div>
+                <div class="project-plan-user-info__content">{{ orgs.0.name|default('--') }}
+                  {% if orgs.1|default(false) %}
+                    <i class="es-icon es-icon-more ft-xsm" data-toggle="popover" data-container="body" data-trigger="hover"
+                       data-placement="top" data-content="{{ orgs.orgNames|default() }}"></i>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="project-plan-user-info col-md-4">
+                <div class="project-plan-user-info__title">{{ 'project_plan.study_data.post'|trans }}</div>
+                <div class="project-plan-user-info__content">{{ post.name|default('--') }}</div>
+              </div>
+              <div class="project-plan-user-info col-md-4">
+                <div class="project-plan-user-info__title">{{ 'project_plan.study_data.progress'|trans }}</div>
+                <div class="project-plan-user-info__content">
+                  <span class="color-primary">{{ personalProgress|default(0) }}%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <img class="project-plan-user-detail-info__img" src="{{ filepath(user.largeAvatar|default(), 'avatar.png') }}">
+          <span class="project-plan-user-detail-info__name">{{ profile.truename }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-plan-user-detail-item">
+      <div class="project-plan-user-detail-item__head">
+        {{ 'project_plan.study_data.online_course'|trans }}
+      </div>
+      <div class="project-plan-user-detail-item__body">
+        <table class="table table-hover table-striped">
+          <thead>
+          <tr>
+            <th width="40%">{{ 'project_plan.study_data.course_title'|trans }}</th>
+            <th width="30%">{{ 'project_plan.study_data.completion_degree'|trans }}</th>
+            <th width="30%">{{ 'project_plan.implementation.course_learn_time'|trans }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for onlineItem in onlineItems %}
+            <tr>
+              <td>{{ courses[onlineItem.targetId].title|default() }}</td>
+              <td>{% if onlineItem.courseFinishTaskNum|default(0) %}{{ percent(onlineItem.courseFinishTaskNum,onlineItem.courseTaskNum) }}{% else %}--{% endif %}</td>
+              <td>{% if onlineItem.learnTime %}{{ onlineItem.learnTime|time_format }}{% else %}--{% endif %}</td>
+            </tr>
+          {% else %}
+            <tr>
+              <td class="text-center" colspan="20">
+                <div class="empty">
+                  {{ 'project_plan.study_data.online_course_empty'|trans }}
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="project-plan-user-detail-item">
+      <div class="project-plan-user-detail-item__head">
+        {{ 'project_plan.study_data.offline_course'|trans }}
+      </div>
+      <div class="project-plan-user-detail-item__body">
+        <table class="table table-hover table-striped">
+          <thead>
+          <tr>
+            <th width="40%">{{ 'project_plan.study_data.course_title'|trans }}</th>
+            <th width="30%">{{ 'project_plan.attendance_rate'|trans }}</th>
+            <th width="30%">{{ 'project_plan.study_data.homework_passing_rate'|trans }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for offlineCourseItem in offlineCourseItems %}
+            <tr>
+              <td>{{ offlineCourseItem.title|default() }}</td>
+              <td>{% if offlineCourseItem.attendCount|default(0) %}{{ percent(offlineCourseItem.attendCount,offlineCourseItem.taskCount) }}{% else %}--{% endif %}</td>
+              <td>{% if offlineCourseItem.homeWorkPassCount|default(0) %}{{ percent(offlineCourseItem.homeWorkPassCount,offlineCourseItem.hasHomework) }}{% else %}--{% endif %}</td>
+            </tr>
+          {% else %}
+            <tr>
+              <td class="text-center" colspan="20">
+                <div class="empty">
+                  {{ 'project_plan.study_data.offline_course_empty'|trans }}
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% if is_plugin_installed('Exam') %}
+      {% set examItems = data('ProjectPlanUserExam',{projectPlanId: projectPlan.id, userId:user.id}) %}
+      <div class="project-plan-user-detail-item">
+        <div class="project-plan-user-detail-item__head">
+          {{ 'project_plan.study_data.online_exam'|trans }}
+        </div>
+        <div class="project-plan-user-detail-item__body">
+          <table class="table table-hover table-striped">
+            <thead>
+            <tr>
+              <th width="40%">{{ 'project_plan.item.exam_title'|trans }}</th>
+              <th width="30%">{{ 'project_plan.study_data.exam_score'|trans }}</th>
+              <th width="30%">{{ 'project_plan.study_data.exam_result'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for examItem in examItems %}
+              <tr>
+                <td>{{ examItem.name|default() }}</td>
+                <td>{% if examItem.result.score|default()%}{{ examItem.result.score }}{% else %}-{% endif %}/{{ examItem.paper.score|default() }}</td>
+                <td>
+                  {% if examItem.result.status|default() == 'finished' %}
+                    {% if examItem.result.score|default() >= examItem.passScore|default() %}
+                      {{ 'project_plan.pass'|trans }}
+                    {% else %}
+                      {{ 'project_plan.status.unpass'|trans }}
+                    {% endif %}
+                  {% elseif examItem.result.status|default() == 'absent' %}
+                    {{ 'project_plan.status.missing_exam'|trans }}
+                  {% else %}
+                    --
+                  {% endif %}
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td class="text-center" colspan="20">
+                  <div class="empty">
+                    {{ 'project_plan.study_data.online_exam_empty'|trans }}
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="project-plan-user-detail-item">
+      <div class="project-plan-user-detail-item__head">
+        {{ 'project_plan.study_data.offline_exam'|trans }}
+      </div>
+      <div class="project-plan-user-detail-item__body">
+        <table class="table table-hover table-striped">
+          <thead>
+          <tr>
+            <th width="40%">{{ 'project_plan.item.exam_title'|trans }}</th>
+            <th width="30%">{{ 'project_plan.study_data.exam_score'|trans }}</th>
+            <th width="30%">{{ 'project_plan.study_data.exam_result'|trans }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for offlineExamItem in offlineExamItems %}
+            <tr>
+              <td>{{offlineExamItem.title|default() }}</td>
+              <td>{% if offlineExamItem.result|default()%}{{ offlineExamItem.result.score }}{% else %}-{% endif %}/{{ offlineExamItem.score|default('--') }}</td>
+              <td>{% if offlineExamItem.result.status|default() == 'passed'%}{{ 'project_plan.pass'|trans }}{% elseif offlineExamItem.result.status|default() == 'unpassed' %}{{ 'project_plan.status.unpass'|trans }}{% else %}--{% endif %}</td>
+            </tr>
+          {% else %}
+            <tr>
+              <td class="text-center" colspan="20">
+                <div class="empty">
+                  {{ 'project_plan.study_data.offline_exam_empty'|trans }}
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

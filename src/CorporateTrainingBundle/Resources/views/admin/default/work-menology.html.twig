@@ -1,0 +1,56 @@
+{{ _self.showWorkMenologyContent() }}
+
+{% macro showWorkMenologyContent() %}
+  {%
+    if (has_permission('admin_train_teach_manage_my_teaching_courses_manage') and has_permission('admin_train_teach_manage_my_teaching_classrooms_manage') and has_permission('admin_train_teach_manage_project_plan_teaching_manage'))
+    or
+       has_permission('admin_project_plan')
+    or
+       has_permission('admin_offline_activity')
+    or
+       has_permission('admin_course_show')
+    or
+       has_permission('admin_train_exam_manage_manage')
+    or
+       has_permission('admin_train_survey_manage')
+    or
+       'ROLE_DEPARTMENT_ADMIN' in app.user.roles
+    or
+       'ROLE_SUPER_ADMIN' in app.user.roles
+  %}
+
+    <div class="ct-panel">
+      <div class="ct-panel-heading clearfix">
+        <span class="ct-panel-title fl">{{ 'admin.default.work_arrangement'|trans }}</span>
+        <div class="o-ct-tab_time fl mar-no">
+          <ul class="clearfix">
+            <li class="work-menology-tab active">
+              <a href="javascript:;" class="hidden" data-type="my"></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="ct-panel-body ct-panel-body_row clearfix">
+        <div class="col col-sm-12 col-md-5 today-focus-wrapper" data-my-url="{{ path('admin_today_focus', { type: 'my', time: 'now'|date('U') }) }}">
+          <div class="content today-focus">
+            <div class="content-head">
+              <img src="/assets/img/backstage/focus/title.png" class="focus-placeholder-title">
+            </div>
+            <div class="content-body">
+              {% for i in [1, 2, 3, 4, 5] %}
+                <div class="content-course-list">
+                  <img src="/assets/img/backstage/focus/placeholder.png" class="focus-placeholder-img">
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="col col-sm-12 col-md-7">
+          <div id="calendar"> <img src="/assets/img/backstage/focus/title.png" class="focus-placeholder-title js-holder-title"></div>
+          <div id="calendar-url" class="hidden" data-my-url="{{ path('admin_work_calendar', {type: 'my'}) }}" data-all-url="{{ path('admin_work_calendar', {type: 'all'}) }}"></div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endmacro %}

@@ -1,0 +1,14 @@
+<li class="media">
+  <div class="pull-left">
+    <span class="glyphicon glyphicon-volume-down media-object"></span>
+  </div>
+  <div class="media-body">
+    <div class="notification-body">
+      {% set data = notification.content %}
+      你已加入培训项目 《{{ data.name }}》, {% if data.startTime and data.endTime %}培训时间: {{ data.startTime|date('Y-m-d') }}到{{ data.endTime|date('Y-m-d') }},{% else %}{% endif %}请在<a href="{{ path('study_center_my_task_training_list') }}">我的任务</a>中查看详情!
+    </div>
+    <div class="notification-footer">
+      {{ notification.createdTime|date_format }}
+    </div>
+  </div>
+</li>

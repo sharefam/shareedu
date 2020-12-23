@@ -1,0 +1,136 @@
+.tabs-wrapper {
+  border: 1px solid @border-color;
+  border-radius: 4px;
+  margin-bottom: 30px;
+  background-color: #ffffff;
+
+  @media screen and(max-width: @screen-xs-max) {
+    font-size: 12px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border: none;
+  }
+
+  .tabs-mark-group {
+    border-bottom: 1px dashed  @border-color;
+    .title {
+      width: 90px;
+      margin-top: 3px;
+      float: left;
+
+      @media screen and(max-width: @screen-xs-max) {
+        width: 70px;
+      }
+    }
+    
+    .classify {
+      margin-top: 3px; 
+      i {
+        color: @gray;
+
+        @media screen and(max-width: @screen-xs-max) {
+          position: relative;
+          top: 1px;
+          font-size: 14px;
+        }
+
+      }
+      a {
+        color: @gray;
+        &:hover,&:focus {
+          color: @brand-primary;
+        }
+      }
+    }
+
+    .content {
+      margin-left: 100px;
+
+      @media screen and(max-width: @screen-xs-max) {
+        margin-left: 60px;
+      }
+    }
+  } 
+  .tabs-mark {
+    a {
+      border: 1px solid @border-color;
+      padding: 2px 5px;     
+      color: @gray;
+    }
+    margin: 0 4px;
+    &:hover,
+    &:focus,
+    &.active {
+      a {
+        color: @brand-primary;
+        border: 1px solid @brand-primary;        
+      }
+    }
+
+    i {
+      font-size: 10px;
+      margin-left: 5px;
+    }
+  }
+  .tabs-group {
+    padding: 0 60px 0 15px;
+    position: relative;
+    overflow-y: hidden;
+    .title {
+      float: left;
+      padding: 15px 0;
+      white-space: nowrap;
+      word-wrap: normal;
+
+      @media screen and(max-width: @screen-xs-max) {
+        padding: 7px 0;
+      }
+    }
+    .content {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 0 115px;
+
+      @media screen and(max-width: @screen-xs-max) {
+         margin: 0 0 0 57px;
+      }
+      > li {
+        float: left;
+        padding: 10px 12px;
+
+        @media screen and(max-width: @screen-xs-max) {
+           padding: 5px 6px;
+        }
+
+        > a {
+          display: block;
+          padding: 5px 10px;
+          border: none;
+          border-radius: 4px;
+          color: @gray;
+          .es-transition;
+
+          @media screen and(max-width: @screen-xs-max) {
+            padding: 2px 5px;
+          }
+        }
+        &:hover, &:focus, &.active {
+          > a {
+            color: @brand-primary;
+          }
+        }
+      }
+    }
+    .tabs-toggle {
+      position: absolute;
+      right: 20px;
+      top: 18px;
+      font-size: 12px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    + .tabs-group {
+      border-top: 1px dashed  @border-color;
+    }
+  }
+}

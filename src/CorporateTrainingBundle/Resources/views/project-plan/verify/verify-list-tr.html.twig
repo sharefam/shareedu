@@ -1,0 +1,58 @@
+{% set user = users[record.userId] %}
+{% set profile = profiles[record.userId] %}
+{% set post = data('Post', {postId: user.postId}) %}
+{% set userOrgs = data('Orgs',{orgIds: user.orgIds}) %}
+<tr>
+  <td>
+    {% if record.status == 'submitted' %}
+      <input class="select-item" id="batch-item-{{ record.id|default() }}" value="{{ record.id|default() }}"
+             type="checkbox">
+    {% endif %}
+  </td>
+  <td>
+    {{ profile.truename|default('--') }}<br>
+    <span class="text-muted text-sm">{{ user.nickname|default('--'|trans) }}</span>
+  </td>
+  <td>
+    {{ userOrgs.0.name|default('--') }}
+    {% if userOrgs.1|default(false) %}
+      <i class="es-icon es-icon-more ft-xsm" data-toggle="popover" data-container="body" data-trigger="hover"
+         data-placement="top" data-content="{{ userOrgs.orgNames|default() }}"></i>
+    {% endif %}
+    <br><span class="text-muted text-sm">{{ post.name|default('--'|trans) }}</span>
+  </td>
+  <td>
+    {% if record.status == 'submitted' %}
+      <span class="text-md color-primary">{{ 'project_plan.pending_review'|trans }}</span>
+    {% elseif record.status == 'approved' %}
+      <span class="text-md color-primary">{{ 'project_plan.status.passed'|trans }}</span>
+    {% elseif record.status == 'rejected' %}
+      <span class="text-md color-danger" data-toggle="popover" data-container="body" data-trigger="hover" data-placement="top" data-content="{{ 'project_plan.reason'|trans({'%reason%': record.rejectedReason|default('无')}) }}">{{ 'project_plan.status.rejected'|trans }}</span>
+    {% endif %}
+  </td>
+  <td>
+    {% if advancedOption.requireMaterial|default() %}
+      <a class="link-primary" href="javascript:;" target="_blank" data-toggle="modal" data-target="#modal" data-url="{{ path('project_plan_member_attachment_show', {'id': record.id}) }}"><i class="es-icon es-icon-icattachfileblack24px" title="{{ 'project_plan.apply_attachment'|trans }}"></i></a>
+    {% else %}
+      <a style="color: darkgrey"><i class="es-icon es-icon-icattachfileblack24px" title="{{ 'project_plan.apply_attachment'|trans }}"></i></a>
+    {% endif %}
+    <a class="mlm" href="{{ path('study_record_project_plan', {'userId': record.userId}) }}" target="_blank"><i class="link-primary glyphicon glyphicon-file"  title="{{ 'project_plan.learn_record'|trans }}"></i></a>
+    <a class="mlm" href="javascript:;" data-toggle="modal" data-url="{{ path('study_center_user_information', {userId:user.id}) }}" data-target="#modal"><i class="link-primary glyphicon glyphicon-user" title="{{ 'project_plan.user_info'|trans }}"></i></a>
+  </td>
+  <td>
+    {{ record.remark|default('--')|trans }}
+  </td>
+  <td>
+    {{ record.submittedTime|date_format('Y-m-d H:i') }}
+  </td>
+  <td>
+      {% if record.status == 'submitted' %}
+        <a class="btn btn-default btn-sm" style="width: 48px" href="javascript:;" target="_blank" data-toggle="modal" data-target="#modal"
+           data-url="{{ path('project_plan_enrollment_verify', {'id': record.id}) }}">{{ 'project_plan.review'|trans }}</a>
+      {% elseif record.status == 'approved' %}
+        <a class="btn btn-default btn-sm color-primary" href="javascript:;">{{ 'project_plan.status.passed'|trans }}</a>
+      {% elseif record.status == 'rejected' %}
+        <a class="btn btn-default btn-sm color-danger" href="javascript:;">{{ 'project_plan.status.rejected'|trans }}</a>
+      {% endif %}
+  </td>
+</tr>

@@ -1,0 +1,84 @@
+{% import "macro.html.twig" as web_macro %}
+{% if topFiveTeachers | default() %}
+  {% for key, value in topFiveTeachers %}
+    {% if rankType == 'course' %}
+      {% set user = data('User', {userId: key}) %}
+      {% set userTrueName = data('UserProfile', {userId: key}) %}
+      {% set num = value %}
+    {% else %}
+      {% set user = data('User', {userId: value.teacherId}) %}
+      {% set userTrueName = data('UserProfile', {userId: value.teacherId}) %}
+      {% set num = value.courseStudentNum %}
+    {% endif %}
+    <li class="ct-rank-item ct-rank-item--light {% if loop.index < 4 %} ct-rank-item--light_top{% endif %}">
+      <div class="ct-rank-item__l">
+        <div class="{% if loop.index < 4 %}ct-rank-item_i_top{% else %}ct-rank-item_i{% endif %} o-ct-item__label">{{ loop.index }}</div>
+      </div>
+      <div class="ct-rank-item__r js-item-desc clearfix">
+        {# <div class="ct-rank-item__l"> #}
+          {% if loop.index < 4 %}
+            <div class="pull-left ct-rank-item_top ct-rank-item_outer-{{loop.index}}">
+              <div class="pull-left ct-rank-item_top ct-rank-item_top-{{loop.index}}">
+               {{ web_macro.train_user_avatar(user, 'fl', 'ct-rank-item__img', true) }}
+              </div>
+            </div>
+          {% else %}
+            {{ web_macro.train_user_avatar(user, 'fl item-img_plr', 'ct-rank-item__img', true) }}
+          {% endif %}
+          <div class="o-pull-direction mlm">
+            <div class="ct-rank-item_name  {% if loop.index < 4 %}ct-rank-item_name_top{% endif %}" title="{% if userTrueName.truename %}{{ userTrueName.truename }}{% else %}{{ user.nickname|default('') }}{% endif %}">
+              {% if userTrueName.truename %}
+                {{ userTrueName.truename }}
+              {% else %}
+                {{ user.nickname|default('') }}
+              {% endif %}
+            </div>
+            {% set orgs = data('Orgs', {orgIds: user.orgIds}) %}
+            <div class="ct-rank-item_post js-item-post hidden"  data-toggle="tooltip" data-placement="top" title={{ orgs.orgNames|default() }}>
+              {{ orgs.0.name|default('--') }}
+            </div>
+            <div class="o-ct-rank-item__date js-item-active">{{ num|default() }}
+              {% if rankType == 'course' %}
+                {% if courseType == 'course' %}
+                  {{ 'teaching_record.teacher_rank.course_num'|trans }}
+                {% else %}
+                  {{ 'teaching_record.teacher_rank.offline_course_time'|trans }}
+                {% endif %}
+              {% else %}
+                {{ 'teaching_record.teacher_rank.student_num'|trans }}
+              {% endif %}
+            </div>
+          </div>
+        {# </div> #}
+      </li>
+    {% endfor %}
+    {% if (5 - topFiveTeachers|length) > 0 %}
+      {% for key in 1..(5 - topFiveTeachers|length) %}
+        <li class="ct-rank-item ct-rank-item--light">
+          <div class="ct-rank-item__l">
+            <div class="ct-rank-item_i o-ct-empty__label"></div>
+          </div>
+          <div class="ct-rank-item__r clearfix">
+            <div class="ct-rank-item__l">
+              <a class="fl js-user-card" href="javascript:;">
+                <div class="o-ct-empty-card"></div>
+              </a>
+              <div class="o-pull-direction mlm">
+                <div class="o-ct-empty_name"></div>
+                <div class="o-ct-empty_date"></div>
+              </div>
+            </div>
+          </div>
+        </li>
+      {% endfor %}
+    {% endif %}
+  {% else %}
+    <div class="empty">
+      <div class="c-home-rank__empty-wrap">
+        <img class="c-home-rank__empty-img" src="{{ asset('/assets/img/backstage/empty/empty_rank_list.png')}}">
+        <div class="c-home-rank__empty-txt">
+          {{ 'my.department.data_report.org_learn_ct-rank_list.empty_tip'|trans }}
+        </div>
+      </div>
+    </div>
+  {% endif %}

@@ -1,0 +1,21 @@
+{% extends 'study-center/department-courses/layout.html.twig' %}
+
+{% set tab_type = 'department' %}
+{% set tab_nav = 'course' %}
+
+{% block department_body %}
+  <div class="course-list">
+    <div class="row">
+      {% if courseSets %}
+        {% for courseSet in courseSets %}
+          <div class="col-lg-4 col-md-4 col-xs-6">
+            {% include 'course/widgets/course-grid.html.twig' %}
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty">{{'study_center.course_statistics.message.course_empty'|trans}}</div>
+      {% endif %}
+    </div>
+  </div>
+  <nav class="text-center">{{ web_macro.paginator(paginator) }}</nav>
+{% endblock %}

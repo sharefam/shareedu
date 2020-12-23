@@ -1,0 +1,41 @@
+<tr data-role="item">
+  <td>
+    {{ projectPlanMember.user.userInfo.nickname|default('--') }}<br>
+    <span class="text-muted text-sm">{{ projectPlanMember.user.truename|default('--'|trans) }}</span>
+  </td>
+  <td>
+    {% set post= data('Post', {postId: projectPlanMember.user.userInfo.postId}) %}
+    {{ post.name|default('--') }}
+    <br>
+    <span class="text-muted text-sm">
+      {% if setting('magic.enable_org','0') %}
+        {% set orgs = data('Orgs',{orgIds: projectPlanMember.user.userInfo.orgIds}) %}
+        {{ orgs.0.name|default('--')}}
+        {% if orgs.1|default(false) %}
+          <i class="es-icon es-icon-more ft-xsm"  data-toggle="popover" data-container="body" data-trigger="hover" data-placement="top" data-content="{{ orgs.orgNames|default() }}"></i>
+        {% endif %}
+      {% endif %}
+    </span>
+  </td>
+  <td>
+    <span>{{ projectPlanMember.examResult.score|default('--') }}</span>
+  </td>
+  <td>
+    {% if projectPlanMember.examResult|default() %}
+      {% if projectPlanMember.examResult.status|default('') == 'passed' %}
+        {{ 'project_plan.pass'|trans }}
+      {% elseif projectPlanMember.examResult.status|default('') == 'unpassed' %}
+        {{ 'project_plan.status.unpass'|trans }}
+      {% else %}
+        {{ '--' }}
+      {% endif %}
+    {% else %}
+      {{ '--' }}
+    {% endif %}
+  </td>
+  <td>
+    <div class="btn-group">
+      <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal" data-url="{{ path('project_plan_offline_exam_mark', {offlineExamId: offlineExamId, userId:projectPlanMember.userId}) }}">{{ 'project_plan.btn.review_btn'|trans }}</a>
+    </div>
+  </td>
+</tr>

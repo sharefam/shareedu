@@ -1,0 +1,3 @@
+{% import "macro.html.twig" as web_macro %}
+<input id="data" class="hidden" value="{{ data|default([])}}">
+{{web_macro.ajax_paginator(paginator) }}

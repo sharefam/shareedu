@@ -1,0 +1,112 @@
+.tree-wrapper{
+    display:inline-block;
+    position:relative;
+    width: 100%;
+    font-size: 0;
+    .node-treeview-checkable-user-orgCodes {
+      .text {
+        max-width: 350px;
+        vertical-align: middle;
+        .text-ovf
+      }
+    }
+    .treeview{
+        display: none;
+        position: absolute;
+        z-index:100;
+        height: 280px;
+        overflow: scroll;
+        z-index:999;
+        font-size: 14px;
+        margin-bottom: -16px;
+        margin-right: -5px;
+      }
+      .treeview .list-group{
+        margin-bottom:0;
+       }
+      .treeview::-webkit-scrollbar,.checkable-output::-webkit-scrollbar{
+        width:5px;
+      }
+      .treeview::-webkit-scrollbar-thumb,.checkable-output::-webkit-scrollbar-thumb{
+        background: #ccc;
+        -webkit-border-radius: 4px;
+        outline: 2px solid #fff
+      }
+      .treeview::-webkit-scrollbar-corner,.checkable-output::-webkit-scrollbar-corner{
+        background:transparent
+      }
+      .input-search{
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        border-radius: 0px;
+      }
+      .input-check-node {
+        min-height:34px;
+        line-height: 23px;
+        height: auto;
+      }
+     
+      .checkable-output{
+        position:absolute;
+        z-index:900;
+        height:300px;
+        overflow:scroll
+      }
+      .list-group-item{
+        white-space:nowrap;
+        padding:10px 25px 10px 15px;
+        border-radius: 0;
+      }
+      .checkable-output ul{
+        list-style:none;
+        -webkit-padding-start:0px;
+        margin-bottom:0;
+        font-size: 14px;
+      }
+      .checkable-output ul li{
+        position: relative;
+        display: block;
+        padding: 10px 15px;
+        margin-bottom: -1px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        cursor: pointer;
+      }
+      .tag{
+         display: inline-block;
+         margin-right:5px;
+         span:last-child {
+          max-width: 200px;
+          display: inline-block;
+          vertical-align: middle;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          word-wrap: normal;   
+         }
+      }
+      .container-blur:focus{
+        outline: -webkit-focus-ring-color auto 0px;
+       }
+       .container-blur{
+        position:relative;
+         font-size:0;
+         z-index:1000
+       }
+       .search-wrapper{
+        position: absolute;
+         display: inline-block;
+         font-size: 14px;
+         z-index: 999;
+         border: 1px solid transparent;
+         border-radius: 4px;
+         box-shadow: 0 2px 6px rgba(49, 49, 49, 0.3);
+       }
+       .tree-focus{
+           border: #66afe9;
+           outline: 0;
+           box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+           -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+       }
+}

@@ -1,0 +1,26 @@
+<div class="panel panel-default live-course-body">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{'search.projectplan.new.content_title'|trans}}</h3>
+    </div>
+    <div class="panel-body es-live-recommend">
+        {% set projectPlans = data('LatestProjectPlans',{'count':5 }) %}
+        {% for projectPlan in projectPlans if projectPlans %}
+            <div class="media">
+                <div class="media-left">
+                    <a href="{{ path('project_plan_detail', {id: projectPlan.id}) }}" title="{{ projectPlan.name|default('') }}" target="_blank">
+                        {{ lazy_img(filepath(projectPlan['cover']['large']|default(''), 'project-plan.png'), 'img-responsive', projectPlan.name)  }}
+                    </a>
+
+                </div>
+                <div class="media-body">
+                    <div class="title">
+                        <a href="{{ path('project_plan_detail', {id: projectPlan.id}) }}" class="gray-darker" title="{{ projectPlan.name }}" target="_blank">{{ projectPlan.name|plain_text(20) }}</a>
+                    </div>
+                    <span class="aside-hot-course-item-detail mls">{{ 'search.projectplan.enrollednum'|trans }}{{ projectPlan.enrolledNum|default(0) }}/{% if projectPlan.maxStudentNum|default(0) == 0 %}{{ 'search.projectplan.no_limit'|trans }}{% else %}{{ projectPlan.maxStudentNum|default(0) }}{% endif %}</span>
+                </div>
+            </div>
+        {% else %}
+            <div class="empty">{{'search.projectplan.latest.empty'|trans}}</div>
+        {% endfor %}
+    </div>
+</div>

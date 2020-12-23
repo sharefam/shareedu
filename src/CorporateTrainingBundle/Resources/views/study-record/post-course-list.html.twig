@@ -1,0 +1,29 @@
+{% for course in courses %}
+  {% set courseSet = data('CourseSet', { id: course.courseSetId }) %}
+  <div class="ct-mlm">
+    <div class="c-project-item js-project-item">
+      <div class="c-project-item__hd">
+        <a class="{% if course.isCourseMember|default() %}js-project-item-toggle-btn {% endif %}" href="javascript:;">
+          <div class="c-project-item__content">
+            <i class="c-project-item__icon es-icon es-icon-book"></i>
+            {{ courseSet.title|default()}}
+            <div class="c-project-item__hover">
+              <span class="c-project-item__head-info">
+                {{ 'study_center.course.learn_time'|trans }}：<span class="gray-darker">{{course.learnTime|default(0)|time_format}}</span> <span class="color-gray">{{ 'site.date.hour'|trans }}</span>
+              </span>
+              {% if course.isCourseMember|default() %}
+                <i class="c-project-item__toggle-btn es-icon js-remove-icon es-icon-anonymous-iconfont post-course-task-list" data-url="{{ path('study_center_course_tasks_list', {courseId: course.id, userId: userId, tab_type: tab_type|default(null)}) }}"></i>
+              {% else %}
+                <i class="c-project-item__toggle-btn glyphicon glyphicon-off" data-toggle="tooltip" data-placement="left" title="{{ 'study_center.course.not_join'|trans }}"></i>
+              {% endif %}
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="c-project-item__bd js-project-item__bd" style="display: none;">
+      </div>
+    </div>
+  </div>
+  {% else %}
+    <div class="empty">{{'study_record.empty'|trans}}</div>
+{% endfor %}

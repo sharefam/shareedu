@@ -1,0 +1,86 @@
+{% extends 'study-center/layout.html.twig' %}
+
+{% block keywords %}{% if categoryArray %}{{ categoryArray.name }}{% if categoryParent %}{{ ',' }}{{ categoryParent.name|default('') }}{% endif %}{% else %}{{ 'category.all_category' }}{% endif %}{% endblock %}
+{% block description %}{{ categoryArrayDescription|default('')|plain_text(100) }}{% endblock %}
+{% block title %}{{ categoryArray.name|default('category.all_category'|trans) }} - {{ setting('site.name') }}{% if setting('site.slogan') %}{{ ' - ' }}{{ setting('site.slogan') }}{% endif %}{% if not setting('copyright.owned') %} - Powered By EduSoho{% endif %}{% endblock %}
+
+{% do script(['corporatetrainingbundle/js/study-center/department-courses/index.js']) %}
+{% set studyCenterTitle = 'study_center.nav.department'|trans %}
+
+{% block inner %}
+  {% set path = app.request.get('_route') %}
+
+  <div class="department">
+    <div class="department-header">
+      {% if is_mobile_client() %}
+          {% include 'study-center/department-courses/h5-header.html.twig' %}
+      {% else %}
+        <div class="post-cet">
+          <ul class="nav nav-pills nav-sm pull-left">
+            <li role="presentation" class="{% if tab_nav == 'course' %}active{% endif %}" >
+              <a href="{{ path('study_center_my_department_courses') }}">{{'study_center.department_courses.course'|trans}}</a>
+            </li>
+            <li role="presentation" class="{% if tab_nav == 'classroom' %}active{% endif %}">
+              <a href="{{ path('study_center_my_department_classrooms') }}">{{'study_center.department_courses.classroom'|trans}}</a>
+            </li>
+          </ul>
+          <div class="pull-right">
+            <form class="nor-search form-inline pull-left mrm hidden-xs"
+                    {% if tab_nav == 'classroom' %}
+                      action="{{ path('study_center_my_department_classrooms', {category:category['category'], subCategory:category['subCategory'], selectedthirdLevelCategory:category['thirdLevelCategory'], tags:tags, orderBy: orderBy, isFilterSpread:isFilterSpread}) }}"
+                    {% else %}
+                      action="{{ path('study_center_my_department_courses', {category:category['category'], subCategory:category['subCategory'], selectedthirdLevelCategory:category['thirdLevelCategory'], tags:tags, orderBy: orderBy, isFilterSpread:isFilterSpread}) }}"
+                    {% endif %}
+                  method="get">
+              <div class="form-group">
+                <input class="nor-search-input form-control ft-xsm" name="title">
+                <button class="nor-search-icon es-icon es-icon-search"></button>
+              </div>
+            </form>
+            <div class="course-mts dis-i-b mts">
+              <span>{{ 'study_center.department_courses.course_sort'|trans }}：</span>
+              <div class="dropdown dis-i-b dropdown-department">
+                <a href="javascript:;" type="button" data-toggle="dropdown">
+                  {% if orderBy == 'createdTime' or orderBy == 'latest' %}
+                    {{ 'study_center.department_courses.course_latest'|trans }}
+                  {% else %}
+                    {{'study_center.department_courses.course_hottest'|trans}}
+                  {% endif %}
+                </a>
+                <ul class="dropdown-menu">
+                  {% if tab_nav == 'classroom' %}
+                    <li class="{% if (orderBy == 'createdTime') %}active{% endif %}">
+                      <a  href="{{ path('study_center_my_department_classrooms', {orderBy: 'createdTime', category:category['category'], subCategory:category['subCategory'], selectedthirdLevelCategory:category['thirdLevelCategory'], tags:tags, isFilterSpread:isFilterSpread}) }}" >{{'study_center.department_courses.course_latest'|trans}}</a>
+                    </li>
+                    <li class="{% if (orderBy == 'studentNum') %}active{% endif %}">
+                      <a  href="{{ path('study_center_my_department_classrooms', {orderBy: 'studentNum', category:category['category'], subCategory:category['subCategory'], selectedthirdLevelCategory:category['thirdLevelCategory'], tags:tags, isFilterSpread:isFilterSpread}) }}" >{{'study_center.department_courses.course_hottest'|trans}}</a>
+                    </li>
+                  {% else %}
+                    <li class=" {% if (orderBy == 'latest') %}active{% endif %}">
+                      <a  href="{{ path('study_center_my_department_courses', {orderBy: 'latest', category:category['category'], subCategory:category['subCategory'], selectedthirdLevelCategory:category['thirdLevelCategory'], tags:tags, isFilterSpread:isFilterSpread}) }}" >{{'study_center.department_courses.course_latest'|trans}}</a>
+                    </li>
+                    <li class=" {% if (orderBy == 'studentNum') %}active{% endif %}">
+                      <a  href="{{ path('study_center_my_department_courses', {orderBy: 'studentNum', category:category['category'], subCategory:category['subCategory'], selectedthirdLevelCategory:category['thirdLevelCategory'], tags:tags, isFilterSpread:isFilterSpread}) }}" >{{'study_center.department_courses.course_hottest'|trans}}</a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </div>
+                <div class='course-filtrate dis-i-b'>
+                  <span class="color-black">{{ 'study_center.btn.filtrate'|trans }}</span>
+                  <span class='es-icon es-icon-keyboardarrowdown'></span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+    <div class="courses-tabs" {% if isFilterSpread == 'false' %} style="display: none;" {% elseif isFilterSpread == 'true' %}{% endif %}>
+      {{ render(controller('AppBundle:Category:treeNav',{tags:tags, path:path, category:category, orderBy: orderBy, group: group})) }}
+    </div>
+    <div class="department-body">
+      {% block department_body %}
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}

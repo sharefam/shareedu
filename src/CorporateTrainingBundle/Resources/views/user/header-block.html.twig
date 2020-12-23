@@ -1,0 +1,78 @@
+{% set num = [1,2,3,4,5] %}
+{% do script(['corporatetrainingbundle/js/star/index.js'])%}
+
+<div class="user-center-header" data-href="{{ filepath(user.largeAvatar, 'avatar.png') }}" data-sharpness="40">
+  <div class="container clearfix set_mask">
+    <div class="user-avatar user-avatar-container">
+      <div class="avatar-wrap">
+        <img class="avatar-lg" src="{{ filepath(user.largeAvatar, 'avatar.png') }}">
+        {% if 'ROLE_TEACHER' in user.roles %}
+          <span class="icon-user-status icon-md"><i class="es-icon es-icon-school"></i></span>
+        {% endif %}
+      </div>
+      <div class="name">
+        <span class="user-truename">
+        {% if user.truename %}
+          {{user.truename}}
+        {% else %}
+          {{'user.fields.no_truename'|trans}}
+        {% endif %}
+        </span>
+      </div>
+      <div class="position">
+        <span class="mrm text-overflow">{% if user.title %}{{ user.title }}{% else %}{{'user.fields.no_title'|trans}}{% endif %}</span>
+        {% if 'ROLE_TEACHER' in user.roles %}
+          <span class="user-title-type">{% if level|default('') %}{{ level.name }}{% else %}{{ 'user.fields.no_level'|trans }}{% endif %}</span>
+        {% endif %}
+        {% if user.site %}
+          <a href="{{ user.site }}" target="_blank"><i class="es-icon es-icon-link"></i></a>
+        {% endif %}
+        {% if user.weibo and user.isWeiboPublic %}
+          <a  href="{{ user.weibo }}" target="_blank"><i class="es-icon es-icon-weibo"></i></a>
+        {% endif %}
+        {% if user.qq and user.isQQPublic %}
+          <a data-toggle="tooltip" data-placement="top" title="{{ user.qq }}"><i class="es-icon es-icon-qq"></i></a>
+        {% endif %}
+        {% if user.weixin and user.isWeixinPublic %}
+          <a data-toggle="tooltip" data-placement="top" title="{{ user.weixin }}"><i class="es-icon es-icon-weixin"></i></a>
+        {% endif %}
+      </div>
+      {% if is_plugin_installed('Survey') and 'ROLE_TEACHER' in user.roles %}
+      <div class="user-comment">
+        <span class="user-comment-title">{{ 'user.header_block.survey'|trans }}</span>
+        <div class="icon-star-group" data={{ score|default(0) }}>
+        {% for key in num %}
+            <i class="es-icon survey-score-star {% if score|default(0) %}es-comment-icon{% else%}user-comment-title{% endif %}"></i>
+        {% endfor %}
+        </div>
+        {% if score|default(0) %}
+          <span class="user-comment-score">
+            {{ score }}
+          </span>
+        {% else  %}
+          <span class="user-comment-title">
+            {{ 'user.header_block.survey.empty'|trans }}
+          </span>
+        {% endif %}
+
+      </div>
+      {% endif %}
+      <div class="mates">
+        <span class="mrm">{{follower|default(0)}}</span>{{'user.fields.fan'|trans}}<span class="mlm mrm">｜</span><span class="mrm">{{following|default(0)}}</span>{{'user.fields.following'|trans}}
+      </div>
+      {% if (not app.user) or (app.user.id != user.id) %}
+        <div class="actions">
+          <a class="btn btn-primary follow-btn mrl" href="javascript:;" data-url="{{ path('user_follow', {id:user.id}) }}" {% if isFollowed %} style="display:none;"{% endif %}>{{'user.btn.following'|trans}}</a>
+          <a class="btn btn-default unfollow-btn mrl" href="javascript:;" data-url="{{ path('user_unfollow', {id:user.id}) }}" {% if not isFollowed %} style="display:none;" {% endif %}>{{'user.btn.followed'|trans}}</a>
+          <button class="btn btn-ghost-white" data-toggle="modal" data-backdrop="static" data-target="#modal" data-url="{{path('message_create', {toId:user.id})}}">{{'user.btn.send_message'|trans}}</button>
+        </div>
+      {% endif %}
+    </div>
+    <div class="user-about hidden-sm hidden-xs">
+      <div class="user-about-content">
+        {% if user.signature %}{{ user.signature}}{% else %}{{'user.fields.no_sign'|trans}}{% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="mask"></div>
+</div>

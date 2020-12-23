@@ -1,0 +1,21 @@
+{% if setting('magic.enable_org','0') %}
+  {% do load_script('corporatetrainingbundle/controller/user/batch-update-btn') %}
+  {% set generate = generate|default('generate') != 'no-generate' %}
+  {% if generate %}
+	<div>
+	<label class="checkbox-inline"><input type="checkbox" data-role="batch-select"> {{ 'admin.user_manage.user.all_select'|trans }}</label>
+  {% endif %}
+  {% if setting('sync_department_setting.enable', 0) %}
+	<span title="{{ 'admin.user.batch_update.sync_department_setting.tips'|trans }}">
+  	  <a class="btn btn-default btn-sm {% if generate %} mlm {% endif %} disabled" id="batch-update-org" data-form-id="{{formId}}" data-toggle="modal" data-generate="{{generate|default(false)}}" data-target="#modal" data-url="{{path('admin_user_batch_update_orgs',{module:module})}}">{{ 'admin.user.batch_update.sync_department_setting.set_org'|trans }}</a>
+	</span>
+  {% else %}
+	<a class="btn btn-default btn-sm {% if generate %} mlm {% endif %}" id="batch-update-org" data-form-id="{{formId}}" data-toggle="modal" data-generate="{{generate|default(false)}}" data-target="#modal" data-url="{{path('admin_user_batch_update_orgs',{module:module})}}">{{ 'admin.user.batch_update.sync_department_setting.set_org'|trans }}</a>
+  {% endif %}
+	<a class="btn btn-default btn-sm {% if generate %} mlm {% endif %}" id="batch-update-post" data-form-id="{{formId}}" data-toggle="modal" data-generate="{{generate|default(false)}}" data-target="#modal" data-url="{{path('admin_user_batch_update_post')}}">{{ 'admin.user.batch_update.sync_department_setting.set_post'|trans }}</a>
+  <a class="btn btn-default btn-sm {% if generate %} mlm {% endif %}" id="bach-lock-user" data-form-id="{{formId}}" data-generate="{{generate|default(false)}}" data-url="{{path('admin_user_batch_update_locked')}}" title="{{ 'admin.user.batch_update.sync_department_setting.locked_user'|trans }}">{{ 'admin.user.batch_update.sync_department_setting.locked_user'|trans }}</a>
+  {% if generate %}
+    </div>
+  {% endif %}
+
+{% endif %}

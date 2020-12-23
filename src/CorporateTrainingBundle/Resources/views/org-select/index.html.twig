@@ -1,0 +1,43 @@
+{% do script(['libs/bootstrap-treeview.js', 'corporatetrainingbundle/js/org-select/index.js'], 900) %}
+
+
+{% set user = app.user %}
+{% set userOrgCodes = user.manageOrgCodes %}
+
+{#默认用户所属部门取默认值使用带参则为userOrg管理范围部门取默认值#}
+{% if userOrg|default() %}
+  {% set userOrgCodes = user.orgCodes %}
+{% endif %}
+{% set currentOrgTree = data('OrgTreeCurrentUser',{orgCodes: userOrgCodes }) %}
+
+{% set flag = 0 %}
+
+{% set requestOrgCode = app.request.get('orgCode')|default(0) %}
+{% set currentOrgCode = app.request.get('orgCode')|default(userOrgCodes[0]|default('')) %}
+
+{% if requestOrgCode|default() %}
+  {% set currentOrgCode = requestOrgCode %}
+{% endif %}
+
+{% if orgCode|default() %}
+  {% set currentOrgCode = orgCode %}
+{% endif %}
+
+
+{% set currentOrg = data('OrgByOrgCode', {orgCode: currentOrgCode|default()}) %}
+
+<div data-url="{{ saveUrl|default() }}" class="js-treeview-select-wrap" id="{{ id|default() }}" data-check-column-name="{% if treeName|default() == 'orgCode' %}orgCode{% else %}id{% endif %}">
+  <div class="treeview-select js-treeview-select">
+
+    {% set defaultPlaceholder = '部门'|trans %}
+    <input class="form-control js-treeview-text department-manage-search-form-group__tree" placeholder="{{ placeholder|default(defaultPlaceholder)|trans }}" type="text" autocomplete="off" value="{% if currentOrg|default() %}{{ currentOrg.name|default() }}{% else %}{{currentOrgTree.0.name|default()}}{% endif %}" >
+    <div  class="treeview-select-menu js-treeview-select-menu"></div>
+    {% if ids|default %}
+      <input class="hide js-treeview-ipt" type="text" name="{{ treeName|default('') }}" value="{{ ids|default() }}">
+    {% else %}
+      <input class="hide js-treeview-ipt" type="text" name="{{ treeName|default('') }}" value="{% if currentOrgCode|default() %}{{ currentOrgCode|default() }}{% else %}{{currentOrgTree.0.orgCode|default()}}{% endif %}">
+    {% endif %}
+    <div class="hide js-treeview-data">{{ data|default() }}</div>
+  </div>
+</div>
+

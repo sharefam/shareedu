@@ -1,0 +1,46 @@
+{% import "common/data-dict-macro.html.twig" as dict_macro %}
+{% import 'admin/macro.html.twig' as admin_macro %}
+<tr>
+  <td>
+    <a class="pull-left mrm link-primary" href="{{ path('course_show',{id: courseSet.defaultCourseId}) }}">
+      <img class="course-picture" src="{{ filepath(course_set_cover(courseSet, 'middle'), 'courseSet.png') }}"
+           alt="{{ courseSet.title }}" width="100">
+    </a>
+    <div class="mlm text-ovf">
+      <a class="link-primary" href="{{ path('course_show',{id: courseSet.defaultCourseId}) }}">{{ courseSet.title|plain_text(30) }}</a>
+    </div>
+    <div class="mts text-ovf">
+      {{ dict_macro.courseStatus( courseSet.status) }}
+    </div>
+  </td>
+  <td>{{ courseSet.createdTime|default()|date('Y-m-d') }}</td>
+  {% include 'org/parts/table-body-td.html.twig' with {orgCode: courseSet.orgCode} %}
+  <td>
+    {{ categories[courseSet.categoryId].name|default('--') }}
+  </td>
+  <td>{{ courseSet.studentNum|default() }}</td>
+  <td>
+    {% if courseSet.studentNum == 0 %}
+      0
+    {% else %}
+      {{ (courseSet.totalLearnTime / courseSet.studentNum)|default(0)|time_format_hour }}
+    {% endif %}
+  </td>
+  <td>
+    {% if courseSet.studentNum == 0 %}
+      0%
+    {% else %}
+      {{ percent(courseSet.courseProgress, courseSet.studentNum) }}
+    {% endif %}
+  </td>
+  {% if is_plugin_installed('Survey') %}
+    {% set avgEvaluate = data('CourseSurveyAverageScore', {'courseId': courseSet.defaultCourseId}) %}
+    <td>{% if avgEvaluate %}{{ avgEvaluate }}/5.00{% else %}--/5.00{% endif %}</td>
+  {% endif %}
+  <td class="ct-link">
+    <a target="_blank" href="{{ path('admin_data_online_course_data_show', { courseSetId: courseSet.id, courseId:courseSet.defaultCourseId }) }}">{{ 'admin.data_center.course_detail.data_detail'|trans }}</a><br>
+    {% if is_plugin_installed('Survey') %}
+      <a target="_blank" href="{{ path('admin_data_online_course_teacher_evaluate_list', {id: courseSet.id}) }}">{{ 'admin.data_center.course_detail.survey_detail'|trans }}</a>
+    {% endif %}
+  </td>
+</tr>

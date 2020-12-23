@@ -1,0 +1,80 @@
+<div class="my-record-sec">
+  {% include 'study-center/course-statistics/middle-item.html.twig' %}
+  <div class="my-record-sec-body js-course-count">
+    <div class="bg-gray pvm phl">
+      <div class="js-tab-block-wrap">
+        <div class="tab-block js-tab-sec is-active">
+          <div class="row">
+            <table class="table table-sm table-bordered mtl">
+              <thead>
+              <tr>
+                <th>{{'project_plan.name'|trans}}</th>
+                <th class="table-th-num">{{'project_plan.manage_list.status'|trans}}</th>
+                <th class="table-th-num">{{'project_plan.member.progress'|trans}}</th>
+                <th class="table-th-time">{{'study_center.course.learn_time'|trans}}</th>
+                <th class="table-th-time">{{'project_plan.finish_time'|trans}}</th>
+                <th class="table-th-time">{{'project_plan.member.score'|trans}}</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% if projectPlans|default() %}
+                {% for projectPlan in projectPlans %}
+                  <tr>
+                    <td class="js-category-name">
+                      {{ projectPlan.name|default('--') }}
+                    </td>
+                    <td class="js-category-count">
+                      {% if projectPlan.progress == 100 %}
+                        {{ 'project_plan.status.unfinish'|trans }}
+                      {% elseif projectPlan.progress == 0 %}
+                        {{ 'project_plan.status.unstart'|trans }}
+                      {% else %}
+                        {{ 'site.default.doing'|trans }}
+                      {% endif %}
+                    </td>
+                    <td>
+                      <span class="{% if projectPlan.progress == 100 %}color-success{% elseif 50 <= projectPlan.progress and projectPlan.progress < 100 %}color-warning{% elseif 0 < projectPlan.progress and projectPlan.progress < 50 %}color-danger
+                      {% else %}color-dark{% endif %}">
+                      {{ projectPlan.progress }}%
+                      </span>
+                    </td>
+                    <td>{{projectPlan.learnTime|time_format_hour}}</td>
+                    <td>
+                      {% if projectPlan.progress == 100 %}
+                        {% if projectPlan.endTime|default(null) %}
+                          {{ projectPlan.finishedTime|date('Y-n-d H:i:s')  }}
+                        {% elseif projectPlan.endTime|default(0) < projectPlan.finishedTime %}
+                          <span class="color-danger">
+                            {{ projectPlan.finishedTime|date('Y-n-d H:i:s')  }}<br>
+                            {{ 'study_center.department_manage.postponed'|trans }}
+                          </span>
+                        {% else %}
+                          {{ projectPlan.finishedTime|date('Y-n-d H:i:s')  }}
+                        {% endif %}
+                      {% else %}
+                        --
+                      {% endif %}
+                    </td>
+                    <td>
+                      <div class="btn-group">
+                        <a href="#modal" data-toggle="modal" data-url="{{ path('project_plan_member_score_modal_show', {projectPlanId: projectPlan.id, userId: projectPlan.userId}) }}" class="btn btn-default btn-sm">{{ 'project_plan.member.view_results'|trans }}</a>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="20">
+                    <div class="empty">{{ 'project_plan.record_empty'|trans }}</div>
+                  </td>
+                </tr>
+              {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

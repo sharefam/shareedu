@@ -1,0 +1,20 @@
+<div class="member-projectplan-modal__body ">
+  <div class="js-search-by-department row">
+    <div class="col-xs-6">
+      <div class="member-projectplan-content">
+        <input  class="js-search-input hidden" type="" name="" value="{{ build_org_tree(app.user.manageOrgCodes) }}">
+        <div class="js-search-by-department-menu member-projectplan-treeview"></div>
+      </div>
+    </div>
+    <div class="col-xs-6">
+      <div class="member-projectplan-content">
+        <div class="js-input-group">
+          <input class="form-control" type="text" name="name-search" id="orgModalInput">
+        </div>
+        <div class="member-projectplan-content__input-tip">
+          {{'advanced_user_select.member_org.tip'|trans }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

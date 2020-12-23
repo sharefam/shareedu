@@ -1,0 +1,27 @@
+{% extends 'study-center/study-record/layout.html.twig' %}
+
+{% set tab_type = 'department_manage' %}
+{% block record_body %}
+  <div class="my-record-header">
+    {{ render(controller('CorporateTrainingBundle:StudyCenter/DepartmentManage:learnRecordHeader', {userId:user.id})) }}
+  </div>
+  <div class="my-record-sec">
+    <div class="my-record-sec-header">
+    {{'study_center.department_manage.task_response'|trans}}
+    </div>
+    <div class="my-record-sec-body">
+      <div class="class-course-list js-class-course-list">
+        {% if courses|default() %}
+          {% for course in courses %}
+            {% include 'study-center/study-record/course-item.html.twig' %}
+          {% endfor %}
+        {% else %}
+          <ul class="period-list" id="course-item-list">
+            <span>{{'study_record.empty'|trans}}</span>
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {{ render(controller('CorporateTrainingBundle:StudyCenter/CourseStatistics:statisticsByCategories', {userId:user.id|default(0)})) }}
+{% endblock %}

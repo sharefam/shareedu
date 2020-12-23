@@ -1,0 +1,43 @@
+{% do script(['libs/echo-js.js','libs/echarts.js', 'corporatetrainingbundle/js/admin/index.js', 'corporatetrainingbundle/js/default/index.js']) %}
+
+<div class="echart-rank-wrapper">
+  <div class="ct-panel">
+    <div class="ct-panel-body ct-panel-body_row clearfix">
+      <div class="col col-sm-12 col-md-12 col-lg-6">
+         {% include  'admin/default/user-active-chart.html.twig' %}
+      </div>
+      <div class="col ol-sm-12 col-md-12 col-lg-6 rank-content">
+         <div class="ct-home-panel-l_6 js-search-wrap col-xs-6">
+            <div class="ct-home-panel js-ajax-tab-block-wrap">
+              <div class="ct-overView-title">{{ 'homepage.news.tab_personal_rank'|trans }}</div>
+              <div class="ct-tab-time">
+                <ul>
+                  <li class="js-tab-link active"><a href="javascript:;" data-url="{{ path('data_report_user_learn_rank_list',{type:'week', sourceFrom:'admin'}) }}">{{ 'site.date.week'|trans }}</a></li>
+                  <li class="js-tab-link"><a href="javascript:;" data-url="{{ path('data_report_user_learn_rank_list', {type:'month', sourceFrom:'admin'}) }}">{{ 'site.date.month'|trans }}</a></li>
+                  <li class="js-tab-link"><a href="javascript:;" data-url="{{ path('data_report_user_learn_rank_list', {type:'year', sourceFrom:'admin'}) }}">{{ 'site.date.year'|trans }}</a></li>
+                </ul>
+              </div>
+              <div class="ct-rank-bd js-tab-sec">
+                {{ render(controller('CorporateTrainingBundle:LearnRank:userLearnRankList',{type:'week', sourceFrom: 'admin'})) }}
+              </div>
+            </div>
+         </div>
+         <div class="ct-home-panel-r_6 js-search-wrap col-xs-6">
+            <div class="ct-home-panel js-ajax-tab-block-wrap">
+              <div class="ct-overView-title">{{ 'homepage.news.tab_department_rank'|trans }}</div>
+              <div class="ct-tab-time">
+                <ul>
+                  <li class="js-tab-link active"><a href="javascript:;" data-url="{{ path('data_report_org_learn_rank_list', {type:'week', sourceFrom:'admin'}) }}">{{ 'site.date.week'|trans }}</a></li>
+                  <li class="js-tab-link"><a href="javascript:;" data-url="{{ path('data_report_org_learn_rank_list', {type:'month', sourceFrom:'admin'}) }}">{{ 'site.date.month'|trans }}</a></li>
+                  <li class="js-tab-link"><a href="javascript:;" data-url="{{ path('data_report_org_learn_rank_list', {type:'year', sourceFrom:'admin'}) }}">{{ 'site.date.year'|trans }}</a></li>
+                </ul>
+              </div>
+              <div class="ct-rank-bd js-tab-sec">
+                {{ render(controller('CorporateTrainingBundle:LearnRank:orgLearnRankList',{type:'week', sourceFrom: 'admin'})) }}
+              </div>
+            </div>
+         </div>
+      </div>
+    </div>
+  </div>
+</div>

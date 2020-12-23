@@ -1,0 +1,92 @@
+.ct-panel-adside_row {
+  margin-left: -22px;
+  margin-right: -22px;
+}
+.ct-tab-time_mr {
+  right: 110px;
+}
+.ct-echat-title {
+  margin-left: 1px;
+  padding-right: 16px;
+  line-height: 24px;
+  font-size: 16px;
+  font-weight: 400;
+}
+.ct-echart-select {
+  position: absolute;
+  min-width: 120px;
+  height: 36px;
+  left: 46px;
+  top: 54px;
+  background: #FFFFFF;
+  border: 1px solid #E4E7ED;
+  border-radius: 2px;
+  z-index: 1001;
+}
+.echart-content {
+  background: #FFFFFF;
+  border: 1px solid #E4E7ED;
+  border-radius: 2px;
+  .ct-icon-pie, .ct-icon-bar {
+    font-size: 12px;
+  }
+}
+.overview-rank-title {
+  margin-left: -10px;
+}
+.item-container_height {
+  min-height: 498px;
+}
+
+.admin-teacher-echart {
+  width: 100%;
+  height: 280px;
+  &.admin-teacher-echart_pie {
+    height: 400px;
+  }
+}
+ #teacher-level-chart {
+   margin-top: 16px;
+ }
+@media only screen and (min-width: @screen-lg-min) {
+  .o-pull-direction {
+    float: left;
+  }
+
+  .admin-teacher-echart {
+    width: 100%;
+    height: 400px;
+    &.admin-teacher-echart_pie {
+      height: 400px;
+    }
+  }
+}
+
+@media  screen and (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+  .o-pull-direction {
+    float: right;
+    padding-right: 6px;
+    .ct-rank-item_name, .o-ct-rank-item__date, .ct-rank-item_post{
+      text-align: right
+    }
+  }
+  .admin-teacher-echart {
+    height: 320px;
+    &.admin-teacher-echart_pie {
+      height: 350px;
+    }
+  }
+  #teacher-survey-chart {
+    .ct-tab-time {
+      right: 20px;
+      top: 58px;
+      z-index: 1001;
+    }
+  }
+}
+
+@media  screen and (min-width: @screen-lg-min) and (max-width: 1310px) {
+  .ct-panel-teacher .ct-rank-bd {
+    padding: 0 8px 0 8px;
+  }
+}

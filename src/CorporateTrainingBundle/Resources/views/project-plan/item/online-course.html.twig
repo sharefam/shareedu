@@ -1,0 +1,74 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set modal_class = 'js-modal-close' %}
+{% set hide_footer = true %}
+
+{% do script(['libs/jquery-sortable.js', 'libs/select2.js', 'libs/jquery-validation.js', 'libs/bootstrap-datetimepicker.js', 'corporatetrainingbundle/js/project-plan/item/online-course/index.js']) %}
+
+{% block title %}
+{% if course|default('') %}
+  {{ 'project_plan.preparation.items.edit_items'|trans }}
+{% else %}
+  {{ 'project_plan.preparation.items.add_items'|trans }}
+{% endif %}
+{% endblock %}
+{% block body %}
+  <style>
+    .modal-backdrop.in {
+      opacity: 0.5;
+    }
+    .modal {
+       overflow-x: hidden;
+       overflow-y: auto;
+    }
+  </style>
+  <div class="unit-online-course">
+    <form class="form-horizontal" id="project-plan-item-form" {% if course|default() %}action="{{ path('project_plan_item_update', {id:id, projectPlanId:projectPlanId}) }}" {% else %} action="{{ path('project_plan_item_add', {id: projectPlanId, type: 'course'}) }}" {% endif %} method="post">
+      <div class="form-group">
+        <div class="col-sm-2 control-label">
+          <label for="projectplanCourses">{{ 'project_plan.item.choose_course'|trans }}</label>
+        </div>
+        <div class="col-md-9">
+          <ul class="js-ct-sortable sortable-list project-plan-sortable-list">
+            {% if course is defined %}
+              <li class="project-plan-sortable-item" data-id="{{ projectPlanCourse.id }}">
+                <span class="project-plan-sortable-item__info">
+                {{ 'project_plan.item.online_course'|trans }}：{{ projectPlanCourse.title }}
+              </span>
+                <span class="gray-medium">；</span>
+                <span class="project-plan-sortable-item__info">{{ 'project_plan.item.online_course_num'|trans }}：{{ projectPlanCourse.id }}</span>
+              </li>
+            {% endif %}
+          </ul>
+          {% if not (course is defined) %}
+            <a href="#modal" data-role="select-offline-course" data-url="{{ path('project_plan_course_pick', {projectPlanId: projectPlanId}) }}">{{ 'project_plan.item.choose_course'|trans }}</a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-2 control-label">{{ 'project_plan.preparation.items.item_date'|trans }}</label>
+        <div class="col-md-4 controls">
+          {% if course|default('') %}
+            <input type="text" id="startTime" name="startTime" class="form-control" for="startTime" placeholder="{{ 'project_plan.start_time'|trans }}" value="{% if projectPlanCourse.startTime|default(null) %}{{ projectPlanCourse.startTime|date('Y-m-d H:i') }} {% endif %}">
+          {% else %}
+            <input type="text" id="startTime" name="startTime" class="form-control" for="startDate" placeholder="{{ 'project_plan.start_time'|trans }}" value="">
+          {% endif %}
+        </div>
+        <div class="col-md-4 controls">
+          {% if course|default('') %}
+            <input type="text" id="endTime" name="endTime" class="form-control" for="endTime" placeholder="{{ 'project_plan.end_time'|trans }}" value="{% if projectPlanCourse.endTime|default(null) %}{{ projectPlanCourse.endTime|date('Y-m-d H:i') }} {% endif %}">
+          {% else %}
+            <input type="text" id="endTime" name="endTime" class="form-control" for="endDate" placeholder="{{ 'project_plan.end_time'|trans }}" value="">
+          {% endif %}
+        </div>
+      </div>
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+      <div class="form-group">
+        <div class="col-md-offset-2 col-md-9">
+          <button class="ct-btn ct-btn-primary" id="assignment-base-submit" type="button" data-loading-text="{{ 'project_plan.btn.save_loading_btn'|trans }}">{{ 'project_plan.btn.save_btn'|trans }}</button>
+          <button class="ct-btn ct-btn-default mlm" type="button" data-dismiss="modal">{{ 'project_plan.btn.cancel_btn'|trans }}</button>
+        </div>
+        </div>
+    </form>
+  </div>
+{% endblock %}

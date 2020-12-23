@@ -1,0 +1,22 @@
+<li data-id="{{postCourse.id}}" class="sortable-item">
+  <div class="row">
+    <div class="td col-md-4 sort-handle">
+      {{ courseSets[postCourse.courseSetId].title|default() }}
+    </div>
+    <div class="td col-md-2 sort-handle">
+      {{ categories[courseSets[postCourse.courseSetId].categoryId].name|default('admin.post_course.course_category_empty'|trans) }}
+    </div>
+    <div class="td col-md-1 post-course-seq sort-handle">
+      {{ postCourse.seq }}
+    </div>
+    <div class="td col-md-3 sort-handle">
+      {% set org = data('Org', {orgCode: courseSets[postCourse.courseSetId].orgCode}) %}
+      {{ org.name|default('site.data.empty') }}
+    </div>
+    <div class="td col-md-2">
+      <a class="btn btn-default post-course-delete" data-url="{{ path('admin_post_course_delete', {id:postCourse.id}) }}">
+        <i class="glyphicon glyphicon-trash"></i>{{'admin.post.btn.delete_btn'|trans}}
+      </a>
+    </div>
+  </div>
+</li>

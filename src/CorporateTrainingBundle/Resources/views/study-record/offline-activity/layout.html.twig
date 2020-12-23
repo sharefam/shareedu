@@ -1,0 +1,38 @@
+{% extends 'v2/layout.html.twig' %}
+
+{% block header %}
+  {% if not is_mobile_client() %}
+    {{ parent() }}
+  {% endif %}
+{% endblock %}
+
+{% block head %}
+  {% include 'study-record/head.html.twig' with {  headType: 'activity', headTitle: 'study_center.tab.offline_activity_record'|trans } %}
+{% endblock %}
+
+{% block page_title %}
+    {{ 'study_record.offline_activity'|trans }}
+{% endblock %}
+{% set side_nav = 'offline-activity' %}
+
+{% block main_body %}
+  {% if not is_mobile_client() %}
+    <ul class="cd-tabs">
+        <li {% if type == 'offline_activity' %}class="active"{% endif %}>
+            <a href="{{ path('study_record_offline_activity',{userId: userId|default(app.user.id)}) }}">
+                {{ 'study_record.offline_activity'|trans }}
+            </a>
+        </li>
+        <li {% if type == 'enrollment_record' %}class="active"{% endif %}>
+            <a href="{{ path('study_record_activity_enrollment_record',{userId: userId|default(app.user.id)}) }}">
+                {{ 'study_record.offline_activity.enrollment_record'|trans }}
+            </a>
+        </li>
+    </ul>
+  {% endif %}  
+
+  {% block inner %}
+
+  {% endblock %}
+
+{% endblock %}

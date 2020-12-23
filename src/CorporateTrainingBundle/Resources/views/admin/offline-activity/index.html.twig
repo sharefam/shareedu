@@ -1,0 +1,47 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_offline_activity_manage' %}
+
+{% do script(['corporatetrainingbundle/js/admin/offline-activity-manage/list/index.js']) %}
+
+{% block page_buttons %}
+{% endblock %}
+
+{% block main %}
+  {{ web_macro.flash_messages() }}
+
+  <form class="form-inline ct-well ct-mbl" action="{{path('admin_offline_activity')}}" method="post" novalidate>
+    <div class="form-group prl">
+      {% include 'org-select/index.html.twig' with {
+        id: 'resource-orgCode',
+        data: build_org_tree(app.user.manageOrgCodes),
+        placeholder: 'admin.org.select_placeholder'|trans,
+        treeName: 'orgIds',
+        ids: orgIds|default(0),
+      }
+      %}
+    </div>
+    <div class="form-group department-manage-search-form-group prl">
+        <select class="form-control department-manage-search-form-group__type" name="categoryId">
+            {{ select_options(category_choices('offlineActivity'), app.request.get('categoryId'), 'admin.offline_activity.type_choose'|trans) }}
+        </select>
+      </div>
+    <div class="form-group prl department-manage-search-form-group">
+        <select class="form-control department-manage-search-form-group__type" name="searchType">
+          <option value="all">{{ 'admin.offline_activity.all_type'|trans }}</option>
+            {{ select_options(dict('offlineActivityStatus'), app.request.get('searchType')) }}
+        </select>
+      </div>
+    <div class="form-group prl department-manage-search-form-group">
+        <input class="form-control department-manage-search-form-group__info" style="width:210px;" type="text" id="title" name="title" value="{{ app.request.get('title') }}" placeholder="{{'admin.offline_activity.search_placeholder'|trans}}">
+      </div>
+    <div class="form-group prl department-manage-search-form-group">
+       <button class="btn btn-primary">{{'admin.offline_activity.btn.search'|trans}}</button>
+      </div>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+      {% include 'admin/page-buttons/page-buttons.html.twig' %}
+  </form>
+  <div class="table table-striped data-list">
+    {% include 'admin/offline-activity/offline-activity-table.html.twig'%}
+  </div>
+{% endblock %}

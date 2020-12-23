@@ -1,0 +1,62 @@
+{% import "admin/macro.html.twig" as admin_macro %}
+
+{% import "common/data-dict-macro.html.twig" as dict_macro %}
+<tr id="course-tr-{{ courseSet.id }}">
+  {% include 'org/parts/table-body-checkbox.html.twig' %}
+  <td>{{ courseSet.id }}</td>
+  <td>
+    <a href="{{ path('course_show', {id: courseSet.defaultCourseId}) }}"
+       target="_blank"><strong>{{ courseSet.title }}</strong></a>
+    {% if filter == 'classroom' %}
+      {% set classroom = classrooms[courseSet.id]|default(null) %}
+      {% if not classroom %}
+        <span class="label label-danger live-label mls">{{ 'admin.course_manage.manage.classroom_course_removed'|trans }}</span>
+      {% endif %}
+    {% endif %}
+    {% if courseSet.type == 'live' %}
+      <span class="label label-success live-label mls">{{ 'admin.course_manage.manage.live_course'|trans }}</span>
+    {% endif %}
+    <br>
+    <span class="text-muted text-sm">{{ 'admin.course_manage.manage.category'|trans }}：{{ category.name|default('--') }}</span>
+    {% if courseSet.recommended %}
+      <span class="label label-default">{{ 'admin.course_manage.manage.recommend'|trans({'%recommendedTime%': courseSet.recommendedTime|date('Y-m-d'), '%recommendedSeq%': courseSet.recommendedSeq}) }}</span>
+    {% endif %}
+
+  </td>
+
+  {% include 'org/parts/table-body-td.html.twig' with {orgCode: courseSet.orgCode} %}
+  <td>
+    <span class="text-info">{{ dict_text('courseSerializeMode',courseSet.serializeMode) }}</span>
+  </td>
+  <td>
+    <a class="" data-toggle="modal" data-target="#modal" data-url="{{path('admin_course_manage_use_record',{courseId:courseSet.defaultCourseId})}}" href="javascript:">
+      {{'site.default.classroom'|trans}}：{{ courseSet.classroomNum|default(0) }}<br> {{'project_mobile'|trans}}：{{ courseSet.projectPlanNum|default(0) }}
+    </a>
+  </td>
+  <td>{{ courseSet.studentNum }}</td>
+  <td> {{ dict_macro.courseStatus( courseSet.status) }}</td>
+  <td>
+    {% if courseSet.belong == 'lease' %}
+      {{ 'admin.course_manage.manage.lease_course.creator'|trans }}
+    {% else %}
+      {% set profile = data('UserProfile', { 'userId' : user.id}) %}
+      {% if profile.truename %}
+        <strong>{{ admin_macro.user_link_by_truename(user, profile.truename) }}</strong>
+        <br><span class="text-muted text-sm">{{ user.nickname|default() }}</span>
+      {% else %}
+        <strong>{{ admin_macro.user_link(user) }}</strong>
+      {% endif %}
+    {% endif %}
+    <br>
+    <span class="text-muted text-sm">{{ courseSet.createdTime|date('Y-n-d H:i') }}</span>
+  </td>
+  <td>
+    <div class="btn-group">
+      {% if has_permission('admin_course_content_manage') %}
+        <a class="btn btn-default btn-sm" href="{{ path('course_set_manage_base', {id:courseSet.id}) }}"
+           target="_blank">{{ 'admin.course_manage.manage.manage_btn'|trans }}</a>
+      {% endif %}
+      {% include 'admin/role/templates/group-button.html.twig' with {parentCode: 'admin_course_manage', group:'groupButton', courseSet: courseSet} %}
+    </div>
+  </td>
+</tr>

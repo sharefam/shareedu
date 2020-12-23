@@ -1,0 +1,29 @@
+{% extends 'layout.html.twig' %}
+
+{% set bodyClass = 'offline_activity' %}
+
+{% block full_content %}
+  <div class="container">
+    <section class="o-list c-offline_activity-list">
+      
+      <div class="o-list__hd">
+        <ul class="nav nav-pills nav-sm dis-i-b">
+          <li role="presentation" class="active">
+            <a href="#">{{ 'offline_activity.status.ongoing'|trans }}</a>
+          </li>
+          <li role="presentation" class="">
+            <a href="">{{ 'offline_activity.status.completed'|trans }}</a>
+          </li>
+        </ul>
+        <a class="pull-right link-dark mts" href="">{{ 'offline_activity.detail.my_activities.check'|trans }}<i class="es-icon es-icon-chevronright"></i></a>
+      </div>  
+      <div class="o-list__bd c-offline_activity-list__bd js-list">
+        {#{{ render(controller())}}#}
+        {% include 'offline_activity/widgets/offline_activity.html.twig'%}
+      </div>      
+      <div class="o-list__ft js-list-ft">
+        <a class="c-offline_activity-more link-dark js-offline_activity-more" href="javascript:;" data-count="0" data-page="1" data-url="/">{{ 'offline_activity.more'|trans }}</a>
+      </div>
+    </section>
+  </div>
+{% endblock %}

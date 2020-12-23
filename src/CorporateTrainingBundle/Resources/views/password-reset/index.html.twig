@@ -1,0 +1,125 @@
+{% extends 'layout.html.twig' %}
+
+{% block header %}
+  {% include 'site-hint.html.twig' %}
+  {{ block_show('jianmo:login_bg') }}
+  {#{% include 'CorporateTrainingBundle:ct-default:header.html.twig' %}#}
+{% endblock %}
+
+{% set bodyClass = "pwd_reset index_bg_item" %}
+{% block title %}{{ 'password_reset.title'|trans }} - {{ parent() }}{% endblock %}
+{% do script(['libs/jquery-validation.js','app/js/auth/password-reset/index.js']) %}
+
+{#{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/corporatetraining/css/main.css') }}">
+{% endblock %}#}
+
+{% block content %}
+  <div class="pwd-reset-container">
+    <div class="pwd-reset-section ">
+      <div class="panel panel-default panel-page pwd-reset-main clearfix">
+        <h2 class="ft-xlg text-center mbxl">{{ 'password_reset.content.title'|trans }}</h2>
+        <ul class="nav nav-tabs js-find-password">
+          <li class="active js-find-by-email nav-reset-tab">
+            <a style="cursor: pointer;">{{ 'password_reset.content.email'|trans }}
+            </a>
+          </li>
+          {% if (setting('cloud_sms.sms_enabled')|default('')) == '1' %}
+            <li class="js-find-by-mobile nav-reset-tab">
+              <a style="cursor: pointer;">{{ 'password_reset.content.mobile'|trans }}
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+
+
+        <form id="password-reset-form" class="form-vertical" method="post">
+          <div class="form-group input-icon-wrap">
+            {{ form_label(form.email, 'password_reset.content.email'|trans, {label_attr:{class:'control-label hidden'}}) }}
+            <i class="es-icon es-icon-mail"></i>
+            <div class="controls">
+              {{ form_widget(form.email, {attr:{class:'form-control input-md-style', placeholder:'password_reset.content.email.placeholder'|trans}}) }}
+              <p class="help-block">{{ ' '|trans({'%name%': setting('site.name')}) }}</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="controls password-btn-block-wrap">
+              {{ form_rest(form) }}
+              <button type="submit" class="btn btn-primary btn-block bor-no"
+                      data-loading-text="{{ 'password_reset.content.btn.reset_btn.loading'|trans }}...">{{ 'password_reset.content.btn.reset_btn'|trans }}</button>
+            </div>
+
+            {% if error %}
+              <div id="alertxx" class="alert alert-danger-position">{{ error }}</div> {% endif %}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+          </div>
+          <div class="pull-right mbm"><a class="link-gray" href="{{ path('login') }}">{{ 'form.btn.return'|trans }}</a></div>
+        </form>
+
+        <form id="password-reset-by-mobile-form" class="form-vertical"
+              action="{{ path('password_reset_by_sms') }}" method="post" style="display:none;">
+          {# <div class="form-group">
+            <label class="control-label required" for="nickname">用户名</label>
+            <div class="controls">
+              <input type="text" id="nickname" name="nickname"  class="form-control" data-role="nickname">
+            </div>
+          </div> #}
+
+          <div class="form-group">
+            <label class="control-label required hidden" for="mobile">{{ 'password_reset.content.mobile'|trans }}</label>
+            <div class="controls input-icon-wrap">
+              <i class="es-icon es-icon-phone1 phone-icon"></i>
+              <input type="text" id="mobile" name="mobile"
+                     data-url="{{ path('password_reset_check_mobile') }}"
+                     class="form-control input-md-style" data-role="mobile"
+                     placeholder="{{ 'password_reset.content.mobile.placeholder'|trans }}">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label required hidden" for="sms-code">{{ 'password_reset.content.sms_code'|trans }}</label>
+            <div class="controls input-icon-wrap">
+              <div class="sms-check-btn pull-right">
+                <a href="#modal" data-toggle="modal" class="btn btn-default btn-sm js-sms-send disabled"
+                   data-url="{{ path('register_captcha_modal') }}"
+                   data-sms-url="{{ path('edu_cloud_sms_send') }}">
+                  <span id="js-time-left"></span>
+                  <span id="js-fetch-btn-text">{{ 'password_reset.content.get_sms_code'|trans }}</span>
+                </a>
+              </div>
+              <div class="sms-check-input">
+                <input type="text" class="form-control input-md-sms-style input-md-style" id="sms-code"
+                       name="sms_code" required="required"
+                       data-url="{{ path('edu_cloud_sms_check',{type:'sms_forget_password'}) }}"
+                       placeholder="{{ 'password_reset.content.sms_check'|trans }}">
+              </div>
+
+              <div class="help-block"></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="controls password-btn-block-wrap">
+              <button type="submit" class="btn btn-primary btn-lg btn-block bor-no"
+                      data-loading-text="{{ 'password_reset.submit_btn_loading'|trans }}">{{ 'password_reset.content.btn.reset_btn'|trans }}</button>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+          </div>
+
+          <div class="pull-right mbm"><a class="link-gray" href="javascript:history.back();">{{ 'form.btn.return'|trans }}</a></div>
+        </form>
+
+      </div><!-- /panel -->
+
+    </div>
+
+  </div>
+
+{% endblock %}
+
+{% block footer %}
+
+  {% include 'CorporateTrainingBundle:ct-default:footer-index.html.twig' %}
+{% endblock %}

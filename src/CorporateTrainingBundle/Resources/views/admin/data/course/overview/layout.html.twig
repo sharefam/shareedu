@@ -1,0 +1,40 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_data_online_course_data_overview' %}
+{% do script(['libs/echo-js.js','libs/echarts.js','libs/bootstrap-datetimepicker.js','corporatetrainingbundle/js/admin/data/course/overview/index.js']) %}
+
+{% block main %}
+  <div class="aside-panel">
+    <form id="online-course-data-search">
+      <div id="aside-department-learn-data" class="form-inline ct-well ct-mbl">
+        <div class="form-group prl">
+          <div class="ct-label ft-sm prl">{{ 'admin.data_center.project_plan.year.filter'|trans }}</div>
+          <div class="dis-i-b js-learn-data">
+            <input class="form-control" type="text" id="year"  value="{{ app.request.query.get('year')|default("now"|date("Y")) }}" name="year" placeholder="{{ 'admin.data_center.project_plan.year.filter.placeholder'|trans }}">
+          </div>
+        </div>
+        <div class="form-group prl">
+          <div class="ct-label ft-sm prl">{{ 'admin.data_center.project_plan.org.filter'|trans }}</div>
+          <div class="dis-i-b">
+            {# {% include 'org/org-treeview.html.twig' with {id: 'user-orgCode', placeholder: 'site.org.select_placeholder'|trans, width:240, parameter: 'orgCode', orgCode: '', arrTree:  build_org_tree(app.user.orgCodes), modal: 'list', isFront: 0} %} #}
+            {% include 'org-select/index.html.twig' with {
+                id: 'user-orgCode',
+                placeholder: 'site.org.select_placeholder'|trans,
+                data: build_org_tree(app.user.orgCodes),
+                treeName: 'orgCode',
+              }
+            %}
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="dis-i-b">
+            <button class="btn btn-primary search-btn" id="js-user-learn-search">{{ 'form.btn.search'|trans }}</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  {% block chart %}
+  {% endblock %}
+{% endblock %}

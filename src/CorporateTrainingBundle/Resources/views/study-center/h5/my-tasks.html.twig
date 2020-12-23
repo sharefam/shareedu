@@ -1,0 +1,68 @@
+{% extends 'layout.html.twig' %}
+{% set bodyClass = "h5-dashbord" %}
+
+
+{% block header %}
+  <div class="ct-header-h5 ptm pbm">
+    <a href="javascript:;" class="ct-header-h5__back js-back-icon"><i class="es-icon es-icon-return"></i></a>
+    <span>{{ 'study_center.nav.my_task'|trans }}</span>
+  </div>
+{% endblock %}
+
+{% block content %}
+    <div class="user-dashbord-bottom">
+      <a href="{{path('study_center_my_task_training_list')}}" class="dashbord-list-item clearfix">
+        <div class="pull-left dashbord-list-item__l">
+          <i class="es-icon es-icon-project icon-txt"></i><span class="ct-mls">{{ 'project_plan'|trans }}</span>
+        </div>
+        <div class="pull-right dashbord-list-item__r">
+          {% if projectPlanCount > 0 %} 
+            <span class="dashbord-list-item__num">{{projectPlanCount}}</span>
+          {% endif %}  
+          <i class="es-icon es-icon-list"></i>
+        </div>
+      </a> 
+
+      <a href="{{path('study_center_my_task_learning')}}" class="dashbord-list-item clearfix">
+        <div class="pull-left dashbord-list-item__l">
+          <i class="es-icon es-icon-postcurriculum icon-txt"></i><span class="ct-mls">{{ 'study_center.tab_nav.post_course'|trans }}</span>
+        </div>
+        
+        <div class="pull-right dashbord-list-item__r">
+          {% if postCourseCount > 0 %}
+            <span class="dashbord-list-item__num">{{postCourseCount}}</span>
+          {% endif %}   
+          <i class="es-icon es-icon-list"></i>
+        </div>
+      </a> 
+
+      {% if is_plugin_installed('Exam') %}
+        <a href="{{path('study_center_my_task_exam')}}" class="dashbord-list-item clearfix">
+          <div class="pull-left dashbord-list-item__l">
+            <i class="es-icon es-icon-allcourses icon-txt"></i><span class="ct-mls">{{ 'admin.focus.exam'|trans }}</span>
+          </div>
+
+          <div class="pull-right dashbord-list-item__r">
+            {% if examCount > 0 %}
+              <span class="dashbord-list-item__num">{{examCount}}</span>
+            {% endif %}
+            <i class="es-icon es-icon-list"></i>
+          </div>
+        </a>
+      {% endif %}
+      {% if is_plugin_installed('Survey') %}
+        <a href="{{path('study_center_my_task_survey')}}" class="dashbord-list-item clearfix">
+          <div class="pull-left dashbord-list-item__l">
+            <i class="es-icon es-icon-questionnaireinvestigation icon-txt"></i><span class="ct-mls">{{ 'admin.focus.survey'|trans }}</span>
+          </div>
+
+          <div class="pull-right dashbord-list-item__r">
+            {% if surveyCount > 0 %}
+              <span class="dashbord-list-item__num">{{surveyCount}}</span>
+            {% endif %}
+            <i class="es-icon es-icon-list"></i>
+          </div>
+        </a>
+      {% endif %}
+    </div>
+{% endblock %}

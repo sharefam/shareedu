@@ -1,0 +1,26 @@
+<div class="form-group" width="500px">
+    {% include 'org/org-tree-select.html.twig' with {orgCode: app.request.get('orgCode'), modal: 'list'} %}
+</div>
+<div class="form-group">
+    {% set postId = app.request.query.get('postId')|default("")%}
+    {%  if postId %}
+        {% set post = data('Post',{postId:postId}) %}
+    {% endif %}
+    <input type="hidden" class="form-control" id="postId" name="postId" value="{{ postId }}" {% if post|default(false) %} data-name="{{ post.name }}" {% endif %} data-url="{{ path('post_match') }}">
+</div>
+<div class="form-group">
+    <select class="form-control" name="keywordType" id="keywordType">
+        <option value="nickname"
+                {% if app.request.get('keywordType')|default() and  app.request.get('keywordType') == 'nickname' %}
+            selected="selected" {% endif %}>{{"study_center.part.search-bar.nickname"|trans}}</option>
+        <option value="truename"
+                {% if app.request.get('keywordType')|default() and  app.request.get('keywordType') == 'truename' %}
+            selected="selected" {% endif %}>{{"study_center.part.search-bar.truename"|trans}}</option>
+    </select>
+</div>
+<div class="form-group">
+    <input type="text" name="keyword" id="keyword" class="form-control"
+           placeholder={{"form.placeholder.keyword"|trans}} {% if app.request.get('keyword')|default() %}
+           value="{{app.request.get('keyword')}}" {% endif %}>
+</div>
+<button class="btn btn-primary">{{"study_center.course_statistics.btn.search_btn"|trans}}</button>

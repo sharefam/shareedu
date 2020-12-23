@@ -1,0 +1,94 @@
+{% if projectPlanItems %}
+  <div class="c-project-item-list">
+    {% for projectPlanItem in projectPlanItems %}
+      {% if (projectPlanItem.detail is defined) %}
+        <div class="c-project-item js-project-item">
+        {% set isSameDay = is_same_day(projectPlanItem.startTime, projectPlanItem.endTime) %}
+        {% if projectPlanItem.targetType == 'offline_course' %}
+          <div class="c-project-item__hd">
+            <a class="js-project-item-toggle-btn" href="javascript:;">
+              <div class="c-project-item__content">
+                <i class="c-project-item__icon es-icon es-icon-teacher"></i>
+                {{ projectPlanItem.detail.title|default('') }}
+                <div class="c-project-item__hover">
+
+                  <div class="ct-devider va-mid">
+                    {% if projectPlanItem.startTime|default(0) %}
+                      <div class="ct-devider__item">
+                      <span class="c-project-item__head-info">
+                        {% if isSameDay %}
+                        {{ projectPlanItem.startTime|date('Y-m-d') }}
+                        {% else %}
+                        {{ projectPlanItem.startTime|date('Y-m-d') }} {{ 'project_plan.time_to'|trans }} {{ projectPlanItem.endTime|date('Y-m-d') }}</span>
+                        {% endif %}
+                        </span>
+                      </div>
+                    {% endif %}
+                    <div class="ct-devider__item">
+                    <span class="c-project-item__head-info">
+                      {% if projectPlanItem.allAttendTaskNum|default(0) %}
+                        {{ 'project_plan.study_record.attend_num'|trans }}：<span class="gray-darker">{{ projectPlanItem.attendNum }}</span>/{{ projectPlanItem.allAttendTaskNum }}
+                      {% endif %}
+                    </span>
+                    </div>
+                  </div>
+                  <i class="c-project-item__toggle-btn es-icon js-remove-icon es-icon-anonymous-iconfont"></i>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="c-project-item__bd js-project-item__bd" style="display: none;">
+            {{ render(controller('CorporateTrainingBundle:StudyRecord:offlineCourseTaskList', {projectPlanItem: projectPlanItem, userId: userId} )) }}
+          </div>
+        {% elseif projectPlanItem.targetType == 'offline_exam' %}
+          <div class="c-project-item__hd">
+            {{ render(controller('CorporateTrainingBundle:StudyRecord:offlineExam', {projectPlanItem: projectPlanItem, userId: userId} )) }}
+          </div>
+        {% elseif projectPlanItem.targetType == 'exam' %}
+          {% if is_plugin_installed('Exam') %}
+            <div class="c-project-item__hd">
+              {{ render(controller('CorporateTrainingBundle:StudyRecord:exam', {projectPlanItem: projectPlanItem, userId: userId} )) }}
+            </div>
+          {% endif %}
+        {% else %}
+          <div class="c-project-item__hd">
+            <a class="js-project-item-toggle-btn" href="javascript:;">
+              <div class="c-project-item__content">
+                <i class="c-project-item__icon es-icon es-icon-book"></i>
+                {{ projectPlanItem.detail.title|default(0) }}
+                <div class="c-project-item__hover">
+                  <div class="ct-devider va-mid">
+                    {% if projectPlanItem.startTime|default(0) %}
+                      <div class="ct-devider__item">
+                      <span class="c-project-item__head-info">
+                        {% if isSameDay %}
+                        {{ projectPlanItem.startTime|date('Y-m-d') }}
+                        {% else %}
+                        {{ projectPlanItem.startTime|date('Y-m-d') }} {{ 'project_plan.time_to'|trans }} {{ projectPlanItem.endTime|date('Y-m-d') }}</span>
+                        {% endif %}
+                        </span>
+                      </div>
+                    {% endif %}
+
+                    <div class="ct-devider__item">
+                  <span class="c-project-item__head-info">
+                    {{ 'project_plan.implementation.course_learn_time'|trans }}：<span class="gray-darker">{{ projectPlanItem.learnTime|default(0)|time_format }}</span> {{ 'site.date.hour'|trans }}
+                  </span>
+                    </div>
+                  </div>
+                  <i class="c-project-item__toggle-btn es-icon js-remove-icon es-icon-anonymous-iconfont"></i>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="c-project-item__bd js-project-item__bd" style="display: none;">
+            {{ render(controller('CorporateTrainingBundle:StudyCenter/Task:list', {course: projectPlanItem.detail, tab_type: 'record', userId: userId} )) }}
+          </div>
+        {% endif %}
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty">{{ 'project_plan.empty'|trans }}</div>
+{% endif %}

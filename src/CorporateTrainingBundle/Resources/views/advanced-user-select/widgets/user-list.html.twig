@@ -1,0 +1,58 @@
+{% import "macro.html.twig" as web_macro %}
+<div class="member-projectplan-modal__body ">
+  <table class="table table-hover table-striped">
+    <thead>
+    <tr>
+      <th>
+        <input class="js-select-all" type="checkbox" name=""></th>
+      <th>{{ 'student.profile.truename'|trans }}</th>
+      <th>{{ 'student.user_name'|trans }}</th>
+      <th>{{ 'student.profile.gender'|trans }}</th>
+      <th>{{ 'student.profile.department'|trans }}</th>
+      <th>{{ 'course.members_manage.post'|trans }}</th>
+      <th>{{ 'advanced_user_select.hiredate'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+      {% set userProfile = data('UserProfile', {userId: user.id}) %}
+      {% set post = data('Post', {postId: user.postId}) %}
+      <tr>
+        <td>
+          <input class="js-checkbox" type="checkbox" data-id="{{ user.id }}" data-name="{{ userProfile.truename|default(user.nickname) }}">
+        </td>
+        <td>{{ userProfile.truename|default() }}</td>
+        <td>{{ user.nickname }}</td>
+        <td>
+          {% if userProfile.gender == 'male' %}
+            {{ 'user.fields.gender.male'|trans }}
+          {% elseif userProfile.gender == 'female' %}
+            {{ 'user.fields.gender.female'|trans }}
+          {% elseif userProfile.gender == 'secret' %}
+            {{ 'site.data.empty'|trans }}
+          {% endif %}
+        </td>
+        {% include 'org/parts/table-body-td.html.twig' with {mutiple: true} %}
+        <td>{{ post.name|default('') }}</td>
+        <td>
+          {% if user.hireDate %}
+            {{ user.hireDate|date('Y-m-d') }}
+          {% else %}
+            --
+          {% endif %}
+        </td>
+      </tr>
+    {% else %}
+      <tr>
+        <td class="text-center" colspan="20">
+          <div class="empty">
+            {{ 'advanced_user_select.user.empty'|trans }}
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{{ web_macro.paginator(paginator) }}

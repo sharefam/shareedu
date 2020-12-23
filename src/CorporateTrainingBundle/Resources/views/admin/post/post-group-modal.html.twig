@@ -1,0 +1,25 @@
+{% extends 'old-bootstrap-modal-layout.html.twig' %}
+
+{% block title %}{{'admin.post.group.setting'|trans}}{% endblock %}
+
+{% block body %}
+<div id="post-group-widget">
+
+  <form id="post-group-form" class="form-horizontal" action="{% if postGroup.id|default() %}{{ path('admin_post_group_edit', {id:postGroup.id}) }}{% else %}{{ path('admin_post_group_create') }}{% endif %}" method="post">
+    <div class="form-group">
+      <label class="col-md-3 control-label" for="post-group-name-field">{{'admin.post.group.name'|trans}}</label>
+      <div class="col-md-7 controls">
+        <input class="form-control" id="post-group-name-field" type="text" name="name" value="{{ postGroup.name|default() }}" data-url="{{ path('admin_post_group_name_check', {exclude:postGroup.name|default()}) }}" tabindex="1">
+      </div>
+    </div>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+  </form>
+</div>
+{% endblock %}
+
+{% block footer %}
+  <button type="button" class="btn btn-link" data-dismiss="modal" tabindex="6">{{'form.btn.cancel'|trans}}</button>
+  <button id="post-group-btn" data-submiting-text="{{'form.btn.submit.submiting'|trans}}" type="submit" class="btn btn-primary" data-toggle="form-submit" data-target="#post-group-form" tabindex="4">{{'form.btn.save'|trans}}</button>
+  <script> app.load('corporatetrainingbundle/controller/post/post-group-modal') </script>
+{% endblock %}
+

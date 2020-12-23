@@ -1,0 +1,13 @@
+
+<div id="user-active-chart">
+  <div class="ct-overView-title">{{ 'admin.operation_analysis.chart_title'|trans }}</div>
+  <div class="ct-tab-time">
+    <ul class="js-nav">
+      <li class="active" data-url="{{ path('admin_data_report_department_learn_and_login_statistic_data',{type:'week', cursor:0}) }}"><a href="javascript:;">{{ 'admin.operation_analysis.this_week'|trans }}</a></li>
+      <li class="" data-url="{{ path('admin_data_report_department_learn_and_login_statistic_data',{type:'week', cursor:-1}) }}"><a href="javascript:;">{{ 'admin.operation_analysis.last_week'|trans }}</a></li>
+      <li class=""  data-url="{{ path('admin_data_report_department_learn_and_login_statistic_data', {type:'month', cursor:0}) }}"><a href="javascript:;">{{ 'admin.operation_analysis.this_month'|trans }}</a></li>
+      <li class="" data-url="{{ path('admin_data_report_department_learn_and_login_statistic_data', {type:'month', cursor:-1}) }}"><a href="javascript:;">{{ 'admin.operation_analysis.last_month'|trans }}</a></li>
+    </ul>
+  </div>
+  <div id="admin-line-data"></div>
+</div>

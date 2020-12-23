@@ -1,0 +1,36 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set script_controller = 'corporatetrainingbundle/controller/system/sync_account_docking' %}
+
+{% set menu = 'admin_sync_account_docking' %}
+
+{% block main %}
+
+  {{ web_macro.flash_messages() }}
+
+  <form class="form-horizontal" method="post" id="sync_account_docking-form" data-mode="{{ sync_mode|default('closed') }}" novalidate>
+
+    <div class="form-group">
+      <div class="col-md-3 control-label">
+        <label >{{'admin.sync-account-docking.syn_docking'|trans}}</label>
+      </div>
+      <div class="controls col-md-8" >
+        <div class="btn-group">
+          <button type="button" class="btn btn-default {% if sync_mode =="closed" %}btn-primary{% endif %} model" data-modle="closed">{{'admin.sync-account-docking.btn.closed_btn'|trans}}</button>
+          <button type="button" class="btn btn-default {% if sync_mode =="dingtalk" %}btn-primary{% endif %} model" data-modle="dingtalk">{{'admin.sync-account-docking.btn.dingtalk_btn'|trans}}</button>
+        </div>
+        <input type="hidden" value="{{ sync_mode|default('none') }}" name="sync_mode" />
+      </div>
+    </div>
+
+    {% include 'admin/system/dingtalk-setting.html.twig' %}
+
+    <div class="form-group">
+      <div class="controls col-md-offset-3 col-md-8">
+        <button type="submit" class="btn submit btn-primary">{{'form.btn.submit'|trans}}</button>
+      </div>
+    </div>
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+  </form>
+
+{% endblock %}

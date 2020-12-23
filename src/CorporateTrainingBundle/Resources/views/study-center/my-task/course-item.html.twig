@@ -1,0 +1,86 @@
+{% set courseSet = data('CourseSet', { id: course.courseSetId }) %}
+<div class="c-ctr-task-item js-course-item js-page-wrapper">
+  <div class="c-ctr-task-item__media media">
+    <div class="c-ctr-task-item__media-left media-left">
+      {% if courseSet.serializeMode == constant('Biz\\Course\\Service\\CourseSetService::SERIALIZE_SERIALIZE_MODE') %}
+        <span class="c-ctr-task-item__tags"><span class="tag-serialing"></span></span>
+      {% elseif courseSet.serializeMode == constant('Biz\\Course\\Service\\CourseSetService::FINISH_SERIALIZE_MODE') %}
+        <span class="c-ctr-task-item__tags"><span class="tag-finished"></span></span>
+      {% endif %}
+      {% if courseSet.type == 'live' %}
+        <span class="c-ctr-task-item__tags">
+          <span class="tag-live"></span>
+        </span>
+      {% endif %}
+      <a href="{{ path('course_set_show', {id:courseSet.id}) }}" class="{% if is_mobile_client() %} pull-left{% endif %}">
+        <img class="c-ctr-task-item__img inline-img mid" src="{{ filepath(course_set_cover(courseSet, 'middle'), 'courseSet.png') }}" alt="{{ course.title }}">
+      </a>    
+       {% if is_mobile_client() %}
+        <div class="pull-left pl10">
+          <div class="c-ctr-task-mobile__title">{{ courseSet.title|default('') }}</div>
+          <span class="text-12">{{'study_center.my_task.user_learnTime'|trans}}：</span>
+           {{ course.learnTime|default(0)|time_format_hour }}
+          <div class="text-12">
+            {% if course.toLearnTask %}
+            <a class="link-dark dis-i-b" href="{{ path('course_task_show', {courseId:course.id, id:course.toLearnTask.id}) }}">  
+              <div class="dis-i-b">{{'study_center.my_task.current_task'|trans}}：</div>
+              <div class="dis-i-b">
+                {% include 'study-center/part/task-type-icon.html.twig' %}
+              </div>
+              <span class="dis-i-b c-ctr-task-mobile__task-name">{{ course.toLearnTask.title }}</span>&nbsp;
+              {% if course.toLearnTask.length != 0 %}
+                {{course.toLearnTask.length|duration}}
+              {% endif %}
+            </a>
+            {% else %}
+              <span>{{'study_center.my_task.current_task'|trans}}：{{ 'study_center.my_task.current_task_empty'|trans }}</span>
+            {% endif %}
+          </div>
+        </div>
+       {% endif %}
+      </div>
+    <div class="c-ctr-task-item__media-body media-body">
+      {% if course.toLearnTask|default() %}
+      <div class="c-ctr-task-item__hover">
+        <div class="js-chart course-pie-chart hidden-xs" data-percent="{% if course.progress|default(0) %}{{ course.progress|default(0) }}%{% endif %}" >
+          <a class="course-pie-chart-hover js-pie-chart-hover" href="{{ path('course_task_show', {courseId:course.id, id:course.toLearnTask.id}) }}">
+            {% if tab_nav == 'post' %}
+              <i class="es-icon es-icon-bofang start-icon"></i>
+            {% else %}
+              <i class="es-icon es-icon-done"></i>
+            {% endif %}
+          </a>
+        </div>
+          <span class="c-ctr-task-item__toggle-btn">
+            <i class="es-icon es-icon-menu js-page-load-btn" data-url="{{ path('study_center_course_tasks_list', {courseId:course.id, tab_type:tab_type, userId:app.user.id|default(0)}) }}"></i>
+          </span>
+      </div>
+      {% endif %}
+      <div class="c-ctr-task-item__title hidden-xs">
+        {{ courseSet.title|default('') }}
+      </div>
+      {% if not is_mobile_client() %}
+        <div class="c-ctr-task-item__info">
+          <span>{{'study_center.my_task.user_learnTime'|trans}}：</span>
+          {{ course.learnTime|default(0)|time_format_hour }}
+        </div>
+        <div class="c-ctr-task-item__info">
+          {% if course.toLearnTask %}
+          <a class="link-dark" href="{{ path('course_task_show', {courseId:course.id, id:course.toLearnTask.id}) }}">  
+            <span>{{'study_center.my_task.current_task'|trans}}：</span>
+
+            {% include 'study-center/part/task-type-icon.html.twig' %}
+            {{ course.toLearnTask.title }}&nbsp;
+            {% if course.toLearnTask.length != 0 %}
+              {{course.toLearnTask.length|duration}}
+            {% endif %}
+          </a>
+          {% else %}
+            <span>{{'study_center.my_task.current_task'|trans}}：{{ 'study_center.my_task.current_task_empty'|trans }}</span>
+          {% endif %}
+        </div>
+       {% endif %}
+    </div>
+  </div>
+  <div class="c-ctr-task-item__bd js-page-content"></div>
+</div>

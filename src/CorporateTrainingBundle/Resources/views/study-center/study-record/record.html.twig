@@ -1,0 +1,32 @@
+{% extends 'study-center/study-record/layout.html.twig' %}
+{% set tab_type = 'record' %}
+{% block record_body %}
+  <div class="my-record-sec">
+    <div class="my-record-sec-header">
+    {{'study_center.study_record.record.header'|trans}}
+    </div>
+    <div class="my-record-sec-body">
+      {% include 'study-center/study-record/header.html.twig' %}
+      <div class="class-course-list js-class-course-list">
+        {% if courses|default() %}
+          {% for course in courses %}
+            {% include 'study-center/study-record/course-item.html.twig' %}
+          {% endfor %}
+        {% else %}
+          <ul class="period-list empty" id="course-item-list">
+            <span>{{'study_center.study_record.record.empty'|trans}}</span>
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% if tab_types == 'projectPlanRecord' %}
+    {{ render(path('project_plan_record', {userId:app.user.id|default(0), tab_types:tab_types})) }}
+  {% elseif tab_types == 'learningStatistics' %}
+    {{ render(controller('CorporateTrainingBundle:StudyCenter/CourseStatistics:statisticsByCategories', {userId:app.user.id|default(0), tab_types:tab_types})) }}
+  {% elseif tab_types == 'offlineActivityRecord' %}
+    {{ render(path('study_center_offline_activity_record', {userId:app.user.id|default(0), tab_types:tab_types})) }}
+  {% elseif tab_types == 'examRecord' %}
+    {{ render(path('exam_record', {userId:app.user.id|default(0), tab_types:tab_types})) }}
+  {% endif %}
+{% endblock %}

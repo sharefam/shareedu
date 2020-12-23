@@ -1,0 +1,14 @@
+<li class="media">
+  <div class="pull-left">
+    <span class="glyphicon glyphicon-volume-down media-object"></span>
+  </div>
+  <div class="media-body">
+    <div class="notification-body">
+      {% set data = notification.content %}
+      很遗憾，您报名的<a href="{{ path('offline_activity_detail', {'id': data.offlineActivity.id}) }}">《{{ data.offlineActivity.title }}》</a>审核未通过，原因：{{ data.record.rejectedReason }}
+    </div>
+    <div class="notification-footer">
+      {{ notification.createdTime|date_format }}
+    </div>
+  </div>
+</li>

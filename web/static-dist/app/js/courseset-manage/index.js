@@ -1,0 +1,1 @@
+webpackJsonp(["app/js/courseset-manage/index"],{0:function(e,s){e.exports=jQuery},"1f261f314a319b1e6300":function(e,s,a){"use strict";(0,a("4e68e437f5b716377a9d").publishCourse)()}},["1f261f314a319b1e6300"]);

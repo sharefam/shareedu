@@ -1,0 +1,121 @@
+{% extends 'project-plan/layout.html.twig' %}
+{% set tab_nav = 'preparation' %}
+{% set side_nav = 'base' %}
+{% block title %}{{ 'project_plan.preparation.base'|trans }} - {{ parent() }}{% endblock %}
+{% do script(['libs/select2.js', 'libs/es-ckeditor/ckeditor.js','libs/jquery-validation.js','libs/bootstrap-datetimepicker.js','corporatetrainingbundle/js/project-plan/base/index.js']) %}
+
+{% block main %}
+  <div class="cd-main__heading">
+      <div class="cd-main__title">
+        {{ 'project_plan.preparation.base'|trans }}
+      </div>
+  </div>
+  <div class="cd-main__body">
+    <form class="form-horizontal" id="project-plan-base-form" action="{{path('project_plan_manage_base', {id: projectPlan.id})}}" method="post">
+      {{ web_macro.flash_messages() }}
+      <input type="hidden" id="targetType" name="targetType" value="course">
+      <div class="form-group">
+        <label class="col-md-2 control-label" for="name" >{{ 'project_plan.name'|trans }}</label>
+        <div class="col-md-8">
+          <input type="text" id="name" name="name" required="required" class="form-control" placeholder="{{ 'project_plan.preparation.base.name_placeholder'|trans }}" value="{{ projectPlan.name|default('') }}">
+          <div class="help-block" style="display:none;"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-2 control-label" for="categoryId">{{ 'project_plan.preparation.base.category'|trans }}</label>
+        <div class="col-md-8">
+          <select id="categoryId" name="categoryId" class="form-control">
+            {{ select_options(category_choices('projectPlan'), projectPlan.categoryId) }}
+          </select>
+          <div class="help-block" style="display:none;"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-2 control-label" for="orgCode">{{ 'project_plan.org'|trans }}</label>
+        <div class="col-md-8">
+          {% include 'org-select/index.html.twig' with {
+              id: 'user-orgCode',
+              placeholder: 'site.org.select_placeholder'|trans,
+              data: build_org_tree(app.user.manageOrgCodes),
+              treeName: 'orgCode',
+              orgCode: projectPlan.orgCode
+            }
+          %}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label  class="col-md-2 control-label" >{{'project_plan.project_plan_date'|trans}}</label>
+        <div class="col-md-3 controls">
+          <input type="text" id="startDateTime" name="startDateTime" data-url="" class="form-control" for="startDate" placeholder="{{ 'project_plan.start_time'|trans }}" value="{% if projectPlan.startTime|default(null) %}{{ projectPlan.startTime|date('Y-m-d')}}{% endif %}">
+        </div>
+        <div class="col-md-3 controls">
+          <input type="text" id="endDateTime" name="endDateTime" data-url="" class="form-control" for="endDate" placeholder="{{ 'project_plan.end_time'|trans }}" value="{% if projectPlan.endTime|default(null) %}{{ projectPlan.endTime|date('Y-m-d') }} {% endif %}">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-2 control-label" for="description">{{'project_plan.preparation.base.description'|trans}}</label>
+        <div class="col-md-8 controls">
+             <textarea name="summary" rows="10" id="project-plan-description" class="form-control"
+                       data-image-upload-url="{{ path('editor_upload', {token:upload_token('default')}) }}"
+             >{{ projectPlan.summary|default('') }}</textarea>
+        </div>
+      </div>
+      <div class="" id="source-publish">
+        {% include 'resource-visible/index.html.twig' with {
+          resourceType: 'projectPlan',
+          resourceId: projectPlan.id,
+          recourseShowable:projectPlan.showable|default(1),
+          resource: projectPlan,
+          showAccessSetting: false,
+        } %}
+      </div>
+      <div id="registration-setting" {% if projectPlan.showable<1|default(0) %}class="hidden" {% endif %}>
+        <input type="text"  name="requireEnrollment" class="form-control hidden" value="{{ projectPlan.requireEnrollment|default(0) }}" >
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="maxStudentNum">{{'project_plan.preparation.base.max_student_num'|trans}}</label>
+          <div class="col-md-8 controls">
+            <input type="text" id="maxStudentNum" name="maxStudentNum" class="form-control" placeholder="{{ 'project_plan.preparation.base.max_student_num.placeholder'|trans }}"value="{{ projectPlan.maxStudentNum|default()}}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label  class="col-md-2 control-label" >{{'project_plan.preparation.base.enrollment_time'|trans}}</label>
+          <div class="col-md-3 controls">
+            <input type="text" id="enrollmentStartDate" name="enrollmentStartDate" data-url="" class="form-control" for="enrollmentStartDate" placeholder="{{ 'project_plan.start_time'|trans }}" value="{% if projectPlan.enrollmentStartDate|default(null) %}{{ projectPlan.enrollmentStartDate|default()|date('Y-m-d')}}{% endif %}">
+          </div>
+          <div class="col-md-3 controls">
+            <input type="text" id="enrollmentEndDate" name="enrollmentEndDate" data-url="" class="form-control" for="enrollmentEndDate" placeholder="{{ 'project_plan.end_time'|trans }}" value="{% if projectPlan.enrollmentEndDate|default(null) %}{{ projectPlan.enrollmentEndDate|default()|date('Y-m-d')}}{% endif %}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label  class="col-md-2 control-label" ></label>
+          <div class="col-sm-8 controls checkbox">
+            <label>
+              <input type="checkbox" id="requireAudit" {% if projectPlan.requireAudit|default() %}checked {% endif %}>
+              {{ 'project_plan.preparation.base.require_audit'|trans }}
+            </label>
+            <input type="text"  name="requireAudit" class="form-control hidden" value="{{ projectPlan.requireAudit|default(0) }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label  class="col-md-2 control-label" ></label>
+          <div class="col-sm-8 controls">
+            <a href="#modal" data-toggle="modal" data-url="{{ path('project_plan_advanced_option', {id: projectPlan.id}) }}">{{ 'project_plan.preparation.base.advanced_option'|trans }}</a>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-8">
+          {% if projectPlan.status == 'archived' %}
+            <a class="btn btn-primary" disabled data-toggle="tooltip" data-placement="bottom" title="{{ 'project_plan.project_plan_archived'|trans }}">{{ 'project_plan.btn.save_btn'|trans }}</a>
+          {% else %}
+            <button id="project-plan-base-submit" type="button" class="btn btn-primary" data-loading-text="{{ 'project_plan.btn.save_loading_btn'|trans }}">{{ 'project_plan.btn.save_btn'|trans }}</button>
+          {% endif %}
+        </div>
+      </div>
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    </form>
+  </div>
+{% endblock %}

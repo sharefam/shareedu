@@ -1,0 +1,75 @@
+<div class="c-project-item js-project-item">
+  <div class="c-project-item__hd">
+    <a class="js-project-item-toggle-btn" href="javascript:;">
+      <div class="c-project-item__content">
+        <i class="c-project-item__icon es-icon es-icon-teacher"></i>
+        {% set offlineCourse = data('OfflineCourse',{ id:projectPlanItem.targetId }) %}
+        {% set user = data('User', { userId: offlineCourse.info.teacherIds[0] }) %}
+        {% set userProfile = data('UserProfile',{ userId: offlineCourse.info.teacherIds[0] }) %}
+        {{ offlineCourse.info.title|default('') }}
+        <span class="c-project-item-lesson__teacher hidden-xs">{{ 'project_plan.teacher'|trans }}：{{ userProfile.truename|default(user.nickname) }}</span>
+
+        <div class="c-project-item__hover">
+          {% if projectPlanItem.startTime|default(0) %}
+            {% set isSameDay = is_same_day(projectPlanItem.startTime, projectPlanItem.endTime) %}
+            <span class="c-project-item__time">
+            {% if isSameDay %}
+              {{ projectPlanItem.startTime|date('Y-m-d') }}</span>
+            {% else %}
+              {{ projectPlanItem.startTime|date('Y-m-d') }} {{ 'project_plan.time_to'|trans }} {{ projectPlanItem.endTime|date('Y-m-d') }}</span>
+            {% endif %}
+          {% endif %}
+
+          <i class="c-project-item__toggle-btn es-icon js-remove-icon es-icon-anonymous-iconfont"></i>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div class="c-project-item__bd js-project-item__bd" style="display: none;">
+  <ul class="">
+    {% if offlineCourse.items|default() %}
+      {% for item in offlineCourse.items %}
+        {% if item.type == 'offlineCourse' %}
+          <li class="c-project-item-lesson">
+            <div class="c-project-item-lesson__head">
+              <i class="c-project-item-lesson__icon es-icon es-icon-undone-check color-gray left-menu"></i>
+              <span>{{ item.title|default('') }}</span>
+            </div>
+            <div class="c-project-item-lesson__body">
+              <div class="c-project-item-lesson__info">
+                <i class="es-icon es-icon-time mrs"></i>
+                  {% if item.startTime|default('') %}
+                    {% set isSameTime = is_same_day(item.startTime, item.endTime) %}
+                    {% if isSameTime %}
+                      {{ item.startTime|date('m-d H:i') }}-{{ item.endTime|date('H:i') }}
+                    {% else %}
+                      {{ item.startTime|date('m-d H:i') }}-{{ item.endTime|date('m-d H:i') }}
+                    {% endif %}
+                  {% else %}
+                    {{ 'project_plan.detail.item.time_empty_info'|trans}}
+                  {% endif %}
+              </div>
+              <div class="c-project-item-lesson__info">
+                <i class="es-icon es-icon-location mrs"></i>{{ item.place|default('project_plan.detail.item.place_empty_info'|trans)}}
+              </div>
+            </div>
+          </li>
+        {% else %}
+          {% if is_plugin_installed('Survey') %}
+            <li class="c-project-item-lesson">
+              <div class="c-project-item-lesson__head">
+                <i class="c-project-item-lesson__icon es-icon es-icon-undone-check color-gray left-menu"></i>
+
+                <span>{{ item.title|default('') }}</span>
+
+              </div>
+            </li>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      <div class="empty">{{'project_plan.empty'|trans}}</div>
+    {% endif %}
+  </ul>
+  </div>
+</div>

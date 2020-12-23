@@ -1,0 +1,41 @@
+{% import "macro.html.twig" as web_macro %}
+
+<div class="panel panel-default aside-panel">
+  <div class="panel-heading">
+    <div class="panel-title">
+      {{'study_center.side_bar.hot-topics'|trans}}
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="aside-hot-topic">
+      {% set threads = data('HotThreads', {count:5}) %}
+      {% if threads|default() %}
+        {% for thread in threads %}
+          <div class="aside-hot-topic-item">
+            <div class="text-ovf aside-hot-topic-item-title"><a class="color-gray" target="_blank" href="{{ path('group_thread_show', {id:thread.groupId, threadId:thread.id}) }}">{{ thread.title|default() }}</a></div>
+            <div class="mts">
+              <span class="aside-hot-topic-item-reply-num">
+                <i class="es-icon es-icon-comment"></i>
+                <span class="dis-i-b wid-30">
+                  {% if thread.postNum %}
+                    {{web_macro.label_num_format(thread.postNum)}}
+                  {% else %}
+                    0
+                  {% endif %}
+                </span>
+              </span>
+              {% if thread.lastPostTime %}
+                <span>{{ thread.lastPostTime|smart_time }}</span>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty">
+          {{ 'study_center.side_bar.hot-topics.empty'|trans }}
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>

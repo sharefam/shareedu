@@ -1,0 +1,137 @@
+{#<div class="system-state-wrapper ct-mbm">#}
+  {#<div class="ct-panel">#}
+    {#<div class="ct-panel-heading">#}
+      {#<span class="ct-panel-title">{{'admin.homepage.system_status'|trans}}</span>#}
+    {#</div>#}
+    {#<div class="ct-panel-body ct-panel-body_row clearfix">#}
+      {#系统版本#}
+      {#<div class="col col-sm-6 col-md-4 col-lg-2">#}
+        {#<div class="content">#}
+          {#<div class="content-title">{{'admin.homepage.system_status.system_version'|trans}}</div>#}
+          {#{% if mainAppUpgrade %}#}
+            {#<div class="content-body">#}
+              {#<div class="dis-i-b">#}
+                {#<span class="ct-icon ct-icon-warning text-warn"></span>#}
+                {#<a class="text text-danger" href="{{ path("admin_app_upgrades") }}">{{ mainAppUpgrade.package.fromVersion }} {{ 'admin.homepage.system_status.update_available'|trans }}</a>#}
+              {#</div>#}
+            {#</div>#}
+          {#{% else %}#}
+            {#<div class="content-body">#}
+              {#<div class="dis-i-b">#}
+                {#<i class="glyphicon glyphicon-ok-sign text-success"></i>#}
+                {#<span class="text">{{ constant('CorporateTrainingBundle\\System::CT_VERSION') }}</span>#}
+              {#</div>#}
+            {#</div>#}
+          {#{% endif %}#}
+        {#</div>#}
+      {#</div>#}
+
+      {#应用插件#}
+      {#<div class="col col-sm-6 col-md-4 col-lg-2">#}
+        {#<div class="content">#}
+          {#<div class="content-title">{{ 'admin.homepage.system_status.plugins'|trans }}</div>#}
+          {#{% if upgradeAppCount == 0 %}#}
+            {#<div class="content-body">#}
+              {#<div class="dis-i-b">#}
+                {#<i class="ct-icon ct-icon-success text-success"></i>#}
+                {#<span class="text">{{ 'admin.homepage.system_status.updated'|trans }}</span>#}
+              {#</div>#}
+            {#</div>#}
+          {#{% else %}#}
+            {#<div class="content-body">#}
+              {#<div class="dis-i-b">#}
+                {#<i class="ct-icon ct-icon-warning text-warn"></i>#}
+                {#<a class="text text-danger" href="{{ path("admin_app_upgrades") }}"> {{ 'admin.homepage.system_status.plugin_update_available'|trans({'%upgradeAppCount%': upgradeAppCount}) }} </a>#}
+              {#</div>#}
+            {#</div>#}
+          {#{% endif %}#}
+        {#</div>#}
+      {#</div>#}
+
+      {#移动客户端#}
+      {#<div class="col col-sm-6 col-md-4 col-lg-2">#}
+        {#<div class="content">#}
+          {#<div class="content-title">{{ 'admin.homepage.system_status.mobile_app'|trans }}</div>#}
+          {#{% if mobileSetting.enabled|default(0) %}#}
+            {#<div class="content-body">#}
+              {#<div class="dis-i-b">#}
+                {#<i class="ct-icon ct-icon-success text-success"></i>#}
+                {#<a class="text" href="{{ path("admin_setting_mobile") }}">{{ 'admin.homepage.system_status.mobile_app_enabled'|trans }}</a>#}
+              {#</div>#}
+            {#</div>#}
+          {#{% else %}#}
+            {#<div class="content-body">#}
+              {#<div class="dis-i-b">#}
+                {#<i class="ct-icon ct-icon-warning text-danger"></i>#}
+                {#<a class="text text-danger" href="{{ path("admin_setting_mobile") }}">{{ 'admin.homepage.system_status.mobile_app_disabled'|trans }}</a>#}
+              {#</div>#}
+            {#</div>#}
+          {#{% endif %}#}
+        {#</div>#}
+      {#</div>#}
+
+      {#APP版本#}
+      {#<div class="col col-sm-6 col-md-4 col-lg-2">#}
+        {#<div class="content">#}
+          {#<div class="content-title">{{'admin.homepage.system_status.app_version'|trans}}</div>#}
+          {#<div class="content-body">#}
+            {#<div class="dis-i-b">#}
+              {#<i class="ct-icon ct-icon-apple text-apple"></i>#}
+              {#<span class="text">{{ ios.version|default('-.-.-') }}</span>#}
+            {#</div>#}
+            {#<div class="dis-i-b">#}
+              {#<i class="ct-icon ct-icon-android text-android"></i>#}
+              {#<span class="text">{{ android.version|default('-.-.-') }}</span>#}
+            {#</div>#}
+          {#</div>#}
+        {#</div>#}
+      {#</div>#}
+
+      {#邮件服务#}
+      {#<div class="col col-sm-6 col-md-4 col-lg-2">#}
+        {#<div class="content">#}
+          {#<div class="content-title">{{ 'admin.homepage.system_status.mail_service'|trans }}</div>#}
+          {#{% if mailServiceStatus  %}#}
+            {#<div class="content-body">#}
+              {#<div class="dis-i-b">#}
+                {#<i class="ct-icon ct-icon-success text-success"></i>#}
+                {#<a class="text" href="{{ path("admin_setting_mailer") }}">{{ 'admin.homepage.system_status.mail_enabled'|trans }}</a>#}
+              {#</div>#}
+            {#</div>#}
+          {#{% else %}#}
+            {#<div class="content-body">#}
+              {#<div class="dis-i-b">#}
+                {#<i class="ct-icon ct-icon-error text-error"></i>#}
+                {#<a class="text text-danger" href="{{ path("admin_setting_mailer") }}">{{ 'admin.homepage.system_status.mail_disabled'|trans }}</a>#}
+              {#</div>#}
+            {#</div>#}
+          {#{% endif %}#}
+        {#</div>#}
+      {#</div>#}
+
+      {#es教育云服务#}
+      {#<div class="col col-sm-6 col-md-4 col-lg-2">#}
+        {#<div class="content">#}
+          {#<div class="content-title">{{ 'admin.homepage.system_status.cloud'|trans }}</div>#}
+          {#{% if eduCloudStatus  %}#}
+            {#<div class="content-body">#}
+              {#<div class="dis-i-b">#}
+                {#<i class="ct-icon ct-icon-success text-success"></i>#}
+                {#<a href="{{ path('admin_my_cloud_overview') }}">#}
+                  {#<span class="text">{{ 'admin.homepage.system_status.cloud_enabled'|trans }}</span>#}
+                {#</a>#}
+              {#</div>#}
+            {#</div>#}
+          {#{% else %}#}
+            {#<div class="content-body">#}
+              {#<div class="dis-i-b">#}
+                {#<i class="ct-icon ct-icon-warning text-go"></i>#}
+                {#<a class="text text-danger" href="{{ path("admin_my_cloud_overview") }}">{{ 'admin.homepage.system_status.cloud_disabled'|trans }}</a>#}
+              {#</div>#}
+            {#</div>#}
+          {#{% endif %}#}
+        {#</div>#}
+      {#</div>#}
+    {#</div>#}
+  {#</div>#}
+{#</div>#}

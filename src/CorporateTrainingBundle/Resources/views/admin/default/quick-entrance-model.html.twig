@@ -1,0 +1,57 @@
+{% do script(['corporatetrainingbundle/js/admin/quick-entrance/index.js']) %}
+
+<div class="quick-cover">
+  <div class="quick-nav-model">
+    <div class="model-title">
+      <span>{{ 'admin.homepage.quick_entrance_add'|trans }}</span>
+      <span class="close-dialog" data-dismiss="modal">×</span>
+    </div>
+    <form class="form-horizontal" id="quick-entrance-form" method="post" action="{{ path('admin_user_quick_entrance_choose') }}">
+      <div class="model-item">
+        {% for index, module in quickEntrances %}
+          {% if module.data is not empty %}
+            <div class="entrance__list">
+              <div class="entrance__list-title">{{ module.name|default() }}</div>
+              <div class="quick-nav-content clearfix {{index}}">
+                {% for entrance in module.data %}
+                  <div class="col-xs-3">
+                    <div class="item-container clearfix {% if entrance.checked|default(false) %}active{% endif %}"  data-code={{entrance.code}}>
+                      <div class="content-item ct-item-width_60">
+                        <i class="ct-icon {{ entrance.icon|default() }} text-{{ entrance.icon|default() }}"></i>
+                      </div>
+                      <div class="content-item">
+                      <div class="content-item-title">
+                          {% if entrance.code == "admin_user_learn_data_overview" %}
+                            {{ 'admin.data_center.user_data'|trans }}
+                          {% elseif entrance.code == 'admin_data_center_teacher_overview' %}
+                            {{ 'admin.data_center.teacher_data'|trans }}
+                          {% elseif entrance.code == 'admin_data_center_project_plan_overview' %}
+                            {{ 'admin.data_center.project_plan_data'|trans }}
+                          {% elseif entrance.code == 'admin_data_online_course_data_overview' %}
+                            {{ 'admin.teacher.teaching_online_course_data'|trans }}
+                          {% else %}
+                            {{ entrance.name|default()|trans }}
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+    </form>
+
+    <div class="model-btn-group">
+      <div class="model-btn">
+        <button type="button" class="btn btn-link" data-dismiss="modal">{{ 'form.btn.cancel'|trans }}</button>
+        <button id="role-submit" data-submiting-text="{{ 'form.btn.submit.submiting'|trans }}" type="submit" class="btn btn-primary" data-toggle="form-submit"
+                data-target="#role-form">{{ 'form.btn.save'|trans }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

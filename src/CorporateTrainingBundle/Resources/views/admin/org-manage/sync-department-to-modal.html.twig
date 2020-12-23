@@ -1,0 +1,43 @@
+{% extends 'old-bootstrap-modal-layout.html.twig' %}
+
+{% block title %}{{ 'admin.org_manage.sync_department_to_dingding'|trans }}{% endblock %}
+
+{% block body %}
+  <form class="form-horizontal" id="sync-department-to-form" method="post" action="{{ path('admin_org_sync_department_to') }}">
+    {% if setting|default() %}
+      {% if setting.enable|default(0) %}
+        <div class="form-group">
+          <div class="col-md-2 control-label">
+            {{ 'admin.org_manage.sync_department.way'|trans }}：
+          </div>
+          <div class="col-md-2 control-label">
+            {% if setting.type == 'dingtalk' %}
+              <a target="_blank" href="https://www.dingtalk.com">{{ 'admin.org_manage.dingding'|trans }}</a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-2 control-label">
+            {{ 'admin.org_manage.sync_department.notice'|trans }}：
+          </div>
+        </div>
+      {% else %}
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+          <p class="form-control-static">{{ 'admin.org_manage.sync_department.message.open'|trans }}<a href="{{ path('admin_syn_setting') }}">{{ 'admin.org_manage.sync_department.btn.open_btn'|trans }}</a></p>
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <p class="form-control-static">{{ 'admin.org_manage.sync_department.message.setting'|trans }}<a href="{{ path('admin_syn_setting') }}">{{ 'admin.org_manage.sync_department.btn.setting_btn'|trans }}</a></p>
+      </div>
+    {% endif %}
+  </form>
+{% endblock %}
+
+{% block footer %}
+  <button id="sync-department-to-btn" data-submiting-text="{{'form.btn.submit.submiting'|trans}}" type="submit" class="btn btn-primary pull-right" data-toggle="form-submit" data-target="#sync-department-to-form">{{'admin.org_manage.sync_department.btn.start_sync_btn'|trans}}</button>
+  <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{'form.btn.cancel'|trans}}</button>
+  <script>app.load('corporatetrainingbundle/controller/org-manage/sync-department-to.js') </script>
+{% endblock %}

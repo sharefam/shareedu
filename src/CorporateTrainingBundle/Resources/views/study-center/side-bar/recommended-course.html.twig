@@ -1,0 +1,41 @@
+{% import "macro.html.twig" as web_macro %}
+{% if courses|default(false) %}
+
+<div class="panel panel-default aside-panel">
+  <div class="panel-heading">
+    <div class="panel-title">
+      {{'study_center.side_bar.recommended_course'|trans}}
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="aside-recommended-course">
+      {% for courseSet in courses %}
+        <div class="aside-recommended-course-item">
+          <div class="aside-recommended-course-item-left">
+            {{ lazy_img(filepath(course_set_cover(courseSet, 'large'), 'courseSet.png'), 'aside-recommended-course-item-img', courseSet.title) }}
+          </div>
+        <div class="aside-recommended-course-item-body">
+        <div>
+          <a class="aside-recommended-course-item-title link-dark" href="{{ path('course_show', {id: courseSet.defaultCourseId}) }}" target="_blank">
+            {{ courseSet.title }}
+          </a>
+        </div>
+        <div class="aside-recommended-course-item-detail">
+          {% if setting('course.show_student_num_enabled', '1') == 1  %}
+            <span class="aside-recommended-course-item-num mrl">
+              <i class="es-icon es-icon-people"></i>
+              {{ courseSet.studentNum }}
+            </span>
+          {% endif %}
+            <span class="aside-recommended-course-item-comment">
+              <i class="es-icon es-icon-textsms"></i>
+              {{ courseSet.ratingNum }}
+            </span>
+        </div>
+        </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% else %}{% endif %}

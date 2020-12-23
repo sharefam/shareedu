@@ -1,0 +1,38 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_offline_activity_category_manage' %}
+
+{% block page_buttons %}
+{% endblock %}
+{% block main %}
+  {{ web_macro.flash_messages() }}
+  <form id="offline-activity-category-search-form" class="form-inline ct-well  ct-mbl" action="{{path('admin_offline_activity_category')}}" method="get" novalidate>
+    <div>
+      <div class="form-group prl">
+        <input class="form-control" style="width:210px;" type="text" id="name" name="name" value="{{ app.request.query.get('name') }}" placeholder="{{'admin.offline_activity.search_placeholder'|trans}}">
+       </div>
+       <div class="form-group prl">
+         <button class="btn btn-primary">{{'admin.offline_activity.enrollment.btn.search'|trans}}</button>
+       </div>
+       {% include 'admin/page-buttons/page-buttons.html.twig' %} 
+      </div>
+  </form>
+    <ul class="list-table" id="category-table" style="margin-bottom: 0">
+      <li class="th">
+        <div class="row">
+          <div class="td col-md-2">{{'admin.offline_activity.type'|trans}}</div>
+          <div class="td col-md-2">{{'admin.offline_activity.ongoing_and_finished_status'|trans}}</div>
+          <div class="td col-md-2">{{ 'admin.offline_activity.accumulative_participate_student_num'|trans }}</div>
+          <div class="td col-md-2">{{ 'admin.offline_activity.accumulative_passed_student_num'|trans }}</div>
+          <div class="td col-md-1">{{ 'admin.offline_activity.statistics.pass_rate'|trans }}</div>
+          <div class="td col-md-1">{{ 'admin.offline_activity.statistics.attendance_rate'|trans }}</div>
+          <div class="td col-md-2">{{ 'admin.offline_activity.operation'|trans }}</div>
+        </div>
+      </li>
+      {% include 'admin/offline-activity/category/tbody.html.twig' %}
+    </ul>
+    <p class="text-muted">
+        <span class="mrl">{{ 'admin.offline_activity.count'|trans }}<strong class="inflow-num">{{ offlineCategorysCount|default(0) }}</strong>{{ 'admin.offline_activity.data'|trans }}</span>
+    </p>
+    {{ admin_macro.paginator(paginator) }}
+{% endblock %}

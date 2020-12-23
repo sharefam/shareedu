@@ -1,0 +1,42 @@
+{% extends 'admin/admin-layout.html.twig' %}
+{% block title %}{{ 'homepage.header.admin_menu'|trans }}{% endblock %}
+{% set panel = 'dashboard' %}
+{% set script_controller = 'corporatetrainingbundle/controller/default/admin-index' %}
+{% do script(['libs/fullcalendar.js', 'corporatetrainingbundle/js/admin/default/index.js', 'corporatetrainingbundle/js/admin/quick-entrance/index.js']) %}
+{% block container %}
+  {{ web_macro.flash_messages() }}
+  <link href="{{ asset('assets/libs/gallery/morris/0.5.0/morris.css') }}" rel="stylesheet" />
+  {# 域名检查提示#}
+  {{ render(controller('AppBundle:Admin/Default:validateDomain')) }}
+  {{ render(controller('CorporateTrainingBundle:Admin/Analysis:validateSyncOrg')) }}
+  
+  <div class="menology">
+      {% include 'admin/default/work-menology.html.twig' %}
+  </div>
+
+  <div class="quick-navigation">
+    {% cache 'quick_navigation/' ~ app.user.id|default(0) 600 %}
+      {% include 'admin/default/quick-entrance.html.twig' %}
+    {% endcache %}
+  </div>
+  <div>
+    {{ render(controller('CorporateTrainingBundle:Admin/Analysis:systemDataOverview')) }}
+  </div>
+  <div>
+    {% include  'admin/default/corporate-training-echart-rank.html.twig' %}
+  </div>
+  <div  id="cloud-ad" class="admin-cloud-ad modal fade text-center" aria-hidden="true" data-backdrop="static"  tabindex="-1" role="dialog" data-url ="{{ path('admin_cloud_ad') }}">
+    <div class="modal-dialog">
+      <a href="" target="_blank">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </a>
+    </div>
+  </div>
+
+  <div>
+    {% cache 'system/version' 600 %}
+      {{ render(controller('CorporateTrainingBundle:Admin/Analysis:systemStatus')) }}
+    {% endcache %}
+  </div>
+
+{% endblock %}

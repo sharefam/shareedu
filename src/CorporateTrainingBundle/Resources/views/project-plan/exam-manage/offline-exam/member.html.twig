@@ -1,0 +1,55 @@
+{% extends 'project-plan/exam-manage/exam-layout.html.twig' %}
+
+{% block title %}{{ 'project_plan.implementation.exam_manage'|trans }} - {{ parent() }}{% endblock %}
+
+{% set side_nav = 'exam-manage' %}
+
+{% do script(['libs/select2.js', 'libs/bootstrap-treeview.js','corporatetrainingbundle/js/project-plan/exam-manage/member-list/index.js']) %}
+
+{% block main_head_hover %}
+  <div class="pull-right">
+    <button class="btn btn-primary btn-sm panel-bar" data-toggle="modal" data-target="#modal" data-url="{{ path('importer_index', {type: 'offline-exam-result', id: projectPlan.id, offlineExamId:offlineExamId}) }}"><i class="glyphicon glyphicon-import"></i>{{ 'project_plan.btn.import_btn'|trans }}</button>
+  </div>
+{% endblock %}
+{% block main_content %}
+      <form class="department-manage-search-form form-inline clearfix mbl" id="list-search" action="{{ path('project_plan_offline_exam_manage_member_list', {id: projectPlan.id, taskId: offlineExamId}) }}" method="post">
+        <div class="form-group department-manage-search-form-group">
+          <label>{{ 'project_plan.department_filter'|trans }}：</label>
+          <div class=" department-manage-search-form-group__select">
+            {% include 'org-select/index.html.twig' with {
+              id: 'resource-orgCode',
+              data: build_org_tree(app.user.manageOrgCodes),
+              placeholder: 'admin.org.select_placeholder'|trans,
+              treeName: 'orgIds',
+              ids: orgIds|default(0),
+            }
+            %}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'form.placeholder.keyword'|trans }}：</label>
+          <input type="text" id="username" name="username" class="form-control department-manage-search-form-group__info" value="{{ app.request.get('username') }}"
+                 placeholder="{{ 'project_plan.username_truename'|trans }}">
+        </div>
+
+        <div class="form-group department-manage-search-form-group">
+          <label>{{ 'project_plan.study_data.exam_result'|trans }}：</label>
+          <select class="department-manage-search-form-group__type form-control" id="member-status" name="status">
+            {{ select_options(dict('projectPlanOfflineExamStatus'), app.request.get('status') ? app.request.get('status') : 'all') }}
+          </select>
+        </div>
+
+        <div>
+          <button class="btn btn-primary">{{ 'form.btn.search'|trans }}</button>
+          <button type="button" class="btn btn-primary js-exporter" data-url="{{ path('exporter_export', {type: 'project_plan_offline_exam_result', formSubmission: 'post' }) }}">{{'project_plan.btn.export_btn'|trans}}</button>
+          <a class="btn btn-default" href="{{path('project_plan_offline_exam_manage_list', {id: projectPlan.id}) }}">{{ 'form.btn.return'|trans }}</a>
+        </div>
+        <input type="hidden" name="offlineExamId" value="{{ offlineExamId }}">
+        <input type="hidden" name="projectPlanId" value="{{ projectPlan.id }}">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+      </form>
+      <div class="table-responsive js-table-wrap mts data-list">
+        {% include 'project-plan/exam-manage/offline-exam/member-list.html.twig' %}
+      </div>
+{% endblock %}

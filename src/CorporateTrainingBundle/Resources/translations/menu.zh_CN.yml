@@ -1,0 +1,89 @@
+admin.user.basic.basic_tab.change_post_btn: 设置用户岗位
+admin.user.basic.basic_tab.roles_btn: 设置角色组
+admin.user.basic.basic_tab.change_nickname_btn: 修改用户名
+admin.teacher.profession_field: 专业领域
+admin.teacher.profession_field_create: 添加领域
+admin.post.basic_menu: 岗位管理
+admin.post.basic_tab: 岗位管理
+admin.post.basic_tab.group_create_btn: 创建岗位分组
+admin.org.basic_menu: 部门管理
+admin.org.basic_tab: 部门
+admin.role.basic_menu: 角色管理
+admin.role.basic_tab: 角色管理
+admin.user_group.basic_menu: 用户组管理
+admin.user_group.basic_tab: 用户组管理
+admin.user_group.basic_tab.user_group_create_btn: 创建用户组
+admin.course.basic_tab.post_correlation_btn: 关联岗位
+admin.teacher.basic.level: 讲师等级
+admin.teacher.basic.level.create_btn: 添加等级
+admin.teacher.basic.setting_btn: 设置
+admin.setting_ip_blacklist_basic_menu: IP限制
+admin.setting_ip_blacklist_basic_tab: IP限制
+admin.setting_user.sync_account_docking: 账号同步对接
+admin.mail_setting_basic_menu: 邮件设置
+admin.mail_setting.notification_setting: 通知设置
+
+# 线下活动
+admin.offline_activity.create: 创建活动
+admin.offline_activity.management: 线下活动
+admin.offline_activity.open: 发布活动
+admin.offline_activity.close: 关闭
+admin.offline_activity.category.management: 类型管理
+admin.offline_activity.category.create: 创建类型
+admin.offline_activity.QR_code: 签到二维码
+
+
+## 培训项目
+admin.project_plan.manage: 培训项目
+admin.project_plan.create: 创建项目
+admin.project_plan.manage_list.close: 关闭项目
+admin.project_plan.manage_list.delete: 删除项目
+admin.project_plan.manage_list.publish: 发布项目
+admin.project_plan.manage_list.archive: 归档项目
+admin.project_plan.manage_list.cancel_archive: 取消归档
+admin.project_plan.category.manage: 类型管理
+admin.project_plan.category.create: 创建类型
+
+## 培训
+admin.nav.train: 培训
+admin.teaching.basic_menu: 我的教学
+admin.train.basic.basic_drop.teaching_course: 在教课程
+admin.train.basic.basic_drop.teaching_classroom: 在教专题
+admin.train.basic.basic_drop.teaching_project_plan: 培训项目教学
+admin.online_course.basic_menu: 线上课程
+admin.course.basic.basic_drop.course_back: 线上课程库
+admin.course.basic.basic_drop.classroom: 线上课程专题
+admin.project_plan.basic_menu: 培训项目
+admin.offline_activity.basic_menu: 线下活动
+admin.teacher_manage.basic_menu: 讲师管理
+admin.train.basic.basic_drop.create_btn: 创建项目
+
+## 数据中心
+admin.nav.data: 数据中心
+admin_data.basic.menu: 员工数据
+admin_data.user_learn_data_overview.menu: 概览
+admin_data.user_learn_data_detail.menu: 明细
+admin.train.basic.basic_drop.teacher_data: 讲师数据
+admin.train.basic.basic_drop.teacher_data.overview: 概览
+admin.train.basic.basic_drop.teacher_data.detail: 明细
+admin_data.project_plan_data_overview.menu: 培训项目数据
+admin.train.basic.basic_drop.project_pan.overview: 概览
+admin.train.basic.basic_drop.project_pan.detail: 明细
+
+admin.train.basic.basic_drop.course_data: 线上课程数据
+admin.train.basic.basic_drop.course_data.overview: 概览
+admin.train.basic.basic_drop.course_data.detail: 明细
+
+admin.operation.message.center.basic_menu: 消息通知管理
+admin.operation.content.supervise.basic_menu: 用户内容监管
+admin.operation.course.discuss.basic_menu: 课程讨论区管理
+
+admin.system.setting.basic_menu: 系统设置
+admin.system.tool.basic_menu: 系统工具
+
+admin.setting.logo_and_favicon: LOGO和图标
+admin.department.course_learn_data.department_summary: 部门汇总
+admin.department.course_learn_data.post_summary: 岗位汇总
+admin.department.course_learn_data.category_summary: 分类汇总
+
+admin.user.basic.basic_tab.permission_btn: 设置用户权限

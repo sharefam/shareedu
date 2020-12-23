@@ -1,0 +1,42 @@
+{% block side %}
+    {% set side_nav = side_nav|default(null) %}
+    <div class="sidenav locked js-sidenav">
+        <ul class="list-group">
+            <li class="list-group-heading">{{ 'offline_activity.setting'|trans }}</li>
+            <li class="list-group-item {% if side_nav == 'base' %}active{% endif %}">
+                <a href="{{ path('offline_activity_manage_base', {id: offlineActivity.id}) }}">
+                    {{ 'offline_activity.information'|trans }}
+                </a>
+            </li>
+            <li class="list-group-item {% if side_nav == 'cover' %}active{% endif %}">
+                <a href="{{ path('offline_activity_manage_cover', {id: offlineActivity.id}) }}">
+                    {{ 'offline_activity.cover_img'|trans }}
+                </a>
+            </li>
+        </ul>
+        <ul class="list-group">
+            <li class="list-group-heading">{{ 'offline_activity.management'|trans }}</li>
+            {% if offlineActivity.requireAudit == 1 %}
+            <li class="list-group-item {% if side_nav == 'verify' %}active{% endif %}">
+                <a href="{{ path('offline_activity_verify_list', {id: offlineActivity.id|default(1)}) }}">
+                    {{ 'offline_activity.enrollment_verify'|trans }}
+                </a>
+            </li>
+            {% endif %}
+            <li class="list-group-item {% if side_nav == 'list' %}active{% endif %}">
+                <a href="{{ path('offline_activity_manage_list', {id: offlineActivity.id}) }}">
+                    {{ 'offline_activity.assessment_list'|trans }}
+                </a>
+            </li>
+             <li class="list-group-item {% if side_nav == 'statistics' %}active{% endif %}">
+                <a href="{{ path('offline_activity_manage_statistics', {id: offlineActivity.id|default(1)}) }}">
+                    {{ 'offline_activity.statistics'|trans }}
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+
+
+
+

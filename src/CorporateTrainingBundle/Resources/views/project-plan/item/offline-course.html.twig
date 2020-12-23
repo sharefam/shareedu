@@ -1,0 +1,68 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set modal_class = 'unit-addition-modal js-modal-close' %}
+{% set hide_footer = true %}
+
+{% do script(['libs/jquery-validation.js', 'corporatetrainingbundle/js/project-plan/item/offline-course/index.js']) %}
+
+{% block title %}
+  {% if offlineCourse|default() %}
+    {{ 'project_plan.preparation.items.edit_items'|trans }}
+  {% else %}
+    {{ 'project_plan.preparation.items.add_items'|trans }}
+  {% endif %}
+{% endblock %}
+{% block body %}
+  <div class="unit-offline-course">
+    <form class="form-horizontal" id="offline-course-form" {% if offlineCourse|default() %}action="{{ path('project_plan_item_update', {id:item.id, projectPlanId:projectPlanId}) }}" {% else %} action="{{ path('project_plan_item_add', {id: projectPlanId, type: 'offline_course'}) }}" {% endif %} method="post">
+      <div class="form-group">
+        <div class="col-md-2 control-label">
+          <label>{{ 'project_plan.item.course_title'|trans }}</label>
+        </div>
+        <div class="col-md-9">
+          <input class="form-control" type="text" name="title" value="{{ offlineCourse.title|default('') }}">
+        </div>
+      </div>
+      <div class="form-group" id="teachers-form-group">
+        <div class="col-md-2 control-label"><label>{{'project_plan.preparation.items.add_teacher'|trans}}</label></div>
+        <div class="col-md-9 controls">
+          <div id="course-teachers" data-field-name="teachers" {% if offlineCourse|default() %}data-init-value="{{teachers|json_encode}}" {% endif %} data-query-url="{{path('project_plan_offline_course_manage_teachers_match')}}"></div>
+          <div class="help-block">{{'offline_course.teacher_setup.exist_teacher.add_tips'|trans}}</div>
+        </div>
+      </div>
+      {% if offlineCourse|default() %}
+        <div class="form-group">
+          <div class="col-md-2 control-label">
+            <label>{{ 'project_plan.implementation.course_date'|trans }}</label>
+          </div>
+          <div class="col-md-9 form-control-static">
+            {% if taskNum >0 and item.startTime|default(0) != 0%}
+              {% if item.startTime|default(0) == 0 %}
+                {{ '--'|trans }}
+              {% else %}
+                {{ item.startTime|date('Y-m-d H:i')  }}
+              {% endif %}
+              {{ 'project_plan.time_to'|trans }}
+              {% if item.endTime|default(0) == 0 %}
+                {{ '--'|trans }}
+              {% else %}
+                {{ item.endTime|date('Y-m-d H:i')  }}
+              {% endif %}
+            {% else %}
+              {{ 'project_plan.item.offline_course.task_empty'|trans }}
+            {% endif %}
+            <a class="mlm" target="_blank" href="{{ path('training_offline_course_manage_tasks', {id: offlineCourse.id })  }}">{{ 'project_plan.item.offline_course.to_task_list'|trans }}</a>
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="form-group">
+        <div class="col-md-offset-2 col-md-9">
+          <button id="offline-course-btn" class="ct-btn ct-btn-primary" type="button" data-loading-text="{{ 'project_plan.btn.save_loading_btn'|trans }}">{{ 'project_plan.btn.save_btn'|trans }}</button>
+          <button class="ct-btn ct-btn-default mlm" type="button" data-dismiss="modal">{{ 'project_plan.btn.cancel_btn'|trans }}</button>
+        </div>
+      </div>
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    </form>
+  </div>
+{% endblock %}

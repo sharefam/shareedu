@@ -1,0 +1,63 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{'search.content_title'|trans}}{% if keywords %}{{ keywords }}{% else %}{{'search.all_courses'|trans}}{% endif %} - {{ parent() }}{% endblock %}
+{% set bodyClass = 'bg-blank' %}
+
+{% do script(['libs/echo-js.js','app/js/search/index.js']) %}
+
+{% block top_content %}
+    {% cache 'cloud-search/top/banner' 600 %}
+  <section class="search-banner es-live-poster swiper-container">
+    <div class="swiper-slide swiper-hidden"
+         style="background: #ffffff url({{ asset('/assets/img/placeholder/banner_search.jpg') }}) no-repeat; background-size: cover;">
+    </div>
+    <div class="cloud-search-box">
+      <form class="input-group search-input-group" id="search-input-group" action="{{ path('search') }}" method="get">
+        <div class="input-wrap">
+          <input type="text" name="q" class="form-control"
+                 placeholder="{{ 'search.input_placeholder'|trans }}" value="{{keywords}}">
+          <i class="js-btn-clear es-icon es-icon-close01"></i>
+        </div>
+        <span class="input-group-btn">
+          <button class="btn btn-primary" type="submit">{{'form.btn.search'|trans}}</button>
+        </span>
+        <input type="hidden" name="type" value="{{type|default('')}}" >
+      </form>
+    </div>
+  </section>
+    {% endcache %}
+{% endblock %}
+
+{% block content %}
+{% if is_mobile_client() %} 
+   <div class="mobile-search-tab">
+    {% include 'ct-search/search-tab.html.twig' with {
+      is_mobile: is_mobile_client()
+    } %}
+   </div>
+{% endif %}
+  <div class="row">
+    <div class="col-md-8">
+      <div class="es-section">
+        {% if not is_mobile_client() %} 
+           {% include 'ct-search/search-tab.html.twig' with {
+             is_mobile: false
+           } %}
+        {% endif %}
+        <div class="search-result" id="search-result">
+          {% if type %}
+            {% include 'CorporateTrainingBundle::ct-search/search-' ~ type|lower ~ '.html.twig' %}
+          {% endif %}
+        </div>
+        <nav class="text-center">
+          {{ web_macro.paginator(paginator) }}
+        </nav>
+      </div>
+    </div>
+    <div class="col-md-4">
+      {% if type %}
+        {% include 'CorporateTrainingBundle::ct-search/search-hot-' ~ type|lower ~ '.html.twig' %}
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

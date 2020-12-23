@@ -1,0 +1,61 @@
+{% extends 'project-plan/layout.html.twig' %}
+
+{% block title %}{{ 'project_plan.implementation.offline_course_item_list'|trans }} - {{ parent() }}{% endblock %}
+{% set tab_nav = 'implementation' %}
+{% set side_nav = 'offline-course-item-list' %}
+{% do script(['corporatetrainingbundle/js/project-plan/item-manage/index.js']) %}
+
+{% block main %}
+  <div class="cd-main__heading">
+    <div class="cd-main__title">
+      {{ 'project_plan.implementation.offline_course_item_list'|trans }}
+    </div>
+  </div>
+  <div class="cd-main__body">
+    <div class="ct-project-unit-list">
+      <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+          <th>{{ 'project_plan.item.course_title'|trans }}</th>
+          <th>{{ 'project_plan.implementation.course_date'|trans }}</th>
+          <th>{{ 'project_plan.attendance_rate'|trans }}</th>
+          <th>{{ 'project_plan.implementation.course_no_review'|trans }}</th>
+          <th>{{ 'project_plan.passing_rate'|trans }}</th>
+          <th>{{ 'project_plan.operation'|trans }}</th>
+        </tr>
+          </thead>
+          <tbody>
+          {% for item in items %}
+            <tr>
+              {% set user = data('UserProfile',{ userId:courses[item.targetId].teacherIds[0] }) %}
+              <td>{{ courses[item.targetId].title|default() }}<br>
+                <span class="text-muted text-sm">{{ 'project_plan.teacher'|trans }}：{{ user.truename }}</span>
+              </td>
+              <td>{% if item.startTime ==0%}--{% else %}{{ item.startTime|default()|date('Y-m-d') }}{% endif %}</br>{% if item.endTime ==0%}--{% else %}{{ item.endTime|default()|date('Y-m-d') }}{% endif %}</td>
+              <td>{% if item.attendTaskCount == 0 %}--{% else %}{{ percent(item.attendCount,item.attendTaskCount) }}{% endif %}</td>
+              <td>{% if item.homeWorkSubmitCount|default(0) %}<a href="{{ path('project_plan_offline_course_homework_task_list', {id: item.targetId}) }}" target="_blank">{{ 'project_plan.offline_course.homework'|trans }}：{{ item.homeWorkSubmitCount}}</a>{% else %}{{ 'project_plan.offline_course.homework'|trans }}：{{ item.homeWorkSubmitCount}}{% endif %}</td>
+              <td>{% if item.hasHomeTaskCount == 0 %}--{% else %}{{ percent(item.passHomeworkCount,item.hasHomeTaskCount) }}{% endif %}</td>
+              <td>
+                {% if projectPlan.status == 'archived' %}
+                  <a class="btn btn-sm btn-default" disabled data-toggle="tooltip" data-placement="bottom" title="{{ 'project_plan.project_plan_archived'|trans }}">{{ 'project_plan.btn.manage_btn'|trans }}</a>
+                {% else %}
+                  <a class="btn btn-sm btn-default" href="{{ path('training_offline_course_manage_base', {id: item.targetId}) }}" target="_blank">{{ 'project_plan.btn.manage_btn'|trans }}</a></td>
+                {% endif %}
+            </tr>
+          {% else %}
+            <tr>
+              <td class="text-center" colspan="20">
+                <div class="empty">
+                  {{ 'project_plan.empty'|trans }}
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+    </div>
+      <nav class="text-center">
+        {{ web_macro.paginator(paginator) }}
+      </nav>
+  </div>
+{% endblock %}

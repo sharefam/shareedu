@@ -1,0 +1,75 @@
+{% extends 'study-record/layout.html.twig' %}
+
+{% do script(['libs/easy-pie-chart/dist/jquery.easypiechart.js','libs/echo-js.js','corporatetrainingbundle/js/study-record/post-course-record/index.js']) %}
+{% set type_nav = 'post-course' %}
+
+{% block training_record_content %}
+  {% if user.postId|default() %}
+    <div class="ct-post-course-record-list">
+      <div class="ct-post-course-record js-post-course-record js-page-wrapper is-active">
+          <div class="ct-post-course-record__head">
+          <div class="ct-post-course-record__title">
+            {% set post = data('Post', { postId: user.postId }) %}
+            {{ post.name|default('--') }}
+          </div>
+          {% if is_mobile_client() %}
+            <div class="clearfix pos-rel">
+              <div class="ct-devider__item pull-left pr10">
+                <div class="ct-post-course-record__info">
+                  {{ 'study_center.course.complete_task'|trans }}： <span class="gray-darker">{{ learnedCoursesNum|default(0) }}</span>/{{ postCourseCount|default(0) }}
+                </div>
+              </div>
+              <div class="ct-devider__item pull-left pr10">
+                <div class="ct-post-course-record__info">
+                  {{ 'study_center.course.learn_time'|trans }}：<span class="gray-darker">{{totalLearnTime|default(0)|time_format}}</span> {{ 'site.date.hour'|trans }}
+                </div>
+              </div>
+              {% if recentLearnTask %}
+                {% set taskResult = data('TaskResultByTaskIdAndUserId', {taskId: recentLearnTask.id, userId: user.id}) %}
+              {% endif %}
+              <div class="ct-devider__item pull-left">
+                <div class="ct-post-course-record__info">
+                  {{ 'study_center.course.last_study_time'|trans }}：{% if taskResult|default() %}{{ taskResult.updatedTime|date('Y-m-d') }}{% else %}--{% endif %}
+                </div>
+              </div>
+              <span class="project-plan-record__toggle-btn ct-mls post">
+                <i class="es-icon es-icon-keyboardarrowup js-page-load-btn" data-url="{{ path('study_record_post_course_list',{userId:user.id}) }}"></i>
+              </span>
+            </div>
+          {% else %}
+            <div class="ct-post-course-record__hover">
+              <div class="ct-devider va-mid">
+                <div class="ct-devider__item">
+                  <div class="ct-post-course-record__info">
+                    {{ 'study_center.course.complete_task'|trans }}： <span class="gray-darker">{{ learnedCoursesNum|default(0) }}</span>/{{ postCourseCount|default(0) }}
+                  </div>
+                </div>
+                <div class="ct-devider__item">
+                  <div class="ct-post-course-record__info">
+                    {{ 'study_center.course.learn_time'|trans }}：<span class="gray-darker">{{totalLearnTime|default(0)|time_format}}</span> {{ 'site.date.hour'|trans }}
+                  </div>
+                </div>
+                {% if recentLearnTask %}
+                  {% set taskResult = data('TaskResultByTaskIdAndUserId', {taskId: recentLearnTask.id, userId: user.id}) %}
+                {% endif %}
+                <div class="ct-devider__item">
+                  <div class="ct-post-course-record__info">
+                    {{ 'study_center.course.last_study_time'|trans }}：{% if taskResult|default() %}{{ taskResult.updatedTime|date('Y-m-d') }}{% else %}--{% endif %}
+                  </div>
+                </div>
+              </div>
+              <span class="project-plan-record__toggle-btn ct-mls">
+                <i class="es-icon es-icon-keyboardarrowup js-page-load-btn" data-url="{{ path('study_record_post_course_list',{userId:user.id}) }}"></i>
+              </span>
+            </div>
+          {% endif %}
+        </div>
+        <div class="ct-post-course-record__body js-page-content" style="display:block;">
+          {{ render(controller('CorporateTrainingBundle:StudyRecord:postCourseList', {userId: user.id})) }}
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="empty">{{'study_center.user.post_empty'|trans}}</div>
+  {% endif %}
+{% endblock %}

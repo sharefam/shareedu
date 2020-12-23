@@ -1,0 +1,46 @@
+<table id="offline-activity-table" class="table table-striped table-hover mts">
+  <thead>
+    <tr>
+      <th width="45%">{{ 'study_center.my_offline_activity.activity_title'|trans }}</th>
+      <th width="20%">{{ 'study_center.my_offline_activity.submitted_time'|trans }}</th>
+      <th width="20%">{{ 'study_center.my_offline_activity.review_status'|trans }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if enrollmentRecords %}
+      {% for enrollmentRecord in enrollmentRecords%}
+      {% set category = data('Category',{'categoryId': enrollmentRecord['offlineActivity'].categoryId}) %}
+        <tr>
+          <td>
+            <p>
+                {% if enrollmentRecord['offlineActivity'].status|default('') == 'published' %}
+                    <a class="link-gray" href="{{ path('offline_activity_detail', {id: enrollmentRecord['offlineActivity'].id}) }}">{{ enrollmentRecord['offlineActivity'].title }}</a>
+                {% else %}
+                    {{ enrollmentRecord['offlineActivity'].title }}
+                {% endif %}
+                {% if enrollmentRecord['offlineActivity'].status|default('') == 'closed' %}
+                    <span class="text-sm color-danger">{{ 'offline_activity.closed'|trans }}</span>
+                {% endif %}
+            </p>
+              <span class="text-sm text-muted">{{ 'study_center.my_offline_activity.category'| trans}}：{{category.name}}</span>
+          </td>
+          <td>{{ enrollmentRecord.submittedTime|date_format}}</td>
+          <td>
+            {% if enrollmentRecord.status == 'approved' %}
+              {{ 'study_center.my_offline_activity.status.approved'|trans }}
+            {% elseif enrollmentRecord.status == 'rejected' %}
+              <p>{{ 'study_center.my_offline_activity.status.rejected'|trans }}</p>
+              <span class="text-sm text-muted">{{ 'study_center.my_offline_activity.reason'| trans}}:{{enrollmentRecord.rejectedReason}}</span>
+            {% elseif enrollmentRecord.status == 'submitted' %}
+              {{ 'study_center.my_offline_activity.status.submitted'|trans }}
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    {% else %}
+      <td colspan="20">
+        <div class="empty">{{'study_center.course_statistics.message.course_record_empty'|trans}}</div>
+      </td>
+    {% endif %}
+  </tbody>
+</table>

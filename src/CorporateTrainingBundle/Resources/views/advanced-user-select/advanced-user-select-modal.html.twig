@@ -1,0 +1,68 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set modal_class = 'member-projectplan-modal js-member-projectplan' %}
+
+{% do script(['libs/select2.js', 'libs/bootstrap-datetimepicker.js', 'libs/bootstrap-treeview.js', 'corporatetrainingbundle/js/advanced-member-select/index.js']) %}
+
+{% block modal_content %}
+
+  <div class="member-projectplan-modal__head">
+    <div class="member-projectplan-modal__title">
+      {{ 'advanced_user_select.add_member'|trans }}
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    </div>
+    <div class="js-tab-link-wrap">
+      <ul class="nav" role="tablist">
+        <li class="js-tab-link active" role="presentation"><a href="javascript:;">{{ 'advanced_user_select.filter.direct'|trans }}</a></li>
+        <li class="js-tab-link" role="presentation"><a href="javascript:;">{{ 'advanced_user_select.filter.org'|trans }}</a></li>
+        <li class="js-tab-link" role="presentation"><a href="javascript:;">{{ 'advanced_user_select.filter.post'|trans }}</a></li>
+        <li class="js-tab-link" role="presentation"><a href="javascript:;">{{ 'advanced_user_select.filter.user_group'|trans }}</a></li>
+        <li class="js-tab-link import" role="presentation"><a href="javascript:;">{{ 'advanced_user_select.batch_import'|trans }}</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="js-tab-block-wrap">
+    <div class="tab-block js-tab-sec is-active">
+      {% include 'CorporateTrainingBundle:advanced-user-select/widgets:user-select.html.twig' %}
+    </div>
+
+    <div class="tab-block js-tab-sec">
+      {% include 'CorporateTrainingBundle:advanced-user-select/widgets:org-select.html.twig' %}
+    </div>
+
+    <div class="tab-block js-tab-sec">
+      {% include 'CorporateTrainingBundle:advanced-user-select/widgets:post-select.html.twig' %}
+    </div>
+
+    <div class="tab-block js-tab-sec">
+      {% include 'CorporateTrainingBundle::advanced-user-select/widgets/user-group-select.html.twig' %}
+    </div>
+
+    <div class="tab-block js-tab-sec">
+      {% include 'CorporateTrainingBundle::advanced-user-select/widgets/advanced-user-select-importer.html.twig'with {importerType: 'advanced-user-select', targetType: targetType, targetId: targetId}%}
+    </div>
+  </div>
+
+  <div class="member-projectplan-modal__foot advanced-user-select-foot clearfix">
+    <div class="member-projectplan-select">
+      <div class="member-projectplan-select__head">{{ 'advanced_user_select.selected_user'|trans }}</div>
+      <div class="member-projectplan-select__body">
+        <div class="js-group-selector">
+        </div>
+      </div>
+      <div class="member-projectplan-select__foot"></div>
+    </div>
+    {% if setting('sync_department_setting.enable')%}
+      <div class="mtxl pull-left">
+        <label>
+          <input type="checkbox" id="notificationSetting">
+          {{'advanced_user.dingtalk_notification_setting'|trans}}
+        </label>
+      </div>
+    {% endif %}
+    <div class="mtxl pull-right">
+      <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'form.btn.cancel'|trans }}</button>
+      <button type="button" class="btn btn-primary js-add-btn" data-batch-add-url="{{ path('advanced_member_select_add_members', {targetType: targetType, targetId: targetId}) }}" data-convert-attribute-url="{{ path('advanced_member_select_attribute_convert') }}">{{ 'advanced_user_select.btn.add_verfity'|trans }}</button>
+    </div>
+  </div>
+{% endblock %}

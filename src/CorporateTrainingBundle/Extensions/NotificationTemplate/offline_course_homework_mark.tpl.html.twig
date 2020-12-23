@@ -1,0 +1,15 @@
+<li class="media">
+  <div class="pull-left">
+    <span class="glyphicon glyphicon-volume-down media-object"></span>
+  </div>
+  <div class="media-body">
+    <div class="notification-body">
+      {% set data = notification.content %}
+      {% set task = data.task %}
+      你的《{{ task.title }}》课后作业{% if data.homeworkStatus == 'passed' %}已通过{% else %}未通过{% endif %}。
+    </div>
+    <div class="notification-footer">
+      {{ notification.createdTime|date_format }}
+    </div>
+  </div>
+</li>

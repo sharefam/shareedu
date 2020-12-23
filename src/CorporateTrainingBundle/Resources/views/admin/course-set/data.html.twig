@@ -1,0 +1,49 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_course_set_data' %}
+
+{% set script_controller = 'course/data' %}
+
+{% do script(['libs/select2.js', 'corporatetrainingbundle/js/admin/org-select/index.js', 'corporatetrainingbundle/js/export/index.js']) %}
+
+{% block main %}
+  <form id="message-search-form" class="form-inline ct-well mtl  ct-mbl js-data-search" action="" method="post" novalidate>
+    <div class="form-group prl">
+      {% include 'org-select/index.html.twig' with {
+        id: 'resource-orgCode',
+        data: build_org_tree(app.user.manageOrgCodes),
+        placeholder: 'admin.org.select_placeholder'|trans,
+        treeName: 'orgIds',
+        ids: orgIds|default(0),
+      }
+      %}
+    </div>
+
+    <div class="form-group prl">
+      <select style="width:150px;" class="form-control" name="categoryId">
+        {{ select_options(category_choices('course'), app.request.get('categoryId'), 'admin.course_manage.category_placeholder'|trans) }}
+      </select>
+    </div>
+    <div class="form-group prl">
+      <input class="form-control" type="text" placeholder="{{'admin.course_manage.title_placeholder'|trans}}" name="title" value="{{ app.request.get('title') }}">
+    </div>
+    <div class="form-group prl">
+      <input class="form-control" type="text" placeholder="{{'admin.course_manage.creator_placeholer'|trans}}" name="creatorName" value="{{ app.request.get('creatorName') }}">
+    </div>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    <input type="hidden" name="filter" value="{{ filter }}">
+    <div class="form-group prl">
+      <button class="btn btn-primary">{{ 'form.btn.search'|trans }}</button>
+    </div>
+    <div class="form-group prl">
+      <button type="button" class="btn btn-default js-exporter" data-url="{{ path('exporter_export', { type: 'course_statistic_data', formSubmission: 'post' }) }}">{{ '导出结果'|trans }}</button>
+    </div>
+  </form>
+  <div class="table-responsive">
+    <div class="table table-striped data-list">
+      {% include 'admin/course-set/data-tr.html.twig'%}
+    </div>
+  </div>
+
+
+{% endblock %}

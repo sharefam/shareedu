@@ -1,0 +1,192 @@
+{% do script(['app/js/default/header/index.js','corporatetrainingbundle/js/header/index.js']) %}
+
+{% set navigations = data('NavigationsTree', {}) %}
+
+<header class="es-header navbar">
+  <div class="container">
+    <div class="navbar-header">
+      <form class="navbar-form nav-mobile visible-xs" action="{{ path('search') }}" method="get">
+        <div class="form-group">
+        <input class="form-control" name="q">
+          <button class="button es-icon es-icon-search1"></button>
+        </div>
+      </form>
+    {% if mobile %}
+      <div class="M_header-back js-back">
+        <a><i class="es-icon es-icon-chevronleft"></i></a>
+      </div>
+    {% endif %}
+      <a href="{{ path('homepage') }}" class="navbar-brand">
+        {% if setting('site.logo') %}
+          <img src="{{ filepath('../' ~ setting('site.logo'),'') }}">
+        {% else %}
+          {{ setting('site.name', 'EDUSOHO') }}
+        {% endif %}
+      </a>
+      <ul class="nav user-nav-mobile visible-xs">
+        <li class="nav-hover">
+          <a href="javascript:;" class="dropdown-toggle">
+            <i class="es-icon es-icon-menu"></i>
+          </a>
+          <ul class="dropdown-menu" role="menu">
+            <li class="user-nav-li-login"><a href="{{ path('study_center_my_tasks') }}">
+              <i class="es-icon es-icon-mymission text-14"></i>
+              {{'study_center.nav.my_task'|trans}}</a>
+            </li>
+            <li class="user-nav-li-login"><a href="{{ path('study_center_my_task_learning') }}">
+              <i class="es-icon es-icon-postlearning text-14"></i>
+              {{'my.department.user_learn_data.post_learn'|trans}}</a>
+            </li>
+            <li class="user-nav-li-login"><a href="{{ path('course_set_explore') }}">
+              <i class="es-icon es-icon-allcourses text-14"></i>
+              {{'site.datagrid.filter.all_course'|trans}}</a>
+            </li>
+            {% if app.user %}
+              <li class="user-nav-li-login"><a href="{{ path('my_study_record', {userId:userId|default(app.user.id)}) }}">
+                <i class="es-icon es-icon-learningrecord text-14"></i>
+                {{'homepage.header.study_record'|trans}}</a>
+              </li>
+            {% endif %}
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <nav class="collapse navbar-collapse">
+      <ul class="nav navbar-nav clearfix hidden-xs " id="nav">
+        {% include 'default/top-navigation.html.twig' with {navigations: navigations,siteNav: siteNav|default(null), isMobile: false} %}
+      </ul>
+      <div class="navbar-user {% if setting('esBar.enabled', 0) %} left {% endif %} hidden-xs">
+        <ul class="nav user-nav">
+          {% if app.user %}
+            <li class="text-link hidden-xs hidden-sm"><a href="{{ path('study_center_my_task_training_list') }}">{{'homepage.header.learn'|trans}}</a></li>
+            {% if has_permission('admin') %}<li class="text-link hidden-xs hidden-sm"><a href="{{ path('admin') }}">{{'homepage.header.manage'|trans}}</a></li>
+
+            {% endif %}
+            <li class="visible-lg nav-hover">
+              {% if setting('esBar.enabled', 0) and app.user.newMessageNum > 0 %}
+                <a class="user-nav-mes hasmessage"><i class="es-icon es-icon-mail"></i><span class="dot"></span></a>
+              {% elseif ( not setting('esBar.enabled', 0)) and ( app.user.newNotificationNum > 0 or app.user.newMessageNum > 0) %}
+                <a class="user-nav-mes hasmessage"><i class="es-icon es-icon-mail"></i><span class="dot"></span></a>
+              {% else %}
+                <a class="user-nav-mes"><i class="es-icon es-icon-mail"></i></a>
+              {% endif %}
+
+              <ul class="dropdown-menu dropdown-menu_message" role="menu">
+                {% if not setting('esBar.enabled', 0) %}
+                  <li>
+                    <a href="{{ path('notification') }}">
+                      <i class="es-icon es-icon-notificationson"></i>{{'homepage.header.notice'|trans}}
+                      {% if app.user.newNotificationNum > 0 %}
+                      <span class="num">
+                        {{ app.user.newNotificationNum }}
+                      </span>
+                      {% endif %}
+                    </a>
+                  </li>
+                {% endif %}
+                <li>
+                  <a href="{{ path('message') }}">
+                    <span class="pull-right num">{% if app.user.newMessageNum > 0 %}{{ app.user.newMessageNum }}{% endif %}</span>
+                    <i class="es-icon es-icon-mail"></i>{{'homepage.header.message'|trans}}
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="user-avatar-li nav-hover">
+              <a href="javascript:;" class="dropdown-toggle">
+                <i class="es-icon es-icon-my"></i>
+              </a>
+              <ul class="dropdown-menu" role="menu">
+                {% set profile = data('UserProfile', {userId: app.user.id}) %}
+                <li role="presentation" class="dropdown-header">{{ profile.truename|default(app.user.nickname) }}</li>
+                <li><a href="{{ path('user_show', {id:app.user.uuid}) }}"><i class="es-icon es-icon-home"></i>{{'homepage.header.personal_menu'|trans}}</a></li>
+                <li><a href="{{ path('settings') }}"><i class="es-icon es-icon-person"></i>{{'homepage.header.profile_center_menu'|trans}}</a></li>
+                {#{% if has_permission('admin') %}<li><a href="{{ path('admin') }}"><i class="es-icon es-icon-dashboard"></i>{{'homepage.header.admin_menu'|trans}}</a></li>#}
+                {#{% endif %}#}
+
+                <li class="hidden-lg">
+                <a href="{{ path('notification') }}">
+                  {% if app.user.newNotificationNum > 0 %}
+                    <span class="pull-right num">
+                      {{ app.user.newNotificationNum }}
+                    </span>
+                  {% endif %}
+                  <i class="es-icon es-icon-notificationson"></i>{{'homepage.header.notice'|trans}}
+                </a>
+                </li>
+                <li class="hidden-lg"><a href="{{ path('message') }}"><span class="pull-right num">{% if app.user.newMessageNum > 0 %}{{ app.user.newMessageNum }}{% endif %}</span><i class="es-icon es-icon-mail"></i>{{'homepage.header.message'|trans}}</a></li>
+                {% if mobile %}
+                  <li class="mobile-switch js-switch-pc visible-xs"><a href="javascript:;">
+                    <i class="es-icon es-icon-qiehuan"></i>{{'homepage.header.switch_pc'|trans}}</a></li>
+                {% elseif setting('wap.enabled') == 1 %}
+                  <li class="mobile-switch js-switch-mobile visible-xs"><a href="javascript:;">
+                    <i class="es-icon es-icon-qiehuan"></i>{{'homepage.header.switch_mobile'|trans}}</a></li>
+                {% endif %}
+                <li class="user-nav-li-logout"><a href="{{ path('logout') }}"><i class="es-icon es-icon-power"></i>{{'homepage.header.logout'|trans}}</a></li>
+              </ul>
+            </li>
+
+            {# APP下载窗口删除 #}
+            {#<li class="js-qcode-hover hidden-xs hidden-sm qcode-hover {% if setting('mobile.enabled') == 0 %}hidden{% endif %}" data-url="{{ path('mobile_qrcode_ajax') }}">#}
+              {#<a class="qcode-link" href="javascript:;">APP</a>#}
+              {#<div class="qcode-content">#}
+                {#<div class="js-inform-loading qcode-loading">#}
+                {#</div>#}
+                {#<div class="qcode-text-wrap">#}
+                  {#<div class="qcode-text mbs mtm"><span class="va-mid">{{'homepage.header.app_tips'|trans}}</span><i class="es-icon es-icon-tishi va-mid mls color-warning" data-toggle="tooltip" data-placement="top" data-title="{{'homepage.header.app_tips_warn'|trans}}"></i></div>#}
+                  {#<a class="link-gray" href="{{ path('mobile') }}" target="_blank">{{'homepage.header.app_tips_link_text'|trans}}</a>#}
+                {#</div>#}
+              {#</div>#}
+            {#</li>#}
+
+            {% if setting('magic.enable_language_switch') %}
+              <li class='nav-hover hidden-xs'>
+                  <a href='javascript:;' class='more-lan' data-lan={{app.request.locale}}>
+                  <span class='show_lan'></span>
+                  <i class='es-icon es-icon-keyboardarrowdown'></i>
+                  </a>
+                  <ul class="dropdown-menu lan-menu" role="menu">
+                    <li><a href="{{ path('switch_language', {'language': 'zh_CN', '_target_path': app.request.uri}) }}">中文</a></li>
+                    <li><a href="{{ path('switch_language', {'language': 'en', '_target_path': app.request.uri}) }}">English</a></li>
+                  </ul>
+              </li>
+            {% endif %}
+          {% else %}
+            <li class="user-avatar-li nav-hover visible-xs">
+              <a href="javascript:;" class="dropdown-toggle">
+                <img class="avatar-xs" src="{{ asset('assets/img/default/avatar.png') }}">
+              </a>
+              <ul class="dropdown-menu" role="menu">
+                <li class="user-nav-li-login"><a href="{{ path('login', {goto:_target_path|default(app.request.server.get('REQUEST_URI'))}) }}">
+                  <i class="es-icon es-icon-denglu"></i>
+                  {{'登录'|trans}}</a></li>
+                <li class="user-nav-li-register"><a href="{{ path('register', {goto:_target_path|default(app.request.server.get('REQUEST_URI'))}) }}">
+                  <i class="es-icon es-icon-zhuce"></i>
+                  {{'注册'|trans}}</a></li>
+                {% if mobile %}
+                  <li class="mobile-switch js-switch-pc"><a href="javascript:;">
+                    <i class="es-icon es-icon-qiehuan"></i>
+                    {{'切换电脑版'|trans}}</a></li>
+                {% elseif setting('wap.enabled') == 1  %}
+                  <li class="mobile-switch js-switch-mobile"><a href="javascript:;">
+                    <i class="es-icon es-icon-qiehuan"></i>
+                    {{'切换触屏版'|trans}}</a></li>
+                {% endif %}
+              </ul>
+            </li>
+            <li class="hidden-xs"><a href="{{ path('login', {goto:_target_path|default(app.request.server.get('REQUEST_URI'))}) }}">{{'登录'|trans}}</a></li>
+            <li class="hidden-xs"><a href="{{ path('register', {goto:_target_path|default(app.request.server.get('REQUEST_URI'))}) }}">{{'注册'|trans}}</a></li>
+          {% endif %}
+          {# {% include 'TopxiaWebBundle:Default:switch-language.html.twig' %} #}
+        </ul>
+        <form class="navbar-form navbar-right nav-search-bar-wrap hidden-xs hidden-sm" action="{{ path('search') }}" method="get">
+          <div class="form-group">
+            <i class="es-icon es-icon-search search-icon js-search-icon"></i>
+            <input class="form-control input-search js-search" name="q" placeholder="{{'homepage.header.search'|trans}}">
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+</header>
+<div class="m-header-position visible-xs"></div>

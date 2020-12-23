@@ -1,0 +1,41 @@
+<li id="category-table-body" data-sort-url="{{ path('admin_category_sort') }}">
+    {% if categories is not empty %}
+        {{ _self.showCategoryTree(categories, group, false) }}
+    {% else %}
+        <div class="row empty">{{'admin.category.offline_course.category_empty'|trans}}</div>
+    {% endif %}
+</li>
+
+{% do load_script('corporatetrainingbundle/controller/offline-activity/category/tbody') %}
+
+
+
+{% macro showCategoryTree(categories, group, isCollapseChildren) %}
+  <ul class="list-table sortable-list" data-group-id="{{ categories[0]['parentId'] }}">
+    {% for category in categories %}
+        {% set isParent = category.children|default(null) is not empty %}
+      <li id="{{ category.id }}" class="tr" data-name="{{ category.name }}" data-id="{{ category.id }}" data-parent-id="{{ category.parentId }}">
+          <div class="row{{ (isParent and isCollapseChildren) ? ' row-collapse' : ' row-expand' }}">
+         <div class="td col-md-2">{{ category['name']|trans }}</div>
+         <div class="td col-md-2">{{ category['count']['handing']|trans }}{{ '/' }} {{  category['count']['end']|trans }}</div>
+         <div class="td col-md-2">{{ category['mem']|trans }}</div>
+         <div class="td col-md-2">{{ category['pass']|trans }}</div>
+          {% if category['mem'] != 0 %}
+            <div class="td col-md-1">{{ (100*category['pass']/category['mem'])|round(0, 'floor')|trans }}{{ '%' }}</div>
+            <div class="td col-md-1">{{ (100*category['join']/category['mem'])|round(0, 'floor')|trans }}{{ '%' }}</div>
+          {% else %}
+            <div class="td col-md-1">{{ category['pass']|trans }}</div>
+            <div class="td col-md-1">{{ category['join']|trans }}</div>
+          {% endif %}
+         <div class="td col-md-2">
+           <div class="btn-group">
+             <a href="javascript:;" class="btn btn-default btn-sm " data-url="{{ path('admin_category_edit', {id:category.id}) }}" data-toggle="modal" data-target="#modal">
+                <i class="glyphicon glyphicon-edit"></i> {{'admin.category.offline_course.btn.edit_btn'|trans}}
+              </a>
+            </div>
+         </div>
+          </div>
+       </li>
+     {% endfor %}
+   </ul>
+{% endmacro %}

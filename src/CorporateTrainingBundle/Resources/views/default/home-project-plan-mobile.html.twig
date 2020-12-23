@@ -1,0 +1,47 @@
+<section class="o-home-sec js-common-project-plan">
+  <div class="container">
+    <div class="m-home-sec__title pos-rel">{{config.title|default(config.defaultTitle|trans)}}
+      <a href="{{ path('project_plan_list') }}" class="m-article-more">{{ 'site.default.more'|trans }}</a>
+    </div>
+
+    <div class="o-home-sec__bd">
+      <div class="o-home-act-swiper js-home-plan-swiper-1">
+        <section id="m-home-plan-swiper-1" class="swiper-container">
+          <div class="swiper-wrapper">
+          {% set projectPlans = data('HomeProjectPlan', {'count': 4}) %}
+          {% if projectPlans %}
+            {% for projectPlan in projectPlans %}
+              <div class="swiper-slide swiper-slide-act {% if loop.index == 1 %} js-slide-plan{% endif %}">
+                <a class="m-home-act" href="{{ path('project_plan_detail', {id: projectPlan.id}) }}">
+                  <div class="m-home-act__hd">
+                    <img class="m-home-act__img" src="{{ filepath(projectPlan['cover']['middle']|default(''), 'project-plan.png') }}">
+                  </div>
+                  <div class="m-home-act__bd">
+                    <div class="m-home-act__title">{{ projectPlan.name }}</div>
+                    <div class="m-home-act__date">{{ 'default.home_project_plan.apply'|trans }}{{ projectPlan.enrollmentStartDate|date('m-d') }} {{ 'project_plan.time_to'|trans }} {{ projectPlan.enrollmentEndDate|date('m-d') }}</div>
+                    {% set category = data('Category', {'categoryId': projectPlan.categoryId}) %}
+                     <div class="m-home-act__label"><i class="es-icon es-icon-label"></i>{{ category.name|sub_text(15) }}</div>
+                  </div>
+                </a>
+              </div>                 
+            {% endfor %}
+
+              {% if (6 - count(projectPlans)) > 0 %}
+                {% for i in 1..(6-count(projectPlans)) %}
+                  <div class="swiper-slide swiper-slide-act">
+                    <a class="m-home-act no-shadow" href="javascript:;">
+                      <img class="img-responsive mbl" src="{{ asset('static-dist/corporatetrainingbundle/img/act_def_pos@2x.png')}}">
+                    </a>
+                  </div>
+                {% endfor %}
+              {% endif %}
+
+          {% endif %}
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+

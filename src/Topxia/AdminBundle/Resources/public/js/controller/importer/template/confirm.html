@@ -1,0 +1,17 @@
+<div class="page-header clearfix">
+    <h1 class="pull-left"><%= Translator.trans('admin.importer.template.success.title') %></h1>
+</div>
+
+<div class="row">
+    <div id="user-import">
+        <div class="col-md-offset-2">
+            <h4><%= Translator.trans('admin.importer.template.confirm.prefix_text') %><%= existUserCount %><%= Translator.trans('admin.importer.template.confirm.postfix_text') %></h4>
+        </div>
+        <br>
+        <div class="col-md-offset-2">
+            <button type="button" class="btn btn-primary" id="import-new-btn"><%= Translator.trans('admin.importer.template.confirm.import_new_only') %></button>
+            <button type="button" class="btn btn-primary" id="import-all-btn"><%= Translator.trans('admin.importer.template.confirm.import_all') %></button>
+            <a type="button" class="btn" href="#index"><%= Translator.trans('admin.importer.template.confirm.re_import') %></a>
+        </div>
+    </div>
+</div>

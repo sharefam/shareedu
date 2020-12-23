@@ -1,0 +1,6 @@
+{% if projectPlanItem.targetType %}
+  {% set type = underline_to_line(projectPlanItem.targetType) %}
+  {% include 'project-plan/detail/task-list/'~type~'-item.html.twig' %}
+{% else %}
+  {% include 'project-plan/detail/task-list/online-course-item.html.twig' %}
+{% endif %}

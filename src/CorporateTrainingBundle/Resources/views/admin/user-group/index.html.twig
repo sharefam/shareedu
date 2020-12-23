@@ -1,0 +1,43 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_user_group_manage' %}
+
+{% block page_title %}{{ 'admin.user_group_manage'|trans }}{% endblock %}
+
+{% block page_buttons %}
+{% endblock %}
+{% block main %}
+  <form class="form-inline ct-well ct-mbl">
+    {% include 'admin/page-buttons/page-buttons.html.twig' %} 
+  </form>
+  <table id="user-table" class="table table-striped table-hover" data-search-form="#user-search-form">
+    <thead>
+    <tr>
+      <th width="18%">{{ 'admin.user_group.name'|trans }}</th>
+      <th width="18%">{{ 'admin.user_group.code'|trans }}</th>
+      <th width="28%">{{ 'admin.user_group.description'|trans }}</th>
+      <th width="16%">{{ 'admin.user_group.num'|trans }}</th>
+      <th width="20%">{{ 'admin.user_group.operation'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if userGroups|default() %}
+      {% for userGroup in userGroups %}
+        <tr>
+          <td>{{ userGroup.name|default() }}</td>
+          <td>{{ userGroup.code|default() }}</td>
+          <td>{{ userGroup.description|default() }}</td>
+          <td>{{ userGroup.num }}</td>
+          <td>
+            <a href="javascript:;" class="btn btn-default btn-sm" data-url="{{ path('admin_user_group_edit', {id:userGroup.id|default(0)}) }}" data-toggle="modal" data-target="#modal">{{ 'admin.user_group.btn.edit_btn'|trans }}</a>
+            <a href="{{ path('admin_user_group_member_list', {id:userGroup.id}) }}" class="btn btn-default btn-sm">{{ 'admin.user_group.member_manage'|trans }}</a>
+          </td>
+        </tr>
+      {% endfor %}
+    {% else %}
+      <tr><td class="empty" colspan="20">{{ 'admin.user_group.empty'|trans }}</tr>
+    {% endif %}
+    </tbody>
+  </table>
+  {{ admin_macro.paginator(paginator) }}
+{% endblock %}

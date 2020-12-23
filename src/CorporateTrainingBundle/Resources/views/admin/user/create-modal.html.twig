@@ -1,0 +1,123 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set modalSize = 'large' %}
+{% do script(['corporatetrainingbundle/js/admin/user/index.js']) %}
+{% block title %}{{'admin.user.manage.create.heading_title'|trans}}{% endblock %}
+{% block body %}
+
+<form id="user-create-form" class="form-horizontal" method="post" action="{{ path('admin_user_create')}}">
+
+  <div class="row form-group">
+    <div class="col-md-3 control-label">
+      <label for="truename">{{ 'admin.user.truename'|trans }}</label>
+    </div>
+    <div class="col-md-8 controls">
+      <input type="text" id="truename" name="truename" class="form-control">
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-md-3 control-label">
+      <label for="email">{{'admin.user.manage.create.email_label'|trans}}</label>
+    </div>
+    <div class="col-md-8 controls">
+      <input type="text" id="email" data-url="{{path('admin_user_create_email_check')}}" name="email" class="form-control" >
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-md-3 control-label">
+      <label for="nickname">{{'user.fields.username_label'|trans}}</label>
+    </div>
+    <div class="col-md-8 controls">
+      <input type="text" id="nickname" name="nickname" data-url="{{path('admin_user_create_nickname_check')}}" class="form-control" >
+    </div>
+  </div>
+
+   <div class="row form-group">
+    <div class="col-md-3 control-label">
+      <label for="password">{{'admin.user.fields.password_label'|trans}}</label>
+    </div>
+      <div class="col-md-8 controls">
+        <input type="password" id="password" name="password" class="form-control">
+      <p class="help-block">{{'admin.user.fields.password_hint'|trans}}</p>
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-md-3 control-label">
+      <label for="confirmPassword">{{'admin.user.fields.confirm_password_label'|trans}}</label>
+  </div>
+    <div class="col-md-8 controls">
+      <input type="password" id="confirmPassword" name="confirmPassword" class="form-control">
+        <p class="help-block">{{'admin.user.fields.confirm_password_hint'|trans}}</p>
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-md-3 control-label">
+      <label for="orgCodes">{{'admin.user.org'|trans}}</label>
+    </div>
+      <div class="col-md-8 department-manage-search-form-group">
+        {% include 'org/org-treeview-mutiple.html.twig' with {id: 'user-orgCodes', placeholder: "--组织机构--", width: 340, parameter: 'orgCodes', orgCodes: '', arrTree: build_org_tree(app.user.manageOrgCodes), modal: 'modal', isFront: 0} %}
+      </div>
+  </div>
+
+  {% include 'post/post-tree-select.html.twig' with {colmd:8, modal: 'modal', lablecolmd: 3} %}
+
+  <div class="row form-group">
+    <div class="col-md-3 control-label">
+      <label for="hireDate">{{ 'admin.user.hire_date'|trans }}</label>
+    </div>
+    <div class="col-md-8 controls">
+      <input id="hireDate" name="hireDate" class="form-control" value="">
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-3 ft-wide control-label">
+      {{ 'admin.user.permissions_setting'|trans }}
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-md-3 control-label">
+      <label for="roles">{{'admin.user.fields.role_label'|trans}}</label>
+    </div>
+    <div class="col-md-8 controls">
+      <div class="mts">
+        {% set admin_roles = get_admin_roles() %}
+        {% for role in admin_roles if (role.code in app.user.roles or role.createdUserId == app.user.id) or 'ROLE_SUPER_ADMIN' in app.user.roles %}
+          {% if role.code == 'ROLE_ADMIN' and 'ROLE_ADMIN' in user.roles %}
+            <input type="checkbox" name="roles[]" value="{{role.code}}" {% if role.code == 'ROLE_USER' %}disabled="true" id="stu" {% endif %}>{{role.name}}
+          {% endif %}
+          {% if role.code != 'ROLE_ADMIN' %}
+            <input type="checkbox" name="roles[]" value="{{role.code}}" {% if role.code == 'ROLE_USER' %}disabled="true" id="stu" {% endif %}>{{role.name}}
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="alert alert-info mtl">
+        {{ 'admin.user.set_permission.role_alert'|trans }}
+      </div>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-3 control-label">
+      <label for="">{{ 'admin.user.set_permission.org_setting'|trans }}</label>
+    </div>
+    <div class="col-md-8" >
+      {% include 'admin/org-select/index.html.twig' with {treeName: 'permissionOrgIds',placeholder: '所属部门', id: 'setOrgSelect',ids:orgIds|default(''), data: set_manage_permission_org_tree(user.manageOrgIds)} %}
+      <div class="alert alert-info mtl">
+        {{ 'admin.user.set_permission.org_alert'|trans }}
+      </div>
+    </div>
+  </div>
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+
+</form>
+{% endblock %}
+
+{% block footer %}
+  <button id="user-create-btn" data-submiting-text="{{'form.btn.submit.submiting'|trans}}" type="submit" class="btn btn-primary pull-right" data-toggle="form-submit" data-target="#user-create-form">{{'form.btn.submit'|trans}}</button>
+  <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{'form.btn.cancel'|trans}}</button>
+  <script>app.load('corporatetrainingbundle/controller/user/create-modal')</script>
+{% endblock %}

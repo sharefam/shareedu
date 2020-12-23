@@ -1,0 +1,41 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set script_controller = 'course/recommend-list' %}
+{% do script(['libs/select2.js', 'corporatetrainingbundle/js/admin/org-select/index.js']) %}
+
+{% set menu = 'admin_course_set_recommend_list' %}
+
+{% block main %}
+  <form id="message-search-form" class="form-inline ct-well ct-mbl js-data-search" action="" method="post" novalidate>
+    <div class="form-group prl">
+      {% include 'org-select/index.html.twig' with {
+        id: 'resource-orgCode',
+        data: build_org_tree(app.user.manageOrgCodes),
+        placeholder: 'admin.org.select_placeholder'|trans,
+        treeName: 'orgIds',
+        ids: orgIds|default(0),
+      }
+      %}
+    </div>
+    <div class="form-group prl">
+      <select style="width:150px;" class="form-control" name="categoryId">
+        {{ select_options(category_choices('course'), app.request.get('categoryId'), 'admin.course_manage.category_placeholder'|trans) }}
+      </select>
+    </div>
+    <div class="form-group prl">
+      <input class="form-control" type="text" placeholder="{{ 'admin.course_manage.title_placeholder'|trans }}" name="title" value="{{ app.request.get('title') }}">
+    </div>
+    <div class="form-group prl">
+      <input class="form-control" type="text" placeholder="{{ 'admin.course_manage.creator_placeholer'|trans }}" name="creatorName" value="{{ app.request.get('creatorName') }}">
+    </div>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    <div class="form-group">
+      <button class="btn btn-primary mrl">{{ 'form.btn.search'|trans }}</button>
+    </div>
+  </form>
+
+  <div class="table table-striped data-list">
+    {% include 'admin/course-set/course-recommend-list-table.html.twig'%}
+  </div>
+
+{% endblock %}

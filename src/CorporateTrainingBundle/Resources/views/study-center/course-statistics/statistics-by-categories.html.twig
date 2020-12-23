@@ -1,0 +1,60 @@
+<div class="my-record-sec">
+  <div class="my-record-sec-body js-course-count">
+    <div class="pvm phl">
+      <div class="js-tab-block-wrap">
+          <div class="row">
+            <table class="table table-sm table-bordered mtl">
+              <thead>
+              <tr>
+                <th>{{'study_center.course_statistics.course_category'|trans}}</th>
+                <th class="table-th-num">{{'study_center.course_statistics.course_num'|trans}}</th>
+                <th class="table-th-time">{{'study_center.course_statistics.course_watch_time'|trans}}</th>
+                <th class="table-th-time">{{'study_center.course_statistics.course_learn_time'|trans}}</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% if topFiveCategorySummaryDatas|default() %}
+                {% for categoryId, data in topFiveCategorySummaryDatas %}
+                  <tr>
+                    {% set categoryInfo = data('Category', {categoryId:categoryId}) %}
+                    <td class="js-category-name">
+                      {% if categoryId == 0 %}
+                        {{ 'study_center.course_statistics.status.category_empty'|trans }}
+                      {% elseif categoryId >0 and not categoryInfo %}
+                        {{ 'study_center.course_statistics.status.category_delete'|trans }}
+                      {% else %}
+                        {{ categoryInfo.name|default('--') }}
+                      {% endif %}
+                    </td>
+                    <td class="js-category-count">
+                      {{ data.courseNum|default(0) }}
+                    </td>
+                    <td>
+                      {{data.watchTime|time_format_hour}}
+                    </td>
+                    <td>
+                      {{data.learnTime|time_format_hour}}
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="20">
+                    <div class="empty">{{ 'study_center.course_statistics.message.course_record_empty'|trans }}</div>
+                  </td>
+                </tr>
+              {% endif %}
+              </tbody>
+            </table>
+            {% if topFiveCategorySummaryDatas|default() %}
+              <div class="ct-mtxl">
+                <div class="js-pie-chart-1 pie-chart-1" style="height: 300px;">
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+{% do script(['corporatetrainingbundle/js/study-center/record/statistics/index.js']) %}

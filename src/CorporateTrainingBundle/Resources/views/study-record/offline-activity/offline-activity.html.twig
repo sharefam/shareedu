@@ -1,0 +1,22 @@
+{% extends 'study-record/offline-activity/layout.html.twig' %}
+{% set type_nav = type %}
+
+{% block inner %}
+  {% if type == 'offline_activity' %}
+    {% if offlineActivities %}
+      <div class="c-my-offline-activity-list-wrap">
+        {% for offlineActivityGroup  in offlineActivities %}
+          {% include 'study-record/offline-activity/activities-record.html.twig' %}
+        {% endfor %}
+      </div>
+        
+    {% else %}
+      <div class="empty">{{'study_center.my_offline_activity.enrollment_record_empty'|trans}}</div>
+    {% endif %}
+  {% elseif  type == 'enrollment_record'%}
+    {% include 'study-record/offline-activity/enrollment-record.html.twig' %}
+  {% endif %}
+  <nav class="text-center">
+    {{ web_macro.paginator(paginator) }}
+  </nav>
+{% endblock %}

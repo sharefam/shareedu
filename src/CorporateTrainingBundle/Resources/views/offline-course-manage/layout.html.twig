@@ -1,0 +1,22 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{'offline_course.manage'|trans}} - {{ parent() }}{% endblock %}
+
+{% do script(['libs/jquery-intro.js','app/js/courseset-manage/index.js']) %}
+
+{% block content %}
+  {% block course_header %}
+    {{ render(controller('CorporateTrainingBundle:OfflineCourse/OfflineCourseManage:header', {id:offlineCourse.id|default('')})) }}
+  {% endblock %}
+  <div class="row">
+    <div class="col-md-3">
+      {% include 'CorporateTrainingBundle::offline-course-manage/sidebar.html.twig' %}
+    </div>
+    <div class="col-md-9">
+      {% block main %}{% endblock %}
+    </div>
+  </div>
+  {% endblock %}
+
+{% block bottom %}
+{% endblock %}

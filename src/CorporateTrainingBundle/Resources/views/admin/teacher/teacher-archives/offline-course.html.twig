@@ -1,0 +1,77 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% if from == 'data-center' %}
+  {% set menu = 'admin_data_center_teacher_detail' %}
+{% else %}
+  {% set menu = 'admin_train_teacher_manage_list' %}
+{% endif %}
+
+{% set type = 'offline-course' %}
+{% block page_title %}
+  <a {% if from == 'data-center' %}href="{{ path('admin_data_center_teacher_detail') }}" {% else %}href="{{ path('admin_teacher') }}" {% endif %}style="font-size: 14px;">{{'admin.teacher.teacher_archives.back'|trans}}</a>
+  <span class="mll">{{ user.nickname }}</span>
+  {% if is_plugin_installed('Survey') %}
+    <span class="mll" style="font-size: 14px;">{{'admin.teacher.teacher_archives.course.synthesize_survey'|trans}}</span>
+    <span class="mlm outflow-num">{{ surveyScore|default(0) }}</span>
+  {% endif %}
+{% endblock %}
+{% block tabs %}
+  {% include 'admin/teacher/teacher-archives/tabs.html.twig' with {from: from|default('')} %}
+{% endblock %}
+{% set script_controller = 'corporatetrainingbundle/controller/teacher/teacher-archives/course' %}
+
+{% block main %}
+  <form id="message-search-form" class="form-inline well well-sm" action="" method="get" novalidate>
+    {{ 'admin.teacher.list.teacher_create'|trans }}
+    <div class="form-group js-learn-data" style="margin-right: -20px">
+      <div id="date-range-picker">
+        <span class="user-data-select">
+          <input class="form-control js-date-range-input" style="width:200px;" type="text" name="courseCreateTime" value="{{ courseTime.startTime|date('Y/m/d') }}-{{ courseTime.endTime|date('Y/m/d') }}">
+          <i class="es-icon es-icon-arrowdropdown"></i>
+        </span>
+      </div>
+    </div>
+    <div class="form-group">
+      <input class="form-control" type="text" placeholder="{{ 'admin.course_manage.title_placeholder'|trans }}" name="likeTitle" value="{{ app.request.get('likeTitle') }}">
+    </div>
+    <button class="btn btn-primary">{{ 'form.btn.search'|trans }}</button>
+    <a class="btn btn-primary pull-right" data-toggle="modal" data-generate="1" data-target="#modal" data-url="{{ path('admin_teacher_offline_course_exporter',{courseCreateTime: app.request.query.get('courseCreateTime'), likeTitle: app.request.query.get('likeTitle'), userId: user.id}) }}">{{ 'admin.teacher.teacher_archives.course.exporter'|trans }}</a>
+
+  </form>
+<table id="teacher-table" class="table table-striped table-hover" data-search-form="#user-search-form">
+  <thead>
+    <tr>
+      <th width="30%">{{'admin.teacher.teacher_archives.course.name'|trans}}</th>
+      <th width="13%">{{'admin.teacher.teacher_archives.course.member_count'|trans}}</th>
+      <th width="13%">{{'admin.teacher.teacher_archives.course.attendance_rate'|trans}}</th>
+      <th width="13%">{{'admin.teacher.teacher_archives.course.pass_rate'|trans}}</th>
+      <th width="20%">{{'admin.teacher.teacher_archives.course.time'|trans}}</th>
+      {% if is_plugin_installed('Survey') %}
+        <th width="10%">{{'admin.teacher.teacher_archives.course.survey'|trans}}</th>
+      {% endif %}
+    </tr>
+  </thead>
+  <tbody>
+  <p class="text-muted">
+    <span class="mrl">{{'admin.teacher.teacher_archives.course.course_count'|trans}}<strong class="outflow-num">{{ courseCount|default(0) }}</strong></span>
+    {% if is_plugin_installed('Survey') %}
+      <span class="mrl">{{'admin.teacher.teacher_archives.course.evaluation'|trans}}<strong class="outflow-num">
+           {% if courseTotalScore|default(0) %}
+             {{ courseTotalScore }}
+           {% else  %}
+             --
+           {% endif %}
+        </strong></span>
+    {% endif %}
+  </p>
+  {% if offlineCourses %}
+    {% for offlineCourse in offlineCourses %}
+      {% include 'admin/teacher/teacher-archives/offline-course-tr.html.twig' %}
+    {% endfor %}
+  {% else %}
+    <tr><td colspan="20"><div class="empty">{{'admin.teacher.teacher_archives.course.empty'|trans}}</div></td></tr>
+  {% endif %}
+  </tbody>
+</table>
+ {{ admin_macro.paginator(paginator) }}
+{% endblock %}

@@ -1,0 +1,84 @@
+{% import "macro.html.twig" as web_macro %}
+{% if rankType == 'course' %}
+  <ul class="cd-tabs js-nav">
+    <li class="js-tab-link {% if courseType == 'course' %}active{% endif %}"><a href="javascript:;" data-url="{{ path('my_teaching_course_record_course_rank_list', {courseType: 'course', date: date}) }}">{{ 'teaching_record.teacher_rank.course'|trans }}</a></li>
+    <li class="js-tab-link {% if courseType == 'offline-course' %}active{% endif %}"><a href="javascript:;" data-url="{{ path('my_teaching_course_record_course_rank_list', {courseType: 'offline-course', date: date}) }}">{{ 'teaching_record.teacher_rank.offline_course'|trans }}</a></li>
+  </ul>
+{% else %}
+  <ul class="cd-tabs js-nav">
+    <li class="js-tab-link {% if courseType == 'course' %}active{% endif %}"><a href="javascript:;" data-url="{{ path('my_teaching_course_record_student_rank_list', {courseType: 'course', date: date}) }}">{{ 'teaching_record.teacher_rank.course'|trans }}</a></li>
+    <li class="js-tab-link {% if courseType == 'offline-course' %}active{% endif %}"><a href="javascript:;" data-url="{{ path('my_teaching_course_record_student_rank_list', {courseType: 'offline-course', date: date}) }}">{{ 'teaching_record.teacher_rank.offline_course'|trans }}</a></li>
+  </ul>
+{% endif %}
+{% if topFiveTeachers|default() %}
+  {% for key, value  in topFiveTeachers %}
+    {% if rankType == 'course' %}
+      {% set user = data('User', {userId:key}) %}
+      {% set userTrueName = data('UserProfile', {userId:key}) %}
+      {% set num = value %}
+    {% else %}
+      {% set user = data('User', {userId: value.teacherId}) %}
+      {% set userTrueName = data('UserProfile', {userId:value.teacherId}) %}
+      {% set num = value.courseStudentNum %}
+    {% endif %}
+    <div class="c-rank-item c-rank-item--light">
+      <div class="c-rank-item__l">
+        {% if loop.index == 1 %}
+          <img class="c-rank-item__img-icon"
+               src="{{ asset('static-dist/corporatetrainingbundle/img/medal_gold@2x.png') }}">
+        {% elseif loop.index == 2 %}
+          <img class="c-rank-item__img-icon"
+               src="{{ asset('static-dist/corporatetrainingbundle/img/medal_silver@2x.png') }}">
+        {% elseif loop.index == 3 %}
+          <img class="c-rank-item__img-icon"
+               src="{{ asset('static-dist/corporatetrainingbundle/img/medal_copper@2x.png') }}">
+        {% else %}
+          <div class="c-rank-item__label">{{ loop.index }}</div>
+        {% endif %}
+
+      </div>
+      <div class="c-rank-item__r">
+        <div class="pull-left">
+          {{ web_macro.train_user_avatar(user, '', 'c-rank-item__img', true) }}
+        </div>
+        <div class="pull-left mlm">
+          <div class="c-rank-item__name">
+            {% if userTrueName.truename|default() %}
+              {{ userTrueName.truename }}
+            {% else %}
+              {{ user.nickname }}
+            {% endif %}
+          </div>
+          {% set orgs = data('Orgs', {orgIds:user.orgIds}) %}
+          <div class="c-rank-item__post">{{ orgs.0.name|default('--') }}
+            {% if orgs.1|default(false) %}
+              <i class="es-icon es-icon-more ft-xsm" data-toggle="popover" data-container="body" data-trigger="hover"
+                 data-placement="top" data-content="{{ orgs.orgNames|default() }}"></i>
+            {% endif %}
+          </div>
+        </div>
+        <div class="c-rank-item__date pull-right">{{ num }}
+          {% if rankType == 'course' %}
+            {% if courseType == 'course' %}
+              {{ 'teaching_record.teacher_rank.course_num'|trans }}
+            {% else %}
+              {{ 'teaching_record.teacher_rank.offline_course_time'|trans }}
+            {% endif %}
+          {% else %}
+            {{ 'teaching_record.teacher_rank.student_num'|trans }}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% else %}
+  <div class="empty">
+    <div class="c-home-rank__empty-wrap">
+      <img class="c-home-rank__empty-img"
+           src="{{ asset('static-dist/corporatetrainingbundle/img/system-default/empty_rank_list.png') }}">
+      <div class="">
+        {{ 'site.datagrid.empty'|trans }}
+      </div>
+    </div>
+  </div>
+{% endif %}

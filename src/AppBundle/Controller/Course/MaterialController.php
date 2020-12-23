@@ -1,0 +1,115 @@
+<?php
+
+namespace AppBundle\Controller\Course;
+
+use AppBundle\Common\Paginator;
+use AppBundle\Common\ArrayToolkit;
+use Symfony\Component\HttpFoundation\Request;
+
+class MaterialController extends CourseBaseController
+{
+    public function indexAction(Request $request, $course, $member = array())
+    {
+        $courseMember = $this->getCourseMember($request, $course);
+        if (empty($courseMember)) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $courseSet = $this->getCourseSetService()->getCourseSet($course['courseSetId']);
+
+        $conditions = array(
+            'courseId' => $course['id'],
+            'excludeLessonId' => 0,
+            'source' => 'coursematerial',
+            'type' => 'course',
+        );
+
+        $paginator = new Paginator(
+            $request,
+            $this->getMaterialService()->countMaterials($conditions),
+            20
+        );
+
+        $materials = $this->getMaterialService()->searchMaterials(
+            $conditions,
+            array('createdTime' => 'DESC'),
+            $paginator->getOffsetCount(),
+            $paginator->getPerPageCount()
+        );
+
+        $tasks = $this->getTaskService()->searchTasks(array('courseId' => $course['id'], 'type' => 'download'), array(), 0, 100);
+        $tasks = ArrayToolkit::index($tasks, 'activityId');
+
+        return $this->render('course/tabs/material.html.twig', array(
+            'courseSet' => $courseSet,
+            'course' => $course,
+            'member' => $member,
+            'tasks' => $tasks,
+            'materials' => $materials,
+            'paginator' => $paginator,
+        ));
+    }
+
+    public function downloadAction(Request $request, $courseId, $materialId)
+    {
+        list($course, $member) = $this->getCourseService()->tryTakeCourse($courseId);
+
+        if ($member && !$this->getMemberService()->isMemberNonExpired($course, $member)) {
+            return $this->redirect($this->generateUrl('my_course_show', array('id' => $courseId, 'tab' => 'material')));
+        }
+
+        $material = $this->getMaterialService()->getMaterial($courseId, $materialId);
+
+        if (empty($material)) {
+            throw $this->createNotFoundException();
+        }
+
+        if ('courseactivity' == $material['source'] || !$material['lessonId']) {
+            return $this->createMessageResponse('error', '无权下载该资料');
+        }
+
+        return $this->forward('AppBundle:UploadFile:download', array('fileId' => $material['fileId']));
+    }
+
+    public function deleteAction(Request $request, $id, $materialId)
+    {
+        $this->getMaterialService()->deleteMaterial($id, $materialId);
+
+        return $this->createJsonResponse(true);
+    }
+
+    protected function isVipPluginEnabled()
+    {
+        return $this->isPluginInstalled('Vip') && $this->setting('vip.enabled');
+    }
+
+    protected function getMaterialService()
+    {
+        return $this->createService('Course:MaterialService');
+    }
+
+    protected function getUploadFileService()
+    {
+        return $this->createService('File:UploadFileService');
+    }
+
+    protected function getVipService()
+    {
+        return $this->createService('VipPlugin:Vip:VipService');
+    }
+
+    protected function getClassroomService()
+    {
+        return $this->createService('Classroom:ClassroomService');
+    }
+
+    protected function getCourseMemberService()
+    {
+        return $this->createService('Course:MemberService');
+    }
+
+    protected function getTaskService()
+    {
+        return $this->createService('Task:TaskService');
+    }
+}

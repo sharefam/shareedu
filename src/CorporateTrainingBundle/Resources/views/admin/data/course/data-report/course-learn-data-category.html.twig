@@ -1,0 +1,51 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_data_report_course_learn_data_statistic_category' %}
+{% do script(['libs/select2.js', 'libs/bootstrap-treeview.js','libs/jquery-validation.js','corporatetrainingbundle/js/admin/data/course/data-report/course-learn-data-category/index.js']) %}
+
+{% block main %}
+  <div class="aside-panel">
+    <form id="course-learn-data-statistic-department" class="form-inline ct-well ct-mbl" method="post" novalidate>
+      <div class="form-group prl ft-sm">
+        <div class="ct-label">{{'my.department.data_report.department_filter'|trans}}</div>
+        <div class="dis-i-b">
+          {% include 'org-select/index.html.twig' with {
+            id: 'resource-orgCode',
+            data: build_org_tree(app.user.manageOrgCodes),
+            placeholder: 'admin.org.select_placeholder'|trans,
+            treeName: 'orgIds',
+            ids: orgIds|default(0),
+          }
+          %}
+        </div>
+      </div>
+      <div class="form-group prl">
+        <div class="ct-label ft-sm prl">{{'my.department.course_learn_data.time_filter'|trans}}</div>
+        <div class="dis-i-b js-learn-data">
+          <div id="date-range-picker">
+            <span class="user-data-select">
+              <input class="form-control js-date-range-input" style="width:200px;" type="text" name="courseCreatedTime" value="{{ createdTimeData.startDateTime|date('Y/m/d') }}-{{ createdTimeData.endDateTime|date('Y/m/d') }}">
+              <i class="es-icon es-icon-arrowdropdown"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group prl">
+        <div class="dis-i-b">
+          <button class="btn btn-primary search-btn js-submit" type="submit">{{'my.department.data_report.btn.search'|trans}}</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="dis-i-b">
+          <button type="button" class="btn btn-primary search-btn js-exporter" data-url="{{ path('exporter_export', {type: 'data_statistic_category', formSubmission: 'post' })}}">{{'my.department.data_report.export_data'|trans}}</button>
+        </div>
+      </div>
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    </form>
+  </div>
+
+  <span>{{'my.department.user_learn_data.tips'|trans({'%count%':userNum|default(0)})|raw}}</span>
+  <div class="table-responsive js-table-wrap mts data-list">
+    {% include 'admin/data/course/data-report/course-learn-data-category-list.html.twig' %}
+  </div>
+{% endblock %}

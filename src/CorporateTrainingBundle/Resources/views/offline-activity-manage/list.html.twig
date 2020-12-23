@@ -1,0 +1,81 @@
+{% extends 'offline-activity-manage/layout.html.twig' %}
+
+{% do script(['corporatetrainingbundle/js/offline-activity-manage/list/index.js']) %}
+
+{% block title %}{{ 'offline_activity.assessment_list'|trans }} - {{ parent() }}{% endblock %}
+{% set side_nav = 'list' %}
+{% block main %}
+<div class="panel panel-default panel-col">
+  <div class="panel-heading">
+    {{'offline_activity.assessment_list'|trans}}
+  </div>
+  <div class="panel-body">
+    <form class="form-inline well well-sm" id="list-search" action="" method="get">
+
+      <div class="form-group">
+        <select id="keywordType" name="keywordType" class="form-control">
+          {{ select_options(dict('nameKeyWordType'), app.request.query.get('keywordType') ? app.request.query.get('keywordType') : 'nickname') }}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <input type="text" id="keyword" name="keyword" class="form-control" value="{{ app.request.query.get('keyword') }}"
+               placeholder="{{ 'form.placeholder.keyword'|trans }}">
+      </div>
+
+      <button class="btn btn-primary">{{ 'form.btn.search'|trans }}</button>
+
+      <div class="pull-right">
+        <div class="btn-group">
+          {% if offlineActivity.status == 'published' %}
+            <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal" data-url="{{ path('advanced_member_select', {targetType: 'offlineActivity_member', targetId: offlineActivity.id }) }}">{{ 'offline_activity.add_member'|trans }}</a>
+          {% else %}
+            <a class="btn btn-primary btn-sm" disabled data-toggle="tooltip" data-placement="top" title="{{ 'offline_activity.can_not_add_member.tips'|trans }}">{{ 'offline_activity.add_member'|trans }}</a>
+          {% endif %}
+        </div>
+        {#<div class="btn-group">#}
+          {#<a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal" data-url="{{ path('importer_index', {type: 'offline-activity-member',offlineActivityId:offlineActivity.id}) }}">{{'批量添加用户'|trans}}</a>#}
+        {#</div>#}
+        <div class="btn-group">
+          <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal" data-url="{{ path('importer_index', {type: 'batch-grade',offlineActivityId:offlineActivity.id}) }}">{{'offline_activity.batch_examination'|trans}}</a>
+          <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="{{ path('offline_activity_sign_qrcode', {'activityId':offlineActivity.id}) }}" target="_blank">{{'offline_course.tasks.sign_qrcode'|trans}}</a></li>
+          </ul>
+        </div>
+        <a class="btn btn-primary btn-sm" href="{{ path('exporter_export', {type: 'offline_activity_member', activityId: offlineActivity.id , keywordType: app.request.query.get('keywordType'), keyword: app.request.query.get('keyword')}) }}">{{'offline_activity.assessment_list.export_data'|trans}}</a>
+      </div>
+    </form>
+
+    <table class="table table-striped table-hover" id="member-list-table" data-search-form="#list-search">
+      <thead>
+        <tr>
+          <th>{{'student.profile.truename'|trans}}</th>
+          <th>{{'student.profile.post'|trans}}</th>
+          <th>{{'offline_activity.attend_status'|trans}}</th>
+          <th>{{'offline_activity.examination.score'|trans}}</th>
+          <th>{{'offline_activity.examination.result'|trans}}</th>
+          <th>{{'offline_activity.operation'|trans}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if members|default() %}
+          {% for member in members %}
+            {% include 'offline-activity-manage/list-tr.html.twig' %}
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="20">
+              <div class="empty">{{'site.datagrid.empty'|trans}}</div>
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+    {{ web_macro.paginator(paginator) }}
+  </div>
+</div>
+{% endblock %}

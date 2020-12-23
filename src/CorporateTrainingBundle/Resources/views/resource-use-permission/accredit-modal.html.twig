@@ -1,0 +1,28 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set modal_class = 'unit-addition-modal js-modal-close' %}
+
+{% do script(['libs/select2.js', 'libs/jquery-validation.js','corporatetrainingbundle/js/resource-use-permission/index.js']) %}
+
+{% block title %}
+    {{ 'resource_use_permission.accredit.title'|trans }}
+{% endblock %}
+{% block body %}
+    <form class="form-horizontal" id="use-authorization-set-form" action="{{ path('resource_use_permission_accredit', {type:resourceType, resourceId: resourceId}) }}" method="post">
+      <div class="form-group">
+        <label  class="col-md-3 control-label" for="userIds">{{ 'resource_use_permission.add_authorized_object'|trans }}</label>
+        <div class="col-sm-8 controls">
+          <input type="text" id="userIds" name="userIds" class="width-full select2-offscreen" tabindex="-1"
+                 data-url="{{ path('resource_use_permission_user_match') }}" value="">
+          <div class="help-block">{{ dict('use-authorization-help-block')[resourceType]|default('')|trans }}</div>
+        </div>
+      </div>
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    </form>
+{% endblock %}
+{% block footer %}
+    <button id="use-authorization-set-btn" data-submiting-text="{{ 'project_plan.btn.save_loading_btn'|trans }}" type="submit"
+            class="btn btn-primary pull-right js-save-btn" data-toggle="form-submit" data-loading-text="{{ 'project_plan.btn.save_loading_btn'|trans }}"
+    >{{ 'project_plan.btn.save_btn'|trans }}</button>
+  <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{ 'project_plan.btn.cancel_btn'|trans }}</button>
+{% endblock %}

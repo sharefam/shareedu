@@ -1,0 +1,27 @@
+{% extends 'user/layout.html.twig' %}
+
+{% block title %}{{ parent() }}{% endblock %}
+
+{% set pageNav = type %}
+
+{% block main %}
+  <div class="editor-text">
+  {% if 'ROLE_TEACHER' in user.roles %}
+  <div class="editor-text-field"><span class="editor-text-field__line"></span><span class="editor-text-field__txt">{{ 'teacher.list.field'|trans }}</span></div>
+	<div class="editor-text-tags">
+    {% for field in fields if fields|default('') %}
+      <span class="user-title-type">{{ field.name|default('') }}</span>
+    {% else %}
+      <div class="empty">{{'user.homepage.teacher_profession_field.empty'|trans}}</div>
+    {% endfor %}
+    {% endif %}
+  
+  </div>
+  <div class="editor-text-field"><span class="editor-text-field__line"></span><span class="editor-text-field__txt">{{ 'student.profile.about'|trans }}</span></div>
+  {% if userProfile.about %}
+    {{userProfile.about|cdn|raw}}
+  {% else %}
+    <div class="empty">{{'user.homepage.introductions.empty'|trans}}</div>
+  {% endif %}
+  </div>
+{% endblock %}

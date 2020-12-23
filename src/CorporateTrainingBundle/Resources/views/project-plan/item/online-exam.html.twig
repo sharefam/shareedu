@@ -1,0 +1,108 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set modal_class = 'unit-addition-modal js-modal-close' %}
+{% set hide_footer = true %}
+
+{% do script(['libs/select2.js', 'libs/jquery-validation.js', 'libs/bootstrap-datetimepicker.js', 'corporatetrainingbundle/js/project-plan/item/online-exam/index.js']) %}
+
+{% block title %}
+  {% if exam|default() %}
+    {{ 'project_plan.preparation.items.edit_items'|trans }}
+  {% else %}
+    {{ 'project_plan.preparation.items.add_items'|trans }}
+  {% endif %}
+{% endblock %}
+
+{% block body %}
+  <style>
+    .modal-backdrop.in {
+      opacity: 0.5;
+    }
+    .modal {
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+  </style>
+<div class="unit-online-exam">
+  <form class="form-horizontal" id="online-exam-form" {% if exam|default() %}action="{{ path('project_plan_item_update', {id:item.id, projectPlanId:projectPlanId}) }}" {% else %} action="{{ path('project_plan_item_add', {id: projectPlanId, type: 'exam'}) }}" {% endif %} method="post">
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'project_plan.item.exam_title'|trans }}</label>
+      </div>
+      <div class="col-md-9">
+        <input class="form-control" type="text" name="name" value="{{ exam.name|default('') }}">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'project_plan.item.exam_start_time'|trans }}</label>
+      </div>
+      <div class="col-md-4 controls">
+        <input type="text" id="startTime" name="startTime" class="form-control" for="startTime" placeholder="{{ 'project_plan.start_time'|trans }}" value="{% if exam.startTime|default(null) %}{{ exam.startTime|date('Y-m-d H:i') }} {% endif %}">
+      </div>
+      <div class="col-md-4 controls">
+        <input type="text" id="endTime" name="endTime" class="form-control" for="endTime" placeholder="{{ 'project_plan.end_time'|trans }}" value="{% if exam.endTime|default(null) %}{{ exam.endTime|date('Y-m-d H:i') }} {% endif %}">
+      </div>
+    </div>
+
+    {% include 'ExamPlugin::test-paper-manage/pick-test-paper/set-test-paper.html.twig' with {name:'mediaId', testPaperName:testPapers.name|default(),testPaperId:testPapers.id|default(null), modal:1} %}
+
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'project_plan.item.exam_length'|trans }}</label>
+      </div>
+      <div class="col-md-4">
+        <input class="form-control" type="text" name="length" value="{{ exam.length|default(0)//60 }}" placeholder="0">
+        <p class="color-gray mts">{{ 'project_plan.item.exam_length_info'|trans }}</p>
+      </div>
+      <div class="col-md-2">
+        {{ 'site.date.minute'|trans }}
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'project_plan.item.exam_pass_score'|trans }}</label>
+      </div>
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-6" style="white-space: nowrap;">
+            <input class="form-control" type="text" id="passScore-input" name="passScore" value="{{ exam.passScore|default(0)}}">
+          </div>
+          <div class="col-md-2">
+            {{ 'site.data.score'|trans }}
+          </div>
+        </div>
+
+        <p class="color-gray mts">{{ 'project_plan.item.exam_pass_score_info'|trans }}<span id="testPaper-score">{{ testPapers.score|default(0) }}</span>{{ 'site.data.score'|trans }}</p>
+      </div>
+
+    </div>
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'project_plan.item.exam_resit_times'|trans }}</label>
+      </div>
+      <div class="col-md-4">
+        <input class="form-control" type="text" name="resitTimes" value="{{ exam.resitTimes|default(0)}}" placeholder="0">
+        <p class="color-gray mts">{{ 'project_plan.item.exam_resit_times_info'|trans }}</p>
+      </div>
+      <div class="col-md-2">
+        {{ 'site.default.times'|trans }}
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-8 col-md-offset-2 controls checkbox">
+        <label>
+          <input type="checkbox" name="showAnswerAndAnalysis" {% if exam.showAnswerAndAnalysis|default(0) %} checked{% endif %}>{{ 'project_plan.item.exam_show_answer'|trans }}
+        </label>
+      </div>
+    </div>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-9">
+        <button class="ct-btn ct-btn-primary" id="create-form-submit" type="button" data-loading-text="{{ 'project_plan.btn.save_loading_btn'|trans }}">{{ 'project_plan.btn.save_btn'|trans }}</button>
+        <button class="ct-btn ct-btn-default mlm" type="button" data-dismiss="modal">{{ 'project_plan.btn.cancel_btn'|trans }}</button>
+      </div>
+    </div>
+  </form>
+</div>     
+{% endblock %}

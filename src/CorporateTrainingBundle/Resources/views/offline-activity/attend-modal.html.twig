@@ -1,0 +1,42 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% do script(['corporatetrainingbundle/js/offline-activity/attend/index.js']) %}
+{% set modalSize = 'large' %}
+{% block title %}{{ 'offline_activity.enrollment'|trans }}{% endblock %}
+{% block body %}
+    <form id="offline-activity-attend-form" class="form-horizontal"
+          action="{{ path('offline_activity_attend', {activityId:offlineActivity.id}) }}">
+        <div class="form-group">
+            <label class="col-xs-2">
+                {{ 'offline_activity.title'|trans }}:
+            </label>
+            <div class="col-xs-8">
+                {{ offlineActivity.title }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-2">
+                {{ 'offline_activity.time'|trans }}:
+            </label>
+            <div class="col-xs-8">
+                {{ offlineActivity.startTime|date('Y-m-d H:i') }} {{ 'offline_activity.enrollment.time_to'|trans }} {{ offlineActivity.endTime|date('Y-m-d H:i') }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-2">
+                {{ 'offline_activity.place'|trans }}:
+            </label>
+            <div class="col-xs-8">
+                {{ offlineActivity.address }}
+            </div>
+        </div>
+    </form>
+{% endblock %}
+{% block footer %}
+    <button id="server-create-btn" data-submiting-text="{{ 'form.btn.submit.submiting'|trans }}" type="submit"
+            class="btn btn-primary pull-right js-save-btn {% if canAccess == false %}disabled{% endif %}" data-toggle="form-submit" data-loading-text="报名中"
+    >{% if canAccess == false %}{{ 'resource.not_open_for_you'|trans }}{% else %}{{ 'offline_activity.enrollment.btn.immediately_apply'|trans }}{% endif %}</button>
+    <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{ 'form.btn.cancel'|trans }}</button>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% set categories = data('Categories', {'group':'classroom', 'parentId': 0}) %}
+
+<section class="o-home-sec js-common-classroom">
+  <div class="container">
+    <div class="m-home-sec__title pos-rel">{{config.title|default(config.defaultTitle|trans)}}
+      <a href="{{ path('classroom_explore') }}" class="m-article-more">{{ 'site.default.more'|trans }}</a>
+    </div>
+
+    <div class="o-home-sec__bd">
+      <div class="row js-tab-block-wrap">
+        <div class="tab-block js-tab-sec is-active">
+          {% set classrooms = data('RecommendPublicClassrooms',{'count':config.count|default(4)})%}
+          {% set count= count(classrooms)%}
+          {% for classroom in classrooms %}
+            <div class="col-xs-6">
+              <div class="m-home-theme card-show m-ct-mbs">
+                <div class="m-home-theme__hd">
+                  <a href="{{ path('classroom_show', {id:classroom.id}) }}">
+                    <img class="c-home-theme__img" src="{{filepath(classroom.middlePicture, 'classroom.png')}}">
+                  </a>
+                </div>
+                <div class="m-home-theme__bd">
+                  <div class="m-home-theme__title">{{ classroom.title }}</div>
+                  <div class="m-home-theme__info-num">共{{ classroom.courseNum }}门课程</div>
+                  <div class="m-home-act__label">
+                    {% set category = data('Category', {'categoryId': classroom.categoryId|default(0)}) %}
+                    <i class="es-icon es-icon-label"></i>{{ category.name|default('course.select_list.category_empty'|trans)|sub_text(10) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

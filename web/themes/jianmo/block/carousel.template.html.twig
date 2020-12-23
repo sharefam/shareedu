@@ -1,0 +1,21 @@
+<section class="es-poster swiper-container">
+  <div class="swiper-wrapper">
+    {% for poster in posters %}
+      {% if poster.status == 1 %}
+        {% if poster.mode == "img" %}
+          <div class="swiper-slide swiper-hidden" style="background: {{poster.background}};">
+            <div>
+              <a class="es-poster-item" href="{{ poster.href|default('') }}" target="_blank" style="background-image: url({{poster.src|default('')}});" >
+              </a>
+            </div>
+          </div>
+        {% elseif poster.mode == "html"%}
+            {{ poster.html|raw }}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  </div>
+  <a class="swiper-btn swiper-l-btn js-swiper-l-btn" href="javascript:;"><i class="es-icon es-icon-chevronleft "></i></a>
+  <a class="swiper-btn swiper-r-btn js-swiper-r-btn" href="javascript:;"><i class="es-icon es-icon-chevronright"></i></a>
+  <div class="swiper-pager"></div>
+</section>

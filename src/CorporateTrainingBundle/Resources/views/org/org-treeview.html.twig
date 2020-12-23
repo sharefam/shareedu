@@ -1,0 +1,42 @@
+{% if isFront|default() %}
+  {% do script(['libs/new-bootstrap-treeview.js', 'corporatetrainingbundle/js/treeview/index.js']) %}
+{% else %}
+  {% if modal == 'modal' %}
+    <script>app.load('corporatetrainingbundle/controller/tree-view/treeview')</script>
+  {% else %}
+    {% do load_script('corporatetrainingbundle/controller/tree-view/treeview') %}
+  {% endif %}
+{% endif %}
+
+  {% set user = app.user %}
+  {% set userOrgCodes = user.manageOrgCodes %}
+
+  {#默认用户所属部门取默认值使用带参则为userOrg管理范围部门取默认值#}
+  {% if userOrg|default() %}
+    {% set userOrgCodes = user.orgCodes %}
+  {% endif %}
+  {% set currentOrgTree = data('OrgTreeCurrentUser',{orgCodes: userOrgCodes }) %}
+  {% if not userOrgCodes[0]|default(0) %}
+    {% set currentOrgTree = [] %}
+  {% endif %}
+  {% set flag = 0 %}
+  {% set requestOrgCode = app.request.get('orgCode')|default(0) %}
+  {% set currentOrgCode = app.request.get('orgCode')|default(userOrgCodes[0]|default(0)) %}
+
+  {% if requestOrgCode|default() %}
+    {% set currentOrgCode = requestOrgCode %}
+  {% endif %}
+
+  {% if orgCode|default() %}
+    {% set currentOrgCode = orgCode %}
+  {% endif %}
+
+  {% set currentOrg = data('OrgByOrgCode', {orgCode: currentOrgCode|default()}) %}
+  <div id={{id}} class="tree-wrapper" data={{id}} data-id={{id}} data-width={{width}} data-flag={{flag}}>
+    <input type="hidden" value="{{arrTree}}" id="input-data-{{id}}">
+    <label for="input-check-node" class="sr-only">Search Tree:</label>
+    <input type="input" id="input-check-node-{{id}}" class="form-control input-check-node" placeholder={{placeholder}} value="{% if currentOrg|default() %}{{ currentOrg.name|default() }}{% else %}{{currentOrgTree.0.name|default()}}{% endif %}"  autocomplete="off" >
+    <div id="checkable-output-{{id}}" class="checkable-output" style="display: none"></div>
+    <div id="treeview-checkable-{{id}}" class="treeview"></div>
+    <input type="hidden" value="{% if currentOrgCode|default() %}{{ currentOrgCode|default() }}{% else %}{{currentOrgTree.0.orgCode|default()}}{% endif %}" class="treeview-val" name="{{ parameter }}">
+  </div>

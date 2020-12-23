@@ -1,0 +1,32 @@
+@import 'course-learn-data.less';
+@import 'department-learn-data.less';
+@import 'user-manual.less';
+
+
+.o-user-manual-sec {
+  margin-bottom: 30px;
+}
+
+.o-user-manual-sec__hd {
+  position: relative;
+  font-size: 14px;
+  line-height: 20px;
+  padding-left: 16px;
+  color: @gray-darker;
+
+  &:before {
+    content: "";
+    width: 4px;
+    position: absolute;
+    left: 0;
+    top: 3px;
+    height: 14px;
+    background-color: @brand-primary;
+  }
+}
+
+.o-user-manual-sec__bd {
+  margin-top: 16px;
+}
+
+

@@ -1,0 +1,11 @@
+<ul class="h5-header-tabs ct-mbl row">
+  <li class="col-xs-4 {% if tab_nav == 'learning' %} active{% endif %}">
+    <a href="{{ path('study_center_my_courses_learning') }}">{{'study_center.my_courses.learning'|trans}}</a>
+  </li>
+  <li class="col-xs-4 {% if tab_nav == 'learned' %} active{% endif %}">
+    <a href="{{ path('study_center_my_courses_learned') }}">{{'study_center.my_courses.learned'|trans}}</a>
+  </li>
+  <li class="col-xs-4 {% if tab_nav == 'favorited' %} active{% endif %}">
+    <a href="{{ path('study_center_my_courses_favorited') }}">{{'course.status.followed'|trans}}</a>
+  </li>
+</ul>

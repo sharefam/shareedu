@@ -1,0 +1,117 @@
+<table class="table table-striped table-hover table-bordered reward-point-table">
+  <tr>
+    <th width="15%">{{ 'admin.mail_setting.message_scene'|trans }}</th>
+    <th width="35%">{{ 'admin.mail_setting.instructions'|trans }}</th>
+    <th width="15%">{{ 'admin.mail_setting.send_to'|trans }}</th>
+    <th width="10%">{{ 'admin.mail_setting.send_way'|trans }}</th>
+    <th width="10%">{{ 'admin.mail_setting.switch'|trans }}</th>
+  </tr>
+
+  <tr>
+    <td>{{ 'admin.mail_setting.mail_notification.enroll.scene'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.enroll.instructions'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.enroll.send_to'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.send_way.single'|trans }}</td>
+    <td>
+    <span class="es-switch {% if mailNotification.enroll|default(0) %}is-active{% endif %}">
+      <input class="es-switch__input" type="text" name="enroll" value="{{ mailNotification.enroll|default(0) }}" data-close="0" data-open="1">
+    </span>
+      <a style="margin-left: 15px" href="javascript:" data-url="{{ path('admin_mail_notification_template_preview',{'type': 'enroll'}) }}" data-toggle="modal" data-target="#modal">{{'admin.mail_setting.mail_notification.preview'|trans}}</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>{{ 'admin.mail_setting.mail_notification.post_assign.scene'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.post_assign.instructions'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.post_assign.send_to'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.send_way.mass'|trans }}</td>
+    <td>
+    <span class="es-switch {% if mailNotification.post_assign|default(0) %}is-active{% endif %}">
+      <input class="es-switch__input" type="text" name="post_assign" value="{{ mailNotification.post_assign|default(0) }}" data-close="0" data-open="1">
+    </span>
+      <a style="margin-left: 15px" href="javascript:" data-url="{{ path('admin_mail_notification_template_preview',{'type': 'post_assign'}) }}" data-toggle="modal" data-target="#modal">{{'admin.mail_setting.mail_notification.preview'|trans}}</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>{{ 'admin.mail_setting.mail_notification.project_plan_progress.scene'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.project_plan_progress.instructions'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.project_plan_progress.send_to'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.send_way.mass'|trans }}</td>
+    <td>
+    <span class="es-switch {% if mailNotification.project_plan_progress|default(0) %}is-active{% endif %}">
+      <input class="es-switch__input" type="text" name="project_plan_progress" value="{{ mailNotification.project_plan_progress|default(0) }}" data-close="0" data-open="1">
+    </span>
+      <a style="margin-left: 15px" href="javascript:" data-url="{{ path('admin_mail_notification_template_preview',{'type': 'project_plan_progress'}) }}" data-toggle="modal" data-target="#modal">{{'admin.mail_setting.mail_notification.preview'|trans}}</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>{{ 'admin.mail_setting.mail_notification.live_course.scene'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.live_course.instructions'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.live_course.send_to'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.send_way.mass'|trans }}</td>
+    <td>
+    <span class="es-switch {% if mailNotification.live_course|default(0) %}is-active{% endif %}">
+      <input class="es-switch__input" type="text" name="live_course" value="{{ mailNotification.live_course|default(0) }}" data-close="0" data-open="1">
+    </span>
+      <a style="margin-left: 15px" href="javascript:" data-url="{{ path('admin_mail_notification_template_preview',{'type': 'live_course'}) }}" data-toggle="modal" data-target="#modal">{{'admin.mail_setting.mail_notification.preview'|trans}}</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>{{ 'admin.mail_setting.mail_notification.project_plan_content.scene'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.project_plan_content.instructions'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.project_plan_content.send_to'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.send_way.mass'|trans }}</td>
+    <td>
+    <span class="es-switch {% if mailNotification.project_plan_content|default(0) %}is-active{% endif %}">
+      <input class="es-switch__input" type="text" name="project_plan_content" value="{{ mailNotification.project_plan_content|default(0) }}" data-close="0" data-open="1">
+    </span>
+      <a style="margin-left: 15px" href="javascript:" data-url="{{ path('admin_mail_notification_template_preview',{'type': 'project_plan_content'}) }}" data-toggle="modal" data-target="#modal">{{'admin.mail_setting.mail_notification.preview'|trans}}</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>{{ 'admin.mail_setting.mail_notification.my_task.scene'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.my_task.instructions'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.my_task.send_to'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.send_way.mass'|trans }}</td>
+    <td>
+    <span class="es-switch {% if mailNotification.my_task|default(0) %}is-active{% endif %}">
+      <input class="es-switch__input" type="text" name="my_task" value="{{ mailNotification.my_task|default(0) }}" data-close="0" data-open="1">
+    </span>
+      <a style="margin-left: 15px" href="javascript:" data-url="{{ path('admin_mail_notification_template_preview',{'type': 'my_task'}) }}" data-toggle="modal" data-target="#modal">{{'admin.mail_setting.mail_notification.preview'|trans}}</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>{{ 'admin.mail_setting.mail_notification.exam.scene'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.exam.instructions'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.exam.send_to'|trans }}</td>
+    <td>{{ 'admin.mail_setting.mail_notification.send_way.mass'|trans }}</td>
+    <td width="12%">
+    <span class="es-switch {% if mailNotification.exam|default(0) %}is-active{% endif %}">
+      <input class="es-switch__input" type="text" name="exam" value="{{ mailNotification.exam|default(0) }}" data-close="0" data-open="1">
+    </span>
+      <a style="margin-left: 15px" href="javascript:" data-url="{{ path('admin_mail_notification_template_preview',{'type': 'exam'}) }}" data-toggle="modal" data-target="#modal">{{'admin.mail_setting.mail_notification.preview'|trans}}</a>
+    </td>
+  </tr>
+
+  {% if is_plugin_installed('QA') %}
+    <tr>
+      <td>{{ 'admin.mail_setting.mail_notification.qa.scene'|trans }}</td>
+      <td>{{ 'admin.mail_setting.mail_notification.qa.instructions'|trans }}</td>
+      <td>{{ 'admin.mail_setting.mail_notification.qa.send_to'|trans }}</td>
+      <td>{{ 'admin.mail_setting.mail_notification.send_way.mass'|trans }}</td>
+      <td>
+    <span class="es-switch {% if mailNotification.qa|default(0) %}is-active{% endif %}">
+      <input class="es-switch__input" type="text" name="qa" value="{{ mailNotification.qa|default(0) }}" data-close="0" data-open="1">
+    </span>
+        <a style="margin-left: 15px" href="javascript:" data-url="{{ path('admin_mail_notification_template_preview',{'type': 'qa'}) }}" data-toggle="modal" data-target="#modal">{{'admin.mail_setting.mail_notification.preview'|trans}}</a>
+      </td>
+    </tr>
+  {% endif %}
+
+  {{ slot('mail_notification_setting.admin.extension', {'mail_notification_setting':'mail_notification_setting'}) }}
+</table>

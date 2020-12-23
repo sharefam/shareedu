@@ -1,0 +1,45 @@
+  <div class="ct-well">
+    <form class="form-search form-inline clearfix mtl" id="list-search" role="search-form" action="">
+      <div class="form-group">
+        <label>{{ 'teaching_record.course.category'|trans }}：</label>
+        <select id="categoryId" name="categoryId" class="form-control width-input width-input-large">
+          {{ select_options(category_choices('course'), app.request.get('categoryId'), 'course.base.category'|trans) }}
+        </select>
+        <div class="help-block" style="display:none;"></div>
+      </div>
+
+    {% if dataType == 'manage' %}
+    <div class="form-group mll">
+      <label>{{ 'teaching_record.course.title'|trans }}：</label>
+      <input type="text" class="form-control" name="key" value="{{ app.request.get('key') }}"
+             placeholder="{{ 'classroom.course_name_placeholder'|trans }}">
+    </div>
+
+    <button type="button" class="btn btn-primary" id="search"
+            data-url="{{ path('project_plan_ajax_match_manage_course',{projectPlanId:projectPlanId}) }}">{{ 'form.btn.search'|trans }}</button>
+
+    <a class="btn btn-primary" id="all-courses" data-url="{{ path('project_plan_ajax_match_manage_course',{projectPlanId:projectPlanId}) }}" >{{ 'classroom.all_courses'|trans }}
+    </a>
+    {% else %}
+        <div class="form-group mll">
+          <label>{{ 'teaching_record.course.title'|trans }}：</label>
+          <input type="text" class="form-control" name="key" value="{{ app.request.get('key') }}"
+                 placeholder="{{ 'classroom.course_name_placeholder'|trans }}">
+        </div>
+        <button type="button" class="btn btn-primary" id="search"
+                data-url="{{ path('project_plan_ajax_match_use_permission_course',{projectPlanId:projectPlanId}) }}">{{ 'form.btn.search'|trans }}</button>
+
+        <a class="btn btn-primary" id="all-courses"
+           data-url="{{ path('project_plan_ajax_match_use_permission_course',{projectPlanId:projectPlanId}) }}">{{ 'classroom.all_courses'|trans }}
+        </a>
+    {% endif %}
+  </form>
+</div>
+
+
+<div class="pull-left js-courses-count">
+  {{ 'classroom.crouse-pick-modal.tips'|trans|raw }}
+  <a id="clear-cookie" href="javascript:;">{{'classroom.crouse-pick.btn.clear_btn'|trans}}</a>
+</div>
+
+{% include 'course/course-select-list.html.twig' %}

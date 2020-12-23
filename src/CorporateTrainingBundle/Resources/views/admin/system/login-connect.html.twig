@@ -1,0 +1,266 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set script_controller = 'corporatetrainingbundle/controller/system/login_bind' %}
+
+{% set menu = 'admin_setting_login_bind' %}
+
+{% block main %}
+
+  {{ web_macro.flash_messages() }}
+
+  <form class="form-horizontal" method="post" id="login_bind-form" novalidate>
+
+    <fieldset>
+      <div class="form-group">
+        <div class="col-md-3 control-label">
+          <label>{{ 'admin.login_connect.User_login_restrictions'|trans }}</label>
+        </div>
+        <div class="controls col-md-8 radios">
+          {{ radios('login_limit', {1:'admin.login_connect.open'|trans, 0:'admin.login_connect.closed'|trans}, loginConnect.login_limit) }}
+          <p class="help-block">{{ 'admin.login_connect.User_login_restrictions.help_block'|trans }}</p>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <div class="form-group">
+        <div class="col-md-3 control-label">
+          <label>{{ 'admin.login_connect.Third_party_login'|trans }}</label>
+        </div>
+        <div class="controls col-md-8 radios">
+          <span {%if setting('sync_department_setting').enable|default(0) %}data-toggle="tooltip"{% endif %} data-placement="top" title="{{ 'admin.user_setting.account_synchronization.dingtalk_setting.success'|trans }}">
+            <label><input type="radio" name="enabled" value="1" {%if setting('sync_department_setting').enable|default(0) %}disabled="true" data-toggle="tooltip" data-placement="bottom" title="{{ 'project_plan.project_plan_archived'|trans }}"{% endif %} {% if loginConnect.enabled|default(0) %}checked="checked" {% endif %}> {{ 'admin.login_connect.open'|trans }}</label>
+            <label><input type="radio" name="enabled" value="0" {%if setting('sync_department_setting').enable|default(0) %}disabled="true" data-toggle="tooltip" data-placement="bottom" title="{{ 'project_plan.project_plan_archived'|trans }}"{% endif %} {% if not loginConnect.enabled|default(0) %}checked="checked" {% endif %}> {{ 'admin.login_connect.closed'|trans }}</label>
+          </span>
+
+          {%if setting('sync_department_setting').enable|default(0) %}
+            <input class="hidden" name="enabled" value="{{ loginConnect.enabled|default(0) }}">
+          {% endif %}
+            <label  id="onlyThirdPartyLogin" {% if not loginConnect.enabled %} class="hidden" {% endif %}>
+              <input  type="checkbox"  name="only_third_party_login" value="1" {% if loginConnect.only_third_party_login|default(0) %} checked="checked" {% endif %}> {{'admin.login_connect.only_third_party_login'|trans}}
+              (<span class="text-danger">{{ 'admin.login_connect.only_third_party_login.message.tips'|trans }}</span>)
+            </label>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <div class="form-group">
+        <div class="col-md-3 control-label">
+          <label>{{ 'admin.login_connect.User_login_protection'|trans }}</label>
+        </div>
+        <div class="controls col-md-8 radios">
+          {{ radios('temporary_lock_enabled', {1:'admin.login_connect.open'|trans, 0:'admin.login_connect.closed'|trans}, loginConnect.temporary_lock_enabled) }}
+          <p class="help-block">{{ 'admin.login_connect.Third_party_login.help_block'|trans }}</p>
+        </div>
+
+        <div id="times_and_minutes" class="col-md-8 col-md-offset-3"
+             {% if not loginConnect.temporary_lock_enabled|default(false) %}style="display:none"{% endif %}>
+          <div class="row">
+            <div class="col-md-4 lock-user-text-right">
+              {{ 'admin.login_connect.User_login_protection.enter_wrong_password'|trans }}
+            </div>
+            <div class="controls col-md-2 form-group">
+              <input type="text" id="temporary_lock_allowed_times" name="temporary_lock_allowed_times" class="form-control"
+                     value="{{ loginConnect.temporary_lock_allowed_times }}">
+            </div>
+            <div class="col-md-3 lock-user-text-left">
+              {{ 'admin.login_connect.User_login_protection.enter_wrong_password.banned'|trans }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 lock-user-text-right">
+              {{ 'admin.login_connect.User_login_protection.some_IP_enter_wrong_password'|trans }}
+            </div>
+            <div class="controls col-md-2 form-group">
+              <input type="text" id="temporary_lock_allowed_times" name="ip_temporary_lock_allowed_times" class="form-control"
+                     value="{{ loginConnect.ip_temporary_lock_allowed_times }}">
+            </div>
+            <div class="col-md-3 lock-user-text-left">
+              {{ 'admin.login_connect.User_login_protection.some_IP_enter_wrong_password.banned'|trans }}
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-4 lock-user-text-right">
+              {{ 'admin.login_connect.User_login_protection.after'|trans }}
+            </div>
+            <div class="controls col-md-2 form-group">
+              <input type="text" id="temporary_lock_minutes" name="temporary_lock_minutes" class="form-control"
+                     value="{{ loginConnect.temporary_lock_minutes }}">
+            </div>
+            <div class="col-md-3 lock-user-text-left">
+              {{ 'admin.login_connect.User_login_protection.after.unblock'|trans }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset id="third_login" {% if loginConnect.enabled|default(null) == 0 %} style="display:none"{% endif %}>
+      {% for type, client in clients %}
+        {% if type == 'weixinweb' or type == 'weixinmob' %}
+          <fieldset data-role="oauth2-setting" data-type="{{ type }}">
+            {% if type != 'dingtalkmob' %}
+              <legend>{{ client.admin_name }}</legend>
+            {% endif %}
+            <div class="form-group">
+              <div class="col-md-3 control-label">
+                <label>{{ client.admin_name }}</label>
+              </div>
+              <div class="controls col-md-8 radios">
+                {% if type != 'dingtalkmob' %}
+                  {{ radios( type ~ '_enabled', {1:'admin.login_connect.open'|trans, 0:'admin.login_connect.closed'|trans}, loginConnect[type ~ '_enabled']) }}
+                {% endif %}
+                {% if client.apply_url|default(null) %}
+                  {% if type =='weixinmob' %}
+                  <div class="help-block">{{ 'admin.login_connect.weixinmob.message.tips_one'|trans }}</div>
+                  <div class="help-block">
+                  {{ 'admin.login_connect.weixinmob.message.tips_two'|trans|raw }}
+                  {% elseif type == 'weixinweb' %}
+                  <div class="help-block">{{ 'admin.login_connect.weixinmob.message.tips_three'|trans|raw }}
+                  </div>
+                  <div class="help-block">
+                    {{ 'admin.login_connect.weixinmob.message.tips_four'|trans }}
+                    {% elseif type == 'dingtalkweb' %}
+                    <div class="help-block">
+                      <div class="help-block">
+                        {{ 'admin.login_connect.weixinmob.message.tips_five'|trans|raw }}
+                      </div>
+                      {#{% elseif type == 'dingtalkmob' %}#}
+                      {#<div class="help-block">开通后，支持使用钉钉号在手机端钉钉APP内快捷注册或登录网站。</div>#}
+                      {#<div class="help-block">#}
+                      {#<div class="help-block">#}
+                      {#请先到<a target="_blank" href="https://open.dingtalk.com/">钉钉开放平台</a>申请账号，<a target="_blank" href="http://open-dev.dingtalk.com/#/loginAndShareApp?_k=h2gfsh">创建免登录授权</a>#}
+                      {#</div>#}
+                      {% else %}
+                      <div class="help-block">
+                        {% if type != 'dingtalkmob' %}
+                          <a href="{{ client.apply_url }}" target="_blank">{{ 'admin.login_connect.dingtalkmob.btn.apply_btn'|trans }}{{ client.admin_name }}</a>
+                        {% endif %}
+                        {% endif %}
+                        {% if type == "qq" %}
+                          <a class="pll" href="javascript:;" id="help" data-toggle="popover" data-trigger="click" data-placement="top"
+                             title="{{ 'admin.login_connect.qq.access_help'|trans }}:" data-html="true"
+                             data-content="{{ 'admin.login_connect.qq.message.tips'|trans|raw }}">{{ 'admin.login_connect.qq.access_help'|trans }}</a>
+                        {% endif %}
+                      </div>
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  {% if type != 'dingtalkmob' %}
+                    <div class="form-group">
+                      <div class="col-md-3 control-label">
+                        <label for="{{ type }}_key">{{ client.key_setting_label }}</label>
+                      </div>
+                      <div class="controls col-md-8">
+                        <input type="text" id="{{ type }}_key" name="{{ type }}_key" class="form-control" value="{{ loginConnect[type ~ '_key'] }}">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="col-md-3 control-label">
+                        <label for="{{ type }}_secret">{{ client.secret_setting_label }}</label>
+                      </div>
+                      <div class="controls col-md-8">
+                        <input type="text" id="{{ type }}_secret" name="{{ type }}_secret" class="form-control"
+                               value="{{ loginConnect[type ~ '_secret'] }}">
+                        {% if type =='weixinweb' %}
+                          <div class="help-block">{{ 'admin.login_connect.weixinweb.message.tips'|trans|raw }}</div>
+                        {% elseif type =='weixinmob' %}
+                          <div class="help-block">{{ 'admin.login_connect.weixinmob.message.tips_six'|trans|raw }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% endif %}
+                  {% if type == 'weixinmob' %}
+                    <div class="form-group">
+                      <div class="col-md-3 control-label">
+                        <label for="weixinmob_mp_secret">{{ client.mp_secret_setting_label }}</label>
+                      </div>
+                      <div class="controls col-md-8">
+                        <input type="text" id="weixinmob_mp_secret" name="weixinmob_mp_secret" class="form-control"
+                               value="{{ loginConnect['weixinmob_mp_secret'] }}">
+                        <p class="help-block">{{ 'admin.login_connect.type.weixinmob.MP_verify.help_block'|trans }}</p>
+                      </div>
+                    </div>
+                  {% endif %}
+                  {% if type == 'weibo' %}
+                    <div class="form-group">
+                      <div class="col-md-3 control-label">
+                        <label for=""></label>
+                      </div>
+                      <div class="controls col-md-8 radios">
+                        <div class="help-block"><a href="#port">{{ 'admin.login_connect.type.weibo.help_block'|trans }}></a></div>
+                      </div>
+                    </div>
+                  {% endif %}
+          </fieldset>
+        {% endif %}
+      {% endfor %}
+
+      <fieldset data-role="oauth2-setting" data-type="dingtalkweb" id="dingtalkweb">
+        <legend>{{ 'admin.login_connect.dingtalkweb'|trans }}</legend>
+        <div class="form-group">
+          <div class="col-md-3 control-label">
+            <label>{{ 'admin.login_connect.dingtalkweb.docking_mode'|trans }}</label>
+          </div>
+          <div class="controls col-md-8 radios">
+            <span {%if setting('sync_department_setting').enable|default(0) %}data-toggle="tooltip"{% endif %} data-placement="top" title="{{ 'admin.user_setting.account_synchronization.dingtalk_setting.success'|trans }}">
+              <label><input type="radio" name="dingtalkMode" value="login" {%if setting('sync_department_setting').enable|default(0) %}disabled="true"{% endif %} {% if loginConnect.dingtalkMode|default('close') == 'login' %}checked="checked" {% endif %}> {{ 'admin.login_connect.open'|trans }}</label>
+              <label><input type="radio" name="dingtalkMode" value="close" {%if setting('sync_department_setting').enable|default(0) %}disabled="true"{% endif %} {% if loginConnect.dingtalkMode|default('close') == 'close' %}checked="checked" {% endif %}> {{ 'admin.login_connect.closed'|trans }}</label>
+            </span>
+            {%if setting('sync_department_setting').enable|default(0) %}
+             <input class="hidden" name="dingtalkMode" value="{{ loginConnect.dingtalkMode|default('close') }}">
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="form-group" id="dingtalk_tips">
+          <div class="col-md-3 control-label">
+            <label for=""></label>
+          </div>
+          <div class="controls col-md-8">
+            <div class="help-block" id="dingtalk_login_tips">
+              {{ 'admin.login_connect.dingtalkweb.tips_one'|trans }}
+            </div>
+            <div class="help-block">
+              <span class="color-primary">{{ 'admin.login_connect.dingtalkweb.tips_two'|trans({'%path%': path('admin_sync_account_docking')})|raw }}</span>
+            </div>
+            <div class="help-block">
+              <span>{{ 'admin.login_connect.dingtalkweb.tips_three'|trans|raw }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="dingtalk_app_setting">
+          <div class="form-group">
+            <div class="col-md-3 control-label">
+              <label for="dingtalkweb_key">appID</label>
+            </div>
+            <div class="controls col-md-8">
+              <input type="text" id="dingtalkweb_key" name="dingtalkweb_key" class="form-control" value="{{ loginConnect.dingtalkweb_key|default() }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-3 control-label">
+              <label for="dingtalkweb_secret">appSecret</label>
+            </div>
+            <div class="controls col-md-8">
+              <input type="text" id="dingtalkweb_secret" name="dingtalkweb_secret" class="form-control" value="{{ loginConnect.dingtalkweb_secret|default() }}">
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </fieldset>
+    <div class="form-group">
+      <div class="controls col-md-offset-3 col-md-8">
+        <button type="submit" class="btn btn-primary">{{ 'form.btn.submit'|trans }}</button>
+      </div>
+    </div>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+
+  </form>
+
+{% endblock %}

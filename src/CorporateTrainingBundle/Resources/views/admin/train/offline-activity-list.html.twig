@@ -1,0 +1,126 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% do script(['libs/select2.js', 'libs/bootstrap-treeview.js','libs/jquery-validation.js','corporatetrainingbundle/js/offline-activity-manage/manage-list/index.js']) %}
+
+{% set menu = 'admin_train_offline_activity_manage_list' %}
+{% import "common/data-dict-macro.html.twig" as dict_macro %}
+
+{% block main %}
+  <form class="department-manage-search-form form-inline clearfix mbl" method="get" novalidate>
+    <div class="form-group department-manage-search-form-group">
+      <label>{{ 'offline_activity.category_filter'|trans }}：</label>
+      <select class="form-control department-manage-search-form-group__type" name="categoryId">
+        {{ select_options(category_choices('offlineActivity'), app.request.query.get('categoryId'), 'offline_activity.type_choose'|trans) }}
+      </select>
+    </div>
+    <div class="form-group department-manage-search-form-group">
+      <label>{{ 'offline_activity.state_screening'|trans }}：</label>
+      <select class="form-control department-manage-search-form-group__type" name="searchType">
+        <option value="all">{{ 'offline_activity.all_type'|trans }}</option>
+        {{ select_options(dict('offlineActivityStatus'), app.request.query.get('searchType')) }}
+      </select>
+    </div>
+    <div class="form-group department-manage-search-form-group">
+      <label>{{ 'offline_activity.activity_title'|trans }}：</label>
+      <input class="form-control department-manage-search-form-group__info" type="text" id="title" name="title" value="{{ app.request.query.get('title') }}"
+             placeholder="{{ 'offline_activity.search_info'|trans }}">
+    </div>
+    <button class="btn btn-primary js-submit" type="submit">{{ 'offline_activity.btn.search'|trans }}</button>
+  </form>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th width="25%">{{ 'offline_activity.activity_title'|trans }}</th>
+      <th width="16%">{{ 'offline_activity.activity_time'|trans }}</th>
+      <th width="16%">{{ 'offline_activity.activity_application_deadline'|trans }}</th>
+      <th width="18%">{{ 'offline_activity.activity_studentNum'|trans }}
+        <span data-toggle="tooltip"
+              class="glyphicon glyphicon-question-sign color-gray text-sm js-data-popover">
+              </span>
+        <div class="popover-content hidden">
+          <div class="popover-item">
+            <div class="content">{{ 'offline_activity.activity_studentNum_info'|trans }}</div>
+          </div>
+        </div>
+      </th>
+      <th width="12%">{{ 'status'|trans }}</th>
+      <th width="13%">{{ 'operation'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for offlineActivity in offlineActivities %}
+      <tr id="offline-activity-table-tr-{{ offlineActivity.id }}">
+        {% set category = data('Category',{'categoryId':offlineActivity.categoryId}) %}
+        <td><a href="{{ path('offline_activity_detail',{'id':offlineActivity.id}) }}"
+               target="_blank">{{ offlineActivity.title }}</a><br>
+          <span class="text-sm text-muted">{{ 'offline_activity.activity_category'| trans }}：{{ category.name|default("") }}</span>
+        </td>
+        {% if offlineActivity.startTime and offlineActivity.endTime %}
+          <td>{{ offlineActivity.startTime|date('Y-m-d H:i') }}<br>
+            {{ offlineActivity.endTime|date('Y-m-d H:i') }}
+          </td>
+        {% else %}
+          <td>{{ '- -' }}<br>{{ '- -' }}</td>
+        {% endif %}
+        {% if offlineActivity.enrollmentEndDate %}
+          <td>{{ offlineActivity.enrollmentEndDate|date('Y-m-d H:i') }}</td>
+        {% else %}
+          <td>{{ '- -' }}</td>
+        {% endif %}
+        <td>
+             <span class="color-warning">
+              {{ data('OfflineActivitySubmittedStudentNum', {'offlineActivityId':offlineActivity.id}) }}
+             </span>/{{ offlineActivity.studentNum }}/{% if offlineActivity.maxStudentNum %}{{ offlineActivity.maxStudentNum|default(0) }}{% else %}{{ 'offline_activity.student_num.unlimited'|trans }}{% endif %}
+        </td>
+        <td>
+          {% if offlineActivity.status == 'published' %}
+            <span class="color-success">{{ 'offline_activity.status.published'|trans }}</span>
+          {% elseif offlineActivity.status == 'closed' %}
+            <span class="color-danger">{{ 'offline_activity.status.closed'|trans }}</span>
+          {% elseif offlineActivity.status == 'draft' %}
+            <span class="color-gray">{{ 'offline_activity.status.draft'|trans }}</span>
+          {% endif %}
+        </td>
+        <td>
+          <div class="btn-group">
+            <a class="btn btn-default btn-sm" href="{{ path('offline_activity_manage_base', {id:offlineActivity.id}) }}" target="_blank" type="button">{{'offline_activity.manage'|trans}}</a>
+            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+              {% if offlineActivity.status == 'published' %}
+                <li><a id="close-offline-activity"
+                       href="{{ path('offline_activity_sign_qrcode', {'activityId': offlineActivity.id}) }}"
+                       data-notify-title="{{ 'offline_activity.QR_code'|trans }}"
+                  ><span class="es-icon es-icon-qrcode mrm"></span>{{ 'offline_activity.QR_code'|trans }}</a></li>
+                <li><a class="offline-activity-operate" id="close-offline-activity"
+                       data-url="{{ path('offline_activity_manage_close', {'id': offlineActivity.id}) }}"
+                       data-notify-title="{{ 'offline_activity.close'|trans }}"
+                       href="javascript:;"><span class="es-icon es-icon-close01 mrm"></span>{{ 'offline_activity.close'|trans }}</a></li>
+              {% else %}
+                <li><a class="publish-offline-activity" id="publish-offline-activity"
+                       data-url="{{ path('offline_activity_manage_publish', {'id': offlineActivity.id}) }}"
+                       data-notify-title="{{ 'offline_activity.open'|trans }}"
+                       href="javascript:;"><span class="es-icon es-icon--check-circle mrm"></span>{{ 'offline_activity.publish'|trans }}</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </td>
+      </tr>
+    {% else %}
+      <tr>
+        <td class="text-center" colspan="20">
+          <div class="empty">
+            {{ 'offline_activity.empty'|trans }}
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <nav class="text-center">
+    {{ admin_macro.paginator(paginator) }}
+  </nav>
+{% endblock %}

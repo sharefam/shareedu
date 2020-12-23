@@ -1,0 +1,20 @@
+{% do script(['corporatetrainingbundle/js/courseset/locked-course/index.js']) %}
+<form class="form-horizontal ptl" id="locked-courseset-form" action="{{path('course_set_manage_locked_course_update', {id: courseSet.id})}}" method="post">
+  {% include 'resource-use-permission/index.html.twig' with {resourceType: 'courseSet',resourceId:courseSet.id}%}
+
+  <div class="" id="source-publish">
+    {% include 'resource-visible/index.html.twig' with {
+      resourceType: 'courseSet',
+      resourceId: courseSet.id,
+      recourseShowable:courseSet.showable|default(1),
+      resource: courseSet,
+      showAccessSetting: true,
+    } %}
+  </div>
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-8">
+      <button id="locked-courseset-submit" type="button" class="btn btn-primary" data-loading-text="{{ 'form.btn.save.submiting'|trans }}">{{ 'form.btn.save'|trans }}</button>
+    </div>
+  </div>
+</form>

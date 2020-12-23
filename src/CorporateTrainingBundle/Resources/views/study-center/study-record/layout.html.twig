@@ -1,0 +1,12 @@
+{% extends 'study-center/layout.html.twig' %}
+
+{% do script(['libs/echarts.js', 'libs/easy-pie-chart/dist/jquery.easypiechart.js', 'corporatetrainingbundle/js/study-center/record/index.js']) %}
+
+{% block inner %}
+  <div class="my-record board">
+    <div class="my-record-body">
+      {% block record_body %}
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}

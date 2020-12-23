@@ -1,0 +1,46 @@
+.ct-nav-pills {
+  > li {
+    > a {
+      padding: 5px 10px;
+    }
+  }
+}
+
+.ct-nav {
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.ct-nav-ghost-pills {
+  .clearfix;
+
+  >li {
+    float: left;
+
+    > a {
+      display: inline-block;
+      padding: 3px 16px;
+      border: 1px solid @brand-primary; 
+      font-size: 12px;
+      line-height: 20px;     
+      color: @brand-primary;
+      background-color: transparent;
+      .es-transition;
+    }
+
+    & + li {
+      > a {
+        border-left: 0px;
+      }
+    }
+
+    &.active, &:hover {
+      > a {
+        background-color: @brand-primary;
+        color: #FFFFFF;
+      }
+    }
+  }
+
+}

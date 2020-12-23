@@ -1,0 +1,34 @@
+{% extends 'study-center/layout.html.twig' %}
+
+{% set board = true %}
+{% set tab_type = 'myTask' %}
+{% set tab_nav = 'post' %}
+{% set studyCenterTitle = 'post_course'|trans %}
+
+{% do script(['libs/jquery-validation.js','libs/es-ckeditor/ckeditor.js','libs/jquery-intro.js','libs/easy-pie-chart/dist/jquery.easypiechart.js','corporatetrainingbundle/js/study-center/my-task/index.js']) %}
+
+{% block inner %}
+  {% if not is_mobile_client() %}
+    {{ render(controller('CorporateTrainingBundle:StudyCenter/MyTask:myTaskHeader', {tab_nav:tab_nav})) }}
+  {% endif %}
+  <div class="o-ctr-task-list  js-class-course-list">
+      {% if courses|default() %}
+        <div class="o-ctr-task-list__bd">
+          {% for course in courses %}
+            {% include 'study-center/my-task/course-item.html.twig' %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <ul class="period-list empty course-empty" id="course-item-list">
+          <div class="course-empty-hd">
+            <img src="{{asset('static-dist/corporatetrainingbundle/img/studycenter/no_learning_task.png')}}">
+          </div>
+          <div class="course-empty-bd">
+            <span class="course-empty-text">
+              {{'study_center.my_task.post_course.course_empty'|trans}}
+            </span>
+          </div>
+        </ul>
+      {% endif %}
+  </div>
+{% endblock %}

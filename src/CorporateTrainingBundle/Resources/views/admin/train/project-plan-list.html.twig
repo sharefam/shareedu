@@ -1,0 +1,148 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% do script(['libs/select2.js','libs/jquery-validation.js','libs/bootstrap-datetimepicker.js','corporatetrainingbundle/js/project-plan/list/index.js']) %}
+
+
+{% set menu = 'admin_train_project_plan_manage_list' %}
+{% import "common/data-dict-macro.html.twig" as dict_macro %}
+
+{% block main %}
+  <form class="department-manage-search-form form-inline clearfix mbl" method="post" novalidate>
+    <div class="form-group">
+      <label class="treeview-select-label">{{ 'project_plan.department_filter'|trans }}：</label>
+      <div class="department-manage-search-form-group__select">
+        {% include 'org-select/index.html.twig' with {
+          id: 'resource-orgCode',
+          data: build_org_tree(app.user.manageOrgCodes),
+          placeholder: 'admin.org.select_placeholder'|trans,
+          treeName: 'orgIds',
+          ids: orgIds|default(0),
+        }
+        %}
+      </div>
+    </div>
+
+    <div class="form-group department-manage-search-date">
+      <label class="department-manage-search-date__label" style="min-width:100px">{{ 'project_plan.manage_list.date_filter'|trans }}：</label>
+      <input class="form-control department-manage-search-date__time" type="text" id="startDateTime"
+             value="{{ app.request.get('startDateTime') }}" name="startDateTime" placeholder="{{ 'project_plan.start_time'|trans }}">
+      <label class="department-manage-search-date__link">-</label>
+      <input class="form-control department-manage-search-date__time" type="text" id="endDateTime" value="{{ app.request.get('endDateTime') }}"
+             name="endDateTime" placeholder="{{ 'project_plan.end_time'|trans }}">
+    </div>
+
+    <div class="form-group department-manage-search-form-group">
+      <label style="min-width:92px">{{ 'project_plan.status_filter'|trans }}：</label>
+      <select class="form-control department-manage-search-form-group__type" id="status" name="status">
+        {{ select_options(dict('projectPlanStatus'), app.request.get('status') ? app.request.get('status') : 'all') }}
+      </select>
+    </div>
+
+    <div class="form-group department-manage-search-form-group">
+      <label class="treeview-select-label">{{ 'project_plan.name'|trans }}：</label>
+      <input class="form-control department-manage-search-form-group__info" type="text" id="nameLike"
+             name="nameLike" value="{{ app.request.get('nameLike') }}" placeholder="{{ 'project_plan.name'|trans }}">
+    </div>
+    <div class="department-manage-search-form__btn">
+      <button class="btn btn-primary js-submit" type="submit">{{ 'project_plan.manage_list.search'|trans }}</button>
+    </div>
+
+  </form>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th width="20%">{{ 'project_plan.name'|trans }}</th>
+      <th width="10%">{{ 'project_plan.manage_list.members_number'|trans }}</th>
+      <th width="15%">{{ 'project_plan.org'|trans }}</th>
+      <th width="15%">{{ 'project_plan.project_plan_date'|trans }}</th>
+      <th width="10%">{{ 'project_plan.manage_list.creator'|trans }}</th>
+      <th width="10%">{{ 'project_plan.manage_list.status'|trans }}</th>
+      <th width="10%">{{ 'project_plan.operation'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for projectPlan in projectPlans %}
+      {% set org = orgs[projectPlan.orgId]|default('') %}
+      <tr>
+        <td>
+          <a href="{{ path('project_plan_detail',{id:projectPlan.id}) }}" target="_blank">{{ projectPlan.name|default('--') }}</a>
+        </td>
+        <td>{{ projectPlan.memberNum|default(0) }}</td>
+        <td>{{ org.name }}</td>
+        <td>
+          {% if projectPlan.startTime and projectPlan.endTime %}
+            {{ projectPlan.startTime|date('Y-m-d') }}
+            <br>
+            {{ projectPlan.endTime|date('Y-m-d') }}
+          {% else %}
+            {{ 'no.limit'|trans }}
+          {% endif %}
+        </td>
+        {% set user = data('User', {userId: projectPlan.createdUserId}) %}
+        {% set userProfile = data('UserProfile', {userId: projectPlan.createdUserId}) %}
+        <td>
+          {{ userProfile.truename|default(user.nickname) }}
+        </td>
+        <td>
+          {% if projectPlan.status == 'published' %}
+            <span class="color-success">{{ 'project_plan.status.published'|trans }}</span>
+          {% elseif projectPlan.status == 'unpublished' %}
+            <span class="color-gray">{{ 'project_plan.status.unpublished'|trans }}</span>
+          {% elseif projectPlan.status == 'closed' %}
+            <span class="color-danger">{{ 'project_plan.close'|trans }}</span>
+          {% elseif projectPlan.status == 'archived' %}
+            <span class="color-gray">{{ 'project_plan.status.archived'|trans }}</span>
+          {% endif %}
+        </td>
+        <td>
+          <div class="btn-group">
+            <a class="btn btn-default btn-sm" href="{% if projectPlan.status == 'published' %}{{ path('project_plan_manage_overview_board', {id:projectPlan.id}) }}{% else %}{{ path('project_plan_manage_base', {id:projectPlan.id}) }}{% endif %}" target="_blank" type="button">{{'project_plan.btn.manage_btn'|trans}}</a>
+            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+              {% if projectPlan.status == 'published' %}
+                <li><a class="projectplan-operate" id="close-projectplan"
+                       data-url="{{ path('admin_train_project_plan_close', {'id': projectPlan.id}) }}"
+                       data-notify-title="{{ 'project_plan.manage_list.close'|trans }}"
+                       href="javascript:;"><span class="es-icon es-icon-close01 mrm"></span>{{ 'project_plan.manage_list.close'|trans }}</a></li>
+                <li><a class="projectplan-operate" id="close-projectplan"
+                       data-url="{{ path('admin_train_project_plan_archive', {'id': projectPlan.id}) }}"
+                       data-notify-title="{{ 'project_plan.manage_list.archive'|trans }}"
+                       href="javascript:;"><span class="es-icon es-icon-file mrm"></span>{{ 'project_plan.manage_list.archive'|trans }}</a></li>
+              {% elseif projectPlan.status == 'archived'%}
+                <li><a class="projectplan-operate" id="close-projectplan"
+                       data-url="{{ path('admin_train_project_plan_publish', {'id': projectPlan.id}) }}"
+                       data-notify-title="{{ 'project_plan.manage_list.cancel_archive'|trans }}"
+                       href="javascript:;"><span class="es-icon es-icon-cancel_file mrm"></span>{{ 'project_plan.manage_list.cancel_archive'|trans }}</a></li>
+              {% else %}
+                <li><a class="projectplan-operate" id="publish-project-plan"
+                       data-url="{{ path('admin_train_project_plan_publish', {'id': projectPlan.id}) }}"
+                       data-notify-title="{{ 'project_plan.manage_list.publish'|trans }}"
+                       href="javascript:;"><span class="es-icon es-icon--check-circle mrm"></span>{{ 'project_plan.publish'|trans }}</a></li>
+                <li><a class="projectplan-operate" id="remove-projectplan"
+                       data-url="{{ path('admin_train_project_plan_remove', {'id': projectPlan.id}) }}"
+                       data-notify-title="{{ 'project_plan.manage_list.delete'|trans }}"
+                       href="javascript:;"><span class="es-icon es-icon-delete mrm"></span>{{ 'project_plan.btn.delete_btn'|trans }}</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </td>
+      </tr>
+    {% else %}
+      <tr>
+        <td class="text-center" colspan="20">
+          <div class="empty">
+            {{ 'project_plan.manage_list.empty'|trans }}
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <nav class="text-center">
+    {{ admin_macro.paginator(paginator) }}
+  </nav>
+{% endblock %}

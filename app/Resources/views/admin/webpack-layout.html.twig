@@ -1,0 +1,5 @@
+{% extends 'admin/layout.html.twig' %}
+{% block scriptBoot %}
+  {% include 'admin/default/script-webpack.html.twig' %}
+  {% include 'admin/script_boot.html.twig' with {state :1}%}
+{% endblock %}

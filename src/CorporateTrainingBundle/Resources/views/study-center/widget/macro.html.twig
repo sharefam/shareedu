@@ -1,0 +1,39 @@
+{%- macro exam_status(member, exam, examResult, currentTime, testPaper) -%}
+<div class="c-task-exam-item__r">
+  {% if member.status|default('') == 'finished' %}
+    {% if examResult.score >= exam.passScore %}
+      <span>{{ 'project_plan.member.score'|trans }}：<span class="color-success">{{ examResult.score|default(0) }}</span>/{{ testPaper.score|default(0) }}</span>
+      <span class="color-success">{{ 'project_plan.status.passed'|trans }}</span>
+    {% elseif examResult.score < exam.passScore %}
+      <span>{{ 'project_plan.member.score'|trans }}：<span class="color-danger">{{ examResult.score|default(0) }}</span>/{{ testPaper.score|default(0) }}</span>
+      <span class="color-danger">{{ 'project_plan.status.unpass'|trans }}</span>
+    {% endif %}
+    {% if exam.resitTimes > member.finishedCount or exam.resitTimes == 0 %}
+      <a class="{% if examResult.passStatus == 'unpassed' %}color-danger{% else %}color-success{% endif %}" href="{{ path('exam_show',{id:exam.id}) }}">，{{ 'project_plan.status.retake'|trans }}</a>
+    {% endif %}
+      <a class="color-gray ct-mlm link-dark" href="{{ path('exam_result_show', {resultId: member.resultId}) }}" target="_blank">{{ 'project_plan.btn.show_result_btn'|trans }}</a>
+  {% endif %}
+
+  {% if member.status|default('') == 'absent' %}
+    <span class="color-danger">{{ 'project_plan.status.missing_exam'|trans }}</span>
+  {% endif %}
+
+  {% if member.status|default('') == 'notStart' %}
+    {% if exam.startTime > currentTime %}
+      <span class="color-gray">{{ 'project_plan.status.unstart'|trans }}</span>
+    {% elseif currentTime < exam.endTime %}
+      <a class="color-gray link-dark" href="{{ path('exam_show',{id:exam.id}) }}">{{ 'project_plan.study_center.do_exam'|trans }}</a>
+    {% else %}
+    <span class="color-danger">{{ 'project_plan.status.missing_exam'|trans }}</span>
+    {% endif %}
+  {% endif %}
+
+  {% if member.status|default('') == 'doing' %}
+    <a class="color-gray link-dark" href="{{ path('exam_do',{id:exam.id}) }}">{{ 'project_plan.study_center.continue_exam'|trans }}</a>
+  {% endif %}
+
+  {% if member.status|default('') == 'reviewing' %}
+    <span class="color-gray">{{ 'project_plan.study_center.reviewing'|trans }}</span>
+  {% endif %}
+</div>
+{%- endmacro -%}

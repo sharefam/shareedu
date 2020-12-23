@@ -1,0 +1,35 @@
+.ct-devider {
+  display: inline-block;
+  vertical-align: middle;
+  .clearfix;
+
+  .ct-devider__item {
+    position: relative;
+    float: left;
+
+    @media screen and(max-width: @screen-xs-min) {
+      float: none;
+    }
+
+    & + .ct-devider__item {
+      margin-left: 33px;
+      @media screen and(max-width: @screen-xs-min) {
+        margin-left: 0;
+      }
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 25%;
+        bottom: 25%;
+        left: -17px;
+        width: 1px;
+        background-color: #C1C1C1;
+        
+        @media screen and(max-width: @screen-xs-min) {
+          display: none;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,129 @@
+userKeyWordType:
+    truename: 姓名
+    nickname: 用户名
+    verifiedMobile: 手机号
+    email: 邮件地址
+    loginIp: 最近登录IP
+
+offlineActivityStatus:
+    ongoing: 进行中
+    end: 已结束
+
+nameKeyWordType:
+    nickname: 用户名
+    truename: 姓名
+
+attendedStatus:
+    attended: 正常出勤
+    unattended: 缺勤
+    none: 未考勤
+
+passedStatus:
+    passed: 通过
+    unpassed: 未通过
+    none: 未考核
+
+verifyStatus:
+    submitted: 待审核
+    rejected: 审批未通过
+    approved: 审批通过
+    all: 全部
+
+projectPlanStatus:
+    all: 全部
+    unpublished: 未发布
+    archived: 已归档
+    published: 已发布
+    closed: 关闭
+
+projectPlanMemberStatus:
+    all: 全部
+    finished: 已完成
+    unfinished: 未完成
+
+industry:
+    IT: IT/通信电子/互联网
+    financial: 金融业
+    estate: 房地产|建筑业
+    business: 商业服务
+    trade: 贸易|批发|零售|租赁业
+    education: 文体教育|工艺美术
+    output: 生产|加工|制造
+    traffic: 交通|运输|物流|仓储
+    service: 服务业
+    media: 文化|传媒|娱乐|体育
+    energy: 能源|矿产|环保
+    government: 政府|非盈利机构
+    Agriculture: 农|林|牧|渔|其他
+
+projectPlanVerifyStatus:
+    submitted: 待审核
+    rejected: 未通过
+    approved: 已通过
+    all: 全部
+
+offlineCourseAttendanceStatus:
+    all: 全部
+    attended: 已签到
+    unattended: 缺勤
+    none: 未签到
+
+projectPlanExamResultStatus:
+    all: 全部
+    notStart: 未开始
+    doing: 进行中
+    reviewing: 待批阅
+    passed: 通过
+    unpassed: 未通过
+    absent: 缺考
+
+offlineCourseHomeworkStatus:
+    all: 全部
+    submitted: 待批阅
+    passed: 已通过
+    unpassed: 未通过
+    unsubmit: 未提交
+
+projectPlanTimeStatus:
+    all: 全部
+    ongoing: 进行中
+    end: 已结束
+
+projectPlanOfflineExamStatus:
+    unpassed: 未通过
+    passed: 已通过
+    all: 全部
+
+userLocked:
+    unlock: 非封禁用户
+    locked: 封禁用户
+
+teacherKeyWordType:
+    nickname: 用户名
+    truename: 姓名
+    verifiedMobile: 手机号
+    email: 邮箱
+
+dataCenterProjectPlanStatus:
+    all: 全部
+    published: 已发布
+    archived: 已归档
+    closed: 关闭
+
+dataCenterCourseStatus:
+    published: 已发布
+    closed: 已关闭
+
+use-authorization-help-block:
+    courseSet: 被授权后可在课程专题和培训项目中引用该课程.
+    pluginQuestionnaire: 被授权后可引用该问卷.
+    pluginTestPaper: 被授权后可在考试引用该试卷.
+    pluginQuestionGather: 被授权后可在试卷中引用该试题集.
+
+leaseStatus:
+    unexpired: 租赁中
+    expired: 已过期
+    
+leaseCourseKeywordType:
+    title: 标题
+    resourceCode: 课程编码

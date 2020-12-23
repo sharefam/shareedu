@@ -1,0 +1,24 @@
+{% extends 'old-bootstrap-modal-layout.html.twig' %}
+{% set modalSize = 'large' %}
+{% block title %}{% if field.id|default(null) %}{{ 'admin.teacher.manage.modal.edit_profession_field'|trans }}{% else %}{{ 'admin.teacher.manage.modal.add_profession_field'|trans }}{% endif %}{% endblock %}
+
+{% block body %}
+    <form id="teacher-manage-form" class="form-horizontal"
+          action="{% if field.id|default(null) %}{{ path('admin_teacher_profession_field_update', {id:field.id}) }}{% else %}{{ path('admin_teacher_profession_field_create') }}{% endif %}"
+          method="post">
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="profession-name-field">{{ 'admin.org_manage.modal.org_name'|trans }}</label>
+            <div class="col-md-8 controls">
+                <input class="form-control" id="profession-name-field" type="text" name="name" value="{{ field.name|default('') }}" data-url="{{ path('admin_teacher_profession_field_name_check', {exclude:field.name|default()}) }}" tabindex="1">
+            </div>
+        </div>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    </form>
+{% endblock %}
+{% block footer %}
+    <script>app.load('corporatetrainingbundle/controller/teacher-manage/profession-field-save-modal');</script>
+    <button type="button" class="btn btn-link" data-dismiss="modal" tabindex="6">{{ 'form.btn.cancel'|trans }}</button>
+    <button id="profession-create-btn" data-submiting-text="{{ 'form.btn.submit.submiting'|trans }}" type="submit" class="btn btn-primary"
+            data-toggle="form-submit" data-target="#teacher-manage-form" tabindex="4">{{ 'form.btn.save'|trans }}</button>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% if resultSets %}
+
+  <div class="search-course-list" id="search-course">
+    {% for courseSet in resultSets %}
+      {% set task = data('Tasks',{'count':1, 'title':app.request.get('q'), 'courseSetId':courseSet.id}) %}
+      <div class="course-item clearfix">
+        {% set course_show_url = path('course_show',{id : courseSet.defaultCourseId}) %}
+
+        <div class="course-img">
+          <a href="{{ course_show_url }}" target="_blank">
+            <img class="img-responsive" src="{{ filepath(course_set_cover(courseSet, 'middle'), 'course.png') }}"
+                 alt="">
+          </a>
+        </div>
+        <div class="course-info">
+          <h3 class="title">
+            <a href="{{ course_show_url }}" target="_blank">
+              {{ courseSet.title|highlight_keyword(app.request.get('q')|default('')) }}
+            </a>
+          </h3>
+          <div class="score">
+            {{ web_macro.star(courseSet.rating|default(0)) }}
+            <span>{{ 'cloud_search.course.evaluate'|trans({'%ratingNum%':courseSet.ratingNum|default(0)}) }}{{ 'cloud_search.course.learned'|trans({'%studentNum%':courseSet.studentNum|default(0)}) }}</span>
+          </div>
+          {% if task[0].title|default('') %}
+            ...
+            <div><a href="{{ path('course_task_show', {courseId: courseSet.defaultCourseId, id:task[0].id}) }}"
+                    title="{{ courseSet.title }}"
+                    target="_blank">{{ 'site.data.task'|trans }}{{ task[0].number|default(1) }}
+                ：{{ task[0].title|highlight_keyword(app.request.get('q')|default('')) }}</a></div>
+            ...
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty">{{ 'search.empty'|trans({'%name%':'site.default.course'|trans}) }}</div>
+{% endif %}
+

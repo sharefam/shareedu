@@ -1,0 +1,146 @@
+.mobile-reward {
+  #content-container {
+    padding: 0;
+  }
+
+  .m-reward-body {
+    padding: 0 10px 16px;
+  }
+}
+
+.m-reward-list {
+  margin-top: 16px;
+}
+
+.m-reward-point {
+  display: block;
+  margin-bottom: 8px;
+
+  .box-shadow(0px 2px 8px 0px rgba(0, 0, 0, 0.05));
+  .border-radius(2px);
+  background-color: #fff;
+
+  &-item__bd {
+    padding: 8px;
+  }
+
+}
+
+.m-reward-point-item__title {
+  height: 40px;
+  line-height: 20px;
+  font-size: 14px;
+  color: @gray-darker;
+  overflow: hidden;
+}
+
+.m-reward-point-item__point {
+  line-height: 16px;
+  font-size: 12px;
+  color: @gray;
+}
+
+.m-reward-banner {
+  margin-bottom: 38px;
+  height: 146px;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30px;
+  background-color: @brand-primary;
+}
+
+.m-reward-banner__head {
+  padding: 8px 0;
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 500;
+  color: #fff;
+  text-align: center;
+
+  a {
+    color: #fff
+  }
+
+  .back-icon {
+    position: absolute;
+    left: 16px;
+    top: 8px;
+  }
+}
+
+.m-reward-banner__body {
+  margin: 24px 10px 0;
+  height: 100px;
+  background-color: #fff;
+}
+
+.m-reward-banner__content {
+  position: relative;
+  padding: 16px;
+  overflow: hidden;
+
+  &--info {
+    line-height: 28px;
+    font-size: 18px;
+    font-weight: 500;
+    color: @gray-darker;
+  }
+
+  &--link {
+    margin-top: 20px;
+
+    a {
+      position: relative;
+      display: inline-block;
+      padding: 5px 16px;
+      font-size: 14px;
+      line-height: 18px;
+      background-color: @brand-primary;
+      color: #fff;
+      z-index: 1;
+      .border-radius(16px);
+
+      &+a {
+        margin-left: 16px;
+      }
+    }
+  }
+
+  .es-icon-stars {
+    position: absolute;
+    top: 10px;
+    left: 63px;
+    font-size: 120px;
+    color: @brand-primary;
+    opacity: 0.1;
+  }
+}
+
+.m-reward-desc {
+  padding-bottom: 12px;
+}
+
+.m-reward-num {
+  font-size: 36px;
+  color: @brand-primary;
+}
+
+.cd-content-m__reward {
+  @media screen and (max-width: @screen-xs-min) {
+    .cd-main {
+      background-color: transparent;
+      .box-shadow(none);
+
+      .m-record-card  {
+        padding: 16px;
+        background-color: #fff;
+        color: @gray;
+      }
+
+      .m-record-card__name {
+        font-size: 16px;
+        font-weight: 500;
+        color: @gray-darker;
+      }
+    }
+  }
+}

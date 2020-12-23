@@ -1,0 +1,52 @@
+{% set modal = modal|default(null) %}
+  {% if isFront|default() %}
+    {% do script(['libs/select2.js', 'corporatetrainingbundle/js/post/index.js']) %}
+  {% endif %}
+  {% if modal == 'modal' %}
+    <script>app.load('corporatetrainingbundle/controller/widget/category-select')</script>
+  {% else %}
+    {% do load_script('corporatetrainingbundle/controller/widget/category-select') %}
+  {% endif %}
+
+<style>
+  .tree-select {
+    min-width: 100px;
+  }
+  select{
+    width: 100%
+  }
+</style>
+
+  {% set colmd = colmd|default(8) %}
+  {% set lablecolmd = lablecolmd|default(2) %}
+  {% set nocolmd = nocolmd|default(false) %}
+  {% set nolable = nolable|default(false) %}
+  {% set inputClass = inputClass|default('') %}
+  {% set requestPost = app.request.get('postId')|default(0) %}
+  {% set postTree = data('PostSelectTree',{}) %}
+  {% set selectedPost = selectedPost|default(0) %}
+  {% set selectedWith = selectedWith|default() %}
+
+  <div class="form-group {% if modal == 'list' %}controls{% endif %}">
+    {% if modal != 'list' %}
+    <label class="{% if not nocolmd %} col-md-{{lablecolmd}}{% endif %} control-label {% if nolable %}hidden{% endif %}">{{'post.post-tree-select.psot'|trans}}</label>
+    <div class="{% if not nocolmd %} col-md-{{colmd}} {% endif %}  controls">
+    {% endif %}
+    <select data-role="tree-select" name="postId" class="form-control tree-select {{inputClass}}" style="{% if selectedWith %} width:{{selectedWith}}px{% endif %}">
+      {% if postTree|default() %}
+        <option value="">{% if modal == 'list' %}--{{ 'post.post-tree-select.all_post'|trans }}--{% else %}{{ 'post.post-tree-select.psot_choose'|trans }}{% endif %}</option>
+        <option value="">{% if modal == 'list' %}{{ 'post.post-tree-select.all_post'|trans }}{% else %}{{ 'post.post-tree-select.psot_choose'|trans }}{% endif %}</option>
+        {% for group in postTree.groups %}
+            <option value="" disabled >{% for i in 1..1 %}　{% endfor %}{{group.name }}</option>
+            {% for post in postTree['posts'][group.id]|default() %}
+              <option value="{{ post.id }}" {% if (post.id|default() == selectedPost) or (post.id|default() == requestPost)%}selected{% endif %} >{% for i in 1..2 %}　{% endfor %}{{ post.name|default() }}</option>
+            {% endfor %}
+          {% endfor %}
+      {% endif %}
+    </select>
+
+    {% if modal != 'list' %}
+    </div>
+    {% endif %}
+  </div>
+

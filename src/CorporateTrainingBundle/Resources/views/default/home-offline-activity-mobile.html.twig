@@ -1,0 +1,46 @@
+{% if offlineActivities|default() %}
+  <section class="o-home-sec">
+    <div class="container">
+      <div class="m-home-sec__title pos-rel">{{config.title|default(config.defaultTitle|trans)}}
+        <a href="{{ path('offline_activity_list') }}" class="m-article-more">{{ 'site.default.more'|trans }}</a>
+      </div>
+      <div class="o-home-sec__bd">
+        {% set is_scroll_swiper = (offlineActivities|length >= 4) %}
+        <div class="o-home-act-swiper js-home-act-swiper-1">
+          <section id="m-home-act-swiper-1" class="swiper-container">
+            <div class="swiper-wrapper">
+              {% for offlineActivity in offlineActivities %}
+                <div class="swiper-slide swiper-slide-act {% if loop.index == 1 %} js-slide-act{% endif %}">
+                  <a class="m-home-act" href="{{ path('offline_activity_detail', {'id':offlineActivity.id}) }}">
+                    <div class="m-home-act__hd">
+                      <img class="m-home-act__img" src="{{ filepath(offlineActivity['cover']['middle']|default(''), 'activity.png') }}">
+                    </div>
+                    <div class="m-home-act__bd">
+                      <div class="m-home-act__title">{{ offlineActivity.title }}</div>
+                      <div class="m-home-act__date">{{ 'homepage.offline_activity.text_enrollment_period'|trans({'%start%':offlineActivity.enrollmentStartDate|date('m-d'), '%end%':offlineActivity.enrollmentEndDate|date('m-d')}) }}
+                      {% set category = data('Category', {'categoryId': offlineActivity.categoryId}) %}
+                      <div class="m-home-act__label"><i class="es-icon es-icon-label"></i>{{ category.name|sub_text(15) }}</div>
+                      </div>
+                    </div>
+                  </a>
+                </div>                 
+              {% endfor %}
+
+              {% set offlineActivitiesCount = offlineActivities|length %}
+              {% if offlineActivitiesCount < 6 %}
+                {% for i in 1..(6 - offlineActivitiesCount) %}
+                  <div class="swiper-slide swiper-slide-act">
+                    <a class="m-home-act no-shadow" href="javascript:;">
+                      <img class="img-responsive mbl" src="{{ asset('static-dist/corporatetrainingbundle/img/act_def_pos@2x.png')}}">
+                    </a>
+                  </div>
+                {% endfor %}
+              {% endif %}
+
+            </div>
+          </section>
+        </div>
+      </div>   
+    </div>
+  </section>
+{% endif %}

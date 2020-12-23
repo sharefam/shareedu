@@ -1,0 +1,45 @@
+{% extends 'my/learning/group/layout.html.twig' %}
+
+{% block title %}{{'my.learning.group'|trans}} - {{ parent() }}{% endblock %}
+
+{% set tab_nav = 'join' %}
+
+{% block group_main %}
+  {% embed "bootstrap/panel.html.twig" with {class:'panel-col'} %}
+  {% block heading %}
+    {{'my.learning.group'|trans}}
+       {% endblock %}
+    {% block body %}
+      <div class="row">
+        <div class="col-md-12">
+          {% if not is_mobile_client() %}
+            {% include 'my/learning/group/group-member-nav-pill.html.twig' %}
+          {% endif %}
+          {% if adminGroups %}
+          <div class="page-header">
+            <h4> {{'my.learning.group.manage_group'|trans}}</h4>
+            {% if is_granted('ROLE_ADMIN') and is_mobile_client() %}
+              <a href="{{ path ('group_add') }}" class="m-create-group-btn" role="button"><i class="es-icon es-icon-addcircle mrs text-xlg"></i>{{'group.create_btn'|trans}}</a>
+            {% endif %}
+          </div>
+          {% include 'my/learning/group/groups-ul.html.twig' with {
+          'groups':adminGroups,  }
+          %}
+          {% endif %}
+        </div>
+        <div class="col-md-12">
+          <div class="page-header">
+            <h4> {{'my.learning.group.joined'|trans}}</h4>
+          </div>
+          {% include 'my/learning/group/groups-ul.html.twig' with {
+          'groups':groups,  }
+          %}
+
+        </div>
+        <div class="col-md-12 pull-left">
+          {{ web_macro.paginator(paginator) }}
+        </div>
+      </div>
+    {% endblock %}
+  {% endembed %}
+{% endblock %}

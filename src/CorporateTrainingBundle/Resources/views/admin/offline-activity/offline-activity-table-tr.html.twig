@@ -1,0 +1,40 @@
+<tr id="offline-activity-table-tr-{{ offlineActivity.id }}">
+  {% set category = data('Category',{'categoryId':offlineActivity.categoryId}) %}
+  <td width="5%">{{ offlineActivity.id }}</td>
+  <td width="23%"><a href="{{ path('offline_activity_detail',{'id':offlineActivity.id}) }}" target="_blank">{{ offlineActivity.title }}</a><br>
+    <span class="text-sm text-muted">{{ 'admin.offline_activity.type'| trans}}:{{category.name|default("")}}</span>
+  </td>
+  {% set org = data('Org', {'id': offlineActivity.orgId}) %}
+  <td  width="10%">{{ org.name|default('') }}</td>
+  {% if offlineActivity.startTime and offlineActivity.endTime %}
+    <td width="15%">{{ offlineActivity.startTime|date('Y-m-d H:i') }}<br>
+      {{ offlineActivity.endTime|date('Y-m-d H:i') }}
+    </td>
+  {% else %}
+    <td  width="15%">{{ '- -' }}<br>{{ '- -' }}</td>
+  {% endif %}
+  {% if offlineActivity.enrollmentEndDate %}
+    <td  width="15%">{{ offlineActivity.enrollmentEndDate|date('Y-m-d H:i')}}</td>
+  {% else %}
+    <td  width="15%">{{ '- -' }}</td>
+  {% endif %}
+  <td  width="10%">
+    <span class="color-warning">
+      {{ data('OfflineActivitySubmittedStudentNum', {'offlineActivityId':offlineActivity.id}) }}</span>/{{ offlineActivity.studentNum }}/{% if offlineActivity.maxStudentNum %}{{offlineActivity.maxStudentNum|default(0)}}{% else %}{{ 'admin.offline_activity.student_num.unlimited'|trans }}{% endif %}
+  </td>
+  <td  width="10%">
+    {% if offlineActivity.status == 'published' %}
+      <span class="color-success">{{ 'admin.offline_activity.published'|trans }}</span>
+    {% elseif offlineActivity.status == 'closed'%}
+      <span class="color-danger">{{ 'admin.offline_activity.closed'|trans }}</span>
+    {% elseif offlineActivity.status == 'draft'  %}
+      <span class="color-gray">{{ 'admin.offline_activity.draft'|trans }}</span>
+    {% endif %}
+  </td>
+  <td  width="12%">
+    <div class="btn-group">
+      <a class="btn btn-default btn-sm" href="{{ path('offline_activity_manage_base', {id:offlineActivity.id})}}" target="_blank">{{ 'admin.offline_activity.manage'|trans }}</a>
+      {% include 'admin/role/templates/group-button.html.twig' with {parentCode: 'admin_offline_activity_manage', group:'groupButton', offlineActivity:offlineActivity} %}
+    </div>
+  </td>
+</tr>

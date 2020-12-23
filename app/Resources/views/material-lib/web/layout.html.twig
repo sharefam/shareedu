@@ -1,0 +1,19 @@
+{% extends 'v2/layout.html.twig' %}
+
+{% block title %}{{'material_lib'|trans}} - {{ parent() }}{% endblock %}
+{% block stylesheets %}
+  {{ parent() }}
+	<link rel="stylesheet" media="screen" href="{{ asset('assets/css/colorbox/colorbox.css') }}" />
+{% endblock %}
+{% block head %}
+  {% include 'study-record/head.html.twig' %}
+{% endblock %}
+{% block page_title %}
+  {{'material_lib'|trans}}
+{% endblock %}
+{% set side_nav = 'material-lib' %}
+
+{% block main_body %}
+	{% block page_body %}
+	{% endblock %}
+{% endblock %}

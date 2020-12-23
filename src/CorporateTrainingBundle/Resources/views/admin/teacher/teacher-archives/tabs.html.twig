@@ -1,0 +1,12 @@
+<ul class="nav nav-tabs mbm">
+  <li {% if type == 'course' %}class="active" {% endif %}>
+    <a href="{{ path('admin_teacher_course_archives',{userId:user.id|default(), from:from|default('')}) }}">
+      {{ 'admin.teacher.teacher_archives.online_course'|trans }}
+    </a>
+  </li>
+  <li {% if type == 'offline-course' %}class="active" {% endif %}>
+    <a href="{{ path('admin_teacher_offline_course_archives',{userId:user.id|default(), from:from|default('')}) }}">
+      {{ 'admin.teacher.teacher_archives.offline_course'|trans }}
+    </a>
+  </li>
+</ul>

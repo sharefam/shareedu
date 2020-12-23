@@ -1,0 +1,37 @@
+{% import "macro.html.twig" as web_macro %}
+
+<table class="table table-hover table-striped" id="post-member-table">
+  <thead>
+  <tr>
+    <th width="25%">{{ 'admin.user.org'|trans }}</th>
+    <th width="15%">{{ 'my.department.course_learn_data.study_num/total_num'|trans }}</th>
+    <th width="15%">{{ 'my.department.course_learn_data.finish_course_task_num'|trans }}</th>
+    <th width="15%">{{ 'my.department.course_learn_data.finish_course_num'|trans }}</th>
+    <th width="15%">{{ 'my.department.user_learn_data.total_learn_time'|trans }}</th>
+    <th width="15%">{{ 'my.department.course_learn_data.avg_learn_time'|trans }}</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% if orgs|default(null) %}
+    {% for org in orgs %}
+      {% set learnRecord = learnRecords[org.id]|default('') %}
+      {% set orgUserNum = orgUserNums[org.id]|default('') %}
+      <tr>
+        <td>{{ org.name|default('') }}</td>
+        <td>{{ learnRecord.learnUserNum|default(0) }}/{{ orgUserNum.count|default(0) }}</td>
+        <td>{{ learnRecord.totalFinishedTaskNum|default(0) }}</td>
+        <td>{{ learnRecord.finishedCourseNum|default(0) }}</td>
+        <td>{{ learnRecord.totalLearnTime|default(0)|time_format_hour }}</td>
+        <td>{{ avg_learn_time(learnRecord.totalLearnTime|default(0), orgUserNum.count|default(0))|time_format_hour }}</td>
+      </tr>
+    {% endfor %}
+  {% else %}
+    <tr>
+      <td colspan="20">
+        <div class="empty">{{ 'site.datagrid.empty'|trans }}</div>
+      </td>
+    </tr>
+  {% endif %}
+  </tbody>
+</table>
+{{ web_macro.ajax_paginator(paginator) }}

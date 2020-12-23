@@ -1,0 +1,40 @@
+{% extends 'study-center/layout.html.twig' %}
+
+{% set board = true %}
+{% set tab_type = 'myTask' %}
+{% set tab_nav = 'project-plan' %}
+{% set studyCenterTitle = 'project_plan'|trans %}
+{% set has_history = path('study_record_project_plan', { userId: userId|default(app.user.id) } ) %}
+
+{% do script(['libs/jquery-validation.js','libs/es-ckeditor/ckeditor.js','libs/jquery-intro.js','libs/easy-pie-chart/dist/jquery.easypiechart.js','corporatetrainingbundle/js/study-center/my-project-plan/index.js']) %}
+
+{% block inner %}
+
+  {% if not is_mobile_client() %}
+    {{ render(controller('CorporateTrainingBundle:StudyCenter/MyTask:myTaskHeader', {tab_nav:tab_nav})) }}
+  {% endif %}
+  <div class="o-ctr-task-list js-class-course-list">
+    {% if projectPlans|default() %}
+      <div class="o-ctr-task-list__bd">
+        
+      </div>
+
+      <div class="o-ctr-task-list__ft">
+        <a href="javascript:;" class="js-task-btn link-dark c-ctr-task-item__btn-more" data-url="{{ path('study_center_project_plan_more') }}" data-total="{{ total }}">
+          {{ 'project_plan.btn.loading_btn'|trans }}
+        </a>
+      </div>
+    {% else %}
+      <ul class="period-list empty course-empty" id="course-item-list">
+        <div class="course-empty-hd">
+          <img src="{{asset('static-dist/corporatetrainingbundle/img/studycenter/no_training.png')}}">
+        </div>
+        <div class="course-empty-bd">
+          <span class="course-empty-text">
+            {{'project_plan.study_center.empty_message'|trans}}
+          </span>
+        </div>
+      </ul>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% if is_mobile_client() %}
+  <ul class="h5-header-tabs h5-header-tabs__group ct-mbl row">
+    <li class="col-xs-3 text-12 {% if tab_nav == 'join' %} active{% endif %}">
+      <a href="{{ path('my_group_member_join') }}">{{'my.learning.group.join'|trans}}</a>
+    </li>
+    <li class="col-xs-3 text-12 {% if tab_nav == 'thread' %} active{% endif %}">
+      <a href="{{ path('my_group_member_threads') }}">{{'my.learning.group.post_thread'|trans}}</a>
+    </li>
+    <li class="col-xs-3 text-12 {% if tab_nav == 'post' %} active{% endif %}">
+      <a href="{{ path('my_group_member_posts') }}">{{'my.learning.gruop.answer_thread'|trans}}</a>
+    </li>
+    <li class="col-xs-3 text-12 {% if tab_nav == 'collect' %} active{% endif %}">
+      <a href="{{ path('my_group_thread_collecting') }}">{{'my.learning.group.favorit_thread'|trans}}</a>
+    </li>
+  </ul>
+{% else %}
+  <ol class="breadcrumb breadcrumb-o" style="margin-top:-18px">
+    <li><a href="{{path('homepage')}}">{{ homepage.name|default('homepage'|trans) }}</a></li>
+    <li class="active"><a href="{{path('group')}}">{{ group.name|default ('group.homepage'|trans)}}</a></li>
+    <li class="active"><a href="{{ path('my_group_member_center') }}">{{'group.my_group_btn'|trans}}</a></li>
+  </ol>
+{% endif %}
+

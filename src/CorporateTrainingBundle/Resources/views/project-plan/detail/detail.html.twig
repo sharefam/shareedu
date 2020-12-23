@@ -1,0 +1,139 @@
+{% extends 'layout.html.twig' %}
+
+{% set bodyClass = 'offline-activity-detail' %}
+{% do script(['corporatetrainingbundle/js/project-plan/detail/index.js']) %}
+
+{% block full_content %}
+<div class="container">
+  <section class="c-offline-activity-detail">
+    <div class="c-offline-activity-detail__hd">
+      <ol class="breadcrumb breadcrumb--tra c-offline-activity-detail__breadcrumb pull-left">
+        <li><a href="{{ path('project_plan_list') }}">{{ 'project_plan'|trans }}</a></li>
+        <li class="active">{{projectPlan.name|default('')|plain_text(8)}}</li>
+      </ol>
+      <a class="link-dark pull-right" href="{{ path('study_center_my_task_training_list') }}">{{ 'project_plan.my_projects.look_over'|trans }}<i class="es-icon es-icon-chevronright"></i></a>
+    </div>
+    <div class="c-offline-activity-detail__bd">
+      <div class="c-project-plan">
+        <div class="c-project-plan__l">
+         <a class="dis-blk" href="">
+            <img class="c-project-plan__img" src="{{ filepath(projectPlan['cover']['large']|default(''), 'project-plan.png') }}">
+          </a>
+        </div>
+        <div class="c-project-plan__bd">
+          <a class="c-project-plan__title" href="">{{ projectPlan.name|default('')}}</a>
+          {% set category = data('Category', {categoryId: projectPlan.categoryId}) %}
+          {% if category|default('') %}
+            <div class="c-project-plan__lab-wrap">
+              <div class="c-project-plan__lab ct-label ct-label--theme">{{ category.name|default('')}}</div>
+            </div>
+          {% endif %}
+          <div class="c-project-plan__info-wrap">
+            <div class="c-project-plan__info">
+              <div class="c-project-plan__info-l">
+                {{ 'project_plan.project_plan_date'|trans }}：
+              </div>
+              <div class="c-project-plan__info-r">
+                <span>{% if projectPlan.startTime %}{{ projectPlan.startTime|default('--')|date('Y-m-d')}}{% else %}--{% endif %} {{ 'project_plan.time_to'|trans }} {% if projectPlan.startTime %}{{ projectPlan.endTime|default('--')|date('Y-m-d') }}{% else %}--{% endif %}</span>
+              </div>
+            </div>
+            {% if projectPlan.requireEnrollment|default() %}
+              <div class="c-project-plan__info">
+                <div class="c-project-plan__info-l">
+                  {{ 'project_plan.preparation.base.enrollment_time'|trans }}：
+                </div>
+                <div class="c-project-plan__info-r">
+                  <span>{% if projectPlan.enrollmentStartDate %}{{ projectPlan.enrollmentStartDate|default('--')|date('Y-m-d')}}{% else %}--{% endif %} {{ 'project_plan.time_to'|trans }} {% if projectPlan.enrollmentEndDate %}{{ projectPlan.enrollmentEndDate|default('--')|date('Y-m-d') }}{% else %}--{% endif %}</span>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if can_manage_project_plan(projectPlan.id) %}
+            <ul class="offline-activity-operation hidden-xs hidden-sm clearfix">
+              <li>
+                <a class="btn btn-default btn-xs" href="{{ path('project_plan_manage_base', {id:projectPlan.id}) }}" title="{{ 'project_plan.manage'|trans }}">
+                  <i class="es-icon es-icon-setting"></i>
+                </a>
+              </li>
+            </ul>
+        {% endif %}
+
+        <div class="c-project-plan__r">
+          {% if projectPlan.requireEnrollment|default() %}
+              {% set applyStatus = data('ProjectPlanUserApplyStatus', {'projectPlanId':projectPlan.id, 'userId':app.user.id}) %}
+                {% if applyStatus == 'success' %}
+                  <div class="text-right"><img class="c-project-plan__status-img" src="{{ asset('status_img_success'|trans)}}"></div>
+                {% else %}
+                  <div class="c-project-plan__num-wrap">
+                    <div class="c-project-plan__num">
+                      <span>{{ projectPlan.studentNum|default(0) }}</span> / {% if  projectPlan.maxStudentNum|default(0) == 0%}{{ 'project_plan.any'|trans }}{% else %}{{projectPlan.maxStudentNum|default(0)}}{% endif %}
+                    </div>
+                      {% if applyStatus == 'enrollmentUnOpen' %}
+                        <a class="c-project-plan__btn btn btn-default disabled" href="javascript:;">{{ 'project_plan.detail.enrollment_unopen'|trans }}</a>
+                      {% elseif applyStatus =='notAvailableForYou' %}
+                        <a class="c-project-plan__btn btn btn-default disabled" href="javascript:;">{{ 'resource.not_open_for_you'|trans }}</a>
+                      {% elseif canAccess == false %}
+                        <a class="c-project-plan__btn btn btn-default disabled" href="javascript:;">{{ 'resource.not_open_for_you'|trans }}</a>
+                      {% elseif applyStatus == 'enrollmentEnd' %}
+                      <a class="c-project-plan__btn btn btn-default disabled" href="javascript:;">{{ 'project_plan.detail.enrollment_end'|trans }}</a>
+                      {% elseif applyStatus == 'enrollmentUnStart' %}
+                        <a class="c-project-plan__btn btn btn-default disabled" href="javascript:;">{{ 'project_plan.detail.enrollment_unstart'|trans }}</a>
+                      {% elseif applyStatus == 'enrollAble' %}
+                      <a class="c-project-plan__btn btn btn-primary" href="#modal" data-toggle="modal" data-url="{{ path('project_plan_enroll', {id: projectPlan.id}) }}">{{ 'project_plan.detail.btn_apply'|trans }}</a>
+                      {% elseif applyStatus == 'submitted' %}
+                      <a class="c-project-plan__btn btn btn-default disabled" href="javascript:;">{{ 'project_plan.detail.submitted'|trans }}</a>
+                      {% elseif applyStatus == 'enrollUnable' %}
+                      <a class="c-project-plan__btn btn btn-default disabled" href="javascript:;">{{ 'project_plan.detail.enroll_unable'|trans }}</a>
+                      {% elseif applyStatus == 'reset' %}
+                        <a class="c-project-plan__btn btn btn-primary" href="#modal" data-toggle="modal" data-url="{{ path('project_plan_enroll', {id: projectPlan.id}) }}">{{ 'project_plan.detail.reset'|trans }}</a>
+                      {% endif %}
+                  </div>
+                {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="c-offline-activity-detail__ft">
+      <div class="c-offline-activity-detail-info">
+        <div class="c-offline-activity-detail-info__hd">
+          <div class="c-offline-activity-detail-info__title">
+            {{ 'project_plan.preparation.base.description'|trans }}
+          </div>
+        </div>
+        <div class="c-offline-activity-detail-info__bd">
+          {% if projectPlan.summary|default() %}
+            {{ projectPlan.summary|default('')|raw }}
+          {% else %}
+            <div class="empty">{{ 'project_plan.detail.summary_empty'|trans }}</div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="c-offline-activity-detail-info">
+        <div class="c-offline-activity-detail-info__hd">
+          <div class="c-offline-activity-detail-info__title">
+            {{ 'project_plan.preparation.items'|trans }}
+          </div>
+        </div>
+        <div class="c-offline-activity-detail-info__bd js-course-item js-page-wrapper">
+            <div class="c-offline-activity-detail__member-wrap">
+              {% if projectPlanItems %}
+                <div class="period-list">
+                  {% for index, projectPlanItem in projectPlanItems %}
+                    {% if (projectPlanItem.detail is defined) %}
+                      {{ render(controller('CorporateTrainingBundle:ProjectPlan/ProjectPlanManage:courseTaskList', {request: app.request, projectPlanId:projectPlan.id ,projectPlanItem: projectPlanItem, tab_type: 'myTask'|default(null)})) }}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {% else %}
+                <div class="empty text-left pad-no">{{ 'project_plan.detail.item_empty_message'|trans }}</div>
+              {% endif %}
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+<div class="c-home-theme media">
+  <div class="c-home-theme__l media-left">
+    <a href="{{ path('classroom_show', {id:classroom.id}) }}">
+      <img class="c-home-theme__img" src="{{filepath(classroom.middlePicture, 'classroom.png')}}">
+    </a>
+  </div>
+  <div class="c-home-theme__r media-body">
+    <div class="c-home-theme__title">{{ classroom.title }}</div>
+    <div class="c-home-theme__intro">
+      {% if classroom.about %}
+        {{ classroom.about|raw }}
+      {% else %}
+        {{ 'default.home_classroom.about'|trans }}
+      {% endif %}
+    </div>
+    <div class="c-home-theme__info-wrap">
+      <div class="c-home-theme__info-item"><i class="es-icon es-icon-wendangkeshi"></i>{{ classroom.courseNum }}</div>
+      <div class="c-home-theme__info-item"><i class="es-icon es-icon-people"></i>{{ classroom.studentNum }}</div>
+      <div class="c-home-theme__info-item"><i class="es-icon es-icon-textsms"></i>{{ classroom.threadNum }}</div>
+    </div>
+    <div class="c-home-theme__btn-wrap ">
+      <a class="c-home-theme__btn btn btn-primary bor-no" href="{{ path('classroom_show', {id:classroom.id}) }}">
+        {{ 'default.home_classroom.show'|trans }}
+      </a>
+    </div>
+  </div>
+</div>

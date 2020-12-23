@@ -1,0 +1,28 @@
+{% extends 'project-plan/layout.html.twig' %}
+{% block title %}{{ 'project_plan.implementation.member_manage'|trans }} - {{ parent() }}{% endblock %}
+{% set side_nav = 'member-manage' %}
+{% set tab_nav = 'implementation' %}
+
+{% block main %}
+  <div class="cd-main__heading">
+    {% block main_head_hover %}
+    {% endblock %}
+    <div class="cd-main__title">
+      {{ 'project_plan.implementation.member_manage'|trans }}
+    </div>
+  </div>
+  <div class="cd-main__body" id="project-plan-member-container">
+    <ul class="cd-tabs mtm">
+      <li class="{% if member_nav == 'member' %} active {% endif %}">
+        <a href="{{ path('project_plan_member_manage_list', {id: projectPlan.id}) }}">{{ 'project_plan.implementation.member_manage.member_list'|trans }}</a>
+      </li>
+      <li class="{% if member_nav == 'verify' %} active {% endif %}">
+        {% set pendingVerifyNum = data('ProjectPlanPendingVerifyNum', {projectPlanId:projectPlan.id}) %}
+        <a href="{{ path('project_plan_verify_list', {id: projectPlan.id}) }}">{{ 'project_plan.implementation.member_manage.verify_list'|trans }}{% if pendingVerifyNum|default(0) %}<span class="badge mls badge--primary">{{ pendingVerifyNum|default('') }}</span>{% endif %}</a>
+      </li>
+    </ul>
+    {% block main_content %}
+
+    {% endblock %}
+  </div>
+{% endblock %}

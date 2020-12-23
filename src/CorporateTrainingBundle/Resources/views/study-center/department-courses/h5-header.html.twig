@@ -1,0 +1,35 @@
+<ul class="h5-header-tabs ct-mbl row">
+  <li class="col-xs-6 {% if tab_nav == 'course' %} active{% endif %}">
+    <a href="{{ path('study_center_my_department_courses') }}">{{'study_center.department_courses.course'|trans}}</a>
+  </li>
+  <li class="col-xs-6 {% if tab_nav == 'classroom' %} active{% endif %}">
+    <a href="{{ path('study_center_my_department_classrooms') }}">{{'study_center.department_courses.classroom'|trans}}</a>
+  </li>
+</ul>
+
+<div class="h5-header-filtrate clearfix">
+  <div class="pull-left">
+    <ul class="h5-header-sub-tabs clearfix">
+      {% if tab_nav == 'classroom' %}
+        <li class="pull-left {% if (orderBy == 'createdTime') %}active{% endif %}">
+          <a  href="{{ path('study_center_my_department_classrooms', {orderBy: 'createdTime', category:category['category'], subCategory:category['subCategory'], selectedthirdLevelCategory:category['thirdLevelCategory'], tags:tags, isFilterSpread:isFilterSpread}) }}" >{{'study_center.department_courses.course_latest'|trans}}</a>
+        </li>
+        <li class="pull-left {% if (orderBy == 'studentNum') %}active{% endif %}">
+          <a  href="{{ path('study_center_my_department_classrooms', {orderBy: 'studentNum', category:category['category'], subCategory:category['subCategory'], selectedthirdLevelCategory:category['thirdLevelCategory'], tags:tags, isFilterSpread:isFilterSpread}) }}" >{{'study_center.department_courses.course_hottest'|trans}}</a>
+        </li>
+      {% else %}
+        <li class="pull-left {% if (orderBy == 'latest') %}active{% endif %}">
+          <a  href="{{ path('study_center_my_department_courses', {orderBy: 'latest', category:category['category'], subCategory:category['subCategory'], selectedthirdLevelCategory:category['thirdLevelCategory'], tags:tags, isFilterSpread:isFilterSpread}) }}" >{{'study_center.department_courses.course_latest'|trans}}</a>
+        </li>
+        <li class="pull-left {% if (orderBy == 'studentNum') %}active{% endif %}">
+          <a  href="{{ path('study_center_my_department_courses', {orderBy: 'studentNum', category:category['category'], subCategory:category['subCategory'], selectedthirdLevelCategory:category['thirdLevelCategory'], tags:tags, isFilterSpread:isFilterSpread}) }}" >{{'study_center.department_courses.course_hottest'|trans}}</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+  <div class='course-filtrate dis-i-b pull-left'>
+    <span class="color-black">{{ 'study_center.btn.filtrate'|trans }}</span>
+    <span class='es-icon es-icon-keyboardarrowdown'></span>
+  </div>
+  </a>
+</div>

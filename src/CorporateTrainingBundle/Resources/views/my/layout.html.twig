@@ -1,0 +1,104 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+  {% if side_nav in ['my-teaching-courses','my-teaching-classroom','my-teaching-questions','my-teaching-discussions','my-teaching-check','my-teaching-homework-check','material-lib'] %}
+    {{ 'my.teaching.menu_heading'|trans }} - {{ parent() }}
+  {% else %}
+    {{ 'my.learning.menu_heading'|trans }} - {{ parent() }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+
+  {{ render(controller('AppBundle:My/User:avatarAlert')) }}
+
+  <div class="row row-3-9 my-layout">
+    <div class="col-md-3">
+      <div class="sidenav">
+        {% if is_plugin_installed('Point') %}
+          <ul class="list-group">
+            <li class="list-group-heading">{{ 'plugin.point'|trans }}</li>
+            <li class="list-group-item
+           {% if side_nav == 'growth' %} active {% endif %}">
+              <a href="{{ path('my') }}">{{ 'plugin.point.growth'|trans }}</a>
+            </li>
+          </ul>
+        {% endif %}
+        {% if app.user.isTeacher() %}
+          <ul class="list-group">
+            <li class="list-group-heading">{{ 'my.teaching.menu_heading'|trans }}</li>
+            <li class="list-group-item {% if side_nav == 'my-teaching-courses' %} active {% endif %}">
+              <a href="{{ path('my_teaching_course_sets') }}">{{ 'my.teaching.course_set_menu'|trans }}</a>
+            </li>
+
+            <li class="list-group-item {% if side_nav == 'my-teaching-classroom' %} active {% endif %}">
+              {% set locale = app.request.locale %}
+              {% set classroomName = (locale and 'en' == locale) ? 'Topic' : get_classroom_name() %}
+              <a href="{{ path('my_teaching_classrooms') }}">{{ 'my.teaching.classroom_menu'|trans({'%classroom%': classroomName}) }}
+              </a>
+            </li>
+
+            <li class="list-group-item {% if side_nav == 'my-teaching-projectPlans' %} active {% endif %}">
+              <a href="{{ path('my_teaching_project_plans_course') }}">{{ 'teaching.project_plan'|trans }}
+              </a>
+            </li>
+
+          </ul>
+        {% endif %}
+        {# 2.6.1 TODO #}
+        {% if 'ROLE_DEPARTMENT_ADMIN' in app.user.roles or 'ROLE_SUPER_ADMIN' in app.user.roles %}
+          <ul class="list-group">
+            <li class="list-group-heading">{{'my.department.menu_heading'|trans}}</li>
+            <li class="list-group-item {% if side_nav == 'department-learn-data' %} active {% endif %}">
+              <a href="{{path('data_report_department_learn_data_statistic')}}">{{'my.department.department_learn_data'|trans}}</a>
+            </li>
+            <li class="list-group-item {% if side_nav == 'user-learn-data' %} active {% endif %}">
+              <a href="{{path('data_report_user_learn_data_statistic')}}">{{'my.department.user_learn_data'|trans}}</a>
+            </li>
+            <li class="list-group-item {% if side_nav == 'course-learn-data' %} active {% endif %}">
+              <a href="{{path('data_report_course_learn_data_statistic')}}">{{'my.department.course_learn_data'|trans}}</a>
+            </li>
+          </ul>
+        {% endif %} 
+        {# 2.6.1 TODO #}
+        {% if 'ROLE_TRAINING_ADMIN' in app.user.roles or 'ROLE_SUPER_ADMIN' in app.user.roles %} 
+          <ul class="list-group">
+            <li class="list-group-heading">{{'my.training.menu_heading'|trans}}</li>
+            <li class="list-group-item {% if side_nav == 'offline-activity_manage' %} active {% endif %}">
+              <a href="{{ path('offline_activity_management_list') }}">{{ 'my.training.activity_management'|trans }}</a>
+            </li>
+
+            {#<li class="list-group-item {% if side_nav == 'project_plan_manage' %} active {% endif %}">#}
+              {#<a href="{{ path('project_plan_manage_list') }}">{{ 'project_plan'|trans }}</a>#}
+            {#</li>#}
+            {% if is_plugin_installed('Survey') %}
+              <li class="list-group-item {% if side_nav == 'questionnaire_manage' %} active {% endif %}">
+                <a href="{{ path('questionnaire_manage_list') }}">{{ 'survey.questionnaire.questionnaire_management'|trans }}</a>
+              </li>
+
+              <li class="list-group-item {% if side_nav == 'survey_manage' %} active {% endif %}">
+                <a href="{{ path('survey_manage_list') }}">{{ 'survey.survey.survey_management'|trans }}</a>
+              </li>
+            {% endif %}
+
+            {% if is_plugin_installed('Exam') %}
+              <li class="list-group-item {% if side_nav == 'subject_test' %} active {% endif %}">
+                <a href="{{ path('exam_manage_list') }}">{{ 'subject.test'|trans }}</a>
+              </li>
+            {% endif %}
+          </ul>
+        {% endif %}    
+
+      </div>
+      {% if has_permission('admin') %}
+        <div class="sidenav-admin">
+          <a class="link-dark" href="{{ path('admin') }}">{{'homepage.sidenav.to_admin'|trans}}</a>
+        </div>
+      {% endif %}
+    </div>
+    <div class="col-md-9">{% block main %}{% endblock %}</div>
+  </div>
+
+  {% block main_mobile %}{% endblock %}
+
+{% endblock %}

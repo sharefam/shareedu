@@ -1,0 +1,138 @@
+<!-- 紧跟标题 -->
+{% if item.id in homeworkLessonIds|default(null) %}
+  <span data-toggle="tooltip" data-placement="top" title="" data-original-title="{{'study_center.part.homework'|trans}}"><i class="es-icon es-icon-mylibrarybooks mls"></i></span>
+{% endif %}
+
+{% if item.id in exercisesLessonIds|default(null) %}
+  <span data-toggle="tooltip" data-placement="top" title="" data-original-title="{{'study_center.part.practice'|trans}}"><i class="es-icon es-icon-exam mls color-gray mls"></i></span>
+{% endif %}
+
+{% if item.materialNum > 0 %}
+  <span data-toggle="tooltip" data-placement="top" title="" data-original-title="{{'study_center.part.data'|trans}}"><i class="glyphicon glyphicon-paperclip mls"></i></span>
+{% endif %}
+
+{% if app.user and setting('magic.lesson_watch_limit') and course.watchLimit > 0 and item.type == 'video' and not fromPlugin|default(false) %}
+  {% set remainTime = (course.watchLimit * item.length) - lessonLearns[item.id].watchTime|default(0) %}
+  {% if remainTime > 0 %}
+    <small class="text text-info">{{'study_center.part.micro_tips.remain_time'|trans}} {{ remainTime|duration_text }}</small>
+  {% else %}
+    <small class="text text-info">{{'study_center.part.micro_tips.remain_time_empty'|trans}}</small>
+  {% endif %}
+{% endif %}
+
+
+<!-- 右边图标 -->
+{% if tab_type == 'record' or tab_type == 'department_manage' %}
+  {% if item.type == 'video' or item.type == 'audio' %}
+    <span class="date">
+      <span class="" title="{{'study_center.part.micro_tips.watch_time'|trans}}">
+        <i class="es-icon es-icon-playcircleoutline" data-toggle="tooltip" data-placement="top" title="{{'study_center.part.micro_tips.watch_time'|trans}}"></i>
+        {{item.watchTime|timeFormatBySecond}}
+      </span>
+      <span class="mll" title="{{'study_center.part.micro_tips.learn_time'|trans}}">
+        <i class="es-icon es-icon-accesstime" data-toggle="tooltip" data-placement="top" title="{{'study_center.part.micro_tips.learn_time'|trans}}"></i>
+        {{item.learnTime|timeFormatBySecond}}
+      </span>
+    </span>
+  {% else %}
+    <span class="date">
+      <span class="mll" title="{{'study_center.part.micro_tips.learn_time'|trans}}">
+        <i class="es-icon es-icon-accesstime" data-toggle="tooltip" data-placement="top" title="{{'study_center.part.micro_tips.learn_time'|trans}}"></i>
+        {{ lessonLearns[item.id].learnTime|default(0) }}
+      </span>
+    </span>
+  {% endif %}
+{% else %}
+  {% if item.status == 'published' %}
+    {% if item.type == 'video' %}
+      <span class="date" title="{{'study_center.part.micro_tips.video_length'|trans}}{{ item.length|duration }}">{{ item.length|duration }}</span>
+      <span class="course-type">
+        <i class="es-icon es-icon-videoclass" data-toggle="tooltip" data-placement="top" title="{{'study_center.part.micro_tips.video_task'|trans}}"></i>
+      </span>
+    {% endif %}
+
+    {% if item.type == 'audio' %}
+      <span class="date" title="{{'study_center.part.micro_tips.audio_length'|trans}}{{ item.length|duration }}">{{ item.length|duration }}</span>
+      <span class="course-type">
+        <i class="es-icon es-icon-audioclass" data-toggle="tooltip" data-placement="top" title="{{'study_center.part.micro_tips.audio_task'|trans}}"></i>
+      </span>
+    {% endif %}
+
+    {% if item.type == 'text' %}
+      <span class="course-type">
+        <i class="es-icon es-icon-graphicclass" data-toggle="tooltip" data-placement="top" title="{{'study_center.part.micro_tips.graphic_task'|trans}}" data-original-title="{{'study_center.part.micro_tips.graphic'|trans}}"></i>
+      </span>
+    {% endif %}
+
+    {% if item.type == 'testpaper' %}
+
+      {% if item.testStartTime|default(null) and item.testMode == 'realTime' and testpapers[item.mediaId]|default(null) %}
+        {% set endTime = (testpapers[item.mediaId].limitedTime * 60) + item.testStartTime %}
+        <span class="color-gray course-type ">
+          {% if date().timestamp < item.testStartTime %}
+            {{'study_center.part.micro_tips.test_time'|trans}}:<span class="color-primary pls">{{item.testStartTime|remain_time}}</span>
+          {% else %}
+            {% if date().timestamp < endTime %}
+              {{'study_center.part.micro_tips.exam_status.start'|trans}}
+            {% else %}
+              {{'study_center.part.micro_tips.exam_status.end'|trans}}
+            {% endif %}
+          {% endif %}
+        </span>
+      {% else %}
+        <span class="course-type">
+          <i class="es-icon es-icon-check" data-toggle="tooltip" data-placement="top" title="{{'study_center.part.micro_tips.paper'|trans}}" data-original-title="{{'study_center.part.micro_tips.paper'|trans}}"></i>
+        </span>
+      {% endif %}
+    {% endif %}
+
+    {% if item.type == 'ppt' %}
+      <span class="course-type">
+        <i class="es-icon es-icon-pptclass" data-toggle="tooltip" data-placement="top" title="{{'study_center.part.micro_tips.ppt_task'|trans}}"></i>
+      </span>
+    {% endif %}
+
+    {% if item.type == 'document' %}
+      <span class="course-type">
+        <i class="es-icon es-icon-description" data-toggle="tooltip" data-placement="top" title="{{'study_center.part.micro_tips.description_task'|trans}}" data-original-title="{{ 'study_center.part.micro_tips.description'|trans }}"></i>
+      </span>
+    {% endif %}
+
+    {% if item.type == 'flash' %}
+      <span class="course-type">
+        <i class="es-icon es-icon-flashclass" data-toggle="tooltip" data-placement="top" title="{{'study_center.part.micro_tips.flash_task'|trans}}"></i>
+      </span>
+    {% endif %}
+
+    {% if item.type == 'live' %}
+
+      <span class="course-type">
+        <i class="es-icon es-icon-videocam" data-toggle="tooltip" data-placement="top" title="{{'study_center.part.micro_tips.videocam_task'|trans}}"></i>
+        {% if item.startTime > currentTime %}
+          <small class="type">{{ item.startTime|date('study_center.part.time'|trans) }}
+            {# {% for key,week in weeks %}
+              {% if key == item.startTime|date('w')  %}
+                星期{{ week }}
+              {% endif %}
+              {% endfor %}  先隐藏星期#}
+            {{ item.startTime|date('H：i') }}
+          </small>
+        {% elseif item.startTime <= currentTime and item.endTime >= currentTime %}
+          <small class="type">{{'study_center.part.micro_tips.videocam_task_doing'|trans}}</small>
+        {% elseif item.endTime < currentTime %}
+
+          <small class="type">
+            {% if item.replayStatus in ['generated','videoGenerated'] %}
+              {{'study_center.part.micro_tips.videocam_task_playback'|trans}}
+            {% else %}
+              {{'study_center.part.micro_tips.videocam_task_finish'|trans}}
+            {% endif %}
+          </small>
+
+        {% endif %}
+      </span>
+    {% endif %}
+  {% else %}
+    <span class="period-state">{{'study_center.part.micro_tips.stay_tuned'|trans}}</span>
+  {% endif %}
+{% endif %}

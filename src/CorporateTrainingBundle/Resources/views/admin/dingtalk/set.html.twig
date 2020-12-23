@@ -1,0 +1,34 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% if setting('sync_department_setting.key') and setting('sync_department_setting.secret') and setting('sync_department_setting.agentId')%}
+  {% set script_controller = 'corporatetrainingbundle/controller/mail/set' %}
+{% endif %}
+
+{%  set menu = 'admin_dingtalk_template_list' %}
+
+{% block main %}
+  {% if setting('sync_department_setting.enable') and setting('sync_department_setting.agentId')%}
+    {{ web_macro.flash_messages() }}
+    <form class="form-horizontal" id="mail-set-form" method="post" action="">
+      <div class="form-group">
+        <div class="col-md-12 controls">
+          {% include 'CorporateTrainingBundle::admin/dingtalk/rule-table.html.twig' %}
+        </div>
+      </div>
+
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+      <div class="form-group">
+        <div class="controls ct-mlm">
+          <button type="submit" class="btn btn-primary">{{'form.btn.save'|trans}}</button>
+        </div>
+      </div>
+    </form>
+  {% else %}
+    <div class="text-center">
+      <div class="error-content" style="padding: 100px 100px">
+        {{ 'admin.user_setting.account_synchronization.setting_empty'|trans({'%path%':path('admin_sync_account_docking')})|raw }}
+      </div>
+    </div>
+  {% endif %}
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set modalSize = 'small' %}
+
+{% block title %}{{ 'offline_course.attendance'|trans }}{% endblock %}
+
+{% do script(['corporatetrainingbundle/js/project-plan/item/offline-course/offline-course-manage/attendance-manage/batch-update-modal/index.js']) %}
+
+{% block body %}
+  <form id="attendance-update-form" class="form-horizontal" data-url="{{ path('project_plan_offline_course_task_attendance_manage_batch_update', {id: taskId}) }}" method="post">
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'offline_course.attendance_result'|trans }}:</label>
+      </div>
+      <div class="col-md-7 radios">
+        <label>
+          <input type="radio" name="attendStatus" value="none" checked="checked">{% if isTaskExpire %}{{ 'project_plan.status.absenteeism'|trans }}{% else %}{{ 'project_plan.status.unattend'|trans }}{% endif %}
+        </label>
+        <label>
+          <input type="radio" name="attendStatus" value="attended">{{ 'project_plan.status.registered'|trans }}
+        </label>
+      </div>
+    </div>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    <input type="hidden" name="ids" id="batch-ids">
+  </form>
+{% endblock %}
+
+{% block footer %}
+  <a class="ct-btn ct-btn-primary pull-right js-update-attendance-btn" data-loading-text="{{ 'project_plan.btn.save_loading_btn'|trans }}">{{ 'project_plan.btn.save_btn'|trans }}</a>
+  <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{ 'form.btn.cancel'|trans }}</button>
+{% endblock %}

@@ -1,0 +1,7 @@
+<ul class="nav nav-pills">
+	<li class="{% if threadType == 'course' %}active{% endif %}"><a href="{{ path('my_discussions') }}">{{'my.learning.question.course_thread'|trans}}</a></li>
+  {% set locale = app.request.locale %}
+  {% set classroomName = (locale and 'en' == locale) ? 'Topic' : get_classroom_name() %}
+	<li class="{% if threadType == 'classroom' %}active{% endif %}"><a href="{{ path('my_classroom_discussions') }}">{{'my.learning.question.classroom_thread'|trans({'%classroomName%':classroomName}})</a></li>
+</ul>
+<br>

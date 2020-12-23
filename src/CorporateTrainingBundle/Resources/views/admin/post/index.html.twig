@@ -1,0 +1,30 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set menu = 'admin_post_manage' %}
+{% set script_controller = 'corporatetrainingbundle/controller/post/tbody' %}
+
+{% block page_title %}{{'admin.post.post_manage'|trans}}{% endblock %}
+
+{% block page_buttons %}
+{% endblock %}
+
+{% block main %}
+<div class="form-inline ct-well  ct-mbl">
+  <div class="form-group prl">
+    <a class="btn btn-success" href="{{ path('exporter_export', {type: 'post_list'}) }}">{{'admin.post.exporter'|trans}}</a>
+  </div>
+  {% include 'admin/page-buttons/page-buttons.html.twig' %}
+</div>
+<ul class="list-table" id="post-table" style="margin-bottom: 0">
+    <li class="th">
+        <div class="row">
+            <div class="td col-md-1">ID</div>
+            <div class="td col-md-2">{{'admin.post.name'|trans}}</div>
+            <div class="td col-md-3">{{'admin.post.code'|trans}}</div>
+            <div class="td col-md-2">{{'admin.post.group'|trans}}</div>
+            <div class="td col-md-4 operation_head">{{'admin.post.operation'|trans}}</div>
+        </div>
+    </li>
+    {% include 'admin/post/tbody.html.twig' %}
+</ul>
+{% endblock %}

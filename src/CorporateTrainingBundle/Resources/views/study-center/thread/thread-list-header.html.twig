@@ -1,0 +1,15 @@
+<div class="nav-filter clearfix">
+  <ul class="nav nav-pills nav-pills-sm">
+    <li class="active js-tab-link"><a href="javascript:;" data-url="{{ path('study_center_threads', {courseId:course.id}|merge(filters)|merge({type:'all'})) }}">{{'study_center.my_task_thread.latest'|trans}}</a></li>
+
+    <li class="js-tab-link"><a href="javascript:;" data-url="{{ path('study_center_threads', {courseId:course.id}|merge(filters)|merge({type:'elite'})) }}">{{'study_center.my_task_thread.essence_label'|trans}}</a></li>
+
+    <li class="js-tab-link"><a href="javascript:;" data-url="{{ path('study_center_threads', {courseId:course.id}|merge(filters)|merge({type:'all', 'userId': app.user.id})) }}">{{'study_center.my_task_thread.my'|trans}}</a></li>
+  </ul>
+  <div class="btn-group">
+    <a class="btn btn-rotate-45 js-discuss-btn" href="javascript:;">
+      <i class="es-icon es-icon-anonymous-iconfont mrs"></i>{{'study_center.my_task_thread.ask'|trans}}
+    </a>
+  </div>
+</div>
+

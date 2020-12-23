@@ -1,0 +1,148 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ 'my.teaching.course_set.create_btn'|trans }} - {{ parent() }}{% endblock %}
+
+{% do script(['libs/jquery-validation.js','libs/bootstrap-datetimepicker.js', 'corporatetrainingbundle/js/courseset/create/index.js']) %}
+
+{% block content %}
+  <div class="row">
+    <div class="panel panel-default panel-page panel-create-course">
+      <div class="panel-heading">
+        <h2>{{ 'my.teaching.course_set.create_btn'|trans }}</h2>
+      </div>
+      {% if not app.user.largeAvatar or not app.user.title or not userProfile.about %}
+        {% include 'settings/user-profile.html.twig' %}
+      {% else %}
+        <form id="courseset-create-form" class="form-horizontal" action="{{ path('course_set_manage_create') }}"
+              method="post">
+          {{ web_macro.flash_messages() }}
+          <div class="course-piece">{{ 'my.teaching.course_set.select_type'|trans }}</div>
+          <div class="form-group">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <div class="course-select js-courseSetType active" data-type="normal">
+                <i class="es-icon es-icon-putongkecheng"></i>
+                <div class="course-type">{{ 'my.teaching.course_set.select_type.course'|trans }}</div>
+                <div class="course-intro">{{ 'my.teaching.course_set.select_type.course.tips'|trans }}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              {% if not setting('live-course.live_course_enabled') %}
+                <div class="course-select disabled" data-toggle="tooltip" data-placement="top" title="{{ 'my.teaching.course_set.select_type.live_open_course.available_after_open'|trans }}" data-type="live">
+              {% else %}
+                <div class="course-select js-courseSetType" data-type="live">
+              {% endif %}
+                  <i class="es-icon es-icon-zhibokecheng "></i>
+                  <div class="course-type">{{ 'my.teaching.course_set.select_type.live_course'|trans }}</div>
+                  <div class="course-intro">
+                    {{ 'my.teaching.course_set.select_type.live_course.tips'|trans }}
+                  </div>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+            <div class="course-title form-group">
+              <div class="col-md-2 controls-label text-lg">
+                <div class="course-piece title">{{ 'site.org'|trans }}</div>
+              </div>
+              <div class="col-md-10 controls">
+                {% include 'org-select/index.html.twig' with {
+                    id: 'user-orgCode',
+                    placeholder: 'site.org.select_placeholder'|trans,
+                    data: build_org_tree(app.user.manageOrgCodes),
+                    treeName: 'orgCode',
+                  }
+                %}
+              </div>
+            </div>
+            <div class="course-title form-group">
+              <div class="col-md-2 controls-label text-lg">
+                <div class="course-piece title">{{ 'my.teaching.course_set.select_type.course_title'|trans }}</div>
+              </div>
+              <div class="col-md-10 controls">
+                <input type="text" id="course_title" name="title" required="required" class="form-control" data-widget-cid="widget-1" data-explain="">
+                <div class="help-block" style="display:none;"></div>
+              </div>
+            </div>
+            <div class="course-title form-group js-learn-mod">
+              <div class="col-md-2 controls-label text-lg">
+                <div class="course-piece title">
+                  {{'course.teaching_plan.create.mode'|trans}}
+                  <a class="es-icon es-icon-help ml5 link-gray text-normal" data-trigger="hover"
+                    data-toggle="popover" data-container="body" data-placement="top"
+                      data-content="<ul class='pl10 ul-list-none'>
+                                      {{ 'course.teaching_plan.create.mode.free'|trans }}
+                                      {{ 'course.teaching_plan.create.mode.limit'|trans }}
+                                    </ul>">
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-10 radios" style="padding: 0px;">
+                {{ radios('learnMode', { 'freeMode': 'course.teaching_plan.free'|trans, 'lockMode': 'course.teaching_plan.locked'|trans }, course.learnMode|default('freeMode')) }}
+                <span class="color-warning">{{'course.create.category_tips'|trans}}</span>
+              </div>
+            </div>
+            <div class="course-title form-group hidden">
+              <div class="col-md-2 controls-label text-lg">
+                <div class="course-piece title">
+                  {{'学习安排'|trans}}
+                  <a class="es-icon es-icon-help ml5 link-gray text-normal" data-trigger="hover" data-toggle="popover" data-container="body" data-placement="top"
+                      data-content="
+                        <ul class='pl10 ul-list-none'>
+                          <li class='mb10'>
+                            {{'<b>随到随学：</b>有效期从学员加入的当天开始算起，截至到期当天的晚上24点整'|trans}}
+                          </li>
+                          <li class='mb10'>{{'<b>固定周期：</b>  有固定的学习开始日期和结束日期'|trans}}
+                          </li>
+                          <li>
+                            {{'过期后无法继续学习，系统会在到期前10天提醒学员。'|trans}}
+                          </li>
+                        </ul>">
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-10 radios" style="padding: 0px;">
+                {{ radios('expiryMode', { 'forever':'不限时间'|trans}, 'forever')}}
+                {#随到随学#}
+                <div class="mb20 mt20 hidden" id="expiry-days">
+                  <div class="mb20 mt20 hidden" id="deadlineType-date">
+                    {{'在'}}
+                    <input class="form-control width-150" id="deadline" name="deadline" value="">
+                    {{'前，学员可进行学习。'|trans}}
+                  </div>
+                  <div class="mb20 mt20" id="deadlineType-days">
+                    {{'从加入当天起，在'}}
+                    <input class="form-control mhs width-150" type="text" id="expiryDays" name="expiryDays" value="1">
+                    {{'天内可进行学习。'|trans}}
+                  </div>
+                </div>
+                {#固定周期#}
+                <div class="mb20 mt20 hidden" id="expiry-date">
+                  {{'开始日期'|trans}}
+                  <input class="form-control mh10 width-150" id="expiryStartDate" type="text" name="expiryStartDate" value="">
+                  {{'结束日期'|trans}}
+                  <input class="form-control ml5 width-150 " type="text" id="expiryEndDate" name="expiryEndDate" value="">
+                </div>
+                <span class="color-warning">{{'course.create.category_tips'|trans}}</span>
+              </div>
+            </div>
+
+            <div class="text-center">
+              {#{% if not setting('copyright.owned') %}#}
+                {#<span class="mrm">#}
+              {#<a href="http://www.qiqiuyu.com/course/22" class="color-gray" target="_blank">{{ 'my.teaching.course_set.select_type.how_do_create'|trans }}</a>#}
+                {#</span>#}
+              {#{% endif %}#}
+              <button id="courseset-create-btn" data-loading-text="{{ 'form.btn.create.submiting'|trans }}"
+                     class="btn btn-fat btn-primary" type="button">{{ 'form.btn.create'|trans }}</button>
+              <a class="btn btn-fat btn-link" href="{{ app.request.headers.get('Referer') }}">{{ 'form.btn.cancel'|trans }}</a>
+            </div>
+            <input type="hidden" name="type" value="normal"/>
+            <input type="hidden" name="courseType" value="normal"/>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+        </form>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

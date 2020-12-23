@@ -1,0 +1,6 @@
+{% for org in orgs %}
+  {% set user = createdUsers[org.createdUserId]|default('') %}
+  {% set hasChildren = org.childrenNum > 0 %}
+
+  {% include 'admin/org-manage/org-item.html.twig' with {user:user, org:org, hasChildren:hasChildren}%}
+{% endfor %}

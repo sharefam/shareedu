@@ -1,0 +1,85 @@
+{% do script(['corporatetrainingbundle/js/offline-activity/record/index.js']) %}
+<div class="my-record-sec" >
+  {% include 'data-report/course-statistics/middle-item.html.twig' %}
+  <div class="bg-gray pvm phl botton-menus" >
+    <div class="row">
+      <table class="table table-sm  mtl">
+        <thead>
+        <tr>
+          <th width='35%'>{{'my.department.data_report.activity'|trans}}</th>
+          <th>{{'my.department.data_report.activity_time'|trans}}</th>
+          <th>{{'my.department.data_report.activity_attendance'|trans}}</th>
+          <th>{{'my.department.data_report.activity_examination_result'|trans}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if members|default() %}
+          {% for member in members %}
+            <tr>
+              <td>
+                <p>
+                  {{ member.title }}
+                </p>
+                <span class="text-sm text-muted">{{ 'my.department.data_report.activity_category'| trans}}:{{ member.categoryName }}</span>
+              </td>
+              <td>
+                <p>{{ member.startDate|date('Y-m-d H:i') }}</p>
+                {{ member.endDate|date('Y-m-d H:i') }}
+              </td>
+              <td>
+                {% if member.attendedStatus == 'attended' %}
+                  {{ 'my.department.data_report.activity_attendance.attended'|trans }}
+                {% elseif member.attendedStatus == 'unattended' %}
+                  {{ 'my.department.data_report.activity_attendance.unattended'|trans }}
+                {% else %}
+                  --
+                {% endif %}
+              </td>
+              <td>
+                {% if member.passedStatus == 'passed' %}
+                  <span class="color-primary">{{ 'my.department.data_report.activity_examination_result.passed'|trans }}</span>
+                  &nbsp;&nbsp;
+                  <span class="glyphicon glyphicon-list-alt tooltip-show" data-toggle="tooltip" title="成绩:{{ member.score }}<br>{{ member.evaluate }}"></span>
+                {% elseif member.passedStatus == 'unpassed' %}
+                  <span class="color-danger">{{ 'my.department.data_report.activity_examination_result.unpassed'|trans }}</span>
+                  <span class="glyphicon glyphicon-list-alt tooltip-show" data-toggle="tooltip" title="成绩:{{ member.score }}<br>{{ member.evaluate }}"></span>
+                {% else %}
+                  --
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="20">
+              <div class="empty">{{ 'site.datagrid.empty'|trans }}</div>
+            </td>
+          </tr>
+        {% endif %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if paginator.lastPage > 1 %}
+      <nav id="my-record-statistics-detail-nav" class=" {{ class|default('text-center') }}">
+        <ul class="pagination">
+          {% if paginator.currentPage != paginator.firstPage %}
+            <li><a data-url="{{ paginator.getPageUrl(paginator.firstPage) }}">{{ 'paginator.firstPage'|trans }}</a></li>
+            <li><a data-url="{{ paginator.getPageUrl(paginator.previousPage) }}"><i class="es-icon es-icon-chevronleft"></i></a></li>
+          {% endif %}
+          {% for page in paginator.pages %}
+            <li {% if page == paginator.currentPage %}class="active"{% endif %}><a
+                      data-url="{{ paginator.getPageUrl(page) }}">{{ page }}</a></li>
+          {% endfor %}
+
+          {% if paginator.currentPage != paginator.lastPage %}
+            <li><a data-url="{{ paginator.getPageUrl(paginator.nextPage) }}"><i
+                        class="es-icon es-icon-chevronright"></i></a></li>
+            <li><a data-url="{{ paginator.getPageUrl(paginator.getLastPage()) }}">{{ 'paginator.endPage'|trans }}</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+  </div>
+</div>
+

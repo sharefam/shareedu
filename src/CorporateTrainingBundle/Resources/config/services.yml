@@ -1,0 +1,155 @@
+imports:
+    - { resource: event_subscribers.yml }
+    - { resource: service_listener.yml }
+
+parameters:
+    security.authentication.provider.dao.class: AppBundle\Handler\AuthenticationProvider
+
+services:
+    topxia.authentication.success_handler:
+        class: CorporateTrainingBundle\Handler\AuthenticationSuccessHandler
+        parent: security.authentication.success_handler
+
+    topxia.user_provider:
+        class: Biz\User\UserProvider
+        arguments:    ['@service_container']
+
+    corporatetrainingbundle.twig.web_extension:
+        class: CorporateTrainingBundle\Twig\Extension\WebExtension
+        arguments:    ['@service_container', '@biz']
+        tags:
+            - { name: twig.extension }
+
+    corporatetrainingbundle.twig.twig_loader:
+        class: CorporateTrainingBundle\Twig\TwigLoader
+        arguments: ['@kernel']
+        tags:
+            - { name: twig.loader, priority: 256 }
+
+    corporatetraining.extension.manager:
+        class: CorporateTrainingBundle\Extension\ExtensionManager
+
+    corporatetraining.project_plan.extension:
+        class: CorporateTrainingBundle\Extension\ProjectPlanExtension
+        calls:
+            - [setBiz, ['@biz']]
+        tags:
+            - { name: corporatetraining.extension, priority: 10 }
+
+    corporatetraining.org.extension:
+        class: CorporateTrainingBundle\Extension\OrgModuleExtension
+        calls:
+            - [setBiz, ['@biz']]
+        tags:
+            - { name: corporatetraining.extension, priority: 10  }
+
+    corporatetraining.user_learn_data.extension:
+         class: CorporateTrainingBundle\Extension\UserLearnDataExtension
+         calls:
+             - [setBiz, ['@biz']]
+         tags:
+             - { name: corporatetraining.extension, priority: 10  }
+
+    corporatetraining.cache_strategy.extension:
+        class: CorporateTrainingBundle\Extension\CacheStrategyExtension
+        calls:
+            - [setBiz, ['@biz']]
+        tags:
+            - { name: corporatetraining.extension, priority: 10 }
+
+    web.twig.project_plan_extension:
+        class: CorporateTrainingBundle\Twig\Extension\ProjectPlanExtension
+        arguments:    ['@service_container', '@biz']
+        tags:
+            - { name: twig.extension }
+
+    export_service_provider:
+        class: CorporateTrainingBundle\Biz\Exporter\ExportServiceProvider
+        calls:
+            - [setBiz, ['@biz']]
+        tags:
+            - { name: extension }
+
+    importer_service_provider:
+        class: CorporateTrainingBundle\Biz\Importer\ImporterServiceProvider
+        calls:
+            - [setBiz, ['@biz']]
+        tags:
+            - { name: extension }
+
+    login_sync_department:
+        class: CorporateTrainingBundle\Handler\LoginSyncDepartmentHandler
+        arguments: ['@service_container']
+        tags: [{ name: kernel.event_listener, event: security.interactive_login }]
+
+    advanced_member_select_service_provider:
+        class: CorporateTrainingBundle\Biz\AdvancedMemberSelect\AdvancedMemberSelectServiceProvider
+        calls:
+            - [setBiz, ['@biz']]
+        tags:
+            - { name: extension }
+
+    corporatetraining.activity.extension:
+        class: CorporateTrainingBundle\Extension\ActivityExtension
+        calls:
+            - [setBiz, ['@biz']]
+        tags:
+            - { name: extension, priority: 10 }
+
+    app_discovery_column_service_provider:
+        class: CorporateTrainingBundle\Biz\DiscoveryColumn\DiscoveryColumnServiceProvider
+        calls:
+            - [setBiz, ['@biz']]
+        tags:
+            - { name: extension }
+
+    corporatetraining_mail_service_provider:
+        class: CorporateTrainingBundle\Biz\Mail\MailServiceProvider
+        calls:
+            - [setBiz, ['@biz']]
+        tags:
+            - { name: extension }
+
+    notification_service_provider:
+        class: CorporateTrainingBundle\Biz\NotificationCenter\NotificationServiceProvider
+        calls:
+            - [setBiz, ['@biz']]
+        tags:
+            - { name: extension }
+
+    corporatetraining_focus_service_provider:
+        class: CorporateTrainingBundle\Biz\Focus\FocusServiceProvider
+        calls:
+            - [setBiz, ['@biz']]
+        tags:
+            - { name: extension }
+
+    corporatetraining.search_provider:
+        class: CorporateTrainingBundle\Biz\DefaultSearch\SearchProvider
+        arguments:    ['@biz']
+        tags:
+            - { name: extension }
+
+    attachment_service_provider:
+            class: CorporateTrainingBundle\Biz\Attachment\AttachmentServiceProvider
+            calls:
+                - [setBiz, ['@biz']]
+            tags:
+                - { name: extension }
+
+    ct_export_map:
+        class: CorporateTrainingBundle\Component\CSVExport\CTExportMap
+
+    corporatetraining.resource_scope.extension:
+        class: CorporateTrainingBundle\Extension\ResourceScopeExtension
+        calls:
+            - [setBiz, ['@biz']]
+        tags:
+            - { name: corporatetraining.extension}
+            
+    corporatetraining_dingtalk_service_provider:
+        class: CorporateTrainingBundle\Biz\DingTalk\DingTalkServiceProvider
+        calls:
+            - [setBiz, ['@biz']]
+        tags:
+            - { name: extension }

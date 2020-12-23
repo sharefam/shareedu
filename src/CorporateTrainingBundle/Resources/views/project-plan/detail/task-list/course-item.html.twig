@@ -1,0 +1,24 @@
+<div class="c-project-item js-project-item">
+  <div class="c-project-item__hd">
+    <a class="js-project-item-toggle-btn" href="javascript:;">
+      <div class="c-project-item__content">
+        <i class="c-project-item__icon es-icon es-icon-book"></i>
+        {{'project_plan.item.online_course'|trans}}：{{ course.title|default('')}}
+        <div class="c-project-item__hover">
+          {% if projectPlanItem.startTime|default(0) %}
+            <span class="c-project-item__time">{{ projectPlanItem.startTime|date('Y-m-d') }} {{ 'project_plan.time_to'|trans }} {{ projectPlanItem.endTime|date('Y-m-d') }}</span>
+          {% endif %}
+
+          <i class="c-project-item__toggle-btn es-icon js-remove-icon es-icon-anonymous-iconfont"></i>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div class="c-project-item__bd js-project-item__bd" style="display: none;">
+    {% if course.taskNum == 0 %}
+      <div class="empty">{{ 'project_plan.empty'|trans }}</div>
+    {% else %}
+      {% include 'project-plan/detail/task-list/'~course.courseType~'-task-list.html.twig' %}
+    {% endif %}
+  </div>
+</div>

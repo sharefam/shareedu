@@ -1,0 +1,57 @@
+<el-table :data="tableData" boder style="width: 100%" max-height="600" :header-row-class-name="getRowClass">
+  <el-table-column prop="name" fixed :render-header='renderHeader' align="center" label="{{ 'user.fields.truename_label'|trans }}" width="150">
+    <template slot-scope="scope">
+      <img class="el_pic_avatar" :src="scope.row.coverImgUri"/>
+      <el-popover placement="top" trigger="hover" v-if="nameLen(scope.row.truename)">
+        <template>
+            <div>${scope.row.truename}</div>
+        </template>
+        <div slot="reference" class="el_avatar-name plm">${scope.row.truename}</div>
+      </el-popover>
+      <div v-else class="el_avatar-name plm" :title='scope.row.truename'>${scope.row.truename}</div>
+    </template>
+  </el-table-column>
+  <el-table-column prop="user_post" align="center" :render-header='renderHeader' label="{{ 'user_post'|trans }}">
+    <template slot-scope="scope">
+      <div>${scope.row.postName}</div>
+    </template>
+  </el-table-column>
+  <el-table-column label="{{ 'user.profile.org'|trans }}" :render-header='renderHeader' width="150">
+    <template slot-scope="scope">
+      <div class="dis-i-b mrm">${scope.row.org[0].name}</div>
+      <div><span>{{ 'site.org.code'|trans }}</span> ${scope.row.org[0].code}</div>
+      <el-popover placement="top" trigger="hover" v-if="scope.row.org.length > 1 ? true : false">
+        <template>
+          <div v-for="item in scope.row.org" class="org-popover">
+            <div class="dis-i-b"><i class="ct-icon ct-icon-organization mrs"></i>${item.name}</div>
+            | {{ 'site.org.code'|trans }} ${item.code}
+          </div>
+        </template>
+        <div slot="reference" class="dis-i-b">
+          <i class="es-icon es-icon-more"></i>
+        </div>
+      </el-popover>
+    </template>
+  </el-table-column>
+  {% for key, module in userLearnModules %}
+    {% if key == 'post_course' %}
+      <el-table-column label="{{ module.displayKey|trans }}" :render-header='renderHeader'>
+        <template slot-scope="scope">
+          <div>${scope.row.post_course.progress}</div>
+          <span class="text-muted text-sm">{{ 'admin.data_center.length_of_time'|trans }} ${scope.row.post_course.learnHours}</span>
+        </template>
+      </el-table-column>
+    {% else %}
+      <el-table-column prop="{{ key }}" align="center" :render-header='renderHeader' label="{{ module.displayKey|trans }}"></el-table-column>
+    {% endif %}
+  {% endfor %}
+  <el-table-column fixed="right" label="{{ 'admin.user.fields.operation_label'|trans }}" :render-header='renderHeader' width="180">
+    <template slot-scope="scope">
+      <a :href="scope.row.study_record" target="_blank" class="el_link">{{ 'admin.data_center.user_data.study_record'|trans }}</a>
+      <el-button @click="showUserDetail(scope.row.user_info)" type="text" class="el_link">{{ 'user.settings.personal_info_menu'|trans }}</el-button>
+    </template>
+  </el-table-column>
+</el-table>
+<div class="data-list">
+  {% include 'admin/data/user-learn/detail-tr.html.twig'%}
+</div>

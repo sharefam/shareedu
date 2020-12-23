@@ -1,0 +1,26 @@
+{% extends 'project-plan/layout.html.twig' %}
+{% block title %}{{ 'project_plan.summary.study_data'|trans }} - {{ parent() }}{% endblock %}
+{% set side_nav = 'studyData' %}
+{% set tab_nav = 'summary' %}
+
+{% block main %}
+  <div class="cd-main__heading">
+    {% block main_head_hover %}
+    {% endblock %}
+    <div class="cd-main__title">
+        {{ 'project_plan.summary.study_data'|trans }}
+    </div>
+  </div>
+  <div class="cd-main__body" id="project-plan-member-container">
+    <ul class="cd-tabs mtm">
+      <li class="{% if type == 'overview' %} active {% endif %}">
+        <a href="{{path('project_plan_study_data_overview', {id: projectPlan.id, type: 'exam'}) }}">{{ 'project_plan.summary.study_data.overview'|trans }}</a>
+      </li>
+      <li class="{% if type == 'list' %} active {% endif %}">
+        <a href="{{path('project_plan_study_data_list', {projectPlanId: projectPlan.id}) }}">{{ 'project_plan.summary.study_data.member_list'|trans }}</a>
+      </li>
+    </ul>
+    {% block main_content %}
+    {% endblock %}
+  </div>
+{% endblock %}

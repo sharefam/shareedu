@@ -1,0 +1,8 @@
+<ul id="ct-nav-tabs_data" class="nav nav-tabs ct-mbxl">
+  <li class="{% if filter == 'normal' %}active{% endif %}">
+    <a href="{{path('admin_train_teach_manage_my_teaching_courses', {filter:'normal'}) }}">{{'my.teaching.course_set.normal'|trans}}</a>
+  </li>
+  <li class="{% if filter == 'live' %}active{% endif %}">
+    <a href="{{path('admin_train_teach_manage_my_teaching_courses', {filter:'live'}) }}">{{'my.teaching.course_set.live'|trans}}</a>
+  </li>
+</ul>

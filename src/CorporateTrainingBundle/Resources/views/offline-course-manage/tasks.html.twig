@@ -1,0 +1,89 @@
+{% extends 'offline-course-manage/layout.html.twig' %}
+
+{% block title %}{{ 'offline_course.base'|trans }} - {{ parent() }}{% endblock %}
+{% set side_nav = 'task' %}
+
+{% do script(['corporatetrainingbundle/js/project-plan/offline-course-task-manage-list/index.js']) %}
+
+{% block main %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      {{ 'offline_course.task_list'|trans }}
+      <span class="pull-right">
+        {% if offlineCourse.projectPlanId|default() %}
+          {% set projectPlan =  data('ProjectPlan', {projectPlanId: offlineCourse.projectPlanId}) %}
+        {% endif %}
+        {% if projectPlan.status|default() == 'archived'%}
+          <a class="btn btn-primary btn-sm" disabled data-toggle="tooltip" data-placement="bottom" title="{{ 'project_plan.project_plan_archived'|trans }}">
+                <span class="es-icon es-icon-anonymous-iconfont"></span>
+            {{ 'offline_course.tasks.add_task'|trans }}
+            </a>
+
+          {% if is_plugin_installed('Survey') %}
+            <a class="btn btn-primary btn-sm" disabled data-toggle="tooltip" data-placement="bottom" title="{{ 'project_plan.project_plan_archived'|trans }}">
+               <span class="es-icon es-icon-anonymous-iconfont"></span>
+            {{ 'offline_course.tasks.add_survey'|trans }}
+            </a>
+          {% endif %}
+        {% else %}
+          <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal" data-url="{{ path('training_offline_course_manage_task_create', {id: offlineCourse.id, type: 'offlineCourse'}) }}">
+            <span class="es-icon es-icon-anonymous-iconfont"></span>
+            {{ 'offline_course.tasks.add_task'|trans }}
+          </a>
+
+          {% if is_plugin_installed('Survey') %}
+            <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal" data-url="{{ path('training_offline_course_manage_task_create', {id: offlineCourse.id, type: 'questionnaire'}) }}">
+              <span class="es-icon es-icon-anonymous-iconfont"></span>
+              {{ 'offline_course.tasks.add_survey'|trans }}
+            </a>
+          {% endif %}
+        {% endif %}
+      </span>
+    </div>
+    <div class="panel-body">
+        {% if tasks|default() %}
+        <ul id="sortable-list" class="ct-project-unit-list sortable-list" data-sortUrl="{{ path('project_plan_offline_course_sort_task') }}">
+          {% for task in tasks %}
+          {%if is_plugin_installed('Survey') or task.type == 'offlineCourse'%}
+            <li class="ct-project-unit drag" id="{{ task.id }}">
+                <div class="ct-project-unit__head">
+                  <div class="ct-project-unit__hover">
+                      {% if task.type == 'offlineCourse' %}
+                        <a class="link-gray" target="_blank" href="{{ path('project_plan_offline_course_manage_sign_qrcode', {taskId: task.id })  }}"><i class="es-icon es-icon-qrcode"></i>{{ 'offline_course.tasks.sign_qrcode'|trans }}</a>
+                      {% elseif task.type == 'questionnaire' %}
+                        <a class="link-gray" target="_blank" href="{{ path('project_plan_offline_course_task_view_survey_qrcode', {taskId:task.id}) }}"><i class="es-icon es-icon-qrcode"></i>{{ 'offline_course.tasks.survey_qrcode'|trans }}</a>
+                      {% endif %}
+                      {% if not (projectPlan.status|default() == 'archived')%}
+                         <a href="javascript:;" class="link-gray" data-toggle="modal" data-target="#modal" data-url="{{ path('training_offline_course_manage_task_edit', {courseId: task.offlineCourseId, taskId: task.id}) }}"><i class="es-icon es-icon-setting"></i>{{ 'offline_course.btn.setting'|trans }}</a>
+                         <a href="javascript:;" data-courseId="{{ task.courseId|default() }}" data-taskId="{{ task.id|default() }}" class="link-gray remove-item" data-url="{{ path('project_plan_offline_course_manage_task_delete', {courseId: task.offlineCourseId, taskId: task.id}) }}"><i class="es-icon es-icon-delete"></i>{{ 'offline_course.btn.delete'|trans }}</a>
+                       {% endif %}
+                    </div>
+                  <div class="ct-project-unit__title">
+                    <span class="js-project-unit-number">{{ task.seq }}.</span>
+                    {{ task.title }}
+                  </div>
+                </div>
+                <div class="ct-project-unit__body">
+                {% if task.type == 'offlineCourse' %}
+                  {{ 'offline_course.tasks.task_date'|trans }}：{{ task.startTime|date('Y-m-d H:i')|default(null) }} {{ 'project_plan.time_to'|trans }} {{ task.endTime|date('Y-m-d H:i')|default(null) }}
+                  {{ 'offline_course.tasks.place'|trans }}：{{ task.place|default('') }}
+                {% elseif task.type == 'questionnaire' %}
+                  {{ 'offline_course.tasks.survey_score'|trans }}
+                {% endif %}
+                </div>
+             </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+        {% else %}
+          <div class="empty">
+            {% if projectPlan.status|default() == 'archived'%}
+              <a class="link-primary" disabled data-toggle="tooltip" data-placement="bottom" title="{{ 'project_plan.project_plan_archived'|trans }}">{{ 'offline_course.tasks.add_offline_task'|trans }}</a>
+            {% else %}
+              <a class="link-primary" data-toggle="modal" data-target="#modal" data-url="{{ path('training_offline_course_manage_task_create', {id: offlineCourse.id, type: 'offlineCourse'}) }}">{{ 'offline_course.tasks.add_offline_task'|trans }}</a>
+            {% endif %}
+          </div>
+        {% endif %}
+    </div>
+  </div>
+{% endblock %}

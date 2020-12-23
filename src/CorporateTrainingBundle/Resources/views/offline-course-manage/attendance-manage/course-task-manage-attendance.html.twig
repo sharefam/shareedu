@@ -1,0 +1,67 @@
+{% extends 'offline-course-manage/layout.html.twig' %}
+
+{% block title %}{{ 'offline_course.attendance_manage'|trans }} - {{ parent() }}{% endblock %}
+
+{% do script(['libs/select2.js','libs/jquery-validation.js','libs/bootstrap-datetimepicker.js','corporatetrainingbundle/js/project-plan/item/offline-course/offline-course-manage/attendance-manage/list/index.js']) %}
+
+{% set side_nav = 'attendance-manage' %}
+
+{% block main %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      {{ 'offline_course.attendance_manage'|trans }}
+      &nbsp;&nbsp;
+      <a class="link-back" href="{{ path('project_plan_offline_attendance_course_manage', {id: offlineCourse.id}) }}">{{ 'form.btn.return'|trans }}</a>
+
+      <div class="pull-right">
+        <button class="btn btn-primary btn-sm mlm" id="js-update-attendance-btn" data-role="batch-update" data-name="attendance" data-toggle="modal" data-target="#modal" data-url="{{ path('project_plan_offline_course_task_attendance_manage_batch_update', {id: taskId}) }}">{{ 'offline_course.batch_attend'|trans }}</button>
+      </div>
+    </div>
+
+    <div class="panel-body" id="project-plan-offline-course-attendance-container">
+      <form class="department-manage-search-form form-inline clearfix mbl" id="list-search" action="" method="post">
+        <div class="form-group department-manage-search-form-group">
+          <label>{{ 'project_plan.department_filter'|trans }}：</label>
+          <div class=" department-manage-search-form-group__select">
+            {% include 'org-select/index.html.twig' with {
+              id: 'resource-orgCode',
+              data: build_org_tree(['1.']),
+              placeholder: 'admin.org.select_placeholder'|trans,
+              treeName: 'orgIds',
+              ids: orgIds|default(0),
+            }
+            %}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'form.placeholder.keyword'|trans }}：</label>
+          <input type="text" id="username" name="username" class="form-control department-manage-search-form-group__info" value="{{ app.request.get('username') }}"
+                 placeholder="{{ 'project_plan.username_truename'|trans }}">
+        </div>
+
+        <div class="form-group department-manage-search-form-group">
+          <label>{{ 'offline_course.attendance_status'|trans }}：</label>
+          <select class="department-manage-search-form-group__type form-control" id="member-status" name="attendStatus">
+            {% if app.request.get('attendStatus') is not empty %}
+              {{ select_options(dict('offlineCourseAttendanceStatus'), app.request.get('attendStatus') ? app.request.get('attendStatus') : 'all') }}
+            {% else %}
+              {{ select_options(dict('offlineCourseAttendanceStatus'), app.request.cookies.get('attendStatus') ? app.request.cookies.get('attendStatus') : 'all') }}
+            {% endif %}
+          </select>
+        </div>
+
+        <div>
+          <button class="btn btn-primary">{{ 'form.btn.search'|trans }}</button>
+          <button type="button" class="btn btn-primary js-exporter" data-url="{{ path('exporter_export', {type: 'project_plan_offline_course_attendance', formSubmission: 'post'}) }}">{{'project_plan.enrollment_record.export'|trans}}</button>
+        </div>
+        <input type="hidden" name="taskId" value="{{ taskId }}">
+        <input type="hidden" name="projectPlanId" value="{{ projectPlanId }}">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+      </form>
+      <div class="table-responsive js-table-wrap mts data-list">
+        {% include 'offline-course-manage/attendance-manage/course-task-manage-attendance-list.html.twig' %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

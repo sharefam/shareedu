@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <title>移动客户端下载</title>
+  <style>
+    html {
+      width: 100%;
+      height: 100%; 
+    }
+    
+    .weixin_bg {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #FFFFFF;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-image: url("{{ asset('assets/img/mobile/logo.png') }}");
+    }
+
+    .shard_bg {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background: rgba(0,0,0,0.6);
+    }
+
+    .shard_bg img {
+      float: right;
+      margin-right: 10px;
+      width: 148px;
+    }
+  </style>
+</head>
+
+<body class="weixin_bg">
+  <div class="shard_bg">
+    <img src="{{ asset('assets/img/mobile/code_prompt.png') }}" />
+  </div>
+</body>
+</html>

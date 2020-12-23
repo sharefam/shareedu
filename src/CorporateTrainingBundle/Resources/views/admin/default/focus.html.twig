@@ -1,0 +1,270 @@
+<div class="content today-focus">
+  <div class="content-head clearfix">
+    <div class="fl">{{ 'admin.focus.today.focus'|trans }}</div>
+    <div class="fr">
+      <span>{{ 'now'|date('Y-m-d') }}
+        {{ 'now'|date('U')|weekday()|trans }}</span></div>
+  </div>
+  <div class="content-body">
+    {% if focuses | default() %}
+      {% for focus in focuses %}
+        {% if focus.type == 'project_plan' and has_permission('admin_project_plan') %}
+          <div class="content-course-list">
+            <div class="clearfix">
+              <div class="course-list-img fl">
+                {% if 'ROLE_DEPARTMENT_ADMIN' in app.user.roles or 'ROLE_SUPER_ADMIN' in app.user.roles
+                or 'ROLE_TRAINING_ADMIN' in app.user.roles or 'ROLE_ADMIN' in app.user.roles or has_permission('admin_project_plan') %}
+                  <a href="{{ path('project_plan_manage_overview_board', {id: focus.id}) }}" target="_blank">
+                    <img src="{{ filepath(course_set_cover(focus, 'large'), 'project-plan.png') }}">
+                  </a>
+                {% else %}
+                  <a href="{{ path('admin_train_teach_manage_project_plan_teaching') }}" target="_blank">
+                    <img src="{{ filepath(course_set_cover(focus, 'large'), 'project-plan.png') }}">
+                  </a>
+                {% endif %}
+              </div>
+              <div class="course-list-txt fl">
+                <div class="course-list-type">
+                  <span class="course-list-type_name project_plan">{{ 'project_plan'|trans }}</span>
+                  <span class="course-list-type_desc">
+                    {% if 'ROLE_DEPARTMENT_ADMIN' in app.user.roles or 'ROLE_SUPER_ADMIN' in app.user.roles
+                    or 'ROLE_TRAINING_ADMIN' in app.user.roles or 'ROLE_ADMIN' in app.user.roles
+ %}
+                      <a href="{{ path('project_plan_manage_overview_board', {id: focus.id}) }}" target="_blank">
+                        {{ focus.name|default() }}
+                      </a>
+                    {% else %}
+                      <a href="{{ path('admin_train_teach_manage_project_plan_teaching') }}" target="_blank">
+                        {{ focus.name|default() }}
+                      </a>
+                    {% endif %}
+                  </span>
+                </div>
+                {% if focus.items | default() %}
+                  <div class="course-list_handpick_swiper swiper-container">
+                    <div class="swiper-wrapper">
+                      {% for item in focus.items %}
+                        <div class="swiper-slide">
+                          <ul>
+                            <li>
+                              {% if item.detail.title | default() %}
+                                {{ item.detail.title|default() }}
+                              {% else %}
+                                {{ item.detail.name|default() }}
+                              {% endif %}
+                            </li>
+                          </ul>
+                          <div class="course-list_time">
+                            <span>{{ 'project_plan.start_time'|trans }}:
+                              {{ item.startTime|date('Y-m-d H:i:s') }}</span>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                {% else %}
+                  <div class="course-list_handpick">
+                    <ul>
+                      <li>{{ 'site.datagrid.empty'|trans }}</li>
+                    </ul>
+                  </div>
+                  <div class="course-list_time">
+                    <span>
+                      <a target="_blank" href="{{ path('project_plan_manage_base', {id: focus.id}) }}">{{ '进入项目'|trans }}</a>
+                    </span>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if focus.type == 'live_course' and  (has_permission('admin_course_show') or (has_permission('admin_train_teach_manage_my_teaching_courses_manage') and has_permission('admin_train_teach_manage_my_teaching_classrooms_manage') and has_permission('admin_train_teach_manage_project_plan_teaching_manage')))%}
+          {% if focus.courseSet.status == 'published' %}
+            <div class="content-course-list">
+              <div class="clearfix">
+                <div class="course-list-img fl">
+                  <a href="{{ path('course_set_manage_course_tasks', {courseSetId: focus.courseSet.id, courseId: focus.courseId}) }}" target="_blank">
+                    <img src="{{ filepath(course_set_cover(focus.courseSet, 'large'), 'courseSet.png') }}"/>
+                  </a>
+                </div>
+                <div class="course-list-txt fl">
+                  <div class="course-list-type">
+                    <span class="course-list-type__teacher" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="top" data-content="你是讲师">
+                      <i class="ct-icon ct-icon-teacher text-teacher"></i>
+                    </span>
+                    <span class="course-list-type_name live_course">{{ 'admin.course_manage.manage.live_course'|trans }}</span>
+                    <span class="course-list-type_desc">
+                      <a href="{{ path('course_set_manage_course_tasks', {courseSetId: focus.courseSet.id, courseId: focus.courseId}) }}" target="_blank">
+                        {{ focus.courseSet.title|default() }}
+                      </a>
+                    </span>
+                  </div>
+                  <div class="course-list_handpick">
+                    <ul>
+                      <li>
+                        <a href="{{ path('course_set_manage_course_tasks', {courseSetId: focus.courseSet.id, courseId: focus.courseId}) }}" target="_blank">{{ focus.title|default() }}</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="course-list_time">
+                    <span>{{ 'project_plan.start_time'|trans }}:
+                      {{ focus.startTime|date('Y-m-d H:i:s')|default() }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endif %}
+
+        {% if focus.type == 'offline_activity' and has_permission('admin_offline_activity') %}
+          <div class="content-course-list">
+            <div class="clearfix">
+              <div class="course-list-img fl">
+                <a href="{{ path('admin_offline_activity') }}" target="_blank">
+                  <img src="{{ filepath(course_set_cover(focus, 'large'), 'courseSet.png') }}">
+                </a>
+              </div>
+              <div class="course-list-txt fl">
+                <div class="course-list-type">
+                  <span class="course-list-type_name offline_activity">{{ 'offline_activity'|trans }}</span>
+                </div>
+                <div class="course-list_handpick">
+                  <ul>
+                    <li>
+                      <a href="{{ path('admin_offline_activity') }}" target="_blank">
+                        {{ focus.title|default() }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="course-list_time">
+                  <span>{{ 'project_plan.start_time'|trans }}:
+                    {{ focus.startTime|date('Y-m-d H:i:s')|default() }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if focus.type == 'survey' and has_permission('admin_train_survey_manage') %}
+          <div class="content-course-list">
+            <div class="clearfix">
+              <div class="course-list-img fl">
+                <a href="{{ path('admin_survey_manage_list') }}" target="_blank">
+                  <img src="{{ asset('/assets/img/backstage/empty/survey_default.png')}}">
+                </a>
+              </div>
+              <div class="course-list-txt fl">
+                <div class="course-list-type">
+                  <span class="course-list-type_name survey">{{ 'survey.manage.survey_questionnaire'|trans }}</span>
+                </div>
+                <div class="course-list_handpick">
+                  <ul>
+                    <li>
+                      <a href="{{ path('admin_survey_manage_list') }}" target="_blank">
+                        {{ focus.name|default() }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="course-list_time">
+                  <span>{{ 'project_plan.start_time'|trans }}:
+                    {{ focus.startTime|date('Y-m-d H:i:s')|default() }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if focus.type == 'exam' and has_permission('admin_train_exam_manage_manage') %}
+          <div class="content-course-list">
+            <div class="clearfix">
+              <div class="course-list-img fl">
+                <a href="{{ path('admin_exam_manage_list') }}" target="_blank">
+                  <img src="{{ asset('/assets/img/backstage/empty/exam_default.png')}}">
+                </a>
+              </div>
+              <div class="course-list-txt fl">
+                <div class="course-list-type">
+                  <span class="course-list-type_name exam">{{ 'subject.test'|trans }}</span>
+                </div>
+                <div class="course-list_handpick">
+                  <ul>
+                    <li>
+                      <a href="{{ path('admin_exam_manage_list') }}" target="_blank">
+                        {{ focus.name|default() }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="course-list_time">
+                  <span>{{ 'project_plan.start_time'|trans }}:
+                    {{ focus.startTime|date('Y-m-d H:i:s')|default() }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      {% set coursePermission = has_permission('admin_course_show')or has_permission('admin_train_teach_manage_my_teaching_courses_manage') %}
+      {% set trainPermission = has_permission('admin_project_plan')or has_permission('admin_train_exam_manage_manage')or has_permission('admin_train_survey_manage')
+      or has_permission('admin_train_survey_manage')or has_permission('admin_offline_activity') %}
+
+      <div class="focus-empty ct-mtxll">
+        <img class="c-home-rank__empty-img ct-mbxl" src="{{ asset('/assets/img/backstage/empty/today_focus.png')}}">
+        {% if coursePermission or  trainPermission%}
+          <div class="split-line-wrapper">
+            <div class="split-line"></div>
+            <div class="split-txt">{{ 'admin.focus.you.may.now'|trans }}:</div>
+            <div class="split-line"></div>
+          </div>
+          {% if coursePermission %}
+            <div class="courser-action-type">
+              <div class="courser-action-type_name">{{ 'admin.focus.create'|trans }}</div>
+              <ul class="creat-action-type">
+                <li>
+                  <a href="{{ path('course_set_manage_create') }}" target="_blank" class="js-type-tag tag" data-type="tag-live_course">{{ 'admin.focus.course'|trans }}</a>
+                </li>
+                <li>
+                  <a href="{{ path('course_set_manage_create') }}" target="_blank" class="js-type-tag tag" data-type="tag-live_course">{{ 'admin.focus.live_course'|trans }}</a>
+                </li>
+              </ul>
+            </div>
+          {% endif %}
+          {% if trainPermission %}
+            <div class="courser-action-type">
+              <div class="courser-action-type_name">{{ 'admin.focus.sponsor'|trans }}</div>
+              <ul>
+                {% if has_permission('admin_project_plan') %}
+                  <li>
+                    <a href="{{ path('project_plan_create') }}" target="_blank" class="js-type-tag tag" data-type="tag-project_plan">{{ 'admin.focus.project_plan'|trans }}</a>
+                  </li>
+                {% endif %}
+
+                {% if has_permission('admin_train_exam_manage_manage') %}
+                  <li>
+                    <a href="{{ path('exam_create') }}" target="_blank" class="js-type-tag tag" data-type="tag-exam">{{ 'admin.focus.exam'|trans }}</a>
+                  </li>
+                {% endif %}
+
+                {% if has_permission('admin_train_survey_manage') %}
+                  <li>
+                    <a href="{{ path('survey_manage_create') }}" target="_blank" class="js-type-tag tag" data-type="tag-survey">{{ 'admin.focus.survey'|trans }}</a>
+                  </li>
+                {% endif %}
+
+                {% if has_permission('admin_offline_activity') %}
+                  <li>
+                    <a href="{{ path('offline_activity_manage_create') }}" target="_blank" class="js-type-tag tag" data-type="tag-offline_activity">{{ 'admin.focus.offline_activity'|trans }}</a>
+                  </li>
+                {% endif %}
+              </ul>
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</div>

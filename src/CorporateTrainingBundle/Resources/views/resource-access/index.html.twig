@@ -1,0 +1,103 @@
+{% do script(['libs/bootstrap-treeview.js', 'libs/bootstrap-datetimepicker.js', 'corporatetrainingbundle/js/source-access/index.js'], 900) %}
+
+<div class="js-advanced-setting">
+<div class="form-group">
+  <label class="col-sm-2 control-label">
+    {{ 'source.access_range'|trans }}
+  </label>
+{% set canManageResourceOrgScope= can_manage_resource_org_scope(resourceId, resourceType, 'access') %}
+  <div class="col-sm-8">
+    <span class="es-switch {% if conditionalAccess|default(0) %}is-active{% endif %}" style="margin-top: 7px;">
+      <input class="es-switch__input" type="text" name="conditionalAccess" value="{{ conditionalAccess|default(0) }}" data-close="0" data-open="1">
+    </span>
+  </div>
+</div>
+
+<div class="tab-content">
+  <div class="js-access-setting {% if conditionalAccess|default(0) != 1 %}hidden{% endif %}">
+    <div role="tabpanel" class="tab-pane {% if conditionalAccess|default(0) == 1 %}active{% endif %}">
+      <div class="form-group">
+      <label class="col-sm-2 control-label" for="accessOrg">
+      </label>
+      <div class="col-sm-8">
+        {% include 'select/index.html.twig' with {
+          placeholder: 'source.source_publish.select_department'|trans,
+          id: 'accessOrgsSelect',
+          data: set_manage_permission_org_tree(get_resource_access_scopes(resourceType, resourceId, 'Org')),
+          ids: get_access_range(resourceType, resourceId, 'Org'),
+          treeName: 'accessOrg',
+        } %}
+      </div>
+    </div>
+      <div class="form-group">
+      <label class="col-sm-2 control-label"></label>
+      <div class="col-sm-4">
+        {% include 'select/index.html.twig' with {
+        id: 'accessPostsSelect',
+        data: get_post_tree(),
+        ids:  get_access_range(resourceType, resourceId, 'Post'),
+        placeholder: 'source.source_publish.select_post',
+        treeName: 'accessPost'
+        }
+        %}
+      </div>
+      <div class="col-sm-4">
+        {% include 'select/index.html.twig' with {
+        id: 'accessUserGroupsSelect',
+        data: get_user_group_tree(),
+        ids:  get_access_range(resourceType, resourceId, 'UserGroup'),
+        placeholder: 'source.source_publish.select_user_group',
+        treeName: 'accessUserGroup'
+        }
+        %}
+      </div>
+      </div>
+      {% if is_plugin_installed('PostMap') %}
+        {% include 'PostMapPlugin::resource-access/post-select.html.twig' %}
+      {% endif %}
+      <div class="form-group">
+        {% set accessHireDate = get_access_range(resourceType, resourceId, 'HireDate') %}
+        <label class="col-sm-2 control-label"></label>
+        <label class="pull-left pl5 pl10 mts">{{ 'source.source_access.hire_day'|trans }}</label>
+        <div class="col-sm-2">
+          <select id="hireDateType" name="hireDateType" class="form-control js-hire-date text-overflow">
+            <option value="greatThanOrEqual" {% if accessHireDate.hireDateType|default('') == 'greatThanOrEqual' %}selected{% endif %}>{{ 'source.source_access.great_than_or_equal'|trans }}</option>
+            <option value="lessThanOrEqual" {% if accessHireDate.hireDateType|default('') == 'lessThanOrEqual' %}selected{% endif %}>{{ 'source.source_access.less_than_or_equal'|trans }}</option>
+            <option value="between" {% if accessHireDate.hireDateType|default('') == 'between' %}selected{% endif %}>{{ 'source.source_access.between'|trans }}</option>
+            <option value="before" {% if accessHireDate.hireDateType|default('') == 'before' %}selected{% endif %}>{{ 'source.source_access.before'|trans }}</option>
+            <option value="after" {% if accessHireDate.hireDateType|default('') == 'after' %}selected{% endif %}>{{ 'source.source_access.after'|trans }}</option>
+          </select>
+        </div>
+        <div class="js-day {% if accessHireDate.hireDateType|default('') == 'between' or accessHireDate.hireDateType|default('') == 'before' or accessHireDate.hireDateType|default('') == 'after' %}hidden{% endif %}">
+          <div class="col-sm-4">
+            <input class="form-control" name="days" for="days" value="{{ accessHireDate.days|default() }}">
+          </div>
+          <div class="col-sm-1 mts" style="margin-left: -15px">{{ 'source.source_access.day'|trans }}</div>
+        </div>
+        <div class="js-between-datetimepicker {% if accessHireDate.hireDateType|default('') != 'between' %}hidden{% endif %}">
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <input class="form-control" type="text" id="hireStartDate" name="hireStartDate"
+                           value="{{ accessHireDate.hireStartDate|default() }}" placeholder="{{ 'admin.user.form.input_placeholder.startDate'|trans }}">
+                </div>
+            </div>
+            <div class="col-sm-2">
+              <div class="form-group">
+                <input class="form-control" type="text" id="hireEndDate" name="hireEndDate"
+                       value="{{ accessHireDate.hireEndDate|default() }}" placeholder="{{ 'admin.user.form.input_placeholder.endDate'|trans }}">
+              </div>
+            </div>
+        </div>
+        <div class="js-datetimepicker {% if accessHireDate.hireDateType|default('') != 'before' and accessHireDate.hireDateType|default('') != 'after' %}hidden{% endif %}">
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <input class="form-control" type="text" id="date" name="date"
+                           value="{{ accessHireDate.date|default() }}" placeholder="{{ 'source.source_access.select_date'|trans }}">
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  </div>
+</div>
+</div>

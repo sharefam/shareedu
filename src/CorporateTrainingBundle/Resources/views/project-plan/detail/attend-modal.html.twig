@@ -1,0 +1,71 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% do script(['libs/jquery-validation.js', 'corporatetrainingbundle/js/project-plan/attend/index.js']) %}
+{% set modalSize = 'large' %}
+{% block title %}{{ 'project_plan.apply'|trans }}{% endblock %}
+{% block body %}
+    <form id="project-plan-attend-form" class="form-horizontal"
+          action="{{ path('project_plan_attend', {id:projectPlan.id}) }}">
+        <div class="form-group">
+            <label class="col-xs-2 control-label">
+              {{ 'project_plan.title'|trans }}:
+            </label>
+            <div class="form-control-static">
+                {{ projectPlan.name|default() }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-2 control-label">
+              {{ 'project_plan.project_plan_date'|trans }}:
+            </label>
+            <div class="form-control-static">
+              {% if projectPlan.startTime %}{{ projectPlan.startTime|default('--')|date('Y-m-d')}}{% else %}--{% endif %} 至 {% if projectPlan.startTime %}{{ projectPlan.endTime|default('--')|date('Y-m-d') }}{% else %}--{% endif %}            </div>
+        </div>
+      {% if advancedOption.requireRemark|default() %}
+          <div class="form-group">
+              <label class="col-md-2 control-label" for="remark">{{'project_plan.advanced_option.remark'|trans}}:</label>
+              <div class="col-md-10 controls">
+                  <input type="text" id="remark" name="remark" placeholder="{{ advancedOption.remarkRequirement|default('project_plan.detail.remark_empty_message'|trans) }}" class="form-control">
+              </div>
+          </div>
+      {% endif %}
+
+      {% if advancedOption.requireMaterial|default() %}
+          <div class="form-group">
+              <label class="col-md-2 control-label require-material-label" for="remark">{{'project_plan.enrollment_record.enrollment_data'|trans}}:</label>
+              <div class="col-md-10">
+                  <div class="require-material">
+                      <span>{{ advancedOption.materialRequirement|default() }}</span>
+                  </div>
+                  {% if not (setting('cloud_attachment.enable') and setting('cloud_attachment.projectPlaning' ) and setting('storage.upload_mode') == 'cloud') %}
+                      <div class="mbm alert-danger">{{ 'project_plan.detail.cloud_attachment_message'|trans }}</div>
+                  {% endif %}
+                  <div class="ct-attachment-reset mbm" data-role="material1">
+                      <span class="mrs">1.{{ advancedOption.material1|default('--') }}</span>
+                    {{ render(controller('AppBundle:File/Attachment:formFields', {targetType: 'projectPlaning.material1', targetId: noneRecord.id|default(0)}, { 'currentTarget':'material1','useType':'material1','showLabel': true })) }}
+                  </div>
+                {% if advancedOption.material2|default() %}
+                    <div class="mbm ct-attachment-reset" data-role="material2">
+                        <span class="mrs">2.{{ advancedOption.material2|default('--') }}</span>
+                      {{ render(controller('AppBundle:File/Attachment:formFields', {targetType: 'projectPlaning.material2', targetId: noneRecord.id|default(0)}, { 'currentTarget':'material2','useType':'material2','showLabel': true })) }}
+                    </div>
+                {% endif %}
+                {% if advancedOption.material3|default() %}
+                    <div class="mbm ct-attachment-reset" data-role="material3">
+                        <span class="mrs">3.{{ advancedOption.material3|default('--') }}</span>
+                      {{ render(controller('AppBundle:File/Attachment:formFields', {targetType: 'projectPlaning.material3', targetId: noneRecord.id|default(0)}, { 'currentTarget':'material3','useType':'material3','showLabel': true })) }}
+                    </div>
+                {% endif %}
+              </div>
+          </div>
+      {% endif %}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+    </form>
+{% endblock %}
+{% block footer %}
+    <button id="server-create-btn" data-submiting-text="{{ 'project_plan.btn.save_loading_btn'|trans }}" type="submit"
+            class="btn btn-primary pull-right js-save-btn {% if canAccess == false %}disabled{% endif %}" data-toggle="form-submit" data-loading-text="{{ 'project_plan.detail.btn_apply_loading'|trans }}"
+    >{% if canAccess == false %}{{ 'resource.not_open_for_you'|trans }}{% else %}{{ 'project_plan.detail.btn_apply'|trans }}{% endif %}</button>
+    <button type="button" class="btn btn-link pull-right" data-dismiss="modal">{{ 'project_plan.btn.cancel_btn'|trans }}</button>
+{% endblock %}

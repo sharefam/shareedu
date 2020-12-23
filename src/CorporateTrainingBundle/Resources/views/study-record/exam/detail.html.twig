@@ -1,0 +1,43 @@
+<div class="c-project-item__content">
+  <i class="c-project-item__icon es-icon es-icon-Online_Exam"></i>
+  {{ exam.name|default('') }}
+  <div class="c-project-item__hover">
+
+    <div class="ct-devider va-mid">
+      {% if exam.startTime|default(0) %}
+        <div class="ct-devider__item">
+          <span class="c-project-item__head-info">
+              {% set isSameDay = is_same_day(exam.startTime, exam.endTime) %}
+                {% if isSameDay %}
+                  {{ exam.startTime|date('Y-m-d') }}
+                {% else %}
+                  {{ exam.startTime|date('Y-m-d') }} {{ 'project_plan.time_to'|trans }} {{ exam.endTime|date('Y-m-d') }}
+                {% endif %}
+          </span>
+        </div>
+      {% endif %}
+
+      <div class="ct-devider__item">
+        <span class="c-project-item__head-info">
+          <span class="">{{ 'project_plan.member.score'|trans }}：</span>
+          {% if examResult.score|default(0) %}
+            {% if examResult.score >= exam.passScore %}
+              <span class="color-success">{{ examResult.score|default(0) }}</span>
+            {% else %}
+              <span class="color-danger">{{ examResult.score|default(0) }}</span>
+            {% endif %}
+          {% else %}
+              --
+          {% endif %}
+          <span class="">/{{ testpaper.score|default(0) }}</span>
+
+          {% if examResult.passStatus|default('') == 'passed' %}
+            <span class="color-success ct-mls">{{ 'project_plan.pass'|trans }}</span>
+          {% elseif examResult.passStatus|default('') == 'unpassed' %}
+            <span class="color-danger ct-mls">{{ 'project_plan.status.unpass'|trans }}</span>
+          {% endif %}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

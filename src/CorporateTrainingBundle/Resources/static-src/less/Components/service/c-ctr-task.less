@@ -1,0 +1,245 @@
+.o-ctr-task-list {
+  margin-top: 20px;
+}
+
+.o-ctr-task-list__bd {
+
+
+} 
+
+.o-ctr-task-list__ft {
+  margin-top: 10px;
+} 
+
+.c-ctr-task-item__btn-more {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+.c-ctr-task-item {
+  position: relative;
+  border: none;
+  border-radius: 2px;
+  background-color: #ffffff;
+  .es-transition;
+
+  &.is-active {
+    .box-shadow(0 5px 6px 0 rgba(0,0,0,.1));
+  }
+
+  & + .c-ctr-task-item {
+    margin-top: 25px;
+
+    @media screen and (max-width: @screen-xs-max) {
+      margin-top: 15px;
+    }
+  }
+}
+
+.c-ctr-task-item__media {
+  padding: 20px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 4px;
+
+  @media screen and (max-width: @screen-xs-max) {
+    padding: 15px;
+  }
+
+}
+
+.c-ctr-task-item__media-left {
+  padding-right: 20px;
+
+  @media screen and (max-width: @screen-xs-max) {
+    display: table-cell;
+    padding-right: 8px;
+  }
+}
+
+.c-ctr-task-item__media-body {
+  @media screen and (max-width: @screen-xs-max) {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+  } 
+}
+
+.c-ctr-task-item__tags {
+  position: absolute;
+  top: 0;
+  left: 20px;
+
+  @media screen and (max-width: @screen-xs-max) {
+    left: 15px;
+  } 
+
+  .tag-finished {
+    background: url(/assets/v2/img/tag_finished.png) no-repeat;
+    background-image: -webkit-image-set(url(/assets/v2/img/tag_finished.png) 1x, url(/assets/v2/img/tag_finished@2x.png) 2x);
+  }
+
+  .tag-live {
+    background: url(/assets/v2/img/tag_live.png) no-repeat;
+    background-image: -webkit-image-set(url(/assets/v2/img/tag_live.png) 1x, url(/assets/v2/img/tag_live@2x.png) 2x);
+  }
+
+  .tag-serialing {
+    background: url(/assets/v2/img/tag_serialing.png) no-repeat;
+    background-image: -webkit-image-set(url(/assets/v2/img/tag_serialing.png) 1x, url(/assets/v2/img/tag_serialing@2x.png) 2x);
+  }
+
+  span {
+    display: inline-block;
+    width: 40px;
+    height: 50px;
+  }
+}
+
+.c-ctr-task-item__title {
+  margin-right: 100px;
+  margin-bottom: 16px;
+  max-width: 360px;
+  color: @gray-darker;
+  .mirror-text-title-ibox;
+  .text-ovf;
+
+  @media screen and (max-width: @screen-xs-max) {
+    margin-right: 0;
+    margin-top: 2px;
+    margin-bottom: 5px;
+    max-width: 230px;
+    .text-ibox; 
+  }
+}
+
+.c-ctr-task-mobile__title {
+  width: 180px;
+  font-size: 14px;
+  .text-ovf;
+}
+
+.c-ctr-task-mobile__task-name {
+  position: relative;
+  top: 2px;
+  width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.c-ctr-task-item__info {
+  margin-top: 10px;
+  margin-right: 100px;
+  font-size: 14px;
+  line-height: 20px;
+  max-width: 360px;
+  .text-ovf;
+
+  i {
+    display: inline-block;
+  }
+
+  span {
+    font-size: 12px;
+    color: @gray;
+
+  }
+
+  @media screen and (max-width: @screen-xs-max) {
+    margin-right: 0;
+    font-size: 10px;
+    line-height: 16px;
+  }
+}
+
+.c-ctr-task-item__hover {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  text-align: center;
+
+  @media screen and (max-width: @screen-xs-max) {
+    top: auto;
+    bottom: 12px;
+    right: 12px;
+  }
+}
+
+.c-ctr-task-item__img {
+  display: block;
+  width: 178px;
+  height: auto;
+  border: none;
+  border-radius: 2px;
+
+  @media screen and (max-width: @screen-xs-max) {
+    width: 80px;
+
+    &.inline-img {
+      display: inline-block;
+    }
+
+    &.mid {
+      width: 110px;
+    }
+  }
+}
+
+.c-ctr-task-item__toggle-btn {
+  position: relative;
+  display: block;
+  top: auto;
+  right:  auto;
+  margin-top: 20px;
+  cursor: pointer;
+
+  i {
+    font-size: 24px;
+    color: @gray-light;
+    .es-transition;
+  }
+
+  &:hover {
+    i {
+      color: @brand-primary;
+    }
+  }
+}
+
+.c-ctr-task-item__nav-wrap {
+  margin-top: 10px;
+}
+
+.c-ctr-task-item__bd {
+  padding: 0 20px;
+
+  @media screen and (max-width: @screen-xs-max) {
+    padding: 0px 15px 0px 15px;
+  }
+
+  .period-list {
+    margin-top: 0px;
+    padding: 10px 0px;  
+
+    @media screen and (max-width: @screen-xs-max) {
+      padding: 10px 0px 30px 0px;
+    }
+  }
+
+}
+
+.load-spinner {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10; 
+}
+
+

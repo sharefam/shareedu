@@ -1,0 +1,264 @@
+.loading-line {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  overflow: hidden;
+}
+
+.loading-line-bot {
+  position: absolute;
+  bottom: -4px;
+}
+.loading-line div {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 4px;
+  animation: loading-line 2s ease infinite;
+}
+
+@keyframes loading-line
+{
+  from {
+    left: -100%;
+  }
+
+  to {
+    left: 100%;
+  }
+}
+
+@-moz-keyframes loading-line
+{
+  from {
+    left: -100%;
+  }
+
+  to {
+    left: 100%;
+  }
+}
+
+@-webkit-keyframes loading-line
+{
+  from {
+    left: -100%;
+  }
+
+  to {
+    left: 100%;
+  }
+}
+
+@-o-keyframes loading-line
+{
+  from {
+    left: -100%;
+  }
+
+  to {
+    left: 100%;
+  }
+}
+
+.list-item-load {
+
+}
+
+/**
+ * base load
+ */
+
+.ct-loading-wrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: fadeout(#000, 20%);
+  z-index: 1111002;
+}
+
+
+.ct-loading {
+  position: absolute;
+  top: 45%;
+  left: 0;
+  right: 0;
+  .transform(translateY(-50%));
+  text-align: center;
+
+  .loader {
+    display: inline-block;
+  }
+}
+/**
+ * Lines
+ */
+
+@-webkit-keyframes line-scale {
+  0% {
+    -webkit-transform: scaley(1);
+    transform: scaley(1); }
+  50% {
+    -webkit-transform: scaley(0.4);
+    transform: scaley(0.4); }
+  100% {
+    -webkit-transform: scaley(1);
+    transform: scaley(1); } }
+@keyframes line-scale {
+  0% {
+    -webkit-transform: scaley(1);
+    transform: scaley(1); }
+  50% {
+    -webkit-transform: scaley(0.4);
+    transform: scaley(0.4); }
+  100% {
+    -webkit-transform: scaley(1);
+    transform: scaley(1); } }
+
+.line-scale > div:nth-child(1) {
+  -webkit-animation: line-scale 1s -0.4s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08);
+  animation: line-scale 1s -0.4s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08); }
+
+.line-scale > div:nth-child(2) {
+  -webkit-animation: line-scale 1s -0.3s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08);
+  animation: line-scale 1s -0.3s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08); }
+
+.line-scale > div:nth-child(3) {
+  -webkit-animation: line-scale 1s -0.2s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08);
+  animation: line-scale 1s -0.2s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08); }
+
+.line-scale > div:nth-child(4) {
+  -webkit-animation: line-scale 1s -0.1s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08);
+  animation: line-scale 1s -0.1s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08); }
+
+.line-scale > div:nth-child(5) {
+  -webkit-animation: line-scale 1s 0s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08);
+  animation: line-scale 1s 0s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08); }
+
+.line-scale > div {
+  background-color: #fff;
+  width: 4px;
+  height: 35px;
+  border-radius: 2px;
+  margin: 2px;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  display: inline-block;
+}
+
+// new loading component
+div.ch-loading-wrap {
+  //  display: none; 
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 100000;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  /* visibility: collapse; */
+  .shcl div {
+    position: absolute;
+    visibility: hidden;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 10px;
+    animation-name: shcl7_bounce;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+  }
+  .loading-txt {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 101;
+    visibility: visible;
+    font-size: 12px;
+    color: #fff;
+  }
+  
+  .shcl {
+    position: absolute;
+    width: 98px;
+    height: 98px;
+    margin-left: -4px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+
+
+@-o-keyframes shcl7_bounce {
+  0% {
+      visibility: visible;
+      -o-transform: scale(0.7)
+  }
+  80% {
+      -o-transform: scale(.3)
+  }
+  100% {
+      -o-transform: scale(0.7)
+  }
+}
+
+@-ms-keyframes shcl7_bounce {
+  0% {
+      visibility: visible;
+      -ms-transform: scale(0.7)
+  }
+  80% {
+      -ms-transform: scale(.3)
+  }
+  100% {
+      -ms-transform: scale(0.7)
+  }
+}
+
+@-webkit-keyframes shcl7_bounce {
+  0% {
+      visibility: visible;
+      -webkit-transform: scale(0.7)
+  }
+  80% {
+      -webkit-transform: scale(.3)
+  }
+  100% {
+      -webkit-transform: scale(0.7)
+  }
+}
+
+@-moz-keyframes shcl7_bounce {
+  0% {
+      visibility: visible;
+      -moz-transform: scale(0.7)
+  }
+  80% {
+      -moz-transform: scale(.3)
+  }
+  100% {
+      -moz-transform: scale(0.7)
+  }
+}
+
+@keyframes shcl7_bounce {
+  0% {
+      visibility: visible;
+      transform: scale(0.7)
+  }
+  80% {
+      transform: scale(.3)
+  }
+  100% {
+      transform: scale(0.7)
+  }
+}
+
+

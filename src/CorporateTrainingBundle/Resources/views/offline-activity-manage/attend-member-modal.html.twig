@@ -1,0 +1,53 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% do script(['libs/jquery-validation.js', 'corporatetrainingbundle/js/offline-activity-manage/attend-member-modal/index.js']) %}
+
+{% set modalSize = 'large' %}
+
+{% block title %}{{'offline_activity.student.attend'|trans}}{% endblock %}
+
+{% set user = data('User', {userId: member.userId}) %}
+{% set userProfile = data('UserProfile', {userId: member.userId}) %}
+{% set post = data('Post', {postId: user.postId}) %}
+{% set orgs = data('Orgs', {orgIds: user.orgIds}) %}
+
+{% block body %}
+  <form class="form-horizontal" id="attend-member-form" method="post" action="{{ path('offline_activity_manage_attend_member', {id:member.id}) }}" data-id={{member.id}}>
+    
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'student.profile.truename'|trans }}:</label>
+      </div>
+      <div class="col-md-7">
+        <p class="form-control-static">{{ userProfile.truename|default(user.nickname) }}</p>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'student.profile.post'|trans }}:</label>
+      </div>
+      <div class="col-md-7">
+        <p class="form-control-static">{{ orgs.orgNames|default('student.profile.empty')|trans }}-{{ post.name|default('student.profile.empty')|trans }}</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-2 control-label">
+        <label>{{ 'offline_activity.student.attend_result'|trans }}:</label>
+      </div>
+      <div class="col-md-7 radios">
+        {% set attendedStatus = (member.attendedStatus in ['attended', 'unattended']) ? member.attendedStatus : 'attended' %}
+        {{ radios('attendedStatus', {'attended':'offline_activity.student.attended'|trans, 'unattended':'offline_activity.student.unattended'|trans}, attendedStatus) }}
+      </div>
+    </div>
+
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+
+  </form>
+{% endblock %}
+
+{% block footer %}
+  <button class="btn btn-primary pull-right" id="attend-member-submit" type="button">{{'form.btn.save'|trans}}</button>
+  <button class="btn btn-link pull-right" type="button" data-dismiss="modal">{{'form.btn.cancel'|trans}}</button>
+{% endblock %}

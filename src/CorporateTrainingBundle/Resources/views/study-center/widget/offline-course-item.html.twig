@@ -1,0 +1,141 @@
+<div class="c-project-item js-project-item">
+  <div class="c-project-item__hd">
+    <a class="js-project-item-toggle-btn" href="javascript:;">
+      <div class="c-project-item__content">
+        {% set offlineCourse = data('OfflineCourse',{ id:projectPlanItem.targetId }) %}
+        {% set offlineCourseMember = data('OfflineCourseMember', {id: projectPlanItem.targetId, userId: userId|default(app.user.id)}) %}
+        <i class="c-project-item__icon es-icon es-icon-teacher {% if offlineCourseMember.learnedNum|default(0) >= offlineCourse.info.taskNum|default(0) %}color-primary{% endif %}"></i>
+        {% set user = data('UserandProfiles',{ userId: offlineCourse.info.teacherIds[0] }) %}
+        {{ offlineCourse.info.title|default('') }}
+        <span class="c-project-item-lesson__teacher hidden-xs">{{ 'project_plan.teacher'|trans }}：{{ user.profiles.truename|default(user.nickname) }}</span>
+
+        <div class="c-project-item__hover">
+          {% if projectPlanItem.startTime|default(0) %}
+            {% set isSameDay = is_same_day(projectPlanItem.startTime, projectPlanItem.endTime) %}
+              <span class="c-project-item__time">
+                {% if isSameDay %}
+                  {{ projectPlanItem.startTime|date('Y-m-d') }}
+                {% else %}
+                  {{ projectPlanItem.startTime|date('Y-m-d') }} {{ 'project_plan.time_to'|trans }} {{ projectPlanItem.endTime|date('Y-m-d') }}
+                {% endif %}
+              </span>
+          {% endif %}
+
+          <i class="c-project-item__toggle-btn es-icon js-remove-icon es-icon-anonymous-iconfont"></i>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div class="c-project-item__bd js-project-item__bd" style="display: none;">
+    <ul class="">
+      {% if offlineCourse.items|default() %}
+        {% for item in offlineCourse.items %}
+          {% if item.type == 'offlineCourse' %}
+            {% set offlineCourseTaskResult = data('OfflineCourseTaskResult', {taskId: item.id, userId:app.user.id|default(0)}) %}
+            <a {% if item.hasHomework|default() %} href="#" data-toggle="modal" data-target="#modal" data-url="{{ path('project_plan_offline_course_homework_submit', {offlineCourseTaskId: item.id})}}" {% endif %}>
+              <li class="c-project-item-lesson">
+                <div class="c-project-item-lesson__head">
+                  {% if offlineCourseTaskResult.finishedTime|default(0) %}
+                    <i class="c-project-item-lesson__icon es-icon es-icon-iccheckcircleblack24px color-primary left-menu"></i>
+                  {% else %}
+                    <i class="c-project-item-lesson__icon es-icon es-icon-undone-check color-gray left-menu"></i>
+                  {% endif %}
+                    <span class="gray-dark">{{ item.title|default('') }}</span>
+
+                  <div class="c-project-item-lesson__hover">
+                    <div class="ct-devider">
+                      <div class="ct-devider__item">
+                        {% if offlineCourseTaskResult.attendStatus|default('') %}
+                          {% if offlineCourseTaskResult.attendStatus == 'attended' %}
+                            <span class="color-success">
+                              {{ 'project_plan.status.registered'|trans }}
+                            </span>
+                          {% elseif item.endTime < currentTime %}
+                            <span class="color-danger">
+                              {{ 'project_plan.status.absenteeism'|trans }}
+                            </span>
+                          {% else %}
+                            <span class="color-gray">
+                              {{ 'project_plan.status.unattend'|trans }}
+                            </span>
+                          {% endif %}
+                        {% else %}
+                          <span class="color-gray">
+                            {{ 'project_plan.status.unattend'|trans }}
+                          </span>
+                        {% endif %}
+                      </div>
+                      {% if item.hasHomework|default() %}
+                        <div class="ct-devider__item">
+                          {% if offlineCourseTaskResult.homeworkStatus|default('') %}
+                            {% if offlineCourseTaskResult.homeworkStatus == 'passed' %}
+                              <span class="color-success">{{ 'project_plan.study_center.homework.pass'|trans }}</span>
+                            {% elseif offlineCourseTaskResult.homeworkStatus == 'unpassed' %}
+                              <span class="color-danger" style="cursor: pointer;" >{{ 'project_plan.study_center.homework.unpass'|trans }}</span>
+                            {% elseif offlineCourseTaskResult.homeworkStatus == 'submitted' %}
+                              <span class="color-gray" href="">{{ 'project_plan.study_center.homework.reviewing'|trans }}</span>
+                            {% else %}
+                              <span  class="link-dark">{{ 'project_plan.study_center.submit_homework'|trans }}</span>
+                            {% endif %}
+                          {% else %}
+                            <span class="link-dark">{{ 'project_plan.study_center.submit_homework'|trans }}</span>
+                          {% endif %}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+                <div class="c-project-item-lesson__body">
+                  <div class="c-project-item-lesson__info">
+                    <i class="es-icon es-icon-time mrs"></i>
+                    {% if item.startTime|default('') %}
+                      {% set isSameTime = is_same_day(item.startTime, item.endTime) %}
+                      {% if isSameTime %}
+                        {{ item.startTime|date('m-d H:i') }}-{{ item.endTime|date('H:i') }}
+                      {% else %}
+                        {{ item.startTime|date('m-d H:i') }}-{{ item.endTime|date('m-d H:i') }}
+                      {% endif %}
+                    {% else %}
+                      {{ 'project_plan.detail.item.time_empty_info'|trans}}
+                    {% endif %}
+                  </div>
+                  <div class="c-project-item-lesson__info">
+                    <i class="es-icon es-icon-location mrs"></i>{{ item.place|default('project_plan.detail.item.place_empty_info'|trans)}}
+                  </div>
+                </div>
+              </li>
+            </a>
+          {% else %}
+            {% if is_plugin_installed('Survey') %}
+              {% set activity = data('Activity', {activityId: item.activityId, fetchMedia:'offlineCourseQuestionnaire'}) %}
+              {% set surveyResult = data('SurveyResult', {surveyId: activity.mediaId}) %}
+              <a class="color-gray link-dark" href="{{ path('can_do_survey', {projectPlanId: projectPlanId, surveyId: activity.mediaId, taskId: item.id})}}" target="_blank">
+                <li class="c-project-item-lesson">
+                  <div class="c-project-item-lesson__head">
+                    {% if surveyResult|default('') %}
+                      <i class="c-project-item-lesson__icon es-icon es-icon-iccheckcircleblack24px color-primary left-menu"></i>
+                    {% else %}
+                      <i class="c-project-item-lesson__icon es-icon es-icon-undone-check color-gray left-menu"></i>
+                    {% endif %}
+
+                    <span class="gray-dark">{{ item.title|default('') }}</span>
+
+                    <div class="c-project-item-lesson__hover">
+                      {% if surveyResult|default('') %}
+                        <span class="color-success" href="javascript:;">{{ 'project_plan.status.evaluated'|trans }}</span>
+                      {% else %}
+                        <span class="color-gray link-dark" >{{ 'project_plan.to_evaluate'|trans }}</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                </li>
+              </a>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <div class="empty">{{'project_plan.empty'|trans}}</div>
+      {% endif %}
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,123 @@
+userKeyWordType:
+    truename: Truename
+    nickname: Nickname
+    verifiedMobile: VerifiedMobile
+    email: Email
+    loginIp: LatestLoginIp
+
+offlineActivityStatus:
+    ongoing: Ongoing
+    end: End
+
+nameKeyWordType:
+    nickname: Nickname
+    truename: Truename
+
+attendedStatus:
+    attended: Attendence
+    unattended: Absence
+    none: No Attendance
+
+passedStatus:
+    passed: Passed
+    unpassed: Unpassed
+    none: Not Examined
+
+verifyStatus:
+    submitted: Submitted
+    rejected: Rejected
+    approved: Approved
+    all: All
+
+projectPlanStatus:
+    all: All
+    unpublished: Unpublished
+    archived: Archived
+    published: Published
+    closed: Closed
+
+projectPlanMemberStatus:
+    all: All
+    finished: Finished
+    unfinished: Unfinished
+
+industry:
+    IT: IT/通信电子/互联网
+    financial: 金融业
+    estate: 房地产|建筑业
+    business: 商业服务
+    trade: 贸易|批发|零售|租赁业
+    education: 文体教育|工艺美术
+    output: 生产|加工|制造
+    traffic: 交通|运输|物流|仓储
+    service: 服务业
+    media: 文化|传媒|娱乐|体育
+    energy: 能源|矿产|环保
+    government: 政府|非盈利机构
+    Agriculture: 农|林|牧|渔|其他
+
+projectPlanVerifyStatus:
+    submitted: Submitted
+    rejected: Rejected
+    approved: Approved
+    all: All
+
+offlineCourseAttendanceStatus:
+    all: All
+    attended: Attendence
+    unattended: Absence
+    none: No Attendance
+
+projectPlanExamResultStatus:
+    all: All
+    notStart: NotStart
+    doing: Doing
+    reviewing: Reviewing
+    passed: Passed
+    unpassed: Unpassed
+    absent: Absent
+
+offlineCourseHomeworkStatus:
+    all: All
+    submitted: Submitted
+    passed: Passed
+    unpassed: Unpassed
+    unsubmit: No Submit
+
+projectPlanTimeStatus:
+    all: All
+    ongoing: Ongoing
+    end: End
+
+projectPlanOfflineExamStatus:
+    unpassed: Unpassed
+    passed: Passed
+    all: All
+
+userLocked:
+    unlock: unlock
+    locked: locked
+
+dataCenterProjectPlanStatus:
+    all: All
+    published: Published
+    archived: Archived
+    closed: Closed
+
+dataCenterCourseStatus:
+    published: Published
+    closed: Closed
+
+teacherKeyWordType:
+    nickname: nickname
+    truename: truename
+    verifiedMobile: verifiedMobile
+    email: email
+
+leaseStatus:
+    unexpired: Unexpired
+    expired: Expired
+
+leaseCourseKeywordType:
+    title: Tile
+    resourceCode: Course Code

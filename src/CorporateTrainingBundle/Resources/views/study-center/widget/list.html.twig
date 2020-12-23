@@ -1,0 +1,39 @@
+{% set learnStatuses = learnStatuses|default([]) %}
+{% set previewUrl = previewUrl|default(null) %}
+
+<div class="js-tab-block-wrap">
+  <div class='c-ctr-task-item__nav-wrap'>
+    <ul class="nav nav-line js-tab-link-wrap">
+      <li class="js-tab-link active" >
+        <a href="javascript:;" >{{'project_plan.item_detail'|trans}}</a>
+      </li>
+      {% if tab_type == 'myTask' %}
+        <li class="js-tab-link" >
+          <a href="javascript:;">{{'project_plan.discussion'|trans}}</a>
+        </li>
+      {% endif %}
+      {% if tab_type == 'record' or tab_type == 'department_manage' %}
+        <li class="js-tab-link">
+          <a href="javascript:;">{{'project_plan.result_detail'|trans}}</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+  <div class="tab-block js-tab-sec is-active">
+    {% if course.taskNum == 0 %}
+      <div class="empty">{{ 'project_plan.empty'|trans }}</div>
+    {% else %}
+      {% include 'study-center/widget/list-lesson-part.html.twig' %}
+    {% endif %}
+  </div>
+  {% if tab_type == 'myTask' %}
+    <div class="tab-block js-tab-sec">
+      {% include 'study-center/widget/list-discuss-part.html.twig' %}
+    </div>
+  {% endif %}
+  {% if tab_type == 'record' or tab_type == 'department_manage' %}
+    <div class="tab-block js-tab-sec">
+      {% include 'study-center/widget/list-score-part.html.twig' %}
+    </div>
+  {% endif %}
+</div>

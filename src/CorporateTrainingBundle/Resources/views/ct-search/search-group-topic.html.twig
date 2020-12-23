@@ -1,0 +1,27 @@
+<div class='search-result-contaner'>
+  <div class="alert alert-blank alert-sm">{{ 'search.thread.result_for_you'|trans }} <span class="color-danger">{{ resultNum.group|default(0) }}</span>{{ 'search.thread.num'|trans }}</div>
+    {% set groups = data('Groups',{'count':4, 'keywords':app.request.get('q')}) %}
+    <div class='row search-container'>
+      {% for group in groups %}
+      <div class='col-md-6 search-group-list'>
+        <div class="media-left">
+          <a class="gray-darker" href="{{ path('group_show', {id: group.id}) }}" target="_blank" title="{{ group.title|default('') }}" style='width:60px;display:block'>
+          <img class='avatar-square-md img-responsive' src="{{filepath(group.logo, 'group.png')}}">
+          </a>
+        </div>
+        <div class="media-body">
+            <div class="title">
+              <a class="gray-darker ellipsis" href="{{ path('group_show', {id: group.id}) }}" target="_blank" title="{{ group.title|default('') }}">{{ group.title|highlight_keyword(app.request.get('q')|default('')) }}</a>
+            </div>
+            <div class="metas">
+              <span> <i class="es-icon es-icon-people"></i>{{ group.memberNum|default(0) }}</span>
+              <span> <i class="es-icon es-icon-textsms"></i>{{ group.postNum|default(0) }}</span>
+            </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  <div class="alert alert-blank alert-sm o-topic-sec__more">
+    <a href="{{ path('group_search_group', {'keyWord': app.request.get('q')}) }}" target="_blank">{{ 'search.thread.look_all'|trans }}</a>
+  </div>  
+</div>

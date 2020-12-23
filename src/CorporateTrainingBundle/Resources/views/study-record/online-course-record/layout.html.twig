@@ -1,0 +1,38 @@
+{% extends 'v2/layout.html.twig' %}
+
+{% do script(['libs/echarts.js', 'corporatetrainingbundle/js/study-center/record/index.js']) %}
+
+{% block header %}
+  {% if not is_mobile_client() %}
+    {{ parent() }}
+  {% endif %}
+{% endblock %}
+
+{% block head %}
+  {% include 'study-record/head.html.twig' with {  headType: 'statistics_overview', headTitle: 'study_record.online_course_record'|trans } %}
+{% endblock %}
+
+{% block page_title %}
+    {{ 'study_record.online_course_record'|trans }}
+{% endblock %}
+{% set side_nav = 'statistics' %}
+
+{% block main_body %}
+  {% if not is_mobile_client() %}
+    <ul class="cd-tabs">
+      <li {% if type_nav == 'statistics-overview' %}class="active"{% endif %}>
+        <a href="{{ path('study_record_statistics_overview', {userId:userId|default(app.user.id)}) }}">
+          {{ 'study_record.online_course_record.statistics_overview'|trans }}
+        </a>
+      </li>
+      <li {% if type_nav == 'detail' %}class="active"{% endif %}>
+        <a href="{{ path('study_center_my_study_record_detail', {userId:userId|default(app.user.id)}) }}">
+          {{ 'study_record.online_course_record.detail'|trans }}
+        </a>
+      </li>
+    </ul>
+  {% endif %}
+  {% block course_record_content %}
+      
+  {% endblock %}
+{% endblock %}

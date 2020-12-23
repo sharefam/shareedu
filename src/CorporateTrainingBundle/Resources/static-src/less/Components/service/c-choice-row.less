@@ -1,0 +1,48 @@
+.c-choice-row-wrap {
+  background-color: #FFFFFF;
+  border-radius: 2px;
+}
+
+.c-choice-row {
+  padding: 20px;
+
+  & + .c-choice-row {
+    border-top: 1px dashed #e4ecf3;
+  }
+
+  @media screen and (max-width: @screen-xs-max) {
+    padding: 10px;
+    font-size: 12px;
+  }
+}
+
+.c-choice-row__label {
+  padding: 5px 0;
+  float: left;
+}
+
+.c-choice-row__content {
+  margin-left: 90px;
+  overflow-x: auto;
+
+  @media screen and (max-width: @screen-xs-max) {
+    margin-left: 60px;
+
+    .ct-nav-link {
+      > li {
+        margin-right: 0;
+        padding: 5px 6px;
+      }
+    }
+  }
+}
+
+.c-choice-row__fill {
+  padding: 5px 0;
+
+  @media screen and (max-width: @screen-xs-max) {
+    padding: 0;
+  }
+}
+
+

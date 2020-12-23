@@ -1,0 +1,40 @@
+{% extends 'study-center/layout.html.twig' %}
+
+{% block keywords %}{% if categoryArray %}{{ categoryArray.name }}{% if categoryParent %}{{ ',' }}{{ categoryParent.name|default('') }}{% endif %}{% else %}{{ 'category.all_category' }}{% endif %}{% endblock %}
+{% block description %}{{ categoryArrayDescription|default('')|plain_text(100) }}{% endblock %}
+{% block title %}{{ categoryArray.name|default('category.all_category'|trans) }} - {{ setting('site.name') }}{% if setting('site.slogan') %}{{ ' - ' }}{{ setting('site.slogan') }}{% endif %}{% if not setting('copyright.owned') %} - Powered By EduSoho{% endif %}{% endblock %}
+
+{% do script(['corporatetrainingbundle/js/study-center/my-courses/index.js']) %}
+
+{% set tab_nav = 'favorited' %}
+{% set tab_type = 'myCourses' %}
+{% set path = app.request.get('_route') %}
+{% set studyCenterTitle = 'study_center.nav.my_courses'|trans %}
+
+{% block inner %}
+  <div class="my-courses">
+    <div class="my-courses-header">
+      {% if is_mobile_client() %}
+          {% include 'study-center/my-courses/h5-header.html.twig' %}
+      {% else %}
+        <div class="post-cet clearfix">
+          {% include 'study-center/my-courses/header.html.twig' %}
+        </div>
+      {% endif %}
+    </div>
+    <div class="my-courses-body course-list">
+      <div class="row">
+        {% if courseFavorites %}
+          {% for courseSet in courseFavorites %}
+            <div class="col-lg-4 col-md-4 col-xs-6">
+              {% include 'course/widgets/course-grid.html.twig' %}
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="empty">{{'study_center.my_courses.favorited_empty'|trans}}</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <nav class="text-center">{{ web_macro.paginator(paginator) }}</nav>
+{% endblock %}

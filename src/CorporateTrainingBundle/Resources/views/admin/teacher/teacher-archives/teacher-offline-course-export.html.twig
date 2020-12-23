@@ -1,0 +1,62 @@
+{% extends 'old-bootstrap-modal-layout.html.twig' %}
+
+
+{% set modalSize = 'large' %}
+
+{% block title %}{{ 'admin.teacher.teacher_archives.course.exporter'|trans }}{% endblock %}
+{% block body %}
+<style type="text/css">
+	.mtm div{
+		margin-bottom: 10px
+	}
+</style>
+<form id="user-export-form" class="form-horizontal" method="get" action="{{ path('exporter_export', {type: 'teacher_offline__course_profile' })}}">
+	<div class="row mtm">
+		<div class="col-md-offset-5">
+			<lable>{{ 'admin.teacher.teacher_archives.exporter.default_field'|trans }}</lable>
+		</div>
+ 		<div class="col-md-11 col-md-offset-1" >
+	 		<div class="row ">
+	 			<div class="col-md-6">
+	 				<input class="pull-left" id="title" name="choices[]" type="checkbox" value="课程名" checked="checked" />
+					<span class="pull-left">{{ 'admin.teacher.teacher_archives.exporter.field.title'|trans }}</span>
+	 			</div>
+	 			<div class="col-md-6">
+		 			<input class="pull-left" id="studentNum" name="choices[]" type="checkbox" value="学员数" checked="checked" />
+					<span class="pull-left">{{ 'admin.teacher.teacher_archives.exporter.field.student_num'|trans }}</span>
+				</div>
+				{% if setting('magic.enable_org','0') %}
+					<div class="col-md-6">
+		 				<input class="pull-left" id="attend" name="choices[]" type="checkbox" value="出勤率" checked="checked" />
+						<span class="pull-left">{{ 'admin.teacher.teacher_archives.exporter.field.attendance_rate'|trans }}</span>
+		 			</div>
+				{% endif %}
+				<div class="col-md-6">
+					<input class="pull-left" id="passHomework" name="choices[]" type="checkbox" value="作业通过率" checked="checked" />
+					<span class="pull-left">{{ 'admin.teacher.teacher_archives.exporter.field.pass_rate'|trans }}</span>
+				</div>
+        {% if is_plugin_installed('Survey') %}
+					<div class="col-md-6">
+						<input class="pull-left" id="courseSurveyScore" name="choices[]" type="checkbox" value="教学评价" checked="checked"  />
+						<span class="pull-left">{{ 'admin.teacher.teacher_archives.exporter.field.survey'|trans }}</span>
+					</div>
+        {% endif %}
+				<div class="col-md-6">
+					<input class="pull-left" id="createdTime" name="choices[]" type="checkbox" value="计划时间" checked="checked" />
+					<span class="pull-left">{{ 'admin.teacher.teacher_archives.exporter.field.plan_tiem'|trans }}</span>
+				</div>
+
+	 		</div>
+        </div>
+    </div>
+	<input type="hidden" name="surveyPlugin" value="{{ is_plugin_installed('Survey')|default(0) }}">
+	<input type="hidden" name="conditions" value="{{ conditions|default('') }}">
+ 	<input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+ 
+</form>
+{% endblock %}
+
+{% block footer %}
+  	<button id="user-export-btn" data-submiting-text="{{ 'form.btn.export.submiting'|trans }}" type="submit" class="btn btn-primary btn-sm pull-right mhs" data-toggle="form-submit" data-target="#user-export-form"><i class="glyphicon glyphicon-export"></i> {{ 'admin.teacher.teacher_archives.course.exporter'|trans }}</button>
+  	<a type="button" class="btn btn-link pull-right" data-dismiss="modal">{{ 'form.btn.cancel'|trans }}</a>
+{% endblock %}

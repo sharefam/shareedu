@@ -1,0 +1,43 @@
+{% extends 'offline-activity-manage/layout.html.twig' %}
+
+{% do script(['libs/echarts.js', 'corporatetrainingbundle/js/offline-activity-manage/statistics/index.js']) %}
+
+{% block title %}{{ 'offline_activity.statistics'|trans }} - {{ parent() }}{% endblock %}
+{% set side_nav = 'statistics' %}
+{% block main %}
+  <div class="panel panel-default panel-col">
+    <div class="panel-heading">
+      {{ 'offline_activity.statistics'|trans }}
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="panel panel-default">
+            <h4 class="text-center">{{ 'offline_activity.statistics.attendance_rate'|trans }}</h4>
+            <div class="chart-item" id="attend-chart"
+                 data-url="{{ path('offline_activity_attend_statistic', {'id':offlineActivity.id}) }}"
+                 style="height: 300px"></div>
+          </div>
+        </div>
+
+        <div class="col-xs-6">
+          <div class="panel panel-default">
+            <h4 class="text-center">{{ 'offline_activity.statistics.pass_rate'|trans }}</h4>
+            <div class="chart-item" id="pass-chart"
+                 data-url="{{ path('offline_activity_pass_statistic', {'id': offlineActivity.id}) }}"
+                 style="height: 300px"></div>
+          </div>
+        </div>
+
+        <div class="col-xs-12">
+          <div class="panel panel-default">
+            <h4 class="text-center">{{ 'offline_activity.statistics.score_distribution'|trans }}</h4>
+            <div class="chart-item" id="score-chart"
+                 data-url="{{ path('offline_activity_score_statistic', {'id': offlineActivity.id}) }}"
+                 style="height: 300px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

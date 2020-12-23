@@ -1,0 +1,21 @@
+{% extends 'old-bootstrap-modal-layout.html.twig' %}
+
+{% block title %}{{'admin.user.change_post'|trans}}{% endblock %}
+
+{% block body %}
+
+  <form class="form-horizontal" id="change-post-form"  action="{{ path('admin_user_change_post', {id:user.id}) }}"  method="post">
+
+         <div class="row form-group">
+           {% include 'post/post-tree-select.html.twig' with {modal: 'modal',selectedPost: user.postId|default(0)} %}
+         </div>
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+  </form>
+
+{% endblock %}
+
+{% block footer %}
+  <button id="change-post-btn" data-submiting-text="{{'form.btn.submit.submiting'|trans}}" class="btn btn-primary pull-right" data-toggle="form-submit" data-target="#change-post-form">{{'form.btn.submit'|trans}}</button>
+  <button type="button" class="btn btn-link" data-dismiss="modal">{{'form.btn.cancel'|trans}}</button>
+    <script>app.load('corporatetrainingbundle/controller/user/change-post')</script>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% import "macro.html.twig" as web_macro %}
+
+{% if threads|default() %}
+  {% for thread in threads %}
+    {% set author = users[thread.userId] %}
+    {% include 'study-center/thread/part/list-item.html.twig' %}
+    {% if loop.index >= 5%}
+      <div class="ta-ctr mtl">
+        <a class="link-primary" href="{{ path('my_course_show', {id:course.id, tab: 'threads'}) }}" target="_blank">{{ 'study_center.thread.list.course_show'|trans }}</a>
+      </div>
+    {% endif %}
+  {% endfor %}
+{% else %}
+  <div class="empty"> <i class="es-icon es-icon-textsms"></i> {{'study_center.thread.list.empty'|trans}}</div>
+{% endif %}

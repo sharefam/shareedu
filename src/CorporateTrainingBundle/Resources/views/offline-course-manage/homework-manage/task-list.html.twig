@@ -1,0 +1,57 @@
+{% extends 'offline-course-manage/layout.html.twig' %}
+{% import 'macro.html.twig' as web_macro %}
+
+{% block title %}{{ 'offline_course.homework_reviewing'|trans }} - {{ parent() }}{% endblock %}
+
+{% set side_nav = 'homework' %}
+
+{% block main %}
+  <div class="panel panel-default" role="offline-course-manage-base">
+    <div class="panel-heading">{{ 'offline_course.homework_reviewing'|trans }}</div>
+    <div class="panel-body">
+      {% for offlineCourseExt in offlineCourseExts if offlineCourse %}
+        {% set taskId = offlineCourseExt.id %}
+      <div class="clearfix testpaper-list">
+      <div class=" testpaper-info col-md-9">
+      <div>
+        <a href="{{ path('project_plan_offline_course_homework_list',{id: taskId}) }}">{{ tasks[taskId].title|default('') }}</a>
+      </div>
+      <div class="testpaper-describe">{{ tasks[taskId].homeworkDemand|purify_and_trim_html|raw }}</div>
+      <div class="testpaper-meta">
+        <span class="mrl">{{'offline_course.deadline'|trans}}：{{ tasks[taskId].homeworkDeadline|date('Y-m-d H:i') }}</span>
+      </div>
+    </div>
+
+    <div class="result-info col-md-3 text-center">
+      <div class="row">
+        <div class="count-info pull-left color-warning col-md-4">
+          <a href="{{ path('project_plan_offline_course_homework_list',{id: taskId}) }}">
+            <span class="testpaper-span ">{{'project_plan.status.not_review'|trans}}</span><br>
+            <p class="mtm pts">{{ tasks[taskId]['homeworkStatus']['submitted']['num']|default(0) }}</p>
+          </a>
+      </div>
+        <div class="count-info pull-left  color-success col-md-4">
+          <a href="{{ path('project_plan_offline_course_homework_list',{id: taskId}) }}">
+            <span class="testpaper-span">{{'project_plan.status.passed'|trans}}</span><br>
+            <p class="mtm pts">{{ tasks[taskId]['homeworkStatus']['passed']['num']|default(0) }}</p>
+          </a>
+      </div>
+        <div class="count-info pull-left color-danger col-md-4">
+          <a href="{{ path('project_plan_offline_course_homework_list',{id: taskId}) }}">
+            <span class="testpaper-span">{{'project_plan.status.unpass'|trans}}</span><br>
+            <p class="mtm pts">{{ tasks[taskId]['homeworkStatus']['unpassed']['num']|default(0) }}</p>
+          </a>
+      </div>
+      </div>
+    </div>
+  </div>
+<nav class="text-center">
+  {{ web_macro.paginator(paginator) }}
+</nav>
+{% else %}
+    <div class="empty">{{'course.testpaper_check.empty'|trans}}</div>
+{% endfor %}
+
+  </div>
+</div>
+{% endblock %}

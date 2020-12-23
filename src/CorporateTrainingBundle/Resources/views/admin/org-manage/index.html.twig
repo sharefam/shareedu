@@ -1,0 +1,88 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% set script_controller = 'corporatetrainingbundle/controller/org-manage/list' %}
+
+{% set menu = 'admin_org' %}
+
+{% block page_title %}
+  {{ currentMenu.code|parent_permission.name|trans({}, 'menu') }}
+{% endblock %}
+
+{% block page_buttons %}
+
+{% endblock %}
+
+{% block main %}
+  {% if manageOrgs|length > 1 %}
+    <div>
+      <form class="form-inline ct-well">
+        <div class="form-group prl">
+          <label class="control-label ft-sm">{{ 'admin.org_manage.org_choose'|trans }}：</label>
+          <select class="js-org-tree-select form-control" style="width: auto;">
+            {% for org in manageOrgs %}
+              <option value="{{ org.id }}" data-url="{{ path('admin_org', {'orgId': org.id}) }}" {% if app.request.query.get('orgId') == org.id %}selected="selected"{% endif %}>{{ org.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group prl">
+          <a class="btn btn-primary" href="{{ path('exporter_export', {type: 'org_list', parentId: app.request.query.get('orgId') ? app.request.query.get('orgId') : org.id}) }}">{{'admin.org_manage.btn.exporter_btn'|trans}}</a>
+        </div>
+        <div class="form-group prl">
+         {% include 'admin/org-manage/page-buttons.html.twig' %}
+        </div>
+      </form>
+    </div>
+  {% else %}
+   <form class="form-inline ct-well">
+      <div class="form-group">
+        {% include 'admin/org-manage/page-buttons.html.twig' %}
+      </div>
+    </form>
+  {% endif %}
+
+  <div class="org-tree js-org-tree" id="org-table">
+    <div class="row org-tree__head">
+      <div class="col-md-3">{{ 'admin.org_manage.org_name'|trans }}</div>
+      <div class="col-md-2">{{ 'admin.org_manage.org_code'|trans }}</div>
+      <div class="col-md-2">{{ 'admin.org_manage.org_childrenNum'|trans }}</div>
+      <div class="col-md-2">{{ 'admin.org_manage.org_nickname'|trans }}</div>
+      <div class="col-md-3">{{ 'admin.org_manage.operation'|trans }}</div>
+    </div>
+    <div class="org-tree__body" id="category-table-body" data-sort-url="{{ path('admin_org_sort') }}" >
+      <div class="org-tree-item js-org-tree-item" id='tree-item-{{ org.id }}'  data-refresh-url="{{ path('admin_org_show', {id: org.id}) }}">
+        <div class="row org-tree-item__head">
+          <div class="col-md-3">
+            <div class="org-tree-item__info">
+              <i id='load-btn-{{ org.id }}' class="org-tree-item-icon glyphicon glyphicon-chevron-right js-org-tree-item-load-btn" data-url="{{ path('admin_org_children_show', {id: org.id}) }}"></i>{{ org.name }}
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="org-tree-item__info">{{ org.code }}</div>
+          </div>
+          <div class="col-md-2">
+            <div class="org-tree-item__info org-tree-item__children_num">{{ org.childrenNum }}</div>
+          </div>
+          <div class="col-md-2">
+            <div class="org-tree-item__info">{{ user.nickname|default('')  }}</div>
+          </div>
+          <div class="col-md-3">
+            <div class="org-tree-item__hover">
+              <a href="javascript:;" class="btn btn-default btn-sm" data-url="{{ path('admin_org_update', {id:org.id}) }}" data-toggle="modal" data-target="#modal">
+                <i class="glyphicon glyphicon-edit"></i> {{ 'admin.org_manage.edit_btn'|trans }}
+              </a>
+              {% if org.depth <= 5 %}
+                <a href="javascript:;" class="btn btn-default btn-sm"
+                   data-url="{{ path('admin_org_batch_create', {parentId:org.id}) }}" data-toggle="modal"
+                   data-target="#modal"><i class="glyphicon glyphicon-plus"></i> {{ 'admin.org_manage.batch_add_btn'|trans }}
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="org-tree-item__body js-org-tree-item-wrap">
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

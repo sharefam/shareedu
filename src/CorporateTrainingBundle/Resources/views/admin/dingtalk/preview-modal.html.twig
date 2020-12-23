@@ -1,0 +1,20 @@
+{% import "macro.html.twig" as web_macro %}
+{% import "admin/macro.html.twig" as admin_macro %}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header" style="border-bottom: 0; ">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+            <img class="dingtalk-template-img"  src="{{ asset('static-dist/corporatetrainingbundle/img/dingtalk/'~type~'.jpg')}}">
+        </div>
+    </div>
+</div>
+
+{% include 'js_loader_async.html.twig' %}
+
+<script type="text/javascript">
+    window.seajsBoot && window.seajsBoot();
+    $("[data-toggle='popover']").popover();
+</script>

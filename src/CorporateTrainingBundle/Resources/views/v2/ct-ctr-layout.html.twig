@@ -1,0 +1,31 @@
+{% extends 'layout.html.twig' %}
+
+{% set bodyClass = 'cd-design' %}
+
+{% block full_content %}
+  <div class="container cd-container ct-mtl">
+    {% block ct_ctr_layout %}
+      {% block  ct_ctr_layout_head %}
+      {% endblock %}   
+
+      {% block ct_ctr_layout_body %}
+        <div class="cd-content">
+          {% block cd_content %}
+            {% block cd_head %}
+              <div class="cd-content__hd">
+                {% block cd_head_content %}
+                {% endblock %}
+              </div>
+            {% endblock %}
+            {% block cd_body %}
+              <div class="cd-content__bd">
+                {% block cd_body_content %}
+                {% endblock %}   
+              </div> 
+            {% endblock %}      
+          {% endblock %}      
+        </div>          
+      {% endblock %}
+    {% endblock %}
+  </div>
+{% endblock %}

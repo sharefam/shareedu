@@ -1,0 +1,59 @@
+{% extends 'study-record/layout.html.twig' %}
+{% set type_nav = 'project-plan' %}
+
+{% do script(['libs/easy-pie-chart/dist/jquery.easypiechart.js','libs/echo-js.js','corporatetrainingbundle/js/study-record/project-plan-record/index.js']) %}
+
+{% block training_record_content %}
+  <div class="project-plan-record-wrap">
+    {% for projectPlanGroup in projectPlans %}
+      <div class="ct-category">
+        <div class="ct-category__head hidden-xs">
+        {{ 'study_record.training_record.enroll_year' |trans({'%year%': projectPlanGroup[0].year|default(0)}) }}
+        </div>
+        {% for projectPlan in projectPlanGroup %}
+        {% set category = data('Category',{'categoryId': projectPlan.categoryId}) %}
+        <div class="ct-category__body">
+          <div class="c-time-item c-time-item--project-plan-record js-time-item js-page-wrapper">
+            <div class="c-time-item__head">
+              <div class="c-time-item__date hidden-xs">
+                <div class="c-time-item__day">{{ projectPlan.day|default(0) }}</div>
+                <div class="c-time-item__month">{{ projectPlan.month|month_format }}</div>
+              </div>
+              <div class="c-time-item__content">
+                <div class="project-plan-record">
+                  <div class="project-plan-record__head">
+                    <div class="project-plan-record__title">{{ projectPlan.name|default('') }}</div>
+                    <div class="project-plan-record__info ct-mts">
+                    {% if is_mobile_client() %} 
+                      <div>{{ 'project_plan.project_plan_date'|trans }}：{% if projectPlan.startTime %}{{ projectPlan.startTime|default('--')|date('Y-m-d')}}{% else %}--{% endif %} {{ 'project_plan.time_to'|trans }} {% if projectPlan.startTime %}{{ projectPlan.endTime|default('--')|date('Y-m-d') }}{% else %}--{% endif %}</div>
+                    {% else %}
+                    {{ 'project_plan.project_plan_date'|trans }}：{% if projectPlan.startTime %}{{ projectPlan.startTime|default('--')|date('Y-m-d')}}{% else %}--{% endif %} {{ 'project_plan.time_to'|trans }} {% if projectPlan.startTime %}{{ projectPlan.endTime|default('--')|date('Y-m-d') }}{% else %}--{% endif %}
+                   {% endif %}
+                    </div>
+                    <div class="ct-label ct-label--theme ct-mts">{{ category.name|default('project_plan.study_record.category'|trans) }}</div>
+                    <div class="project-plan-record__hover">
+                      <div class="js-chart course-pie-chart hidden-xs" data-percent="{{ projectPlan.progress|default(0) }}" >
+                        <a class="course-pie-chart-hover js-pie-chart-hover">
+                          <span class="js-course__percent">{{ projectPlan.progress|default(0)|round(0, 'common') }}%</span>
+                        </a>
+                      </div>
+                      <span class="project-plan-record__toggle-btn">
+                        <i class="es-icon es-icon-keyboardarrowdown js-page-load-btn" data-url="{{ path('study_record_courses_list', {id:projectPlan.id, userId: userId|default(app.user.id)}) }}"></i>
+                      </span>                  
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="c-time-item__body js-page-content mll">
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty">{{'project_plan.empty'|trans}}</div>
+    {% endfor %}
+    {{ web_macro.paginator(paginator) }}
+  </div>
+{% endblock %}

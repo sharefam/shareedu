@@ -1,0 +1,84 @@
+{% import "macro.html.twig" as web_macro %}
+
+{% set myRankNo = 0 %}
+{% set studyRanks = data('StudyRank', {'count': 5}) %}
+<div class="js-search-wrap">
+  <div class="panel panel-default aside-panel c-study-center-panel">
+    <div class="panel-heading">
+      <div class="panel-title">
+        {{'study_center.side_bar.study-rank-list'|trans}}
+      </div>
+    </div>
+
+    <div class="c-study-center-panel__tab">
+      <ul class="nav nav-text">
+        <li class="js-tab-link active" data-index="0">
+          <a href="javascript:;" data-user="{{ path('data_report_user_learn_rank_list', {type:'week', sourceFrom:'home'})}}" data-post="{{ path('data_report_org_learn_rank_list', {type:'week'})}}" data-url="{{ path('data_report_user_learn_rank_list', {type:'week', sourceFrom:'home'})}}">{{ 'site.date.week'|trans }}</a>
+        </li>
+        <li class="js-tab-link" data-index="1">
+          <a href="javascript:;" data-user="{{ path('data_report_user_learn_rank_list', {type:'month', sourceFrom:'home'})}}" data-post="{{ path('data_report_org_learn_rank_list', {type:'month'})}}" data-url="{{ path('data_report_user_learn_rank_list', {type:'month', sourceFrom:'home'})}}">{{ 'site.date.month'|trans }}</a>
+        </li>
+        <li class="js-tab-link" data-index="2">
+          <a href="javascript:;" data-user="{{ path('data_report_user_learn_rank_list', {type:'year', sourceFrom:'home'})}}" data-post="{{ path('data_report_org_learn_rank_list', {type:'year'})}}" data-url="{{ path('data_report_user_learn_rank_list', {type:'year', sourceFrom:'home'})}}">{{ 'site.date.year'|trans }}</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="c-study-center-panel__bd ptl">
+      <div class="js-ajax-tab-block-wrap">
+        <div class="c-home-rank-list tab-block js-tab-sec is-active">
+          {% if studyRanks.personStudyRanks %}
+            {% for studyRank in studyRanks.personStudyRanks %}
+              <div class="c-home-rank-item">
+                <div class="c-home-rank-item__l">
+                  {% if loop.index == 1 %}
+                    <img class="c-home-rank-item__img-icon" src="{{asset('static-dist/corporatetrainingbundle/img/medal_gold@2x.png')}}">
+                  {% elseif loop.index == 2 %}
+                    <img class="c-home-rank-item__img-icon" src="{{asset('static-dist/corporatetrainingbundle/img/medal_silver@2x.png')}}">
+                  {% elseif loop.index == 3 %}
+                    <img class="c-home-rank-item__img-icon" src="{{asset('static-dist/corporatetrainingbundle/img/medal_copper@2x.png')}}">
+                  {% else %}
+                    <div class="c-home-rank-item__label">{{ loop.index }}</div>
+                  {% endif %}
+
+                </div>
+                <div class="c-home-rank-item__r">
+                  {% set user = data('User', {userId:studyRank.userId}) %}
+                  <div class="pull-left">
+                    {{ web_macro.train_user_avatar(user, '', 'c-home-rank-item__img', true) }}
+                  </div>
+
+                  {% set userTrueName = data('UserProfile', {userId:studyRank.userId}) %}
+                  <div class="pull-left mlm">
+                    <div class="c-home-rank-item__name">
+                      {% if userTrueName.truename %}
+                        {{ userTrueName.truename }}
+                      {% else %}
+                        {{ user.nickname|default('') }}
+                      {% endif %}
+                    </div>
+                    {% set orgs = data('Orgs', {orgIds:user.orgIds}) %}
+                    <div class="c-home-rank-item__post">{{ orgs.0.name|default('--') }}
+                      {% if orgs.1|default(false) %}
+                        <i class="es-icon es-icon-more ft-xsm" data-toggle="popover" data-container="body" data-trigger="hover"
+                           data-placement="top" data-content="{{ orgs.orgNames|default() }}"></i>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="c-home-rank-item__date pull-right">{{ studyRank.totalLearnTime|time_format_hour }}</div>
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="c-home-rank__empty-wrap">
+              <img class="c-home-rank__empty-img" src="{{ asset('static-dist/corporatetrainingbundle/img/system-default/empty_rank_list.png')}}">
+              <div class="">
+              {{'study_center.side_bar.study-rank-list.empty'|trans}}
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

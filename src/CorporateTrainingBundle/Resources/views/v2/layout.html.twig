@@ -1,0 +1,41 @@
+{% extends 'layout.html.twig' %}
+
+{% set bodyClass = 'cd-design' %}
+
+{% block full_content %}
+  <div class="container cd-container {% if is_mobile_client() %} h5-container{% endif %}">
+    {% block head %}
+    {% endblock %}
+    <div class="cd-content {% if cdContentClass|default('') %}{{ cdContentClass }}{% endif %}">
+      {% block sidebar %}
+        {% if not is_mobile_client() %}
+          {% include 'v2/sidebar.html.twig' with { side_nav: side_nav|default('') } %}
+        {% endif %}
+      {% endblock %}
+
+      {% block main %}
+        <div class="cd-main">
+          {% if not is_mobile_client() %}
+            <div class="cd-main__heading">
+              {% block main_heading %}
+                <div class="cd-main__title">
+                  {% block page_title %}{% endblock %}
+                </div>
+              {% endblock %}
+            </div>
+          {% endif %}
+          <div class="cd-main__body">
+            {% block main_body %}
+            {% endblock %}
+          </div>
+        </div>
+      {% endblock %}
+    </div>
+    </div>
+{% endblock %}
+
+{% block esBar %}
+{% endblock %}
+
+{% block floatConsult %}
+{% endblock %}

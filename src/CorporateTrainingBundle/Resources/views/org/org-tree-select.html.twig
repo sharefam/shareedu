@@ -1,0 +1,51 @@
+{% if setting('magic.enable_org', '0') %}
+  {% set modal = modal|default(null) %}
+
+  {% if modal == 'modal' %}
+    <script>app.load('topxiaadminbundle/controller/widget/category-select')</script>
+  {% else %}
+      {% do load_script('topxiaadminbundle/controller/widget/category-select') %}
+  {% endif %}
+
+<style>
+  .tree-select {
+    min-width: 100px;
+  }
+</style>
+
+  {% set colmd = colmd|default(8) %}
+  {% set lablecolmd = lablecolmd|default(2) %}
+  {% set nocolmd = nocolmd|default(false) %}
+  {% set nolable = nolable|default(false) %}
+  {% set inputClass = inputClass|default('') %}
+  {% set user = app.user %}
+  {% set userOrgCodes = user.manageOrgCodes %}
+
+  {#默认用户所属部门取默认值使用带参则为userOrg管理范围部门取默认值#}
+  {% if userOrg|default() %}
+    {% set userOrgCodes = user.orgCodes %}
+  {% endif %}
+
+  {% set selectedOrgCode = app.request.get('orgCode')|default(userOrgCodes[0]) %}
+  {% set currentOrgTree = data('OrgTreeCurrentUser',{orgCodes: userOrgCodes }) %}
+
+  <div class="form-group {% if modal == 'list' %}controls{% endif %}">
+    {% if modal != 'list' %}
+    <label class="{% if not nocolmd %} col-md-{{lablecolmd}}{% endif %} control-label {% if nolable %}hidden{% endif %}">{{'site.org'|trans}}</label>
+    <div class="{% if not nocolmd %} col-md-{{colmd}} {% endif %}  controls">
+    {% endif %}
+
+    <select data-role="tree-select" name="orgCode" class="form-control tree-select {{inputClass}}">
+      {% if currentOrgTree %}
+        <option value={{ currentOrgTree.0.orgCode }}>{{ currentOrgTree.0.name }}</option>
+        {% for org in currentOrgTree %}
+          <option value={{ org.orgCode }} {% if org.orgCode == selectedOrgCode %}selected{% endif %} {% if not org.selectable|default(false) %}disabled{% endif %}>{% for i in 1..(org.depth-1) if org.depth > 1 %}　{% endfor %}{{ org.name }}</option>
+        {% endfor %}
+      {% endif %}
+    </select>
+
+    {% if modal != 'list' %}
+    </div>
+    {% endif %}
+  </div>
+{% endif %}

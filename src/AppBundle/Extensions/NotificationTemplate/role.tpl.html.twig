@@ -1,0 +1,17 @@
+{% import 'macro.html.twig' as macro %}
+<li class="media">
+  <div class="pull-left">
+    <span class="glyphicon glyphicon-volume-down media-object"></span>
+  </div>
+  <div class="media-body">
+    <div class="notification-body">
+      {% set data = notification.content %}
+      {% set user = data('User', {userId:data.userId}) %}
+      {% set who = macro.link(data.userName, path('user_show',{id:user.uuid})) %}
+      {{ 'notification.role'|trans({'%role%':data.role, '%who%':who})|raw }}
+    </div>
+    <div class="notification-footer">
+      {{ notification.createdTime|date_format }}
+    </div>
+  </div>
+</li>

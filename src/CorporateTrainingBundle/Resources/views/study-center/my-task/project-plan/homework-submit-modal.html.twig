@@ -1,0 +1,40 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+{% set modalSize = 'large' %}
+{% do script(['libs/jquery-validation.js', 'corporatetrainingbundle/js/study-center/submit-homework/index.js']) %}
+{% set modal_class = 'project-plan-apply-modal' %}
+
+{% block title %}{{ 'project_plan.study_center.submit_homework'|trans }}{% endblock %}
+{% block body %}
+  <form class="form-horizontal" id="submit-homework-form" autocomplete="off" action="{{ path('project_plan_offline_course_homework_submit', {offlineCourseTaskId:offlineCourseTaskId}) }}" method="post">
+  <div class="ct-field">
+    {{ task.homeworkDemand|default() }}
+  </div>
+  <div class="form-group">
+    <label class="col-md-3 control-label">
+      {{ 'project_plan.study_center.homework_deadline'|trans }}:
+    </label>
+    <div class="col-md-9">
+      <div class="form-control-static">
+        {% if task.homeworkDeadline %}{{ task.homeworkDeadline|date('Y-m-d')}}{% else %}--{% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-3 control-label">
+      {{ 'project_plan.study_center.submit_homework'|trans }}:
+    </label>
+    <div class="col-md-9">
+      <div class="ct-attachment-reset form-control-static">
+        {{ render(controller('AppBundle:File/Attachment:formFields', {targetType: 'projectPlaning.offline.homework', targetId: homeworkResult.id|default(0)}, { 'showLabel': true })) }}
+      </div>
+    </div>
+  </div>
+
+</form>
+{% endblock %}
+
+{% block footer %}
+    <button type="button" class="ct-btn ct-btn-default" data-dismiss="modal">{{ 'project_plan.btn.cancel_btn'|trans }}</button>
+    <button class="ct-btn ct-btn-primary" id="homework-btn" data-loading-text="{{ 'project_plan.btn.submit_loading_btn'|trans }}" type="submit">{{ 'project_plan.btn.submit'|trans }}</button>
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+{% endblock %}

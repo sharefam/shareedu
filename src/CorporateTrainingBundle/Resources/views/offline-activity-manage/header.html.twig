@@ -1,0 +1,35 @@
+{% import "macro.html.twig" as web_macro %}
+{% do script(['corporatetrainingbundle/js/offline-activity-manage/header/index.js']) %}
+
+<div class="es-section course-manage-header clearfix">
+    <a href="{{ path('offline_activity_detail', {id: offlineActivity.id}) }}">
+      <img class="picture" src="{{ filepath(offlineActivity['cover']['large']|default(''), 'activity.png') }}" /> <!-- courseSet.largePicture -->
+    </a>
+  <h1 class="title">
+    <a class="link-dark" href="{{ path('offline_activity_detail', {id: offlineActivity.id}) }}">{{ offlineActivity.title|default()}}</a>
+    {% if offlineActivity.status=='closed' %}
+      <span class="label label-danger ">{{'offline_activity.closed'|trans}}</span>
+    {% elseif offlineActivity.status=='draft' %}
+      <span class="label label-warning ">{{'offline_activity.draft'|trans}}</span>
+    {% elseif offlineActivity.status=='published' %}
+      <span class="label label-success ">{{'offline_activity.published'|trans}}</span>
+    {% endif %}
+  </h1>
+  <div class="teachers">
+      {{'offline_activity.type'|trans}}:{{category.name|default()}}
+  </div>
+
+  <div class="toolbar hidden-xs">
+    <div class="btn-group">
+      {% if has_permission('admin_offline_activity') %}
+        <a class="btn btn-default btn-sm" href="{{ path('admin_offline_activity') }}">{{'offline_activity.return_to_activity'|trans}}</a>
+      {% endif %}
+    </div>
+
+    {% if offlineActivity.status != 'published' %}
+      <div class="btn-group">
+        <button class="btn btn-success btn-sm offline-activity-publish-btn" data-url="{{ path('offline_activity_manage_publish', {id:offlineActivity.id}) }}">{{'offline_activity.open'|trans}}</button>
+      </div>
+    {% endif %}
+  </div>
+</div>

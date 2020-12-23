@@ -1,0 +1,32 @@
+{% import "macro.html.twig" as web_macro %}
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>{{ 'project_plan.member.nick_name'|trans }}</th>
+    <th>{{ 'project_plan.member.department_post'|trans }}</th>
+    <th>{{ 'project_plan.member.score'|trans }}</th>
+    <th>{{ 'project_plan.study_data.exam_result'|trans }}</th>
+    <th>{{ 'project_plan.operation'|trans }}</th>
+  </tr>
+  </thead>
+  <tbody>
+  <p class="text-muted">
+    <span><strong>{{'project_plan.total'|trans}}{{ projectPlanMemberCount|default(0) }}{{ 'site.data.people'|trans }}</strong></span>
+  </p>
+  {% for projectPlanMember in members|default(null) %}
+    {% include 'project-plan/exam-manage/offline-exam/member-list-tr.html.twig' %}
+  {% else %}
+    <tr>
+      <td class="text-center" colspan="20">
+        <div class="empty">
+          {{ 'project_plan.member.empty'|trans }}
+        </div>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<nav class="text-center">
+  {{ web_macro.ajax_paginator(paginator) }}
+</nav>

@@ -1,0 +1,53 @@
+<div class="study-rank">
+  <div class="aside-panel">
+    <div class="aside-panel-heading ct-mtxl clearfix">
+      <span class="aside-panel-heading_title fl">{{ 'admin.data_center.user_data.study_rankings.top_20'|trans }}</span>
+      <div class="o-ct-tab_time fl">
+        <ul class="clearfix" data-type="time">
+          <li class="js-tab-link active">
+            <a href="javascript:;" data-url="{{ path('admin_user_top_twenty_list') }}" data-value="week">{{ 'site.date.week'|trans }}</a>
+          </li>
+          <li class="js-tab-link">
+            <a href="javascript:;" data-url="{{ path('admin_user_top_twenty_list') }}" data-value="month">{{ 'site.date.month'|trans }}</a>
+          </li>
+          <li class="js-tab-link">
+            <a href="javascript:;" data-url="{{ path('admin_user_top_twenty_list') }}" data-value="year">{{ 'site.date.year'|trans }}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="o-ct-tab_time fl">
+        <ul class="clearfix" data-type="courseType">
+          <li class="js-tab-link active">
+            <a href="javascript:;" data-url="{{ path('admin_user_top_twenty_list') }}" data-value="online">{{ 'admin.data_center.user_data.learn.online'|trans }}</a>
+          </li>
+          <li class="js-tab-link">
+            <a href="javascript:;" data-url="{{ path('admin_user_top_twenty_list') }}" data-value="offline">{{ 'admin.data_center.user_data.learn.offline'|trans }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="form-inline ct-well ct-mbl">
+      <div class="form-group ft-sm prl">{{ 'admin.data_center.user_data.org.filter'|trans }}</div>
+      <div class="form-group prl">
+         {# {% include 'org/org-treeview.html.twig' with {id: 'user-orgCode-rank', placeholder: "--组织机构--", width:240, parameter: 'orgCode', orgCode: '', arrTree:  build_org_tree(app.user.manageOrgCodes), modal: 'list', isFront: 0} %} #}
+         {% include 'org-select/index.html.twig' with {
+            id: 'user-orgCode-rank',
+            placeholder: 'admin.org.select_placeholder'|trans,
+            data: build_org_tree(app.user.manageOrgCodes),
+            treeName: 'orgCode'
+          }
+        %}
+      </div>
+      <div class="form-group ft-sm prl">{{ 'admin.data_center.user_data.post.filter'|trans }}</div>
+      <div class="dis-i-b prl">
+        {% include 'post/post-tree-select.html.twig' with {modal: 'list', selectedWith: 120} %}
+      </div>
+      <div class="form-group">
+        <button class="btn btn-primary js-rank-search" data-url="{{ path('admin_user_top_twenty_list') }}">{{ 'form.btn.search'|trans }}</button>
+      </div>
+    </div>
+    <div class="js-rank-list">
+      {{ render(controller('CorporateTrainingBundle:Admin/Data/UserLearnData:topTwentyList')) }}
+    </div>
+  </div>
+</div>

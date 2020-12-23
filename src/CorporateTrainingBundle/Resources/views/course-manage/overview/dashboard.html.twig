@@ -1,0 +1,49 @@
+<!-- 概览 -->
+<div class="dashboard row">
+  <div class="col-xs-4 item bottom-border">
+    <span class="number">{{ summary.studentNum }}
+      {% if summary.studentNumToday %}
+        <span class="incre">+{{ summary.studentNumToday }}</span>
+      {% endif %}
+    </span>
+    <div class="title">{{ 'course_manage.dashboard.title'|trans }}</div>
+  </div>
+  <div class="col-xs-4 item bottom-border">
+    <span class="number">{{ summary.finishedNum }}
+      {% if summary.finishedNumToday %}
+        <span class="incre">+{{ summary.finishedNumToday }}</span>
+      {% endif %}
+    </span>
+    <div class="title">{{ 'course.dashboard.finished_numbers'|trans }}</div>
+  </div>
+  <div class="col-xs-4 item bottom-border no-right-border">
+    <span class="number">{{ totalLearnTime|default(0)|time_format }}
+    </span>
+    <div class="title">{{ 'course_manage.total_learn_time'|trans }}
+    </div>
+  </div>
+  <div class="col-xs-4 item">
+    <span class="number">{{ summary.noteNum }}
+      {% if  summary.noteNumToday %}
+        <span class="incre">+{{ summary.noteNumToday }}</span>
+      {% endif %}
+    </span>
+    <div class="title">{{ 'course.dashboard.notes_numbers'|trans }}</div>
+  </div>
+  <div class="col-xs-4 item">
+    <span class="number">{{ summary.askNum }}
+      {% if summary.askNumToday  %}
+        <span class="incre">+{{ summary.askNumToday }}</span>
+      {% endif %}
+    </span>
+    <div class="title">{{ 'course.dashboard.questions_numbers'|trans }}</div>
+  </div>
+  <div class="col-xs-4 item no-right-border">
+    <span class="number">{{ summary.discussionNum }}
+      {% if summary.discussionNumToday %}
+        <span class="incre">+{{ summary.discussionNumToday }}</span>
+      {% endif %}
+    </span>
+    <div class="title">{{ 'course.dashboard.discussions_numbers'|trans }}</div>
+  </div>
+</div>

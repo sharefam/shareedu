@@ -1,0 +1,73 @@
+{% extends 'project-plan/member/member-layout.html.twig' %}
+
+{% do script(['libs/select2.js', 'libs/bootstrap-treeview.js','libs/jquery-validation.js','corporatetrainingbundle/js/project-plan/verify-list/index.js']) %}
+
+{% import "macro.html.twig" as web_macro %}
+{% set side_nav = 'verify-manage' %}
+{% set member_nav = 'verify' %}
+
+{% block main_content %}
+  <form class="department-manage-search-form form-inline clearfix mbl" id="list-search" action="" method="get">
+    <div class="form-group">
+      <label>{{ 'form.placeholder.keyword'|trans }}：</label>
+      <input type="text" id="username" name="username" class="form-control department-manage-search-form-group__info" value="{{ app.request.query.get('username') }}"
+             placeholder="{{ 'project_plan.username_truename'|trans }}">
+    </div>
+
+    <div class="form-group department-manage-search-form-group">
+      <label>{{ 'project_plan.status_filter'|trans }}：</label>
+      <select class="department-manage-search-form-group__type form-control" id="status" name="status">
+        {{ select_options(dict('projectPlanVerifyStatus'), app.request.query.get('status') ? app.request.query.get('status') : 'all') }}
+      </select>
+    </div>
+
+    <div >
+      <button class="btn btn-primary">{{ 'form.btn.search'|trans }}</button>
+      <a class="btn btn-primary mlm" href="{{ path('exporter_export', {type: 'project_plan_enrollment_record', projectPlanId: projectPlan.id,
+        status: app.request.query.get('status') ? app.request.query.get('status') : 'all', username: app.request.query.get('username') }) }}">{{'project_plan.enrollment_record.export'|trans}}</a>
+    </div>
+
+  </form>
+  <div class="pull-left">
+    <div class="form-group mrs">
+      <label class="mrl">
+        {{'project_plan.total'|trans}}<span class="color-primary"> {{recordCounts|trans}} </span>{{ 'site.data.people'|trans }}
+      </label>
+    </div>
+  </div>
+
+  <div class="pull-right">
+    <div class="form-group mrs">
+      <label class="mrl">
+        {{'project_plan.selected'|trans}}：<span class="color-primary" id="selected-count"> 0</span>{{ 'project_plan.selected_tips_end'|trans }}
+      </label>
+      <input id="recordIds" type="hidden" value="">
+      <a class="btn btn-default btn-sm" id="clear-cookies" href="javascript:;">{{'project_plan.enrollment_record.emptying'|trans}}</a>
+      <a class="btn btn-primary btn-sm" id="batch-audit" data-url="{{ path('project_plan_verify_batch_audit') }}" data-toggle="modal" data-target="#modal">{{'project_plan.enrollment_record.batch_audit'|trans}}</a>
+    </div>
+  </div>
+  <table class="table table-striped table-hover" id="quiz-table">
+    <thead>
+    <tr>
+      <th width="5%"><input class="batch-select" type="checkbox" ></th>
+      <th width="10%">{{'user.fields.truename_label'|trans}}</th>
+      <th width="15%">{{'project_plan.member.department_post'|trans}}</th>
+      <th width="10%">{{'status'|trans}}</th>
+      <th width="15%">{{'project_plan.enrollment_record.enrollment_data'|trans}}</th>
+      <th width="15%">{{'project_plan.enrollment_record.enrollment_remark'|trans}}</th>
+      <th width="20%">{{'project_plan.enrollment_record.enrollment_time'|trans}}</th>
+      <th width="10%">{{'project_plan.enrollment_record.operation'|trans}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for record in records %}
+      {% include '@CorporateTraining/project-plan/verify/verify-list-tr.html.twig' %}
+    {% else %}
+      <tr>
+        <td colspan="20"><div class="empty">{{'project_plan.enrollment_record.empty'|trans}}</div></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {{ web_macro.paginator(paginator) }}
+{% endblock %}

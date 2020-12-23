@@ -1,0 +1,114 @@
+{% extends 'layout.html.twig' %}
+{% do script(['libs/jquery-validation.js','app/js/auth/login/index.js','corporatetrainingbundle/js/header/index.js']) %}
+
+{% block header %}
+  {% include 'site-hint.html.twig' %}
+  {{ block_show('jianmo:login_bg') }}
+{% endblock %}
+
+{% set bodyClass = "login index_bg" %}
+{% block title %}{{ 'user.login.content_title'|trans }} - {{ parent() }}{% endblock %}
+{% set position_code = 1 %}
+{% block content %}
+
+  {% if app.request.cookies.get('modalOpened') == 1 %}
+    <a href="#modal" class=" hidden" data-toggle="modal"
+       data-url="{{ path('card_info',{'cardType':app.request.query.get('cardType'),'cardId':app.request.query.get('cardId')}) }}"
+       class="hidden"><span class="receive-modal"></span></a>
+  {% endif %}
+  {% set block = data('Block', {'code': 'jianmo:login_position'}) %}
+  {% set position_code = block.blockId ? block.data.texts : block.meta.items.texts.select|default(1) %}
+
+  <div class="login-container" data-code={{position_code}}>
+    <div class="es-section login-section login-write-info {% if setting('login_bind.enabled') and  setting('login_bind.only_third_party_login')%}{% elseif (setting('login_bind.enabled') and (setting('login_bind.weixinweb_enabled') or setting('login_bind.dingtalkweb_enabled'))) or setting('sync_department_setting.enable') %}login-third-party{% endif %} mbm">
+     {% if setting('site.loginLogo') %}
+      <div class="login-logo-wrap text-center">
+        <img class="login-logo" src="{{ filepath('../' ~ setting('site.loginLogo'),'') }}">
+      </div>
+    {% else %}
+      <div class="login-logo-wrap text-center">
+        <img class="login-logo" src="/assets/img/logo/login_logo.png">
+      </div>
+    {% endif %}
+      <div class="login-main">
+        <form id="login-form" class="form-vertical" method="post" action="{{ path('login_check') }}">
+          {% if not setting('login_bind.only_third_party_login')%}
+            {% if error %}
+              <div class="alert alert-danger alert-danger-position">{% if error.message == 'Bad credentials.' %}{{ 'site.user_password.error_tips'|trans }}{% else %}{{ error.message|trans }}{% endif %}</div>
+            {% endif %}
+            {{ web_macro.flash_messages() }}
+            <div class="form-group mbl">
+              <label class="control-label hidden" for="login_username">{{ 'user.login.account_label'|trans }}</label>
+              <div class="controls input-icon-wrap">
+                <i class="es-icon es-icon-my"></i>
+                <input class="form-control input-md input-md-style" id="login_username" type="text" name="_username"
+                       value="{{ last_username }}" required placeholder="{% if is_plugin_installed('LDAP') and get_parameter('ldap_login_enabled') %}{{ 'user.oauth.ldap.username_label'|trans }}{% else %}{{ 'user.login.account_placeholder'|trans }}{% endif %}"/>
+                <div class="help-block"></div>
+              </div>
+            </div>
+
+            <div class="form-group login-form-group login-form-group--pwd">
+              <label class="control-label hidden" for="login_password">{{ 'user.login.password_label'|trans }}</label>
+              <div class="controls input-icon-wrap">
+                <i class="es-icon es-icon-lock"></i>
+                <input class="form-control input-md login-input input-md-style" id="login_password" type="password"
+                       name="_password" required placeholder='{{ 'user.login.password_placeholder'|trans }}' maxlength="20"/>
+              </div>
+            </div>
+
+            <div class="form-group btn-block-wrap">
+              <button class="btn btn-primary btn-block bor-no js-btn-login" type="button">{{ 'user.login.submit_button'|trans }}</button>
+            </div>
+
+            <div class="form-group mbl auto-login-checkbox-wrap">
+              <div class="controls">
+                <input type="checkbox" name="_remember_me" checked="checked"> {{ 'login.auto_login_checkbox'|trans }}
+                {% if is_plugin_installed('LDAP') and get_parameter('ldap_login_enabled') %}
+                {% else %}
+                  <a href="{{ path('password_reset') }}" class="login-find-pwd link-gray">{{ 'user.login.find_password'|trans }}</a>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-group mbl auto-login-checkbox-wrap">
+              <div class="controls">
+                {% if setting('magic.enable_language_switch') %}
+                  <li class='dropdown nav-hover login_switch' style="list-style: none; width: 105px;">
+                      <a href='javascript:;' class='dropdown-toggle more-lan' data-toggle="dropdown" data-lan={{app.request.locale}}>
+                      <span class="glyphicon glyphicon-chevron-down" style="font-size: 12px"></span>
+                      <span class='show_lan'></span>
+                      </a>
+                      <ul class="dropdown-menu lan-menu" role="menu" style="width: 50px;">
+                        <li><a href="{{ path('switch_language', {'language': 'zh_CN', '_target_path': app.request.uri}) }}">中文</a></li>
+                        <li><a href="{{ path('switch_language', {'language': 'en', '_target_path': app.request.uri}) }}">English</a></li>
+                      </ul>
+                  </li>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+          {% if setting('login_bind.enabled') or setting('sync_department_setting.enable') %}
+            {{ render(controller('AppBundle:Login:oauth2LoginsBlock', {targetPath:_target_path})) }}
+          {% endif %}
+
+          <div class="es-box-heading mtl"></div>
+
+          <input type="hidden" name="_target_path" value="{{ _target_path }}">
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+        </form>
+      </div>
+    </div>
+
+    {% set showLatestLoginUser = true %}
+    {% if showLatestLoginUser %}
+      {% include 'login/latest-login-users.html.twig' %}
+    {% endif %}
+  </div>
+
+  {% include 'ct-default/footer-index.html.twig' %}
+
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'layout.html.twig' %}
+{% import 'macro.html.twig' as macro %}
+{% set bodyClass = "h5-dashbord" %}
+{% do script(['corporatetrainingbundle/js/h5/dashbord/index.js']) %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+  <div class="h5-user-dashbord">
+    <div class="user-dashbord-top pos-rel">
+      <div class="user-dashbord-top__content user-dashbord-shadow clearfix">
+        <img class="user-dashbord-top__avatar pull-left" src="{{ filepath(app.user.largeAvatar, 'avatar.png') }}">
+        <div class="user-dashbord-top__info ct-mlm pull-left">
+            <div class="user-dashbord-top__name">{{ app.user.nickname}}</div>
+            <div class="user-dashbord-top__org">{{ orgNames }}</div>
+        </div>
+      <a href="{{path('settings')}}" class="user-arrow"> <i class="es-icon es-icon-list"></i></a>
+      </div>
+    </div>
+    <div class="user-dashbord-bottom ct-mtxl">
+      <a href="{{path('my_study_record')}}" class="dashbord-list-item clearfix">
+        <div class="pull-left dashbord-list-item__l">
+          <i class="es-icon es-icon-learningrecord icon-txt"></i><span class="ct-mls">{{ 'project_plan.learn_record'|trans }}</span>
+        </div>
+        <div class="pull-right dashbord-list-item__r">
+          <i class="es-icon es-icon-list"></i>
+        </div>
+      </a>
+      {% if is_plugin_installed('RewardPoint') and setting('reward_point.enable') == 1|default()%}
+        <a href="{{path('my_reward_point_mall')}}" class="dashbord-list-item clearfix">
+          <div class="pull-left dashbord-list-item__l">
+            <i class="es-icon es-icon-activity icon-txt"></i><span class="ct-mls">{{'my.reward_point.mall'|trans({'%name%':setting('reward_point').name|default('admin.reward_point'|trans)})}}</span>
+          </div>
+          <div class="pull-right dashbord-list-item__r">
+            <i class="es-icon es-icon-list"></i>
+          </div>
+        </a>
+      {% endif %}
+      {% if is_plugin_installed('QA')%}
+        <a href="{{path('qa_homepage')}}" class="dashbord-list-item clearfix">
+          <div class="pull-left dashbord-list-item__l">
+            <i class="es-icon es-icon-Questionsandanswers icon-txt"></i><span class="ct-mls">{{ 'admin.mail_setting.mail_notification.qa.scene'|trans }}</span>
+          </div>
+          <div class="pull-right dashbord-list-item__r">
+            <i class="es-icon es-icon-list"></i>
+          </div>
+        </a>
+      {% endif %}
+      <a href="{{path('my_group_member_join')}}" class="dashbord-list-item clearfix">
+        <div class="pull-left dashbord-list-item__l">
+          <i class="es-icon es-icon-group icon-txt"></i><span class="ct-mls">{{ 'group.my_group_btn'|trans }}</span>
+        </div>
+        <div class="pull-right dashbord-list-item__r">
+          <i class="es-icon es-icon-list"></i>
+        </div>        
+      </a> 
+      <a href="{{path('settings_security')}}" class="dashbord-list-item clearfix">
+        <div class="pull-left dashbord-list-item__l">
+          <i class="es-icon es-icon-Setup icon-txt"></i><span class="ct-mls">{{ 'user.settings.security_menu'|trans }}</span>
+        </div>
+        <div class="pull-right dashbord-list-item__r">
+          <i class="es-icon es-icon-list"></i>
+        </div>        
+      </a> 
+    </div>
+   <a href="{{path('logout')}}" class="user-logout-btn">{{ 'homepage.header.logout'|trans }}</a>
+  </div>
+{% endblock %}

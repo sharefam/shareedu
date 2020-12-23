@@ -1,0 +1,268 @@
+{# 新鲜事 #}
+{% set liveTasks = data('FindOrgAndFullSiteLiveCourse', {'count': 3}) %}
+{% set headLines = data('LatestArticles', {'count': 2, 'type':'featured'}) %}
+{% set headLinesNum = count(headLines) %}
+{% set news = data('News', {'count': 4}) %}
+{% set threads = data('HotThreads', {'count': 5}) %}
+{% set studyRanks = data('StudyRank', {'count': 5}) %}
+
+<section class="o-home-sec">
+  <div class="container">
+    <div class="o-home-sec__hd">
+      <div class="o-home-sec__title hidden-xs">{{config.title|default(config.defaultTitle|trans)}}</div>
+        {% if liveTasks %}
+        <div class="o-home-sec__sw">
+          <div id="home-mes" class="swiper-container home-mes">
+            <div class="swiper-wrapper">
+              {% if liveTasks %}
+              {% for liveTask in liveTasks %}
+              <div class="swiper-slide">
+                <a class="home-mes__item" href = "{{ path('course_show', {id: liveTask.courseId}) }}">{{ 'homepage.news.text_live_ongoing'|trans }}： {{ liveTask.title }}</a>
+              </div>
+              {% endfor %}
+              {% endif %}
+            </div>
+          </div>
+        </div> 
+      {% else %}
+      {% endif %}  
+
+    </div>  
+    <div class="o-home-sec__bd">
+      <div class="row">
+        <div class="col-md-4">
+          {% if is_mobile_client() %} 
+            <div class="m-home-sec__title pos-rel">{{ 'homepage.news.card_news'|trans }}
+              <a href="{{ path('article_show') }}" class="m-article-more">{{ 'site.default.more'|trans }}</a>
+            </div>
+          {% endif %}
+          <div class="c-home-panel m-home-sec" style="height: 470px;">
+            <div class="c-home-panel__hd hidden-xs">
+              <div class="c-home-panel__title">{{ 'homepage.news.card_news'|trans }}</div>
+            </div>
+            <div class="c-home-panel__bd {% if is_mobile_client() %} bor-no{% endif %}">
+              <div class="c-home-new-s-wrap row">
+                {% if headLines %}
+                {% for headLine in headLines %}
+                <div class="col-xs-6">
+                  
+                  <a class="c-home-new-s" href="{{ path('article_detail', {id:headLine.id}) }}" style="background-image: url({{ filepath(headLine.thumb, 'new.png') }});">
+                    <div class="c-home-new-s__hover">
+                    {{ headLine.title|default() }}
+                    </div>
+                  </a>
+                  
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% if headLinesNum < 2 %}
+                  {% for i in headLinesNum..1 %}
+                    <div class="col-xs-6">
+                      <a class="c-home-new-s" href="javascript:;" style="background-image: url({{asset('static-dist/corporatetrainingbundle/img/new_def_pos@2x.png')}});">
+                      </a>
+                    </div>
+                  {% endfor %}
+                {% endif %}
+              </div>
+              <div class="c-home-new-list">
+                {% if news %}
+                {% for new in news %}
+                <div class="c-home-new-item">
+                  <div class="c-home-new-item__title">
+                    <a class="link-darker" href="{{ path('article_detail', {id:new.id}) }}">
+                        {{ new.title|default() }}</a>
+                  </div>
+                  <div class="c-home-new-item__info">
+                    {{ new.categoryName|default('--') }}  | {{ new.publishedTime|date('m-d') }}
+                  </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          {% if is_mobile_client() %} 
+            <div class="m-home-sec__title pos-rel">{{ 'search.thresd.thread'|trans }}
+              <a href="{{ path('group') }}" class="m-article-more">{{ 'site.default.more'|trans }}</a>
+            </div>
+          {% endif %}          
+          <div class="c-home-panel m-home-sec" style="height: 470px;">
+            <div class="c-home-panel__hd hidden-xs">
+              <div class="c-home-panel__title">{{ 'homepage.news.card_latest_thread'|trans }}</div>
+            </div>
+            <div class="c-home-panel__bd {% if is_mobile_client() %} bor-no{% endif %}">
+              <div class="c-home-topic-list">
+                {% if threads %}
+                {% for thread in threads %}
+                {% set profile = data('UserProfile', {userId: thread.user.id}) %}
+                {% if thread.lastPostMember.id|default(0) %}
+                  {% set lastPostMember = data('UserProfile', {userId: thread.lastPostMember.id}) %}
+                {% endif %}
+                <div class="c-home-topic-item">
+                  <div class="c-home-topic-item__hd">
+                    <div class="ct-label ct-label--theme pull-left m-home-label"><a class="link-primary" href="{{ path('group_show', {id:thread.group.id}) }}">{{ thread.group.title|default()|plain_text(16) }}</a> </div>
+                    <div class="text-ovf"><a class="link-darker c-home-topic-item__title" href="{{ path('group_thread_show', {id:thread.group.id, threadId:thread.id}) }}">{{ thread.title|default() }}</a>
+                    </div>
+                  </div>
+                  <div class="c-home-topic-item__info">
+                    {{ profile.truename|default(thread.user.nickname) }} ｜ {% if thread.lastPostTime %}{{thread.lastPostTime|smart_time}} ｜ {{ 'homepage.news.thread_last_post_message'|trans({'%name%': lastPostMember.truename|default(thread.lastPostMember.nickname)}) }} {% else %}{{ 'homepage.news.thread_post_empty_message'|trans }}{% endif %}
+                  </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 js-ranking-list js-search-wrap js-rank-container">
+          {% if is_mobile_client() %} 
+            <div class="m-home-sec__title">学习排行榜</div>
+          {% endif %}
+          <div class="c-home-panel c-home-panel--rank pos-rel m-home-sec" style="height: 470px;">
+          {% if is_mobile_client() %} 
+            <ul class="m-home-panel__tab rank clearfix" role="tablist">
+              <li class="js-tab-link active" data-index="0" role="presentation"><a href="javascript:;">{{'homepage.news.tab_personal'|trans}}</a></li>
+              <li class="js-tab-link" data-index="0" role="presentation"><a href="javascript:;">{{'homepage.news.tab_department'|trans}}</a></li>
+            </ul>
+            <div class="m-home-panel__tab--time">
+              <ul class="nav nav-text m-nav-text">
+                <li class="js-tab-ajax-link active" data-index="0">
+                  <a href="javascript:;" data-user="{{ path('data_report_user_learn_rank_list', {type:'week', sourceFrom:'home'})}}" data-post="{{ path('data_report_org_learn_rank_list', {type:'week'})}}" data-url="{{ path('data_report_user_learn_rank_list', {type:'week', sourceFrom:'home'})}}">{{'homepage.news.tab_week'|trans}}</a>
+                </li>
+                <li class="js-tab-ajax-link" data-index="1">
+                  <a href="javascript:;" data-user="{{ path('data_report_user_learn_rank_list', {type:'month', sourceFrom:'home'})}}" data-post="{{ path('data_report_org_learn_rank_list', {type:'month'})}}" data-url="{{ path('data_report_user_learn_rank_list', {type:'month', sourceFrom:'home'})}}">{{'homepage.news.tab_month'|trans}}</a>
+                </li>
+                <li class="js-tab-ajax-link" data-index="2">
+                  <a href="javascript:;" data-user="{{ path('data_report_user_learn_rank_list', {type:'year', sourceFrom:'home'})}}" data-post="{{ path('data_report_org_learn_rank_list', {type:'year'})}}" data-url="{{ path('data_report_user_learn_rank_list', {type:'year', sourceFrom:'home'})}}">{{'homepage.news.tab_year'|trans}}</a>
+                </li>
+              </ul>
+            </div>
+          {% else %}
+            <div class="c-home-panel__hd c-home-panel__tab">
+              <ul class="nav nav-tabs pull-left" role="tablist">
+                <li class="js-tab-link active" data-index="0" role="presentation"><a href="javascript:;">{{'homepage.news.tab_personal_rank'|trans}}</a></li>
+                <li class="js-tab-link" data-index="0" role="presentation"><a href="javascript:;">{{'homepage.news.tab_department_rank'|trans}}</a></li>
+              </ul>
+            </div>
+            <div class="c-home-panel__tab--time">
+              <ul class="nav nav-text">
+                <li class="js-tab-ajax-link active" data-index="0">
+                  <a href="javascript:;" data-user="{{ path('data_report_user_learn_rank_list', {type:'week', sourceFrom:'home'})}}" data-post="{{ path('data_report_org_learn_rank_list', {type:'week'})}}" data-url="{{ path('data_report_user_learn_rank_list', {type:'week', sourceFrom:'home'})}}">{{'homepage.news.tab_week'|trans}}</a>
+                </li>
+                <li class="js-tab-ajax-link" data-index="1">
+                  <a href="javascript:;" data-user="{{ path('data_report_user_learn_rank_list', {type:'month', sourceFrom:'home'})}}" data-post="{{ path('data_report_org_learn_rank_list', {type:'month'})}}" data-url="{{ path('data_report_user_learn_rank_list', {type:'month', sourceFrom:'home'})}}">{{'homepage.news.tab_month'|trans}}</a>
+                </li>
+                <li class="js-tab-ajax-link" data-index="2">
+                  <a href="javascript:;" data-user="{{ path('data_report_user_learn_rank_list', {type:'year', sourceFrom:'home'})}}" data-post="{{ path('data_report_org_learn_rank_list', {type:'year'})}}" data-url="{{ path('data_report_user_learn_rank_list', {type:'year', sourceFrom:'home'})}}">{{'homepage.news.tab_year'|trans}}</a>
+                </li>
+              </ul>
+            </div>
+          {% endif %}
+            <div class="c-home-panel__bd {% if is_mobile_client() %} bor-no{% endif %}">
+              <div class="js-tab-block-wrap js-ajax-tab-block-wrap">
+                <div class="c-home-rank-list tab-block js-tab-sec is-active">
+                  {% if studyRanks.personStudyRanks %}
+                    {% for studyRank in studyRanks.personStudyRanks %}
+                      <div class="c-home-rank-item">
+                        <div class="c-home-rank-item__l">
+                          {% if loop.index == 1 %}
+                            <img class="c-home-rank-item__img-icon" src="{{asset('static-dist/corporatetrainingbundle/img/medal_gold@2x.png')}}">
+                          {% elseif loop.index == 2 %}
+                            <img class="c-home-rank-item__img-icon" src="{{asset('static-dist/corporatetrainingbundle/img/medal_silver@2x.png')}}">
+                          {% elseif loop.index == 3 %}
+                            <img class="c-home-rank-item__img-icon" src="{{asset('static-dist/corporatetrainingbundle/img/medal_copper@2x.png')}}">
+                          {% else %}
+                            <div class="c-home-rank-item__label">{{ loop.index }}</div>
+                          {% endif %}
+
+                        </div>
+                        <div class="c-home-rank-item__r">
+                          {% set user = data('User', {userId:studyRank.userId}) %}
+                          <div class="pull-left">
+                            {{ web_macro.train_user_avatar(user, '', 'c-home-rank-item__img', true) }}
+                          </div>
+                        
+                          {% set userTrueName = data('UserProfile', {userId:studyRank.userId}) %}
+                          <div class="pull-left mlm">
+                            <div class="c-home-rank-item__name">
+                              {% if userTrueName.truename|default() %}
+                                {{ userTrueName.truename }}
+                              {% else %}
+                                {{ user.nickname|default('') }}
+                              {% endif %}
+                            </div>
+                            {% set orgs = data('Orgs', {orgIds:user.orgIds}) %}
+                            <div class="c-home-rank-item__post">{{ orgs.0.name|default('--') }}
+                              {% if orgs.1|default(false) %}
+                                <i class="es-icon es-icon-more ft-xsm" data-toggle="popover" data-container="body" data-trigger="hover"
+                                   data-placement="top" data-content="{{ orgs.orgNames|default() }}"></i>
+                              {% endif %}
+                            </div>
+                          </div>
+                          <div class="c-home-rank-item__date pull-right">{{ studyRank.totalLearnTime|time_format_hour }}</div>
+                        </div>
+                      </div>
+                    {% endfor %}
+                    
+                  {% else %}
+                    <div class="empty">
+                      <div class="c-home-rank__empty-wrap">
+                        <img class="c-home-rank__empty-img" src="{{ asset('static-dist/corporatetrainingbundle/img/system-default/empty_rank_list.png')}}">
+                        <div class="">
+                          {{'homepage.news.rank_empty_message'|trans}}
+                        </div>
+                      </div>
+                    </div>  
+                  {% endif %}
+                </div>
+                <div class="c-home-rank-list tab-block js-tab-sec">
+                  {% if studyRanks.orgStudyRanks %}
+                  {% for studyRank in studyRanks.orgStudyRanks %}
+                    {% set org = data('Org', {id:studyRank.orgId}) %}
+                    {% set orgUser = studyRanks.orgUsers[studyRank.orgId]|default('') %}
+                  <div class="c-home-rank-item c-home-rank-item--department">
+                    <div class="c-home-rank-item__l">
+                      {% if loop.index == 1 %}
+                        <img class="c-home-rank-item__img-icon" src="{{asset('static-dist/corporatetrainingbundle/img/medal_gold@2x.png')}}">
+                      {% elseif loop.index == 2 %}
+                        <img class="c-home-rank-item__img-icon" src="{{asset('static-dist/corporatetrainingbundle/img/medal_silver@2x.png')}}">
+                      {% elseif loop.index == 3 %}
+                        <img class="c-home-rank-item__img-icon" src="{{asset('static-dist/corporatetrainingbundle/img/medal_copper@2x.png')}}">
+                      {% else %}
+                        <div class="c-home-rank-item__label">{{ loop.index }}</div>
+                      {% endif %}
+                    </div>
+                    <div class="c-home-rank-item__r">
+                      <div class="pull-left">
+                      </div>
+                      <div class="pull-left mlm">
+                        <div class="c-home-rank-item__name">
+                          {{ org.name|sub_text(8) }}
+                        </div>
+                        <div class="c-home-rank-item__post">{{ orgUser.count|default(0) }}人</div>
+                      </div>
+                      <div class="c-home-rank-item__date pull-right">{{ studyRank.totalLearnTime|time_format_hour }}</div>
+                    </div>
+                  </div>
+                {% endfor %}
+                  {% else %}
+                    <div class="empty">
+                      <div class="c-home-rank__empty-wrap">
+                        <img class="c-home-rank__empty-img" src="{{ asset('static-dist/corporatetrainingbundle/img/system-default/empty_rank_list.png')}}">
+                        <div class="">
+                        {{'homepage.news.rank_empty_message'|trans}}
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

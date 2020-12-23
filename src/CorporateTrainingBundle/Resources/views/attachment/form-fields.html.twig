@@ -1,0 +1,101 @@
+{% if setting('cloud_attachment.enable') and setting('cloud_attachment.' ~ target ) and setting('storage.upload_mode') == 'cloud' %}
+  {% set ids_class  = (useType == true) ? 'js-attachment-ids-'~fileType  : 'js-attachment-ids'%}
+  {% set list_class  = (useType == true) ? 'js-attachment-list-'~fileType  : 'js-attachment-list'%}
+  {% set reupload = attachments|default([])|length %}
+
+  {% if bundle_namespace|default(null) == 'admin' %}
+    {% include 'seajs_loader_compatible.html.twig' with {topxiaadminbundle: true } %}
+  {% else %}
+    {% include 'seajs_loader_compatible.html.twig' with {topxiawebbundle: true } %}
+  {% endif %}  
+  {% set prefix = targetType|slice(0, 7) %}
+
+  {% if prefix == 'project' %}
+    <a class="link-primary js-upload-file" {% if reupload %}style="display: none;"{% endif %} data-toggle="modal" data-backdrop="static"
+       data-target="#attachment-modal"
+       data-url="{{ path('attachment_upload', {targetType:targetType, useSeajs: useSeajs|default(false), idsClass: ids_class, listClass : list_class, token:uploader_token('attachment', app.user.id, 'private'), currentTarget:currentTarget}) }}"
+       title="{{ 'attachments.upload'|trans }}" data-placement="bottom" data-title="{{ 'attachments.upload'|trans }}">
+       {{ 'attachments.upload'|trans }}
+    </a>
+    <span class="js-attachment-list {{list_class}}">
+      {% for attachment in attachments  if attachment.file %}
+        <div class="well well-sm">
+          {{ attachment.file.filename }}
+          <button class="btn btn-link js-attachment-delete pull-right mlm"
+                  {% if targetType == 'qa.thread' %}data-url="{{ path('qa_delete_attachment',{id:attachment.id}) }}"
+                  {% elseif targetType == 'projectPlaning.offline.homework' %}data-url="{{ path('homework_attachment_delete',{id:attachment.id}) }}"
+                  {% else %}data-url="{{path('attachment_delete',{id:attachment.id})  }}"{% endif %} type="button" style="margin-top:13px" data-role="delte-item" data-loading-text="{{'form.btn.delete.submiting'|trans}}">{{ 'form.btn.delete'|trans }}</button>
+
+          {% set can_preview_type = attachment.file.type in ['video', 'audio', 'ppt', 'document', 'pdf']  and  attachment.file.ext not in ['xlsx', 'xls'] %}
+          {% set can_preview = attachment.file.type in ['video', 'ppt', 'document','pdf'] and attachment.file.processStatus|default(null) == "ok" %}
+          {% if can_preview_type and (not can_preview) %}
+            {% set can_preview = attachment.file.type in ['audio'] %}
+          {% endif %}
+          {% if not (can_preview_type and can_preview )%}
+            <a  class="btn btn-link pull-right" style="margin-top:-6px" href="javascript:;" data-toggle="tooltip" data-placement="top" title="
+  		        {% if not can_preview_type %}{{ 'attachments.preview.failed_tips'|trans }}{% else %}{{ 'attachments.preview.success_tips'|trans }}{% endif %}">{{ 'attachments.preview.preview_btn'|trans }}</a>
+  	      {% else %}
+            <a  class="btn btn-link pull-right" style="margin-top:-6px" href="#attachment-modal"  data-toggle="modal" data-url="{{ path('attachment_preview', {'id': attachment.id,  targetType:targetType}) }}">{{ 'attachments.preview.preview_btn'|trans }}</a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </span>
+  {% else %}
+    <div class="form-group">
+      {% if showLabel|default(false) %}
+        <label class="col-xs-2 control-label" for="thread_title">{% if targetType == 'question.stem' %}{{ 'group.thread.create.question_stem_attachment'|trans }}{% elseif targetType == 'question.analysis' %}{{ 'group.thread.create.analysis_attachment'|trans }}{% else %}{{ 'group.thread.create.attachments'|trans }}{% endif %}</label>
+        <div class="col-xs-7 controls">
+      {% else %}
+        <div class="controls"> 
+      {% endif %}
+        <div class="js-attachment-list {{list_class}}" style="line-height:60px">
+          {% for attachment in attachments  if attachment.file %}
+            <div class="well well-sm">
+              <img class="mrm" src="{{ asset('assets/img/default/cloud_' ~ attachment.file.type ~ '.png') }}" height="60px" width="107px">
+              {{ attachment.file.filename }}
+              <button class="btn btn-link js-attachment-delete pull-right"
+                      {% if targetType == 'qa.thread' or targetType == 'qa.thread.post' %}data-url="{{ path('qa_delete_attachment',{id:attachment.id}) }}"
+                      {% elseif targetType == 'projectPlaning.offline.homework' %}data-url="{{ path('homework_attachment_delete',{id:attachment.id}) }}"
+                      {% else %}data-url="{{path('attachment_delete',{id:attachment.id, targetType:targetType})  }}"{% endif %} type="button" style="margin-top:13px" data-role="delte-item" data-loading-text="{{'form.btn.delete.submiting'|trans}}">{{ 'form.btn.delete'|trans }}</button>
+              {% set can_preview_type = attachment.file.type in ['video', 'audio', 'ppt', 'document']  and  attachment.file.ext not in ['xlsx', 'xls'] %}
+              {% set can_preview = attachment.file.type in ['video', 'ppt', 'document'] and attachment.file.processStatus|default(null) == "ok" %}
+              {% if can_preview_type and (not can_preview) %}
+                {% set can_preview = attachment.file.type in ['audio'] %}
+              {% endif %}
+              {% if not (can_preview_type and can_preview )%}
+                <a  class="btn btn-link pull-right" style="margin-top:13px" href="javascript:;" data-toggle="tooltip" data-placement="top" title="
+  		        {% if not can_preview_type %}{{ 'attachments.preview.failed_tips'|trans }}{% else %}{{ 'attachments.preview.success_tips'|trans }}{% endif %}">{{ 'attachments.preview.preview_btn'|trans }}</a>
+              {% else %}
+                <a class="btn btn-link pull-right" style="margin-top:13px" href="{{ path('attachment_preview', {'id': attachment.id, targetType:targetType}) }}" target="_blank">{{ 'group.thread.create.preview'|trans }}</a>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+        <a class="{% if targetType == 'qa.thread.post' %}link-primary qa-add-attachment{% else %}btn btn-primary{% endif %} js-upload-file" {% if reupload %}style="display: none;"{% endif %} data-toggle="modal" data-backdrop="static"
+           data-target="#attachment-modal"
+           data-url="{{ path('attachment_upload', {targetType:targetType, useSeajs: useSeajs|default(false), idsClass: ids_class, listClass : list_class, token:uploader_token('attachment', app.user.id, 'private'), currentTarget:currentTarget}) }}"
+           title="{{ 'attachments.upload'|trans }}" data-placement="bottom" data-title="{{ 'attachments.upload'|trans }}">
+           {% if targetType == 'qa.thread.post' %}<i class="es-icon es-icon-icattachfileblack24px"></i>{{ 'attachments.upload'|trans }}{% else %}{{ 'attachments.upload'|trans }}{% endif %}
+        </a>
+      </div>
+    </div>    
+  {% endif %}
+
+  {# 应该标记该附件是否新增,或者修改 #}
+  
+  <input class="{{ids_class}}" 
+    value="{{ attachments|array_column('fileId')|join(',') }}" 
+    name="{% if useType|default(false)%}attachment[{{fileType}}][fileIds]{% else %}attachment[fileIds]{% endif %}" 
+    type="hidden" data-role="fileId">
+
+  <input class="js-file-target-type" 
+    value="{{ targetType }}" 
+    name="{% if useType|default(false)%}attachment[{{fileType}}][targetType]{% else %}attachment[targetType]{% endif %}"
+    type="hidden">
+
+  <input class="js-file-type" 
+    value="{{ type }}" 
+    name="{% if useType|default(false)%}attachment[{{fileType}}][type]{% else %}attachment[type]{% endif %}"
+    type="hidden">
+{% endif %}

@@ -1,0 +1,98 @@
+<div class="c-offline-activity">
+  <div class="c-offline-activity__l">
+    <div class="c-offline-activity__weekday">{% if offlineActivity.startTime %}{{ offlineActivity.startTime|weekday|trans }}{% else %}{{ '- -' }}{% endif %}</div>
+    <a class="dis-blk" href="{{ path('offline_activity_detail', {id: offlineActivity.id }) }}">
+      <img class="c-offline-activity__img" src="{{ filepath(offlineActivity['cover']['large']|default(''), 'activity.png') }}">
+    </a>
+  </div>
+  <div class="c-offline-activity__bd">
+    <a class="c-offline-activity__title" href="{{ path('offline_activity_detail', {id: offlineActivity.id }) }}">{{ offlineActivity.title }}</a>
+    {% set category = data('Category', {'categoryId': offlineActivity.categoryId}) %}
+    {% if category|default('') %}
+      <div class="c-offline-activity__lab-wrap">
+        <div class="c-offline-activity__lab ct-label ct-label--theme">{{ category.name|default('')}}</div>
+      </div>
+    {% endif %}
+    <div class="c-offline-activity__info-wrap">
+      <div class="c-offline-activity__info">
+        <div class="c-offline-activity__info-l">
+          {{ 'offline_activity.time'|trans }}：
+        </div>
+        <div class="c-offline-activity__info-r">
+          <span>{% if offlineActivity.startTime %}{{ offlineActivity.startTime|date('Y-m-d H:i') }}{% else %}{{ '- -' }}{% endif %} {{ 'offline_activity.enrollment.time_to'|trans }} {% if offlineActivity.endTime %}{{ offlineActivity.endTime|date('Y-m-d H:i') }}{% else %}{{ '- -' }}{% endif %}</span>
+        </div>
+      </div>
+      <div class="c-offline-activity__info">
+        <div class="c-offline-activity__info-l">
+          {{ 'offline_activity.place'|trans }}：
+        </div>
+        <div class="c-offline-activity__info-r">
+          <span>{{ offlineActivity.address|default('offline_activity.detail.empty')|trans }}</span>
+        </div>
+      </div>
+      <div class="c-offline-activity__info">
+        <div class="c-offline-activity__info-l">
+          {{ 'offline_activity.enrollment_time'|trans }}：
+        </div>
+        <div class="c-offline-activity__info-r">
+          <span>{% if offlineActivity.enrollmentEndDate %}{{ offlineActivity.enrollmentStartDate|date('Y-m-d H:i') }} {{ 'offline_activity.enrollment.time_to'|trans }} {{ offlineActivity.enrollmentEndDate|date('Y-m-d H:i') }}{% else %}{{ '- -' }}{% endif %}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if showType|default('list') == 'detail' %}
+    <ul class="offline-activity-operation hidden-xs hidden-sm clearfix">
+      {% if canManage %}
+        <li>
+          <a class="btn btn-default btn-xs" href="{{ path('offline_activity_manage_base',{'id':offlineActivity.id}) }}" title="{{ 'offline_activity.management'|trans }}">
+            <i class="es-icon es-icon-setting"></i>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  {% endif %}
+
+  <div class="c-offline-activity__r">
+    {% if type == 'ongoing' %}
+      {% set applyStatus = data('UserApplyStatus', {'offlineActivityId':offlineActivity.id, 'userId':app.user.id}) %}
+
+      {% if  applyStatus != 'join'%}
+        <div class="c-offline-activity__num-wrap">
+          <div class="c-offline-activity__num">
+            <span>{{ offlineActivity.studentNum }}</span> / {% if  offlineActivity.maxStudentNum|default(0) == 0%}{{ 'offline_activity.student_num.unlimited'|trans }}{% else %}{{offlineActivity.maxStudentNum|default(0)}}{% endif %}
+          </div>
+          {% if applyStatus == 'enrollmentEnd' %}
+            <a class="c-offline-activity__btn btn btn-default disabled" href="javascript:;">{{ 'offline_activity.enrollment.end'|trans }}</a>
+          {% elseif canAccess|default(offlineActivity.canAccess|default()) == false %}
+            <a class="c-offline-activity__btn btn btn-default disabled" href="javascript:;">{{ 'resource.not_open_for_you'|trans }}</a>
+          {% elseif applyStatus == 'enrollAble' %}
+              {% if offlineActivity.enrollmentStartDate > date('now').timestamp %}
+                <a class="c-offline-activity__btn btn btn-default disabled" href="javascript:;">{{ 'offline_activity.enrollment.btn.enrollment_unstart'|trans }}</a>
+              {% else %}
+                <a class="c-offline-activity__btn btn btn-primary" href="#modal" data-toggle="modal" data-url="{{ path('offline_activity_enroll', {activityId: offlineActivity.id}) }}">{{ 'offline_activity.enrollment.btn.immediately_apply'|trans }}</a>
+              {% endif %}
+          {% elseif applyStatus == 'submitted' %}
+            <a class="c-offline-activity__btn btn btn-default disabled" href="javascript:;">{{ 'offline_activity.enrollment.to_be_audited'|trans }}</a>
+          {% elseif applyStatus == 'enrollUnable' %}
+              {% if offlineActivity.studentNum < offlineActivity.maxStudentNum or offlineActivity.maxStudentNum == 0 %}
+                <a class="c-offline-activity__btn btn btn-default disabled" href="javascript:;">{{ 'offline_activity.enrollment.btn.immediately_apply'|trans }}</a>
+              {% else %}
+                <a class="c-offline-activity__btn btn btn-default disabled" href="javascript:;">{{ 'offline_activity.enrollment.out_of_limit_member_num'|trans }}</a>
+              {% endif %}
+          {% endif %}
+        </div>
+      {% endif %}
+      {% if applyStatus == 'join' %}
+        <div class="text-right"><img class="c-offline-activity__status-img" src="{{ asset('offline_activity_img_success'|trans)}}"></div>
+      {% endif %}
+    {% elseif type == 'end' %}
+        {% set member = data('OfflineActivityMemberExist', {'offlineActivityId':offlineActivity.id, 'userId':app.user.id}) %}
+        {% if member %}
+          <div class="text-right"><img class="c-offline-activity__status-img" src="{{ asset('offline_activity_img_success'|trans)}}"></div>
+        {% else %}
+          <div class="text-right"><img class="c-offline-activity__status-img" src="{{ asset('offline_activity_img_finish'|trans)}}"></div>
+        {% endif %}
+    {% endif %}
+  </div>
+</div>

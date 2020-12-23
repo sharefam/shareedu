@@ -1,0 +1,109 @@
+{% extends 'admin/layout.html.twig' %}
+{#{% do script(['libs/jquery-validation.js','corporatetrainingbundle/js/my/index.js'])%}#}
+
+{% set menu = 'admin_train_teach_manage_project_plan_teaching' %}
+{% import "common/data-dict-macro.html.twig" as dict_macro %}
+
+{% block main %}
+  {% include 'CorporateTrainingBundle::admin/train/teach-manage/project-plan-teaching/tab.html.twig' %}
+  <table class="table table-striped table-hover">
+    <thead>
+    <tr>
+      <th width="20%">{{ 'teaching.project_plan.course.title'|trans }}</th>
+      <th width="20%">{{ 'teaching.project_plan.course.time'|trans }}</th>
+      <th>{{ 'teaching.project_plan.offline_course.task'|trans }}</th>
+      <th>{{ 'teaching.project_plan.course.student_num'|trans }}</th>
+      <th>{{ 'teaching.project_plan.course.attendance_rate'|trans }}</th>
+      <th>{{ 'teaching.project_plan.course.passing_rate'|trans }}</th>
+      {% if is_plugin_installed('Survey') %}
+        <th>{{ 'teaching.project_plan.course.survey'|trans }}</th>
+      {% endif %}
+      <th>{{ 'teaching.project_plan.course.operation'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if teachingCourses|default() %}
+      {% for teachingCourse in teachingCourses %}
+        <tr>
+          <td>
+            {{ teachingCourse.title }}<br>
+            <span class="text-muted text-sm">{{ 'teaching.project_plan.course.from'|trans }}{{ teachingCourse.projectPlan.name|default() }}</span>
+          </td>
+          <td>
+            {% if teachingCourse.taskNum %}
+              {% set isSameDay = is_same_day(teachingCourse.startTime, teachingCourse.endTime) %}
+              {% if isSameDay %}
+                {% if teachingCourse.startTime == 0 %}
+                  {{ '--'|trans }}
+                {% else %}
+                  {{ teachingCourse.startTime|date('Y-m-d')  }}
+                {% endif %}
+              {% else %}
+                {% if teachingCourse.startTime == 0 %}
+                  {{ '--'|trans }}
+                {% else %}
+                  {{ teachingCourse.startTime|date('Y-m-d')  }}
+                {% endif %}
+                <br>
+                {% if teachingCourse.endTime == 0 %}
+                  {{ '--'|trans }}
+                {% else %}
+                  {{ teachingCourse.endTime|date('Y-m-d')  }}
+                {% endif %}
+              {% endif %}
+            {% else %}
+              <div class="color-warning">{{ 'teaching.project_plan.offline_course.task_empty'|trans }}
+                <a class="color-primary" href="{{ path('training_offline_course_manage_tasks', {id: teachingCourse.id}) }}" target="_blank">{{ 'teaching.project_plan.offline_course.add_task'|trans }}</a>
+              </div>
+            {% endif %}
+          </td>
+          <td class="ptl">
+            {% if teachingCourse.taskNum %}
+              {{ teachingCourse.taskNum }}
+            {% else %}
+              0
+            {% endif %}
+          </td>
+          <td class="ptl">{{ teachingCourse.memberCount }}</td>
+          <td class="ptl">
+            {% if teachingCourse.attendTaskCount %}
+              {{percent(teachingCourse.attendCount,teachingCourse.attendTaskCount) }}
+            {% else %}
+              {% if teachingCourse.endTime and date(teachingCourse.endTime) <= date() and teachingCourse.memberCount %}
+                0%
+              {% else %}
+                --
+              {% endif %}
+            {% endif %}
+          </td>
+          <td class="ptl"> 
+            {% if teachingCourse.hasHomeTaskCount %}
+              {{percent(teachingCourse.passHomeworkCount,teachingCourse.hasHomeTaskCount) }}
+            {% else %}
+              {% if teachingCourse.endTime and date(teachingCourse.endTime) <= date() and teachingCourse.hasHomeTaskCount%}
+                0%
+              {% else %}
+                --
+              {% endif %}
+            {% endif %}
+          </td>
+          {% if is_plugin_installed('Survey') %}
+            {% set avgEvaluate = data('ProjectPlanCourseSurveyAverageScore', {'courseId': teachingCourse.id, 'type': 'offlineCourse', 'projectPlanId': teachingCourse.projectPlanId}) %}
+            <td class="ptl">{% if avgEvaluate %}{{ avgEvaluate }}/5.00{% else %}--/5.00{% endif %}</td>
+          {% endif %}
+          <td>
+            <a class="btn btn-default btn-sm mts" href="{{ path('training_offline_course_manage_base', {id: teachingCourse.id}) }}" target="_blank">{{ 'site.default.manage'|trans }}</a>
+          </td>
+        </tr>
+      {% endfor %}
+    {% else %}
+      <tr>
+        <td colspan="20"><div class="empty">{{'teaching.project_plan.offline_course.empty'|trans}}</div></td>
+      </tr>
+    {% endif %}
+    </tbody>
+  </table>
+  <nav class="text-center">
+    {{ admin_macro.paginator(paginator) }}
+  </nav>
+{% endblock %}

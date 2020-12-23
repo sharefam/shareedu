@@ -1,0 +1,78 @@
+{% extends 'layout.html.twig' %}
+{% block title %}{{'teacher.introductions'|trans}} - {{ parent() }}{% endblock %}
+{% block keywords %}{{'teacher.SEO.keywords'|trans({'%name%': setting('site.name')})}} {% endblock %}
+{% block description %}{{'teacher.SEO.description'|trans({'%name%': setting('site.name')})}}{% endblock %}
+
+{% set bodyClass = 'teacherpage bg-blank' %}
+{% set selectedField = app.request.get('field') %}
+{% set selectedLevel = app.request.get('level') %}
+
+{% do script(['libs/select2.js', 'libs/jquery-validation.js','libs/bootstrap-datetimepicker.js', 'corporatetrainingbundle/js/teacher/index.js']) %}
+
+{% block top_content %}
+  <div class="es-banner">
+    <div class="container">
+      <div class="title">
+        <i class="es-icon es-icon-permcontactcal"></i>{{'teacher.content_title'|trans}}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <form class="form-inline clearfix mbl" id="teacher-list-form" method="post">
+
+  <div class="tabs-wrapper">
+    <div class="tabs-group">
+      <div class="title">{{'teacher.list.level'|trans}}</div>
+        <ul class="content clearfix js-tab-level">
+          <li class="{% if not selectedLevel %}active{% endif %}"><a class="nav-link" href="javascript:;" data-url="{{ path('teacher_ajax_list') }}" data-level="">{{'category.all_category'|trans}}</a></li>
+          {% for level in levels %}
+            <li class="{% if level.id == selectedLevel %}active{% endif %}"><a class="nav-link" href="javascript:;" data-url="{{ path('teacher_ajax_list') }}" data-level="{{ level.id }}">{{ level.name }}</a></li>
+          {% endfor %}
+        </ul>
+    </div>
+
+    <div class="tabs-group">
+      <div class="title">{{'teacher.list.field'|trans}}:</div>
+        <ul class="content clearfix js-tab-field">
+          <li class="{% if not selectedField %}active{% endif %}"><a class="nav-link" href="javascript:;" data-url="{{ path('teacher_ajax_list') }}" data-field="">{{'category.all_category'|trans}}</a></li>
+            {% for field in fields %}
+              <li class="{% if field.id == selectedField %}active{% endif %}"><a class="nav-link" href="javascript:;" data-url="{{ path('teacher_ajax_list') }}" data-field="{{ field.id}}">{{ field.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+  </div>
+  <div class="teacher-search-wrapper">
+  <input class="hidden" id="level" name="level" value="{{ selectedLevel }}">
+  <input class="hidden" id="field" name="field" value="{{ selectedField }}">
+  <div class="form-group">
+    <label class="select-type-title">{{'form.select_options.department_filter'|trans}}</label>
+    <div class="department-manage-search-form-group__select clearfix">
+      {% include 'org-select/index.html.twig' with {
+        id: 'resource-orgCode',
+        data: build_org_tree(orgCodes),
+        placeholder: 'admin.org.select_placeholder'|trans,
+        treeName: 'orgIds',
+        ids: orgIds|default(0),
+      }
+      %}
+    </div>
+  </div>
+    <div class="form-group">
+      <select id="keywordType" name="keywordType" class="form-control">
+        {{ select_options(dict('nameKeyWordType'), app.request.get('keywordType') ? app.request.get('keywordType') : 'truename') }}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <input type="text" id="keyword" name="keyword" class="form-control" value="{{ app.request.get('keyword') }}"
+             placeholder="{{ 'form.placeholder.keyword'|trans }}">
+    </div>  <button class="btn btn-info js-submit" type="submit">{{'teacher.list.btn.search_btn'|trans}}</button>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+  </div>
+</form>
+  <div class="teacher-list">
+    {% include 'teacher/teacher-list.html.twig' %}
+  </div>
+{% endblock %}

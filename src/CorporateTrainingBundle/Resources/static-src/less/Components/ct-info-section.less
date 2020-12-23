@@ -1,0 +1,35 @@
+
+.ct-info-section {
+  & + .ct-info-section {
+    margin-top: 32px;
+  }
+}
+
+.ct-info-section__head {
+  position:relative;
+  padding-left: 12px;
+  .text-ovf;
+  
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 15%;
+    bottom: 15%;
+    width: 4px;
+    background-color: @brand-primary;
+
+  }
+
+}
+
+.ct-info-section__title {
+  line-height: 20px;
+  font-size: 14px;
+  color: @gray-darker;
+}
+
+.ct-info-section__body {
+  margin-top: 16px;
+}
+

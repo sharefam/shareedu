@@ -1,0 +1,5 @@
+{% for poster in posters|default(null) if poster.src|default('') %}
+  <div class="login-logo-wrap text-center">
+    <img class="login-logo" src={{ poster.src|default('') }}>
+  </div>
+{% endfor %}

@@ -1,0 +1,201 @@
+.o-project-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 0;
+}
+
+.c-project-item {
+  display: block;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.c-project-item-list {
+  padding-top: 16px;
+}
+
+.c-project-item__icon {
+  position: absolute;
+  left: 20px;
+  top: 17px;
+  color: @gray;
+}
+
+.c-project-item__time {
+  font-size: 12px;
+  color: @gray;
+  line-height: 16px;
+  vertical-align: middle;
+
+  @media screen and (max-width: @screen-xs-max) {
+    display: none;
+  } 
+}
+
+.c-project-item__toggle-btn {
+  margin-left: 24px;
+  color: @gray;
+}
+
+.c-project-item__head-info {
+  font-size: 12px;
+  color: @gray;
+  line-height: 16px;
+  vertical-align: middle;  
+}
+
+.c-project-item__content {
+  position: relative;
+  color: @gray-dark;
+  padding: 15px 215px 15px 45px;
+  background-color: #f5f5f5;
+  .text-ovf;
+
+  @media screen and (max-width: @screen-xs-max) {
+    padding: 15px 25px 15px 45px;
+  } 
+
+} 
+
+.c-project-item__hover {
+  position: absolute;
+  right: 20px;
+  top: 14px;
+}
+
+.cd-design {
+  .c-project-item__hover {
+    @media screen and (max-width: @screen-xs-max) {
+      position: relative;
+      right: 0;
+      top: 0;
+    } 
+  }
+}
+
+.c-project-item__bd {
+  padding-top: 16px;
+  padding-left: 24px;
+
+  @media screen and (max-width: @screen-xs-max) {
+    padding-left: 0;
+  } 
+
+  .task-item {
+    &.task-item-chapter {
+      background-color: transparent !important;
+
+      .left-menu {
+        left: 0;
+      }
+
+      .title {
+        padding-left: 25px;
+      }
+    }
+
+    &.task-item-part {
+      .title {
+        padding-left: 25px;
+      }
+    }
+
+    &.task-item-content {
+
+    }
+  }
+}
+
+
+.c-project-item-lesson {
+  position: relative;
+  padding: 16px 16px 16px 45px;
+  .es-transition; 
+
+  @media screen and (max-width: @screen-xs-max) {
+    padding: 16px 16px 16px 34px;
+  } 
+
+  &:hover {
+    background-color: fadeout(@brand-primary, 95%); 
+  }
+
+  & + .c-project-item-lesson {
+    margin-top: 8px;
+  }
+}
+
+.c-project-item-lesson__icon {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+
+  @media screen and (max-width: @screen-xs-max) {
+    left: 10px;
+  } 
+}
+
+.c-project-item-lesson__hover {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 12px;
+
+  i {
+    font-size: 12px;
+  }
+
+  @media screen and (max-width: @screen-xs-max) {
+    position: relative;
+    top: auto;
+    right: auto;
+    display: block;
+  } 
+}
+
+.c-project-item-lesson__info {
+  font-size: 12px;
+  color: @gray;
+  line-height: 16px;
+
+  & + .c-project-item-lesson__info {
+    &:before {
+      content: '';
+      display: block;
+      height: 10px;
+      width: 1px;
+      margin: 5px 6px;
+      background-color: #C1C1C1;
+    }
+  }
+}
+
+.c-project-item-lesson__head {
+  font-size: 14px;
+  line-height: 20px;
+} 
+ 
+.c-project-item-lesson__title {
+  color: @gray-dark;
+  line-height: 20px;
+} 
+
+.c-project-item-lesson__body {
+  margin-top: 15px;
+}
+
+
+.c-ctr-task-item__percent {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: bold;
+}
+
+.c-project-item-lesson__teacher {
+  margin-left: 2px;
+  font-size: 12px;
+  color: @gray;
+  line-height: 16px;
+  vertical-align: middle;
+}
+

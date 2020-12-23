@@ -1,0 +1,45 @@
+<tr>
+  <td>{{ exam.title|default() }}</td>
+  <td>
+    {% if exam.startTime|default(0) == 0 %}
+      {{ '--'|trans }}
+    {% else %}
+      {{ exam.startTime|date('Y-m-d H:i')  }}
+    {% endif %}
+    <br>
+    {% if exam.endTime|default(0) == 0 %}
+      {{ '--'|trans }}
+    {% else %}
+      {{ exam.endTime|date('Y-m-d H:i')  }}
+    {% endif %}
+  </td>
+  <td>
+    {% if exam.endTime|default(0) -exam.startTime|default(0) %}
+      {{ (exam.endTime - exam.startTime) // 60 }}{{ 'site.date.minute'|trans }}
+    {% else %}
+      {{ 'project_plan.any'|trans }}
+    {% endif %}
+  </td>
+  <td>
+    {{ exam.passNum|default(0) }}/{{ projectPlanMemberCount|default(0) }}
+  </td>
+  <td>
+    {% if canOperate %}
+      <div class="btn-group">
+        <a class="btn btn-default btn-sm" type="button" id="dropdownMenu1" href="{{ path('project_plan_offline_exam_manage_member_list', {id:projectPlan.id, taskId:exam.id}) }}">
+          {{ 'project_plan.btn.manage_btn'|trans }}
+        </a>
+        {% if not (projectPlan.status == 'archived') %}
+          <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li><a class="exam-operate" href="javascript:;" data-url="{{ path('project_plan_offline_exam_delete', {id: projectPlan.id, offlineExamId: exam.id}) }}" data-notify-title="{{ 'project_plan.btn.delete_btn'|trans }}"><span class="es-icon es-icon-delete mrm"></span>{{ 'project_plan.btn.delete_btn'|trans }}</a></li>
+          </ul>
+        {% endif %}
+      </div>
+    {% endif %}
+  </td>
+</tr>

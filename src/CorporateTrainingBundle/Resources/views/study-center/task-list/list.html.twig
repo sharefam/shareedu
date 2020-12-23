@@ -1,0 +1,12 @@
+{% if projectPlanItem.targetType %}
+  {% set type = underline_to_line(projectPlanItem.targetType) %}
+  {% if type == 'exam' %}
+    {% if is_plugin_installed('Exam') %}
+      {% include 'study-center/widget/'~type~'-item.html.twig' %}
+    {% endif %}
+  {% else %}
+    {% include 'study-center/widget/'~type~'-item.html.twig' %}
+  {% endif %}
+{% else %}
+  {% include 'study-center/widget/online-course-item.html.twig' %}
+{% endif %}

@@ -1,0 +1,26 @@
+{% extends 'v2/layout.html.twig' %}
+
+{% block head %}
+  {% include 'study-record/head.html.twig' %}
+{% endblock %}
+{% block page_title %}
+  {{ 'my.teaching.teaching_record'|trans }}
+{% endblock %}
+{% set side_nav = 'my-teaching-record' %}
+
+{% block main_body %}
+  <ul class="cd-tabs ct-mbxl">
+    <li {% if  type == 'index' %}class="active"{% endif %}>
+      <a href="{{path('my_teaching_record') }}">{{ 'teaching_record.overview'|trans }}</a>
+    </li>
+    <li {% if type == 'course' %}class="active"{% endif %}>
+      <a href="{{path('my_teaching_course_record') }}">{{ 'teaching_record.teacher_rank.course'|trans }}</a>
+    </li>
+    <li {% if type == 'offlineCourse' %}class="active"{% endif %}>
+      <a href="{{path('my_teaching_offline_course_record') }}">{{ 'teaching_record.teacher_rank.offline_course'|trans }}</a>
+    </li>
+  </ul>
+  {% block main_content %}
+      
+  {% endblock %}
+{% endblock %}

@@ -1,0 +1,53 @@
+{% if setting('magic.enable_org', '0') %}
+    {# formType: normal/horizontal/inline #}
+    {# isModal: true/false #}
+    {% set modal = modal|default(null) %}
+
+    {# 不加载js,用于js局部改造的情况 #}
+    {% if not notLoadJs|default(false)%}
+        {# 全seajs加载的模态框，如后台 #}
+        {% if seajsLoade|default(false) and modal == 'modal' %}
+            <script>app.load('topxiaadminbundle/controller/widget/category-select')</script>
+        {% elseif modal == 'modal'  %}
+            {% include 'seajs_loader_compatible.html.twig' with {topxiawebbundle: true} %}
+            <script>app.lazyLoad = function() { app.load('topxiaadminbundle/controller/widget/category-select') };</script>
+        {% else %}
+            {% do load_script('topxiaadminbundle/controller/widget/category-select') %}
+            {% include 'seajs_loader_compatible.html.twig' with {topxiawebbundle: true} %}
+        {% endif %}
+    {% endif %}
+
+    {% set colmd = colmd|default(8) %}
+    {% set lablecolmd = lablecolmd|default(2) %}
+    {% set nocolmd = nocolmd|default(false) %}
+    {% set inputClass = inputClass|default('') %}
+    {% set userOrgCodes = user.manageOrgCodes %}
+
+    {#默认用户所属部门取默认值使用带参则为userOrg管理范围部门取默认值#}
+    {% if userOrg|default() %}
+    {% set userOrgCodes = user.orgCodes %}
+    {% endif %}
+    {% set currentOrgTree = data('OrgTreeCurrentUser',{orgCodes: userOrgCodes }) %}
+
+  {% if userId|default(false) %}
+        {% set updateUser = data('User', {userId: userId}) %}
+    {% endif %}
+
+    <div class="form-group {% if modal == 'list' %}controls{% endif %}">
+        {% if modal != 'list' %}
+        <label for="orgCodes[]" class="{% if not nocolmd %} col-md-{{lablecolmd}}{% endif %} control-label">{{'site.org'|trans}}</label>
+        <div class="{% if not nocolmd %} col-md-{{colmd}} {% endif %}  controls">
+            {% endif %}
+
+            <select data-role="tree-select" name="orgCodes[]" class="form-control tree-select {{inputClass}}" multiple="multiple">
+                <option value='0'>请选择{{'site.org'|trans}}</option>
+                {% for org in currentOrgTree %}
+                    <option value={{ org.orgCode }} {% if updateUser|default(false) and org.orgCode in updateUser.orgCodes %}selected{% endif %} {% if not org.selectable|default(false)  %}disabled{% endif %}>{% for i in 1..(org.depth-1) if org.depth > 1 %}　{% endfor %}{{ org.name }}</option>
+                {% endfor %}
+            </select>
+
+            {% if modal != 'list' %}
+        </div>
+        {% endif %}
+    </div>
+{% endif %}

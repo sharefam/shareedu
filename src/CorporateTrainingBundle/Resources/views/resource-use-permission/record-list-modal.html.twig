@@ -1,0 +1,40 @@
+{% extends 'bootstrap-modal-layout.html.twig' %}
+
+{% set modal_class = 'unit-addition-modal js-modal-close js-record-list' %}
+
+{% do script(['corporatetrainingbundle/js/resource-use-permission/record-list/index.js']) %}
+
+{% block title %}
+    {{ 'resource_use_permission.record_list'|trans }}
+{% endblock %}
+{% block body %}
+<div class="use-permission-body">
+    <ul class="nav nav-tabs mbl" style="margin-top: -15px">
+      <li class="js-tab-link active" data-type="js-record-data-list" data-url="{{ path('resource_use_permission_record_ajax_list',{type: resourceType,resourceId:resourceId}) }}" data-role="presentation"><a href="javascript:;">{{ 'resource_use_permission.record_list.authorized_record'|trans }}</a></li>
+      <li class="js-tab-link" data-type="js-history-data-list" data-url="{{ path('resource_use_permission_history_ajax_list',{type: resourceType,resourceId:resourceId}) }}" data-role="presentation"><a href="javascript:;">{{ 'resource_use_permission.record_list.authorized_history'|trans }}</a></li>
+      <form class="form-inline pull-right hidden his-mb-m" id="history-list-form" data-url="{{ path('resource_use_permission_history_ajax_list',{type:resourceType, resourceId: resourceId}) }}" style="margin-top: 9px" method="post" novalidate>
+        <div class="form-group">
+          <input class="form-control department-manage-search-form-group__info" type="text" id="nameLike"
+                 name="nameLike" value="{{ app.request.get('nameLike') }}" placeholder="{{ 'resource_use_permission.record_list.authorized_history.name_placeholder'|trans }}">
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('site') }}">
+          <a class="btn btn-primary js-submit" type="submit">{{ 'project_plan.manage_list.search'|trans }}</a>
+      </form>
+    </ul>
+  <div class="js-tab-block-wrap">
+    <div class="tab-block js-tab-sec is-active">
+      <div class="table table-striped data-list js-record-data-list">
+        {{ render(controller('CorporateTrainingBundle:ResourceUsePermission:ajaxRecordList', {type:resourceType, resourceId: resourceId})) }}
+      </div>
+    </div>
+    <div class="tab-block js-tab-sec">
+      <div class="table table-striped data-list js-history-data-list">
+        {{ render(controller('CorporateTrainingBundle:ResourceUsePermission:ajaxHistoryList', {type:resourceType, resourceId: resourceId})) }}
+      </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block footer %}
+  <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">{{ 'form.btn.close'|trans }}</button>
+{% endblock %}

@@ -1,0 +1,20 @@
+<div class="bg-lit hidden-xs">
+  <div class="container clearfix">
+    <ul class="nav nav-tabs pull-left" role="tablist">
+      <li id="step1" data-has-read-guide="{{ app.user.readGuide }}" data-complete-guide-url="{{ path('user_read_guide') }}" role="presentation" class="{% if tab_type == 'myTask' %}active{% endif %}">
+        <a href="{{ path('study_center_my_task_training_list') }}">{{'study_center.nav.my_task'|trans}}</a>
+      </li>
+      <li id="step2" role="presentation" class="{% if tab_type == 'myCourses' %}active{% endif %}">
+        <a href="{{ path('study_center_my_courses_learning') }}">{{'study_center.nav.my_courses'|trans}}</a>
+      </li>
+      <li id="step4" role="presentation" class="{% if tab_type == 'department' %}active{% endif %}">
+        <a href="{{ path('study_center_my_department_courses') }}">{{'study_center.nav.department'|trans}}</a>
+      </li>
+      {% if is_plugin_installed('PostMap') %}
+        <li id="step5" role="presentation" class="{% if tab_type == 'postMap' %}active{% endif %}">
+          <a href="{{ path('study_center_post_map') }}">{{ 'post_map.study_center.post_map'|trans }}</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+</div>

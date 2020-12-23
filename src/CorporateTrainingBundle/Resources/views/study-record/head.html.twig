@@ -1,0 +1,44 @@
+
+{% if is_mobile_client() %}
+  {% include 'study-record/h5-head.html.twig' with { headType: headType|default(''), headTitle: headTitle|default('') } %}
+{% else %}
+  {% if userId|default() and not (userId==app.user.id) %}
+    {% set user = data('User', {userId: userId}) %}
+    {% set userProfile = data('UserProfile', {userId: userId}) %}
+    {% set orgs = data('Orgs', {orgIds:user.orgIds}) %}
+    {% set post = data('Post', {postId: user.postId }) %}
+    <div class="study-record-head">
+      {{ web_macro.train_user_avatar(user, '', 'avatar-sm study-record-head__avatar', true) }}
+      <span class="study-record-head__name">
+        {{ userProfile.truename|default(user.nickname) }}
+      </span>
+
+      <div class="pull-right ct-mts hidden-xs">
+        <div class="ct-devider">
+          <div class="ct-devider__item">
+            <span class="color-gray">{{ 'student.profile.post'|trans }}：</span>
+
+            <span class="gray-darker">{{ post.name|default('--') }}
+              {% if is_plugin_installed('PostMap') %}
+                {% if post.rankId|default() %}
+                  {% set rank = data('Rank',{rankId:post.rankId}) %}
+                  _{{ rank.name|default() }}
+                {% endif %}
+              {% endif %}
+            </span>
+          </div>
+          <div class="ct-devider__item">
+            <span>
+              <span class="color-gray">{{ 'student.profile.department'|trans }}：</span>
+              <span class="gray-darker">{{orgs.0.name|default('--')}}</span>  
+              {% if orgs.1|default(false) %}
+                <i class="es-icon es-icon-more ft-xsm" data-toggle="popover" data-container="body" data-trigger="hover"
+                  data-placement="top" data-content="{{ orgs.orgNames|default() }}"></i>
+              {% endif %}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endif %}

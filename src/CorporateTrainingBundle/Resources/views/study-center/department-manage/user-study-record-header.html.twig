@@ -1,0 +1,29 @@
+<ol class="breadcrumb">
+  <li><a href="{{ path('study_center_department_manage') }}">{{'study_center.department_manage.department_data'|trans}}</a></li>
+  <li class="active">{{ user.profile.truename }}</li>
+</ol>
+<div class="media pll pbm mbxl borb borw-sm">
+  <div class="media-left va-mid hidden-xs">
+    <div class="">
+      <img class="avatar-md" src="{{ filepath(user.mediumAvatar, 'avatar.png') }}">
+    </div>
+  </div>
+  <div class="media-body va-mid">
+    <div class="user-info row">
+      <div class="col-md-7">
+        <div class="mlxl">
+          <p class="user-info-item">{{ user.profile.truename }}</p>
+          <p class="user-info-item"> <span class="">{{'student.profile.post'|trans}}：&nbsp;</span>{{ post.name|default() }}</p>
+          <p class="user-info-item"> <span class="">{{'study_center.department_manage.user_department'|trans}}：&nbsp;</span>{{ org.name|default() }}</p>
+        </div>
+      </div>
+      <div class="study-board col-md-5">
+        {% if user.profile.truename %}
+          <p class="user-info-item">&nbsp;</p>
+        {% endif %}
+        <p class="user-info-item">{{'study_center.department_manage.total_learn_time'|trans}}：<span class="user-info-stress">{{user.learnTime|time_format_hour}}</span></p>
+        <p class="user-info-item">{{'study_center.department_manage.total_watch_time'|trans}}：{{user.watchTime|time_format_hour}}</p>
+      </div>
+    </div>
+  </div>
+</div>

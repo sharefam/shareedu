@@ -1,0 +1,45 @@
+<li id="teacher-table-body" data-sort-url="{{ path('admin_teacher_promote_sort') }}">
+  {% if users is not empty %}
+    {{ _self.showTeacherTree(users) }}
+  {% else %}
+    <div class="empty">{{'admin.user.teacher.promote_tab.teacher_empty_hint'|trans}}</div>
+  {% endif %}
+</li>
+
+{% do load_script('corporatetrainingbundle/controller/teacher/tbody') %}
+
+{% macro showTeacherTree(users) %}
+  {% import "admin/macro.html.twig" as admin_macro %}
+  <ul class="list-table sortable-list">
+    {% for user in users %}
+      <li id="{{ user.id }}" class="tr sort-handle" data-id="{{ user.id }}">
+        <div class="row row-expand">
+          <div class="td col-md-2 user-seq">{{ user.promotedSeq }}</div>
+            {% set profile = data('UserProfile', { 'userId' : user.id}) %}
+          {% if profile.truename %}
+            <div class="col-md-2">
+              <strong>{{ admin_macro.user_link_by_truename(user, profile.truename) }}</strong>
+              <br><span class="text-muted text-sm">{{ user.nickname|default() }}</span>
+            </div>
+          {% else %}
+            <div class="td col-md-2">
+              <strong>{{ admin_macro.user_link(user) }}</strong>
+            </div>
+          {% endif %}
+          {% if setting('magic.enable_org','0') %}
+              {% set orgs = data('Orgs',{orgIds: user.orgIds}) %}
+              <div class="td col-md-3" title="{{ orgs.names|default() }}">
+                {{ orgs.0.name|default('--') }}
+                {% if orgs.1|default(false) %}
+                  <i class="es-icon es-icon-more ft-xsm" data-toggle="popover" data-container="body" data-trigger="hover"
+                     data-placement="top" data-content="{{ orgs.orgNames|default() }}"></i>
+                {% endif %}
+              </div>
+          {% endif %}
+          <div class="td col-md-2">{{ user.promotedTime|date('Y-m-d') }}</div>
+          <div class="td col-md-3"><a class="cancel-promote-teacher btn btn-default btn-sm" href="javascript:" data-id="{{ user.id }}" data-url="{{ path('admin_teacher_promote_cancel', {id:user.id}) }}">{{'admin.user.teacher.promote_tab.promote_cancel_btn'|trans}}</a></div>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+{% endmacro %}

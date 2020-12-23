@@ -1,0 +1,42 @@
+{% block side %}
+  {% set side_nav = side_nav|default(null) %}
+  <div class="sidenav locked js-sidenav">
+    {% if hasOfflineCourseManagePermission is not defined or hasOfflineCourseManagePermission %}
+      <ul class="list-group">
+        <li class="list-group-heading">{{ 'offline_course.sidebar_setting'|trans }}</li>
+        <li class="list-group-item {% if side_nav == 'base' %}active{% endif %}">
+          <a href="{{ path('training_offline_course_manage_base', {id: offlineCourse.id}) }}">
+            {{ 'offline_course.setting'|trans }}
+          </a>
+        </li>
+        <li class="list-group-item {% if side_nav == 'task' %}active{% endif %}">
+          <a href="{{ path('training_offline_course_manage_tasks', {id: offlineCourse.id}) }}">
+            {{ 'offline_course.task_list'|trans }}
+          </a>
+        </li>
+      </ul>
+    {% endif %}
+    <ul class="list-group">
+      {% if hasOfflineCourseManagePermission is not defined or hasOfflineCourseManagePermission %}
+        <li class="list-group-heading">{{ 'offline_course.manage'|trans }}</li>
+        <li class="list-group-item {% if side_nav == 'attendance-manage' %}active{% endif %}">
+          <a href="{{ path('project_plan_offline_attendance_course_manage', {id: offlineCourse.id}) }}">
+            {{ 'offline_course.attendance_manage'|trans }}
+          </a>
+        </li>
+        <li class="list-group-item {% if side_nav == 'homework' %}active{% endif %}">
+          <a href="{{ path('project_plan_offline_course_homework_task_list', {id: offlineCourse.id}) }}">
+            {{ 'offline_course.homework_reviewing'|trans }}
+          </a>
+        </li>
+      {% endif %}
+      {% if is_plugin_installed('Survey') %}
+        <li class="list-group-item {% if side_nav == 'feedback' %}active{% endif %}">
+          <a href="{{ path('offline_course_teacher_evaluate_list', {id: offlineCourse.id}) }}">
+            {{ 'course.teacher_evaluate'|trans }}
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+{% endblock %}

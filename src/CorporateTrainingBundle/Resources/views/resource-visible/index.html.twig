@@ -1,0 +1,83 @@
+{% do script(['libs/bootstrap-treeview.js', 'corporatetrainingbundle/js/source-publish/index.js'], 900) %}
+{% set canManageResourceOrgScope= can_manage_resource_org_scope(resourceId, resourceType, 'visible') %}
+{% set visible_range =  get_visible_range(resourceType, resourceId, 'Org')|default([])%}
+<div class="form-group">
+  <label class="col-sm-2 control-label">
+    {{ 'source.publish_range'|trans }}
+  </label>
+  <div class="col-sm-8">
+    <div class="source-publish-ul js-publish-range mts">
+      <ul class="clearfix">
+        <li data-permission="{{canManageResourceOrgScope}}" class="js-tab-link js-showable-open {% if not recourseShowable|default(1) %}active{% endif %}">
+          <input type="text" name="showable" class="hidden" value="{{ recourseShowable|default(1) }}">
+          {% if canManageResourceOrgScope %}
+            <a href="javascript:;">{{ 'source.just_show_back'|trans }}</a>
+          {% else %}
+            <a disabled data-toggle="tooltip" data-placement="top" title="{{ 'source.assign_publish.no_permission_tip'|trans }}">{{ 'source.just_show_back'|trans }}</a>
+          {% endif %}
+        </li>
+        <li class="js-tab-link js-showable-close {% if recourseShowable|default(1) %}active{% endif %}">
+          <a href="javascript:;">{{ 'source.assign_publish_range'|trans }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="tab-content js-publish-setting {% if not recourseShowable|default(1) %}hidden{% endif %}" style="margin-top: -10px">
+  <div role="tabpanel" class="tab-pane active" id="source-org">
+    <div class="form-group">
+      {% set departmentPlaceholder = 'source.source_publish.select_department'|trans %}
+      <div class="col-sm-2 control-label">
+        <label class="" for="publishOrg"></label>
+      </div>
+      {% set settingOrgIds =  get_resource_visible_scopes(resourceType, resourceId, 'Org')|default([]) %}
+      <div class="col-sm-8">
+        {% include 'select/index.html.twig' with {
+        placeholder: departmentPlaceholder,
+        id: 'orgsSelect',
+        data: set_manage_permission_org_tree(settingOrgIds),
+        ids: visible_range,
+        treeName: 'publishOrg',
+        } %}
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">
+      </label>
+      <div class="col-sm-4">
+        {% include 'select/index.html.twig' with {
+        id: 'postsSelect',
+        data: get_post_tree(),
+        ids:  get_visible_range(resourceType, resourceId, 'Post'),
+        placeholder: 'source.source_publish.select_post',
+        treeName: 'publishPost'
+        }
+        %}
+      </div>
+      <div class="col-sm-4">
+          {% include 'select/index.html.twig' with {
+          id: 'userGroupsSelect',
+          data: get_user_group_tree(),
+          ids:  get_visible_range(resourceType, resourceId, 'UserGroup'),
+          placeholder: 'source.source_publish.select_user_group',
+          treeName: 'publishUserGroup'
+          }
+          %}
+      </div>
+    </div>
+    {% if is_plugin_installed('PostMap') %}
+      {% include 'PostMapPlugin::resource-visible/post-select.html.twig' %}
+    {% endif %}
+  </div>
+  {% if showAccessSetting|default(0) %}
+    <div id="source-access">
+      {% include 'resource-access/index.html.twig' with {
+        resourceType: resourceType,
+        resourceId: resource.id,
+        conditionalAccess: resource.conditionalAccess|default(0),
+        showAdvancedSetting: 0,
+      } %}
+    </div>
+  {% endif %}
+</div>
+

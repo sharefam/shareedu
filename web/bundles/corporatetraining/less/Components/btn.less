@@ -1,0 +1,82 @@
+.btn-white {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  background: rgba(255, 255, 255, 0.3);
+  .es-transition;
+  &:focus,
+  &:hover, 
+  &.active {
+    color: #ffffff;
+    .es-transition;
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.btn-white-light {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  background: rgba(255, 255, 255, 0.2);
+  .es-transition;
+  &:focus,
+  &:hover, 
+  &.active{
+    color: #616161;
+    .es-transition;
+    background: rgba(255, 255, 255, 1);
+  }
+}
+
+.btn-reverse {
+  border: 1px solid @brand-primary;
+  border-radius: 4px;
+  color: @brand-primary;
+  outline: none;
+  background-color: transparent;
+  
+  .es-transition;
+
+  &:hover, &:focus, &.active {
+    background-color: @brand-primary;
+    color: #ffffff;
+  }
+}
+
+.btn-reverse-white {
+  border: 1px solid #ffffff;
+  border-radius: 4px;
+  color: #ffffff;
+  outline: none;
+  background-color: transparent;
+  .es-transition;
+
+  &:hover, &:focus, &.active {
+    background-color: @brand-primary;
+    border: 1px solid @brand-primary;
+    color: #ffffff;
+  }
+
+}
+
+.btn-rotate-45 {
+  position: relative;
+  .clearfix;
+
+  i {
+    margin-top: 2px;
+    float: left;
+    .transform(rotate(0));
+  }
+
+  &.active {
+    i {
+      .es-transition;
+      .transform(rotate(45deg));
+    }
+  }
+}

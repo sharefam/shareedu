@@ -1,0 +1,32 @@
+{% if studyRanks %}
+  {% for studyRank in studyRanks %}
+    {% if courses[studyRank.courseId]|default() %}
+      {%  set course = courses[studyRank.courseId] %}
+      <div class="c-hot-course-item c-hot-course-item--light">
+        <div class="c-hot-course-item__l">
+          {% if loop.index == 1 %}
+            <div class="c-hot-course-item__label c-hot-course-item__label-1">{{ loop.index }}</div>
+          {% elseif loop.index == 2 %}
+            <div class="c-hot-course-item__label c-hot-course-item__label-2">{{ loop.index }}</div>
+          {% elseif loop.index == 3 %}
+            <div class="c-hot-course-item__label c-hot-course-item__label-3">{{ loop.index }}</div>
+          {% else %}
+            <div class="c-hot-course-item__label c-hot-course-item__label">{{ loop.index }}</div>
+          {% endif %}
+        </div>
+      <div class="c-hot-course-item__r">
+        <div class="pull-left mls">
+          <div class="c-hot-course-item__name"><a class="link-dark aside-hot-course-item-title" href="{{ path('course_show', {id:studyRank.courseId}) }}">
+              {{ course.title }}</a>
+          </div>
+          <div class="c-hot-course-item__info">
+            {{ 'my.department.data_report.hot_courses_list.learn_times'|trans }}：{{ studyRank.learnUserNum }} <span class="mll">{{ 'my.department.user_learn_data.learn_time'|trans }}：{{ studyRank.totalLearnTime|time_format_hour }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  {% endfor %}
+  {% else %}
+    <div class="empty">{{ 'site.datagrid.empty'|trans }}</div>
+{% endif %}

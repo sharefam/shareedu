@@ -1,0 +1,46 @@
+<div class="member-projectplan-modal__body ">
+  <div class="js-search-by-member">
+    <form class="department-manage-search-form form-inline clearfix mbl" id="user-select-form">
+      <div class="form-group department-manage-search-form-group department-manage-search-form-group--first">
+        <label>{{ 'advanced_user_select.department_filter'|trans }}:</label>
+        <div class="department-manage-search-form-group__select user-org-select">
+          {% include 'org-select/index.html.twig' with {
+            id: 'resource-orgCode',
+            data: build_org_tree(app.user.manageOrgCodes),
+            placeholder: 'admin.org.select_placeholder'|trans,
+            treeName: 'orgIds',
+            ids: orgIds|default(0),
+          }
+          %}
+        </div>
+      </div>
+      <div class="form-group department-manage-search-form-group">
+        <label class="mts">{{'advanced_user_select.post_filter'|trans}}:</label>
+        {% include 'post/post-tree-select.html.twig' with {modal: 'list', isFront: 1} %}
+      </div>
+      <div
+          class="form-group department-manage-search-form-group department-manage-search-form-group--first department-manage-search-date">
+        <label class="department-manage-search-date__label">{{ 'advanced_user_select.hiredate'|trans }}:</label>
+        <input class="form-control department-manage-search-date__time" type="text" id="startDateTime" value="{{ app.request.query.get('hireDate_GTE') }}"
+               name="hireDate_GTE" placeholder="{{ 'advanced_user_select.time.startTime.placeholder'|trans }}">
+        <label class="department-manage-search-date__link">-</label>
+        <input class="form-control department-manage-search-date__time" type="text" id="endDateTime" value="{{ app.request.query.get('hireDate_LTE') }}"
+               name="hireDate_LTE" placeholder="{{ 'advanced_user_select.time.endTime.placeholder'|trans }}">
+      </div>
+      <div class="form-group department-manage-search-form-group department-manage-search-form-group--user">
+        <label>{{ 'advanced_user_select.accurate_filter'|trans }}:</label>
+        <select class="form-control department-manage-search-form-group__name" id="keywordType" name="keywordType">
+          {{ select_options(dict('nameKeyWordType'), app.request.query.get('keywordType') ? app.request.query.get('keywordType') : 'nickname') }}
+        </select>
+        <input class="form-control department-manage-search-form-group__key" type="text" id="keyword" name="keyword"
+               value="" placeholder="{{ 'form.placeholder.keyword'|trans }}">
+      </div>
+      <button class="btn btn-primary js-submit" type="button" data-url="{{ path('advanced_member_select_user_search') }}">{{ 'advanced_user_select.btn.search'|trans }}</button>
+      <button class="btn btn-primary js-search-all-select" type="button" data-url="{{ path('advanced_member_select_choose_all_user') }}">{{ 'advanced_user_select.btn.add_query_results'|trans }}</button>
+    </form>
+    <div class="js-search-by-member-wrap">
+      {% include('CorporateTrainingBundle:advanced-user-select/widgets:user-list.html.twig') %}
+    </div>
+
+  </div>
+</div>

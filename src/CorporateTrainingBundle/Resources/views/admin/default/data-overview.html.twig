@@ -1,0 +1,69 @@
+<div class="data-overview-wrapper">
+  <div class="ct-panel">
+    <div class="ct-panel-heading">
+      <span class="ct-panel-title">{{'admin.default.data_overview'|trans}}</span>
+    </div>
+    <div class="ct-panel-body ct-panel-body_row clearfix">
+      <div class="col col-sm-6 col-md-3 col-lg-3">
+        <div class="content">
+          <div class="content-wrapper clearfix">
+            <div class="fl">
+              <i class="ct-icon ct-icon-user text-user"></i>
+            </div>
+            <div class="fl num">
+              <div class="num-panel">
+                <span class="num-total">{{ userData['allUsersCount']|default(0) }}</span><span class="num-add" title="本年新增">+{{ userData['newUsersCount']|default(0) }}</span>
+              </div>
+              <div class="title">{{ 'admin.default.user_num'|trans }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col col-sm-6 col-md-3 col-lg-3">
+        <div class="content">
+          <div class="content-wrapper clearfix">
+            <div class="fl">
+              <i class="ct-icon ct-icon-teacher text-teacher"></i>
+            </div>
+            <div class="fl num">
+              <div class="num-panel">
+                <span class="num-total">{{ teacherData['allTeachersCount']|default(0) }}</span><span class="num-add" title="本年新增">+{{ teacherData['newTeachersCount'] }}</span>
+              </div>
+              <div class="title">{{ 'admin.default.teacher_num'|trans }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col col-sm-6 col-md-3 col-lg-3">
+        <div class="content">
+          <div class="content-wrapper clearfix">
+            <div class="fl">
+              <i class="ct-icon ct-icon-course text-course"></i>
+            </div>
+            <div class="fl num">
+              <div class="num-panel">
+                <span class="num-total">{{ courseData['allCoursesCount']|default(0) }}</span><span class="num-add" title="本年新增">+{{ courseData['newCoursesCount']|default(0) }}</span>
+              </div>
+              <div class="title">{{ 'admin.default.course_num'|trans }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col col-sm-6 col-md-3 col-lg-3">
+        <div class="content">
+          <div class="content-wrapper clearfix">
+            <div class="fl">
+              <i class="ct-icon ct-icon-project text-train"></i>
+            </div>
+            <div class="fl num">
+              <div class="num-panel">
+                <span class="num-total">{{ projectPlanData['allProjectPlansCount']|default(0) }}</span><span class="num-add" title="本年新增">+{{ projectPlanData['newProjectPlansCount']|default(0) }}</span>
+              </div>
+              <div class="title">{{ 'admin.default.project_plan_num'|trans }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

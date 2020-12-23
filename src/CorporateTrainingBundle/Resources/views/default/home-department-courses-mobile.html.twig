@@ -1,0 +1,64 @@
+{# 部门 #}
+<section class="o-home-sec js-home-department">
+    <div class="container">
+      <div class="m-home-sec__title pos-rel clearfix">
+        <span class="pull-left">{{config.title|default(config.defaultTitle|trans)}}</span>
+        <a href="{{ path('study_center_my_department_courses') }}" class="m-article-more">{{ 'site.default.more'|trans }}</a>
+        <ul class="nav m-nav-tabs js-tab-link-wrap pull-left" role="tablist">
+          <li class="js-tab-link active" role="presentation"><a href="javascript:;">{{'default.home_classroom.course'|trans}}</a></li>
+          <li class="js-tab-link" role="presentation"><a href="javascript:;">{{'default.home_classroom.classroom'|trans}}</a></li>
+        </ul>
+      </div>
+
+      <div class="o-home-sec__bd">
+        <div class="row">
+          <div class="js-tab-block-wrap">
+            <div class="tab-block js-tab-sec is-active">
+              {% if courseSets|default() %}
+                {% for courseSet in courseSets %}
+                  <div class="col-xs-6">
+                    <a class="m-home-course card-show m-ct-mbs" href="{{ path('course_set_show', {id: courseSet.id }) }}">
+                      <div class="m-home-course__hd">
+                        {{ lazy_img(filepath(course_set_cover(courseSet, 'large'), 'courseSet.png'), 'c-home-course__img', '', 'lazyload_course.png') }}
+                      </div>
+                      <div class="m-home-course__bd">
+                        <div class="m-home-course__title">{{ courseSet.title|default() }}</div>
+                      </div>
+                    </a>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </div>
+            <div class="tab-block js-tab-sec">
+              {% if classrooms|default() %}
+                {% for classroom in classrooms %}
+                  <div class="col-xs-6">
+                    <div class="m-home-theme card-show m-ct-mbs">
+                      <div class="m-home-theme__hd">
+                        <a href="{{ path('classroom_show', {id:classroom.id}) }}">
+                          <img class="c-home-theme__img" src="{{filepath(classroom.middlePicture, 'classroom.png')}}">
+                        </a>
+                      </div>
+                      <div class="m-home-theme__bd">
+                        <div class="m-home-theme__title">{{ classroom.title }}</div>
+                        <div class="m-home-theme__info-num">共{{ classroom.courseNum }}门课程</div>
+                        <div class="m-home-theme__intro">
+                          {% if classroom.about %}
+                            {{ classroom.about|raw }}
+                          {% else %}
+                            {{ 'default.home_classroom.about'|trans }}
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+
